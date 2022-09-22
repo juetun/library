@@ -247,7 +247,7 @@ func (r *RequestUser) getUserByUid(userId string) (res *ResultUser, err error) {
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     AppNameUser,
-		URI:         "/papers/get_papers_by_group_ids",
+		URI:         "/user/get_by_uid",
 		Header:      http.Header{},
 		Value:       value,
 		Context:     r.Context,
