@@ -38,7 +38,7 @@ func (r *UploadImage) ToString() (res string) {
 }
 
 // GetShowUrl 获取图片地址的播放地址
-func (r *UploadImage) GetShowUrl() (res string, err error) {
+func (r *UploadImage) GetShowUrl() (res *app_param.ResultExcelImportHeaderRelate, err error) {
 	arg := url.Values{}
 	params := rpc.RequestOptions{
 		Context:     r.Context,
