@@ -2,7 +2,11 @@ package app_param
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/plugins/rpc"
+	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -43,8 +47,15 @@ type (
 		Email            string     `json:"email,omitempty"`
 		EmailVerifiedAt  *time.Time `json:"email_verified_at,omitempty"`
 		ShopId           int64      `json:"shop_id"`
+
+		UserMobileIndex   string `json:"user_mobile_index"`
+		UserEmailIndex    string `json:"user_email_index"`
+		RememberToken     string `json:"remember_token"`
+		MsgReadTimeCursor base.TimeNormal `json:"msg_read_time_cursor"`
+		HaveDashboard     bool `json:"have_dashboard"`
 	}
 	RequestUser struct {
+		Context            *base.Context   `json:"-" form:"-"`
 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
 		UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
 		UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
@@ -213,6 +224,67 @@ func (r *RequestUser) InitRequestUser(c *gin.Context) (err error) {
 		err = fmt.Errorf("用户信息参数格式不正确(uid:%s)", uidString)
 		return
 	}
-
+	var user *ResultUser
+	if user, err = r.getUserByUid(fmt.Sprintf("%d", r.UUserHid)); err != nil {
+		return
+	}
+	r.SetResultUser(user)
 	return
+}
+
+func (r *RequestUser) getUserByUid(userId string) (res *ResultUser, err error) {
+	var value = url.Values{}
+
+	value.Set("user_hid", userId)
+	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo, UserDataTypeEmail, UserDataTypeMobile}, ","))
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     AppNameUser,
+		URI:         "/papers/get_papers_by_group_ids",
+		Header:      http.Header{},
+		Value:       value,
+		Context:     r.Context,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	var data = struct {
+		Code int         `json:"code"`
+		Data *ResultUser `json:"data"`
+		Msg  string      `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
+	return
+}
+
+func (r *RequestUser) SetResultUser(user *ResultUser) {
+	var userInfo ResultUserItem
+	var ok bool
+	if userInfo, ok = user.List[r.UUserHid]; ok {
+		return
+	}
+
+	r.UPortrait = userInfo.Portrait
+	r.UNickName = userInfo.NickName
+	r.UUserName = userInfo.UserName
+	r.UGender = userInfo.Gender
+	r.UStatus = userInfo.Status
+ 	r.UShopId= userInfo.ShopId
+ 	r.UHaveDashboard= userInfo.HaveDashboard
+ 	r.UUserMobileIndex= userInfo.UserMobileIndex
+ 	r.UUserEmailIndex= userInfo.UserEmailIndex
+ 	r.URememberToken= userInfo.RememberToken
+ 	r.UMsgReadTimeCursor= userInfo.MsgReadTimeCursor
+ 	r.UHaveDashboard= userInfo.HaveDashboard
+
+ 	//UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
+	//UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
+  	//URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
+	//UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
+ 	//UHaveDashboard     bool            `json:"u_have_dashboard" form:"u_have_dashboard"`
 }
