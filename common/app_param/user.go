@@ -273,7 +273,7 @@ func (r *RequestUser) getUserByUid(userId string, ctx *base.Context) (res *Resul
 func (r *RequestUser) SetResultUser(user *ResultUser) {
 	var userInfo ResultUserItem
 	var ok bool
-	if userInfo, ok = user.List[r.UUserHid]; ok {
+	if userInfo, ok = user.List[r.UUserHid]; !ok {
 		return
 	}
 
