@@ -47,14 +47,14 @@ type (
 		EmailVerifiedAt  *time.Time `json:"email_verified_at,omitempty"`
 		ShopId           int64      `json:"shop_id"`
 
-		UserMobileIndex   string `json:"user_mobile_index"`
-		UserEmailIndex    string `json:"user_email_index"`
-		RememberToken     string `json:"remember_token"`
+		UserMobileIndex   string          `json:"user_mobile_index"`
+		UserEmailIndex    string          `json:"user_email_index"`
+		RememberToken     string          `json:"remember_token"`
 		MsgReadTimeCursor base.TimeNormal `json:"msg_read_time_cursor"`
-		HaveDashboard     uint8 `json:"have_dashboard"`
+		HaveDashboard     uint8           `json:"have_dashboard"`
 	}
 	RequestUser struct {
- 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
+		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
 		UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
 		UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
 		UPortrait          string          `json:"u_portrait" form:"u_portrait"`                         //头像
@@ -66,7 +66,7 @@ type (
 		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
 		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
 		UShopId            int64           `json:"u_shop_id" form:"u_shop_id"`                           //店铺ID
-		UHaveDashboard     uint8            `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
+		UHaveDashboard     uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
 	}
 
 	User struct {
@@ -126,7 +126,7 @@ type (
 		OrgCode         string           `gorm:"column:org_code;not null;type:varchar(180) COLLATE utf8mb4_bin;comment:机构号" json:"org_code"`
 		OrgRoot         string           `gorm:"column:org_root;not null;type:varchar(32) COLLATE utf8mb4_bin;comment:机构号" json:"org_root"`
 		IsV             int              `json:"is_v" gorm:"column:is_v;not null;type:tinyint(1);default:0;comment:用户头像加V 0-不加 1-加"` // 用户头像加V
-		HaveDashboard 	   uint8 `gorm:"column:have_dashboard;not null;type:tinyint(1);default:0;comment: 1-有客服后台权限 0-无权限"  json:"have_dashboard"`
+		HaveDashboard   uint8            `gorm:"column:have_dashboard;not null;type:tinyint(1);default:0;comment: 1-有客服后台权限 0-无权限"  json:"have_dashboard"`
 		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at" `
 		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at" `
 		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"deleted_at"`
@@ -173,17 +173,18 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.Status = item.UserMain.Status
 		r.Score = item.UserMain.Score
 		r.IsV = item.UserMain.IsV
-		r.UserEmailIndex= item.UserMain.UserEmailIndex
-		r.UserMobileIndex= item.UserMain.UserMobileIndex
-		r.HaveDashboard= item.UserMain.HaveDashboard
+		r.UserEmailIndex = item.UserMain.UserEmailIndex
+		r.UserMobileIndex = item.UserMain.UserMobileIndex
+		r.HaveDashboard = item.UserMain.HaveDashboard
+		r.ShopId = item.UserMain.CurrentShopId
 	}
 	if item.UserInfo != nil {
 		r.Signature = item.UserInfo.Signature
 		r.Remark = item.UserInfo.Remark
 		r.RegisterChannel = item.UserInfo.RegisterChannel
 		r.RealName = item.UserInfo.RealName
-		r.RememberToken= item.UserInfo.RememberToken
-		r.MsgReadTimeCursor= item.UserInfo.MsgReadTimeCursor
+		r.RememberToken = item.UserInfo.RememberToken
+		r.MsgReadTimeCursor = item.UserInfo.MsgReadTimeCursor
 
 	}
 
@@ -195,6 +196,7 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.Mobile = item.UserMobile.Mobile
 		r.CountryCode = item.UserMobile.CountryCode
 	}
+	return
 }
 
 func (r *RequestUser) HaveShop() (res bool, err error) {
@@ -230,14 +232,15 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context) (err error) {
 		return
 	}
 	var user *ResultUser
-	if user, err = r.getUserByUid(fmt.Sprintf("%d", r.UUserHid),ctx); err != nil {
+	uidString = fmt.Sprintf("%d", r.UUserHid)
+	if user, err = r.getUserByUid(uidString, ctx); err != nil {
 		return
 	}
 	r.SetResultUser(user)
 	return
 }
 
-func (r *RequestUser) getUserByUid(userId string,ctx *base.Context) (res *ResultUser, err error) {
+func (r *RequestUser) getUserByUid(userId string, ctx *base.Context) (res *ResultUser, err error) {
 	var value = url.Values{}
 
 	value.Set("user_hid", userId)
@@ -279,17 +282,17 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UUserName = userInfo.UserName
 	r.UGender = userInfo.Gender
 	r.UStatus = userInfo.Status
- 	r.UShopId= userInfo.ShopId
- 	r.UHaveDashboard= userInfo.HaveDashboard
- 	r.UUserMobileIndex= userInfo.UserMobileIndex
- 	r.UUserEmailIndex= userInfo.UserEmailIndex
- 	r.URememberToken= userInfo.RememberToken
- 	r.UMsgReadTimeCursor= userInfo.MsgReadTimeCursor
- 	r.UHaveDashboard= userInfo.HaveDashboard
+	r.UShopId = userInfo.ShopId
+	r.UHaveDashboard = userInfo.HaveDashboard
+	r.UUserMobileIndex = userInfo.UserMobileIndex
+	r.UUserEmailIndex = userInfo.UserEmailIndex
+	r.URememberToken = userInfo.RememberToken
+	r.UMsgReadTimeCursor = userInfo.MsgReadTimeCursor
+	r.UHaveDashboard = userInfo.HaveDashboard
 
- 	//UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
+	//UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
 	//UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
-  	//URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
+	//URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
 	//UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
- 	//UHaveDashboard     bool            `json:"u_have_dashboard" form:"u_have_dashboard"`
+	//UHaveDashboard     bool            `json:"u_have_dashboard" form:"u_have_dashboard"`
 }
