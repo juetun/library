@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 )
@@ -55,8 +54,7 @@ type (
 		HaveDashboard     uint8 `json:"have_dashboard"`
 	}
 	RequestUser struct {
-		Context            *base.Context   `json:"-" form:"-"`
-		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
+ 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
 		UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
 		UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
 		UPortrait          string          `json:"u_portrait" form:"u_portrait"`                         //头像
@@ -208,14 +206,14 @@ func (r *RequestUser) HaveShop() (res bool, err error) {
 	return
 }
 
-func (r *RequestUser) InitRequestUser(c *gin.Context) (err error) {
+func (r *RequestUser) InitRequestUser(ctx *base.Context) (err error) {
 
 	defer func() {
 		if r.UShopId > 0 {
 			return
 		}
 		if app_obj.App.UseDefaultShopId { //店铺ID默认值，调试数据使用（测试环境）
-			shopId := c.GetHeader(app_obj.HttpShopId)
+			shopId := ctx.GinContext.GetHeader(app_obj.HttpShopId)
 			r.UShopId, _ = strconv.ParseInt(shopId, 10, 64)
 		}
 	}()
@@ -223,7 +221,7 @@ func (r *RequestUser) InitRequestUser(c *gin.Context) (err error) {
 		return
 	}
 	var uidString string
-	if uidString = c.GetHeader(app_obj.HttpUserHid); uidString == "" {
+	if uidString = ctx.GinContext.GetHeader(app_obj.HttpUserHid); uidString == "" {
 		err = fmt.Errorf("请先登录系统")
 		return
 	}
@@ -232,14 +230,14 @@ func (r *RequestUser) InitRequestUser(c *gin.Context) (err error) {
 		return
 	}
 	var user *ResultUser
-	if user, err = r.getUserByUid(fmt.Sprintf("%d", r.UUserHid)); err != nil {
+	if user, err = r.getUserByUid(fmt.Sprintf("%d", r.UUserHid),ctx); err != nil {
 		return
 	}
 	r.SetResultUser(user)
 	return
 }
 
-func (r *RequestUser) getUserByUid(userId string) (res *ResultUser, err error) {
+func (r *RequestUser) getUserByUid(userId string,ctx *base.Context) (res *ResultUser, err error) {
 	var value = url.Values{}
 
 	value.Set("user_hid", userId)
@@ -250,7 +248,7 @@ func (r *RequestUser) getUserByUid(userId string) (res *ResultUser, err error) {
 		URI:         "/user/get_by_uid",
 		Header:      http.Header{},
 		Value:       value,
-		Context:     r.Context,
+		Context:     ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
 	var data = struct {
