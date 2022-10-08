@@ -8,6 +8,7 @@ const (
 	AppNameExport           = "api-export"
 	AppNameUser             = "api-user"
 	AppNameTag              = "api-tag"
+	AppNameNotice           = "api-notice"
 	AppNameComment          = "api-comment"
 	AppNameChat             = "api-chat"
 	AppNameCar              = "api-car"
