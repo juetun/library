@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.8.1
-	github.com/juetun/base-wrapper v0.0.234
+	github.com/juetun/base-wrapper v0.0.235
 	github.com/shopspring/decimal v1.3.1
 )
 
