@@ -208,7 +208,7 @@ func (r *RequestUser) HaveShop() (res bool, err error) {
 	return
 }
 
-func (r *RequestUser) InitRequestUser(ctx *base.Context) (err error) {
+func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...bool) (err error) {
 
 	defer func() {
 		if r.UShopId > 0 {
@@ -237,6 +237,12 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context) (err error) {
 		return
 	}
 	r.SetResultUser(user)
+	if len(needValidateShop) > 0 {
+		if needValidateShop[0] && r.UShopId == 0 {
+			err = fmt.Errorf("对不起,您当前的账号没有店铺管理权限")
+			return
+		}
+	}
 	return
 }
 
