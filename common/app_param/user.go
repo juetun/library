@@ -20,6 +20,10 @@ const (
 	UserDataTypeInfo   = "user_info"
 	UserDataTypeMobile = "user_mobile"
 )
+const (
+	NeedValidateShopYes = true  //需要校验当前用户是否有店铺权限
+	NeedValidateShopNo  = false //不需要校验当前用户是否有有店铺权限
+)
 
 // 获取用户信息的响应参数结构
 type (
@@ -208,6 +212,7 @@ func (r *RequestUser) HaveShop() (res bool, err error) {
 	return
 }
 
+//   needValidateShop  //NeedValidateShopYes = true,需要校验当前用户是否有店铺权限  NeedValidateShopNo = false,不需要校验当前用户是否有店铺权限
 func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...bool) (err error) {
 
 	defer func() {
