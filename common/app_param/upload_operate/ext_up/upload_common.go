@@ -3,7 +3,6 @@ package ext_up
 import (
 	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/upload_operate"
 	"strconv"
 	"strings"
 )
