@@ -3,6 +3,7 @@ package ext_up
 import (
 	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/upload_operate"
 	"strconv"
 	"strings"
 )
@@ -13,9 +14,10 @@ const (
 
 type (
 	UploadCommon struct {
-		Context *base.Context
-		Channel string `json:"channel" form:"channel"`
-		ID      int64  `json:"id" form:"id"`
+		Context *base.Context `json:"-" form:"-"`
+		Type    string        `json:"type" form:"type"`
+		Channel string        `json:"channel" form:"channel"`
+		ID      int64         `json:"id" form:"id"`
 	}
 
 	ShowData struct {

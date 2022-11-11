@@ -16,6 +16,10 @@ type (
 	UploadImage struct {
 		ext_up.UploadCommon
 	}
+	ProductImage struct {
+		UploadImage
+		IsThumbnail bool `json:"is_thumb"` // 是否是缩略图
+	}
 	ImageHandler func(uploadImage *UploadImage)
 )
 
