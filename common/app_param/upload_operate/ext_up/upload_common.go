@@ -15,8 +15,8 @@ const (
 type (
 	UploadCommon struct {
 		Context *base.Context `json:"-" form:"-"`
-		Type    string        `json:"tp" form:"type"`
-		Channel string        `json:"chl" form:"channel"`
+		Type    string        `json:"type" form:"type"`
+		Channel string        `json:"channel" form:"channel"`
 		ID      int64         `json:"id" form:"id"`
 	}
 
