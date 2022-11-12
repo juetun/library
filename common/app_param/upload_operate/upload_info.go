@@ -23,3 +23,25 @@ type (
 		File      []string `json:"file"`
 	}
 )
+
+func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
+	res = &ArgUploadGetInfo{
+		ImgKeys:   make([]string, 0, 50),
+		VideoKeys: make([]string, 0, 10),
+		MusicKey:  make([]string, 0, 10),
+		Material:  make([]string, 0, 50),
+		File:      make([]string, 0, 50),
+	}
+	return
+}
+
+func NewResultMapUploadInfo() (res *ResultMapUploadInfo) {
+	res = &ResultMapUploadInfo{
+		Img:      make(map[string]*UploadImage, 50),
+		Video:    make(map[string]*UploadVideo, 10),
+		Music:    make(map[string]*UploadMusic, 10),
+		Material: make(map[string]*UploadMaterial, 50),
+		File:     make(map[string]*UploadFile, 50),
+	}
+	return
+}
