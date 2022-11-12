@@ -1,7 +1,6 @@
 package upload_operate
 
 import (
-	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 )
@@ -9,10 +8,10 @@ import (
 type (
 	UploadVideo struct {
 		ext_up.UploadCommon
+		ParseCodeStatus uint8 `json:"parse_code_status"` //转码状态
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
 )
-
 
 func VideoContext(ctx *base.Context) VideoHandler {
 	return func(uploadVideo *UploadVideo) {
@@ -29,7 +28,7 @@ func NewUploadVideo(options ...VideoHandler) (res *UploadVideo) {
 }
 
 func (r *UploadVideo) ToString() (res string) {
-	res = fmt.Sprintf("%s%s%d", r.Channel, ext_up.UploadDivideString, r.ID)
+	res = r.UploadCommon.ToString()
 	return
 }
 

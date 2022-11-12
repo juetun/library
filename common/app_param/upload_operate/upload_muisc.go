@@ -1,7 +1,6 @@
 package upload_operate
 
 import (
-	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
@@ -29,7 +28,7 @@ func NewUploadMusic(options ...MusicHandler) (res *UploadMusic) {
 }
 
 func (r *UploadMusic) ToString() (res string) {
-	res = fmt.Sprintf("%s|%d", r.Channel, r.ID)
+	res = r.UploadCommon.ToString()
 	return
 }
 

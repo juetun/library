@@ -29,6 +29,8 @@ func ImageContext(ctx *base.Context) ImageHandler {
 		uploadImage.Context = ctx
 	}
 }
+
+// NewUploadImage
 func NewUploadImage(options ...ImageHandler) (res *UploadImage) {
 	res = &UploadImage{}
 	for _, option := range options {
@@ -38,7 +40,7 @@ func NewUploadImage(options ...ImageHandler) (res *UploadImage) {
 }
 
 func (r *UploadImage) ToString() (res string) {
-	res = fmt.Sprintf("%s%s%d", r.Channel, ext_up.UploadDivideString, r.ID)
+	res = r.UploadCommon.ToString()
 	return
 }
 
