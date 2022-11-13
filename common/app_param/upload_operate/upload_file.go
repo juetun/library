@@ -9,6 +9,7 @@ import (
 type (
 	UploadFile struct {
 		ext_up.UploadCommon
+		Src string `json:"src"`
 	}
 	FileHandler func(UploadFile *UploadFile)
 )

@@ -15,7 +15,7 @@ import (
 type (
 	UploadImage struct {
 		ext_up.UploadCommon
-		Url string `json:"url"`
+		Src string `json:"src"`
 	}
 	ProductImage struct {
 		UploadImage

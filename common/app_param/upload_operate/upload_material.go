@@ -15,7 +15,7 @@ import (
 type (
 	UploadMaterial struct {
 		ext_up.UploadCommon
-		Url string `json:"url"`
+		Src string `json:"src"`
 	}
 
 	MaterialHandler func(uploadImage *UploadMaterial)
