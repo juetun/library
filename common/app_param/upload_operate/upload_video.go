@@ -8,7 +8,12 @@ import (
 type (
 	UploadVideo struct {
 		ext_up.UploadCommon
-		ParseCodeStatus uint8 `json:"parse_code_status"` //转码状态
+		ParseCodeStatus uint8  `json:"parse_code_status"` //转码状态
+		Src             string `json:"src"`               //源站地址
+		HD              string `json:"hd,omitempty"`      //高清
+		SD              string `json:"sd,omitempty"`      //标清
+		LD              string `json:"ld,omitempty"`      //普清
+		DefaultType     string `json:"default_type"`      //hd,sd,ld,src
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
 )
