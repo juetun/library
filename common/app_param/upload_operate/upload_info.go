@@ -1,5 +1,7 @@
 package upload_operate
 
+import "github.com/juetun/base-wrapper/lib/base"
+
 type (
 	UploadInfo struct {
 		Img      *UploadImage    `json:"img"`
@@ -23,6 +25,11 @@ type (
 		File      []string `json:"file"`
 	}
 )
+
+func (r *ArgUploadGetInfo) Default(c *base.Context) (err error) {
+
+	return
+}
 
 func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
 	res = &ArgUploadGetInfo{
