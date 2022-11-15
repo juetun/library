@@ -34,6 +34,20 @@ func NewUploadVideo(options ...VideoHandler) (res *UploadVideo) {
 	}
 	return
 }
+
+//默认DefaultType
+func (r *UploadVideo) InitDefaultType() {
+	if r.DefaultType != "" {
+		return
+	}
+
+	if r.HD != "" {
+		r.DefaultType = "hd"
+		return
+	}
+	r.DefaultType = "src"
+}
+
 func (r *UploadVideo) getSrc() (src string, err error) {
 	src = r.Src
 	switch r.DefaultType {
