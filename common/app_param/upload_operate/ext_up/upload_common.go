@@ -32,6 +32,16 @@ func (r *UploadCommon) ToString() (res string) {
 	return
 }
 
+func (r *UploadCommon) GetKey(keys ...string) (key string) {
+	if len(keys) > 0 {
+		key = keys[0]
+	}
+	if key == "" {
+		key = r.ToString()
+	}
+	return
+}
+
 func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 	if saveUploadString == "" {
 		return

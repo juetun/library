@@ -44,6 +44,14 @@ func (r *UploadImage) ToString() (res string) {
 	return
 }
 
+func (r *UploadImage) GetEditorHtml(keys ...string) (res string, err error) {
+	var (
+		key = r.UploadCommon.GetKey(keys...)
+	)
+	res = fmt.Sprintf(`<img src="%s" alt="%s" data-href="%s" style=""/>`, r.Src, key, key)
+	return
+}
+
 // GetShowUrl 获取图片地址的播放地址
 func (r *UploadImage) GetShowUrl() (res *app_param.ResultExcelImportHeaderRelate, err error) {
 	arg := url.Values{}
