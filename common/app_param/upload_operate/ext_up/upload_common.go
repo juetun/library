@@ -58,7 +58,7 @@ func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 
 	tmp := strings.Split(saveUploadString, UploadDivideString)
 	var sliceString =tmp[0:]
-	switch len(tmp) {
+	switch len(sliceString) {
 	case 0:
 		sliceString[0], sliceString[1], sliceString[2] = "", "", ""
 	case 1:
