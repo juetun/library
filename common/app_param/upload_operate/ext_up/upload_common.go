@@ -57,16 +57,17 @@ func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 	}()
 
 	tmp := strings.Split(saveUploadString, UploadDivideString)
+	var sliceString =tmp[0:]
 	switch len(tmp) {
 	case 0:
-		tmp[0], tmp[1], tmp[2] = "", "", ""
+		sliceString[0], sliceString[1], sliceString[2] = "", "", ""
 	case 1:
-		tmp[1], tmp[2] = "", ""
+		sliceString[1], sliceString[2] = "", ""
 	case 2:
-		tmp[2] = ""
+		sliceString[2] = ""
 	}
-	r.Type, r.Channel = tmp[0], tmp[1]
-	if r.ID, err = strconv.ParseInt(tmp[2], 10, 64); err != nil {
+	r.Type, r.Channel = sliceString[0], sliceString[1]
+	if r.ID, err = strconv.ParseInt(sliceString[2], 10, 64); err != nil {
 		err = fmt.Errorf("图片存储的数据格式不正确")
 	}
 	return
