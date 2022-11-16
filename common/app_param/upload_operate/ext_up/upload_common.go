@@ -50,6 +50,9 @@ func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 		if err == nil {
 			return
 		}
+		if r.Context == nil {
+			return
+		}
 		r.Context.Error(map[string]interface{}{
 			"saveUploadString": saveUploadString,
 			"err":              err.Error(),
