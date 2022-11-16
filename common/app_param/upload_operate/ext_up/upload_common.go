@@ -57,14 +57,15 @@ func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 	}()
 
 	tmp := strings.Split(saveUploadString, UploadDivideString)
-	var sliceString =tmp[0:]
+	var sliceString = make([]string, 0, 3)
+	sliceString = append(sliceString, tmp[0:]...)
 	switch len(sliceString) {
 	case 0:
-		sliceString[0], sliceString[1], sliceString[2] = "", "", ""
+		sliceString = append(sliceString, []string{"", "", ""}...)
 	case 1:
-		sliceString[1], sliceString[2] = "", ""
+		sliceString = append(sliceString, []string{"", ""}...)
 	case 2:
-		sliceString[2] = ""
+		sliceString = append(sliceString, "")
 	}
 	r.Type, r.Channel = sliceString[0], sliceString[1]
 	if r.ID, err = strconv.ParseInt(sliceString[2], 10, 64); err != nil {
