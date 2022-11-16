@@ -17,6 +17,7 @@ type (
 		SD              string `json:"sd,omitempty"`      //标清
 		LD              string `json:"ld,omitempty"`      //普清
 		DefaultType     string `json:"default_type"`      //hd,sd,ld,src
+		Cover           string `json:"cover"`             //封面图
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
 )
