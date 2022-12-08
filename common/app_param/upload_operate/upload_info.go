@@ -42,6 +42,16 @@ func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
 	return
 }
 
+//判断数据是否为空
+func (r *ArgUploadGetInfo) IsNull() (isNull bool) {
+
+	if len(r.ImgKeys) == 0 && len(r.VideoKeys) == 0 && len(r.MusicKey) == 0 && len(r.Material) == 0 && len(r.File) == 0 {
+		isNull = true
+		return
+	}
+	return
+}
+
 func NewResultMapUploadInfo() (res *ResultMapUploadInfo) {
 	res = &ResultMapUploadInfo{
 		Img:      make(map[string]*UploadImage, 50),
