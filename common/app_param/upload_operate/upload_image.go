@@ -50,7 +50,7 @@ func (r ProductImages) GetThumbnail() (res *ProductImage) {
 		}
 		i++
 	}
-	if res.ID == 0 {
+	if (res == nil || res.ID == 0) && first.ID != 0 {
 		res = &first
 	}
 	return
