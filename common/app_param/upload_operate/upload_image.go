@@ -20,14 +20,53 @@ type (
 	ProductImage struct {
 		UploadImage
 		IsThumbnail bool `json:"is_thumb"` // 是否是缩略图
+		Deleted     bool `json:"deleted"`  //是否已删除
 	}
-	ImageHandler func(uploadImage *UploadImage)
+	ImageHandler  func(uploadImage *UploadImage)
+	ProductImages []ProductImage
 )
 
 func ImageContext(ctx *base.Context) ImageHandler {
 	return func(uploadImage *UploadImage) {
 		uploadImage.Context = ctx
 	}
+}
+
+//获取封面图数据
+func (r ProductImages) GetThumbnail() (res *ProductImage) {
+	var (
+		first ProductImage
+		i     int
+	)
+	for _, item := range r {
+		if item.Deleted {
+			continue
+		}
+		if i == 0 {
+			first = item
+		}
+		if item.IsThumbnail {
+			res = &item
+		}
+		i++
+	}
+	if res.ID == 0 {
+		res = &first
+	}
+	return
+}
+
+//获取没有删除的图片
+func (r *ProductImages) GetNotDeleteData() (res []ProductImage) {
+	res = make([]ProductImage, 0, len(*r))
+	for _, item := range *r {
+		if item.Deleted {
+			continue
+		}
+		res = append(res, item)
+	}
+
+	return
 }
 
 // NewUploadImage
