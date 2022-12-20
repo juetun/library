@@ -22,3 +22,4 @@ const (
 	SpuUploadVideo        = "spu_video"       // 上传视频视频地址
 	SpuShopLogo           = "spu_shop_logo"   // 店铺LOGO
 )
+
