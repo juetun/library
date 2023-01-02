@@ -228,12 +228,12 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 		return
 	}
 	var uidString string
-	if uidString = ctx.GinContext.GetHeader(app_obj.HttpUserHid); uidString == "" {
-		err = fmt.Errorf("请先登录系统")
+	if uidString = ctx.GinContext.GetHeader(app_obj.HttpUserHid); uidString == "" || uidString == "null" {
+		err = base.NewErrorRuntime(fmt.Errorf("请先登录系统"), base.ErrorNotLogin)
 		return
 	}
 	if r.UUserHid, err = strconv.ParseInt(uidString, 10, 64); err != nil {
-		err = fmt.Errorf("用户信息参数格式不正确(uid:%s)", uidString)
+		err = base.NewErrorRuntime(fmt.Errorf("用户信息参数格式不正确(uid:%s)", uidString), base.ErrorNotLogin)
 		return
 	}
 	var user *ResultUser
@@ -244,7 +244,8 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	r.SetResultUser(user)
 	if len(needValidateShop) > 0 {
 		if needValidateShop[0] && r.UShopId == 0 {
-			err = fmt.Errorf("对不起,您当前的账号没有店铺管理权限")
+			err = base.NewErrorRuntime(fmt.Errorf("对不起,您当前的账号没有店铺管理权限"), base.ErrorHasNotPermit)
+
 			return
 		}
 	}
@@ -300,10 +301,4 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.URememberToken = userInfo.RememberToken
 	r.UMsgReadTimeCursor = userInfo.MsgReadTimeCursor
 	r.UHaveDashboard = userInfo.HaveDashboard
-
-	//UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
-	//UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
-	//URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
-	//UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
-	//UHaveDashboard     bool            `json:"u_have_dashboard" form:"u_have_dashboard"`
 }
