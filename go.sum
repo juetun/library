@@ -423,6 +423,10 @@ github.com/juetun/base-wrapper v0.0.235 h1:XPhYZlOSQYr+Tpj7FEOqFA0QQQp+TgVZdeJaI
 github.com/juetun/base-wrapper v0.0.235/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
 github.com/juetun/base-wrapper v0.0.245 h1:xM+zFHcZB5kX2kCP3NGWuz/5o4UWsOQNIiJl70BgEuI=
 github.com/juetun/base-wrapper v0.0.245/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
+github.com/juetun/base-wrapper v0.0.246 h1:0FkdMS2HMJPbedgu5/6MiqmoJfgnRmhbb44LEZB1Xc8=
+github.com/juetun/base-wrapper v0.0.246/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
+github.com/juetun/base-wrapper v0.0.247 h1:99ouxHYQvn0IZcy85ITnNiTtwHI4uL1BnL2SYCqJrAU=
+github.com/juetun/base-wrapper v0.0.247/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
 github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213/go.mod h1:vNUNkEQ1e29fT/6vq2aBdFsgNPmy8qMdSay1npru+Sw=
