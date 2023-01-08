@@ -3,7 +3,6 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
-	"github.com/juetun/library/common/app_param"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -234,8 +233,6 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	return
 }
 
-
-
 func (r *RequestUser) SetResultUser(user *ResultUser) {
 	var userInfo ResultUserItem
 	var ok bool
@@ -264,7 +261,7 @@ func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err 
 	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo, UserDataTypeEmail, UserDataTypeMobile}, ","))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
-		AppName:     app_param.AppNameUser,
+		AppName:     AppNameUser,
 		URI:         "/user/get_by_uid",
 		Header:      http.Header{},
 		Value:       value,
@@ -272,9 +269,9 @@ func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err 
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
 	var data = struct {
-		Code int                   `json:"code"`
+		Code int         `json:"code"`
 		Data *ResultUser `json:"data"`
-		Msg  string                `json:"message"`
+		Msg  string      `json:"message"`
 	}{}
 	err = rpc.NewHttpRpc(&ro).
 		Send().
