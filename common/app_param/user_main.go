@@ -3,7 +3,6 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/base-wrapper/lib/base/sub_treasury_impl"
 	"gorm.io/gorm"
 	"strconv"
 	"strings"
@@ -76,6 +75,8 @@ type (
 		OrgCode         string           `gorm:"column:org_code;not null;type:varchar(180) COLLATE utf8mb4_bin;comment:机构号" json:"org_code"`
 		OrgRoot         string           `gorm:"column:org_root;not null;type:varchar(32) COLLATE utf8mb4_bin;comment:机构号" json:"org_root"`
 		IsV             int              `json:"is_v" gorm:"column:is_v;not null;type:tinyint(1);default:0;comment:用户头像加V 0-不加 1-加"` // 用户头像加V
+		AuthType        uint8            `gorm:"column:auth_type;not null;type:tinyint(2);default:0;comment:认证类型 0-个人用户 1-企业用户" json:"auth_type"`
+		AuthStatus      uint8            `gorm:"column:auth_status;not null;type:tinyint(2);default:2;comment:认证状态0-未审核 1-可用 2-不可用 3-待审核" json:"auth_status"`
 		HaveDashboard   uint8            `gorm:"column:have_dashboard;not null;type:tinyint(1);default:0;comment: 1-有客服后台权限 0-无权限"  json:"have_dashboard"`
 		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at" `
 		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at" `
@@ -140,7 +141,6 @@ func (r *UserMain) ParseEmail() (dbIndex, tbIndex int, err error) {
 	tbIndex, err = strconv.Atoi(separatorString[1])
 	return
 }
-
 
 func (r *UserMain) BeforeCreate(db *gorm.DB) (err error) {
 
