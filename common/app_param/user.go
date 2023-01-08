@@ -3,6 +3,7 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
+	"github.com/juetun/library/common/app_param"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -219,7 +220,7 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	}
 	var user *ResultUser
 	uidString = fmt.Sprintf("%d", r.UUserHid)
-	if user, err = r.getUserByUid(uidString, ctx); err != nil {
+	if user, err = GetResultUserByUid(uidString, ctx); err != nil {
 		return
 	}
 	r.SetResultUser(user)
@@ -233,35 +234,7 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	return
 }
 
-func (r *RequestUser) getUserByUid(userId string, ctx *base.Context) (res *ResultUser, err error) {
-	var value = url.Values{}
 
-	value.Set("user_hid", userId)
-	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo, UserDataTypeEmail, UserDataTypeMobile}, ","))
-	ro := rpc.RequestOptions{
-		Method:      http.MethodPost,
-		AppName:     AppNameUser,
-		URI:         "/user/get_by_uid",
-		Header:      http.Header{},
-		Value:       value,
-		Context:     ctx,
-		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
-	}
-	var data = struct {
-		Code int         `json:"code"`
-		Data *ResultUser `json:"data"`
-		Msg  string      `json:"message"`
-	}{}
-	err = rpc.NewHttpRpc(&ro).
-		Send().
-		GetBody().
-		Bind(&data).Error
-	if err != nil {
-		return
-	}
-	res = data.Data
-	return
-}
 
 func (r *RequestUser) SetResultUser(user *ResultUser) {
 	var userInfo ResultUserItem
@@ -282,4 +255,34 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.URememberToken = userInfo.RememberToken
 	r.UMsgReadTimeCursor = userInfo.MsgReadTimeCursor
 	r.UHaveDashboard = userInfo.HaveDashboard
+}
+
+func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err error) {
+	var value = url.Values{}
+
+	value.Set("user_hid", userId)
+	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo, UserDataTypeEmail, UserDataTypeMobile}, ","))
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameUser,
+		URI:         "/user/get_by_uid",
+		Header:      http.Header{},
+		Value:       value,
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	var data = struct {
+		Code int                   `json:"code"`
+		Data *ResultUser `json:"data"`
+		Msg  string                `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
+	return
 }
