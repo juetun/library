@@ -24,7 +24,7 @@ func GetShopDataByUIds(ctx *base.Context, shopIds []int64, dataTypes ...string) 
 	value.Set("data_type", strings.Join(dataTypes, ","))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodGet,
-		AppName:     app_param.AppNameUser,
+		AppName:     app_param.AppNameMall,
 		URI:         "/shop/get_by_shop_ids",
 		Header:      http.Header{},
 		Value:       value,
