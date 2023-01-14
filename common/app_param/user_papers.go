@@ -18,7 +18,7 @@ const (
 	PapersDateMustInput                  // 必填
 )
 
-var MapMustDate = base.ModelItemOptions{
+var SliceMustDate = base.ModelItemOptions{
 	{
 		Value: PapersDateHave, //有时间
 		Label: "有",
