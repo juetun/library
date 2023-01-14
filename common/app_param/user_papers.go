@@ -3,20 +3,41 @@ package app_param
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/base"
 )
 
 //用户资质是否需要填写类型
+//const (
+//	PaperMustDateNotNeed = iota //不需要时间
+//	PaperMustDateYes            //必须填写时间
+//	PaperMustDateNo             //可不填时间
+//)
 const (
-	PaperMustDateNotNeed = iota //不需要时间
-	PaperMustDateYes            //必须填写时间
-	PaperMustDateNo             //可不填时间
+	PapersDateHave      uint8 = iota + 1 // Papers.DateExpiry有时间
+	PapersDateHasNot                     // Papers.DateExpiry没有时间
+	PapersDateMustInput                  // 必填
 )
 
-var MapMustDate = map[uint8]string{
-	PaperMustDateNotNeed: "不填",
-	PaperMustDateYes:     "必填",
-	PaperMustDateNo:      "可不填",
+var MapMustDate = base.ModelItemOptions{
+	{
+		Value: PapersDateHave, //有时间
+		Label: "有",
+	},
+	{
+		Value: PapersDateHasNot, //没有时间
+		Label: "无",
+	},
+	{
+		Value: PapersDateMustInput, //有且必填
+		Label: "必填",
+	},
 }
+
+//	map[uint8]string{
+//	PaperMustDateNotNeed: "不填",
+//	PaperMustDateYes:     "必填",
+//	PaperMustDateNo:      "可不填",
+//}
 
 const (
 	DataPapersGroupShopPropertyRadio    = "radio"    //单选
