@@ -6,24 +6,23 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/base/cache_act"
-	"github.com/juetun/library/common/app_param/upload_operate"
 	"time"
 )
 
 type (
 	CacheProductPicAndVideoAction struct {
 		cache_act.CacheActionBase
-		arg                      *upload_operate.ArgUploadGetInfo
+		arg                      *ArgUploadGetInfo
 		argCommon                *base.GetDataTypeCommon
 		GetByIdsFromDb           GetProductPicAndVideoByIdsFromDb
 		HandlerGetUploadCacheKey HandlerGetUploadCacheKey
 	}
-	GetProductPicAndVideoByIdsFromDb    func(arg *upload_operate.ArgUploadGetInfo) (resData *upload_operate.ResultMapUploadInfo, err error)
+	GetProductPicAndVideoByIdsFromDb    func(arg *ArgUploadGetInfo) (resData *ResultMapUploadInfo, err error)
 	CacheProductPicAndVideoActionOption func(cacheFreightAction *CacheProductPicAndVideoAction)
 	HandlerGetUploadCacheKey            func(id interface{}, Type string, expireTimeRands ...bool) (res string, timeExpire time.Duration)
 )
 
-func CacheProductPicAndVideoActionArg(arg *upload_operate.ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) CacheProductPicAndVideoActionOption {
+func CacheProductPicAndVideoActionArg(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) CacheProductPicAndVideoActionOption {
 	return func(cacheFreightAction *CacheProductPicAndVideoAction) {
 		cacheFreightAction.arg = arg
 		cacheFreightAction.argCommon = argCommon
@@ -74,14 +73,14 @@ func (r *CacheProductPicAndVideoAction) SetToCacheNew(key string, duration time.
 	return
 }
 
-func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapUploadInfo) (err error) {
+func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err error) {
 	var (
 		key      string
 		duration time.Duration
 	)
 	if len(res.Music) > 0 {
 		for id, value := range res.Music {
-			key, duration = r.HandlerGetUploadCacheKey(id, upload_operate.FileTypeMusic)
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeMusic)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -90,7 +89,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapU
 	if len(res.Img) > 0 {
 
 		for id, value := range res.Img {
-			key, duration = r.HandlerGetUploadCacheKey(id, upload_operate.FileTypePicture)
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypePicture)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -100,7 +99,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapU
 	if len(res.Video) > 0 {
 
 		for id, value := range res.Video {
-			key, duration = r.HandlerGetUploadCacheKey(id, upload_operate.FileTypeVideo)
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeVideo)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -109,7 +108,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapU
 	if len(res.Material) > 0 {
 
 		for id, value := range res.Material {
-			key, duration = r.HandlerGetUploadCacheKey(id, upload_operate.FileTypeMaterial)
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeMaterial)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -117,7 +116,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapU
 	}
 	if len(res.File) > 0 {
 		for id, value := range res.File {
-			key, duration = r.HandlerGetUploadCacheKey(id, upload_operate.FileTypeFile)
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeFile)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -126,7 +125,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *upload_operate.ResultMapU
 	return
 }
 
-func (r *CacheProductPicAndVideoAction) Action() (res *upload_operate.ResultMapUploadInfo, err error) {
+func (r *CacheProductPicAndVideoAction) Action() (res *ResultMapUploadInfo, err error) {
 	if err = r.argCommon.Default(); err != nil {
 		return
 	}
@@ -176,17 +175,17 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 	return
 }
 
-func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.ArgUploadGetInfo) (res *upload_operate.ResultMapUploadInfo, noCacheIds *upload_operate.ArgUploadGetInfo, err error) {
+func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, noCacheIds *ArgUploadGetInfo, err error) {
 	var e error
 
-	res = upload_operate.NewResultMapUploadInfo()
+	res = NewResultMapUploadInfo()
 
 	//收集缓存中没有的数据ID，便于后边查询使用
-	noCacheIds = upload_operate.NewArgUploadGetInfo()
+	noCacheIds = NewArgUploadGetInfo()
 
 	for _, it := range arg.ImgKeys {
-		var data *upload_operate.UploadImage
-		if e = r.getFromCache(it, upload_operate.FileTypePicture, data); e != nil {
+		var data *UploadImage
+		if e = r.getFromCache(it, FileTypePicture, data); e != nil {
 			if e != redis.Nil {
 				err = e
 				return
@@ -197,8 +196,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.Ar
 		res.Img[it] = data
 	}
 	for _, it := range arg.VideoKeys {
-		var data *upload_operate.UploadVideo
-		if e = r.getFromCache(it, upload_operate.FileTypeVideo, data); e != nil {
+		var data *UploadVideo
+		if e = r.getFromCache(it, FileTypeVideo, data); e != nil {
 			if e != redis.Nil {
 				err = e
 				return
@@ -210,8 +209,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.Ar
 	}
 
 	for _, it := range arg.MusicKey {
-		var data *upload_operate.UploadMusic
-		if e = r.getFromCache(it, upload_operate.FileTypeMusic, data); e != nil {
+		var data *UploadMusic
+		if e = r.getFromCache(it, FileTypeMusic, data); e != nil {
 			if e != redis.Nil {
 				err = e
 				return
@@ -223,8 +222,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.Ar
 	}
 
 	for _, it := range arg.Material {
-		var data *upload_operate.UploadMaterial
-		if e = r.getFromCache(it, upload_operate.FileTypeMaterial, data); e != nil {
+		var data *UploadMaterial
+		if e = r.getFromCache(it, FileTypeMaterial, data); e != nil {
 			if e != redis.Nil {
 				err = e
 				return
@@ -236,8 +235,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.Ar
 	}
 
 	for _, it := range arg.File {
-		var data *upload_operate.UploadFile
-		if e = r.getFromCache(it, upload_operate.FileTypeFile, data); e != nil {
+		var data *UploadFile
+		if e = r.getFromCache(it, FileTypeFile, data); e != nil {
 			if e != redis.Nil {
 				err = e
 				return
@@ -251,10 +250,10 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *upload_operate.Ar
 	return
 }
 
-func (r *CacheProductPicAndVideoAction) getByIdsFromAll(arg *upload_operate.ArgUploadGetInfo) (res *upload_operate.ResultMapUploadInfo, err error) {
+func (r *CacheProductPicAndVideoAction) getByIdsFromAll(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error) {
 	var (
-		argCacheNotHave *upload_operate.ArgUploadGetInfo
-		dt              *upload_operate.ResultMapUploadInfo
+		argCacheNotHave *ArgUploadGetInfo
+		dt              *ResultMapUploadInfo
 	)
 	if res, argCacheNotHave, err = r.getByIdsFromCache(arg); err != nil {
 		return
