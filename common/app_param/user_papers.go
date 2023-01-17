@@ -7,11 +7,7 @@ import (
 )
 
 //用户资质是否需要填写类型
-//const (
-//	PaperMustDateNotNeed = iota //不需要时间
-//	PaperMustDateYes            //必须填写时间
-//	PaperMustDateNo             //可不填时间
-//)
+
 const (
 	PapersDateHave      uint8 = iota + 1 // Papers.DateExpiry有时间
 	PapersDateHasNot                     // Papers.DateExpiry没有时间
@@ -45,11 +41,62 @@ const (
 	DataPapersGroupShopPropertySelect   = "select"   //下拉菜单
 )
 
-var MapDataPapersGroupShopProperty = map[string]string{
-	DataPapersGroupShopPropertyRadio:    "单选",
-	DataPapersGroupShopPropertyCheckbox: "多选",
-	DataPapersGroupShopPropertySelect:   "下拉菜单",
-}
+const (
+	AuditingStatusOk      uint8 = iota + 1 // 品牌状态初始化
+	AuditingStatusInit                     // 品牌状态审核通过
+	AuditingStatusFailure                  // 品牌状态审核失败
+	AuditingStatusWaiting                  //待审核
+)
+
+var (
+	Slice = base.ModelItemOptions{
+		{
+			Label: "不填",
+			Value: PapersDateHasNot,
+		},
+		{
+			Label: "选填",
+			Value: PapersDateHave,
+		},
+		{
+			Label: "必填",
+			Value: PapersDateMustInput,
+		},
+	}
+
+	SliceAuditingStatus = base.ModelItemOptions{
+		{
+			Value: AuditingStatusOk,
+			Label: "初始化",
+		},
+		{
+			Value: AuditingStatusInit,
+			Label: "审核通过",
+		},
+		{
+			Value: AuditingStatusFailure,
+			Label: "审核失败",
+		},
+		{
+			Value: AuditingStatusWaiting,
+			Label: "待审核",
+		},
+	}
+	SliceDataPapersGroupShopProperty = base.ModelItemOptions{
+		{
+			Value: DataPapersGroupShopPropertyRadio,
+			Label: "单选",
+		},
+		{
+			Value: DataPapersGroupShopPropertyCheckbox,
+			Label: "多选",
+		},
+		{
+			Value: DataPapersGroupShopPropertySelect,
+			Label: "下拉菜单",
+		},
+	}
+)
 
 type (
 	DataPapersGroupShopProperty struct {
@@ -62,6 +109,7 @@ func (r *DataPapersGroupShopProperty) ParseShowType() (res string) {
 	if r.ShowType == "" { //默认类型
 		r.ShowType = DataPapersGroupShopPropertyRadio
 	}
+	MapDataPapersGroupShopProperty, _ := SliceDataPapersGroupShopProperty.GetMapAsKeyString()
 	var ok bool
 	if res, ok = MapDataPapersGroupShopProperty[r.ShowType]; ok {
 		return
