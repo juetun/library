@@ -47,8 +47,22 @@ const (
 	AuditingStatusFailure                  // 品牌状态审核失败
 	AuditingStatusWaiting                  //待审核
 )
+const (
+	PapersIsNeverExpiresNo  = 1 //有过期时间
+	PapersIsNeverExpiresYes = 2 //永久有效
+)
 
 var (
+	SlicePapersIsNeverExpires = base.ModelItemOptions{
+		{
+			Value: PapersIsNeverExpiresNo,
+			Label: "有过期时间",
+		},
+		{
+			Value: PapersIsNeverExpiresYes,
+			Label: "永久有效",
+		},
+	}
 	Slice = base.ModelItemOptions{
 		{
 			Label: "不填",
