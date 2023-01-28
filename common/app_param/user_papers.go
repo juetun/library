@@ -48,8 +48,8 @@ const (
 	AuditingStatusWaiting                  //待审核
 )
 const (
-	PapersIsNeverExpiresYes uint8 = iota + 1 //有过期时间
-	PapersIsNeverExpiresNo                   //永久有效
+	PapersIsNeverExpiresYes uint8 = iota + 1 //永久有效
+	PapersIsNeverExpiresNo                   //有过期时间
 )
 
 var (
