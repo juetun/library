@@ -61,8 +61,12 @@ type (
 )
 
 func (r *ArgWriteRecommendData) Default() (err error) {
-	if dataTypeMap, err := SliceAdDataType.GetMapAsKeyInt8(); err != nil {
-		if _, ok := dataTypeMap[r.DataType]; !ok {
+	var (
+		dataTypeMap map[int8]string
+		ok          bool
+	)
+	if dataTypeMap, err = SliceAdDataType.GetMapAsKeyInt8(); err != nil {
+		if _, ok = dataTypeMap[r.DataType]; !ok {
 			err = fmt.Errorf("当前不支持你选择的数据类型")
 			r.Ctx.Error(map[string]interface{}{
 				"arg": r,

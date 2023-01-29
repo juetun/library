@@ -12,6 +12,7 @@ type (
 		Price        string            `json:"price"`          //价格
 		DataValue    []*DataItemDetail `json:"data_value"`     //详情
 		SuffixTags   []*DataItemTag    `json:"suffix_tags"`    //后缀标签
+		ExtraMsg     string            `json:"extra_msg"`      // 携带的其他信息
 	}
 	DataItemTag struct {
 		Label string `json:"label"` //类型名称
