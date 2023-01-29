@@ -61,12 +61,27 @@ type (
 )
 
 func (r *ArgWriteRecommendData) Default() (err error) {
+	if dataTypeMap, err := SliceAdDataType.GetMapAsKeyInt8(); err != nil {
+		if _, ok := dataTypeMap[r.DataType]; !ok {
+			err = fmt.Errorf("当前不支持你选择的数据类型")
+			r.Ctx.Error(map[string]interface{}{
+				"arg": r,
+				"err": err.Error(),
+			}, "ArgWriteRecommendDataDefault")
+			return
+		}
+		return
+	}
 	switch r.SceneKey {
 	case SceneNameTendencies: //如果是用户首页广告动态,则必须填写用户ID
 		if r.UserHid == 0 {
 			err = fmt.Errorf("请填写要推送的用户信息")
 			return
 		}
+	}
+
+	if r.Status == 0 { //默认不传为可用数据
+		r.Status = AdDataStatusCanUse
 	}
 	return
 }
