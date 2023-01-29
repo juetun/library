@@ -1,5 +1,7 @@
 package recommend
 
+import "fmt"
+
 type (
 	DataItem struct {
 		Title         string            `json:"title,omitempty"`       //标题
@@ -30,3 +32,13 @@ type (
 		Value string `json:"value"` //类型值
 	}
 )
+
+//获取广告唯一Id字符串
+func (r *DataItem) GetUniqueKey() (res string) {
+	return GetUniqueKey(r.DataType, r.DataId)
+}
+
+//获取广告唯一Id字符串
+func GetUniqueKey(DataType int8, DataId string) (res string) {
+	return fmt.Sprintf("%d%s", DataType, DataId)
+}
