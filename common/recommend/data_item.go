@@ -6,6 +6,7 @@ type (
 		PreTags       []*DataItemTag    `json:"pre_tags,omitempty"`    //前缀标签
 		DataType      int8              `json:"data_type"`             //数据类型
 		DataId        string            `json:"data_id"`               //数据ID
+		Link          string            `json:"link"`                  //链接地址
 		HaveVideo     bool              `json:"have_video,omitempty"`  //是否有视频
 		Img           string            `json:"img,omitempty"`         //头图
 		Price         string            `json:"price"`                 //价格
