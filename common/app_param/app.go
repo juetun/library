@@ -16,6 +16,7 @@ const (
 	AppNameMallOrder        = "api-order"
 	AppNameMallOrderComment = "api-ordercomment"
 	AppNameMallActivity     = "api-activity"
+	AppNameRecommend        = "api-recommend" //推荐
 )
 
 //标签类型定义
@@ -79,6 +80,10 @@ var (
 		{
 			Label: "电商活动",
 			Value: AppNameMallActivity,
+		},
+		{
+			Label: "广告推荐",
+			Value: AppNameRecommend,
 		},
 	}
 )
