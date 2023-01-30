@@ -2,6 +2,11 @@ package recommend
 
 import "fmt"
 
+const (
+	DataItemShowTypeCard    = "card"
+	DataItemShowTypeImgList = "img_list"
+)
+
 type (
 	DataItem struct {
 		Title         string            `json:"title,omitempty"`       //标题
@@ -19,6 +24,7 @@ type (
 		CurrentAccUId int64             `json:"current_acc_uid"`       //获取数据的用户ID
 		ShopId        int64             `json:"shop_id,omitempty"`     //店铺ID
 		ExtraMsg      string            `json:"extra_msg"`             //携带的其他信息
+		ShowType      string            `json:"show_type"`             //展示样式 默认card
 		Children      []*DataItem       `json:"children,omitempty"`    //子列表
 	}
 	DataItemTag struct {
@@ -37,6 +43,17 @@ type (
 //获取广告唯一Id字符串
 func (r *DataItem) GetUniqueKey() (res string) {
 	return GetUniqueKey(r.DataType, r.DataId)
+}
+
+//参数默认值
+func (r *DataItem) Default() {
+	if r.ShowType == "" {
+		r.ShowType = DataItemShowTypeCard
+	}
+	if len(r.Children) > 0 {
+		r.ShowType = DataItemShowTypeImgList
+	}
+	return
 }
 
 //获取广告唯一Id字符串
