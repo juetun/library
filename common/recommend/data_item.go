@@ -19,6 +19,7 @@ type (
 		CurrentAccUId int64             `json:"current_acc_uid"`       //获取数据的用户ID
 		ShopId        int64             `json:"shop_id,omitempty"`     //店铺ID
 		ExtraMsg      string            `json:"extra_msg"`             //携带的其他信息
+		Children      []*DataItem       `json:"children,omitempty"`    //子列表
 	}
 	DataItemTag struct {
 		Label string `json:"label"` //类型名称
