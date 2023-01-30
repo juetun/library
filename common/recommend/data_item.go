@@ -65,6 +65,9 @@ func (r *DataItemTag) Default() {
 	if r.TextColor == "" {
 		r.TextColor = "white"
 	}
+	if r.Type == "" {
+		r.Type = "default"
+	}
 	return
 }
 
