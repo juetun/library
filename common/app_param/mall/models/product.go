@@ -11,6 +11,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"gorm.io/gorm"
 )
+
 const (
 	TablePrefix = "mall_" // 表明前缀
 )
@@ -20,9 +21,9 @@ const SpuImageDivide = "#$#"
 const (
 	ProductStatusTmp          int8 = iota - 1 //草稿中(ID初始化中)
 	ProductStatusAll                          //全部数据
+	ProductStatusOnline                       // 在售
 	ProductStatusManuscript                   // 草稿中
 	ProductStatusInit                         // 仓库中
-	ProductStatusOnline                       // 在售
 	ProductStatusOffLine                      // 已下架
 	ProductStatusOnlineAtTime                 // 定时上架
 
@@ -85,6 +86,10 @@ var (
 			Label: "编辑中...",
 		},
 		{
+			Value: ProductStatusOnline,
+			Label: "出售中",
+		},
+		{
 			Value: ProductStatusTmp,
 			Label: "ID初始化",
 		},
@@ -92,10 +97,7 @@ var (
 			Value: ProductStatusInit,
 			Label: "仓库中",
 		},
-		{
-			Value: ProductStatusOnline,
-			Label: "出售中",
-		},
+
 		{
 			Value: ProductStatusOffLine,
 			Label: "已下架",
