@@ -49,8 +49,8 @@ github.com/jonboulle/clockwork v0.1.0 h1:VKV+ZcuP6l3yW9doeqz6ziZGgcynBVQO+obU0+0
 github.com/jonboulle/clockwork v0.1.0/go.mod h1:Ii8DK3G1RaLaWxj9trq07+26W01tbo22gdxWY5EU2bo=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
-github.com/juetun/base-wrapper v0.0.250 h1:dQooO2gp9Gu2F07WYmUtnfV0wF1CzcJ4L7miHRJuGTg=
-github.com/juetun/base-wrapper v0.0.250/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
+github.com/juetun/base-wrapper v0.0.253 h1:bMsr6VX6YTmJmolxUV1NqSncBteIt05iPzvTzXr5uQY=
+github.com/juetun/base-wrapper v0.0.253/go.mod h1:MKfPNJqQYfMvjOKdaufvNV0Ey0rjFTXdp/c7qgxHHWs=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=

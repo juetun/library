@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/juetun/base-wrapper v0.0.250
+	github.com/juetun/base-wrapper v0.0.253
 	github.com/shopspring/decimal v1.3.1
 	gorm.io/gorm v1.24.0
 )
