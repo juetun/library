@@ -36,10 +36,14 @@ type (
 		Mark      bool   `json:"mark"`                //是否为标记样式
 	}
 	DataItemDetail struct {
-		Label string `json:"label"` //类型名称
-		Key   string `json:"key"`   //类型的KEY
-		Color string `json:"color"` //显示颜色
-		Value string `json:"value"` //类型值
+		Type      string `json:"type,omitempty"`      //标签类型，可选值为primary success danger warning	默认	default
+		Value     string `json:"value"`               //值
+		Label     string `json:"label"`               //类型名称
+		Color     string `json:"color,omitempty"`     //标签颜色
+		TextColor string `json:"textColor,omitempty"` //文本颜色，优先级高于color属性	String	white
+		Plain     bool   `json:"plain"`               //是否为空心样式	Boolean	false
+		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
+		Mark      bool   `json:"mark"`                //是否为标记样式
 	}
 )
 
