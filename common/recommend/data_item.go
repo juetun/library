@@ -16,7 +16,6 @@ type (
 		Link          string                     `json:"link"`                  //链接地址
 		HaveVideo     bool                       `json:"have_video,omitempty"`  //是否有视频
 		Img           string                     `json:"img,omitempty"`         //头图
-		Price         string                     `json:"price"`                 //价格
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`  //详情
 		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"` //后缀标签
 		ShowShop      bool                       `json:"show_shop"`             //是否显示店铺名
@@ -34,7 +33,7 @@ type (
 		TextColor string `json:"textColor,omitempty"` //文本颜色，优先级高于color属性	String	white
 		Plain     bool   `json:"plain"`               //是否为空心样式	Boolean	false
 		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
-		mark      bool   `json:"mark"`                //是否为标记样式
+		Mark      bool   `json:"mark"`                //是否为标记样式
 	}
 	DataItemDetail struct {
 		Label string `json:"label"` //类型名称
