@@ -29,8 +29,7 @@ const (
 
 )
 const (
-	RelateTypeMall       uint8 = 1 // 商品关联类型 其他电商商品
-	DefaultDateTimeValue       = "2000-01-01 00:00:00"
+	RelateTypeMall uint8 = 1 // 商品关联类型 其他电商商品
 )
 
 const (
@@ -232,6 +231,7 @@ type (
 		MinDownPayment   string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment"`
 		MaxDownPayment   string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment"`
 		TagIds           string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids"`
+		TagIdsArray      []int64                        `json:"tag_ids" gorm:"-"`
 		ServiceIds       string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids"`
 		Keywords         string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords"`
 		SaleNum          int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
@@ -598,6 +598,14 @@ func (r *Product) SetTagIds(tagIds []int64) {
 	}
 }
 
+func (r *Product) ParseTagIds() (tagIds []int64, err error) {
+	if r.TagIds == "" {
+		return
+	}
+	err = json.Unmarshal([]byte(r.TagIds), &r.TagIdsArray)
+	return
+}
+
 //判断商品是否已经过了尾款支付时间
 func (r *Product) JudgeSaleTypeDownFinalExpire(currentTimes ...time.Time) (ok bool) {
 	currentTime := r.getCurrentTime(currentTimes...)
@@ -683,5 +691,12 @@ func (r *Product) FlagCanUpdateStatus(wiLLUpdateStatus int8) (err error) {
 		return
 	}
 
+	return
+}
+
+func (r *Product) GetHaveVideo() (res bool) {
+	if r.Video != "" {
+		res = true
+	}
 	return
 }
