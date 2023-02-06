@@ -9,7 +9,7 @@ type (
 		Time     string `json:"time"`
 		Size     string `json:"size"`
 		Replay   int64  `json:"replay"`
-		Like     uint8  `json:"like"`
+		Like     int64  `json:"like"`
 	}
 	CommentVideoItem struct {
 		MainUrl  string `json:"mainUrl"`  //图片地址
