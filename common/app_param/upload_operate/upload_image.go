@@ -10,6 +10,8 @@ import (
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 	"net/http"
 	"net/url"
+	"regexp"
+	"strings"
 )
 
 type (
@@ -83,11 +85,21 @@ func (r *UploadImage) ToString() (res string) {
 	return
 }
 
-func (r *UploadImage) GetEditorHtml(keys ...string) (res string, err error) {
+func (r *UploadImage) GetEditorHtml(value string) (res string, err error) {
 	var (
-		key = r.UploadCommon.GetKey(keys...)
+		reg *regexp.Regexp
 	)
-	res = fmt.Sprintf(`<img src="%s" alt="%s" data-href="%s" style=""/>`, r.Src, key, key)
+	res = value
+	res = strings.ReplaceAll(res, "%", "%%")
+	if reg, err = regexp.Compile(`src="[^"]+"`); err != nil {
+		return
+	}
+
+	repl := fmt.Sprintf(`src="%s"`, r.Src)
+	res = reg.ReplaceAllStringFunc(value, func(s string) (res string) {
+		res = repl
+		return
+	})
 	return
 }
 
