@@ -26,14 +26,15 @@ type (
 		Images  []string `json:"images"`
 	}
 	CommentItem struct {
-		Videos   []*CommentVideoItem `json:"videos"`
-		Images   []*CommentImageItem `json:"images"`
-		Follow   *CommentFollow      `json:"follow"`
-		UserInfo *UInfo              `json:"info"` //用户信息
+		Videos   []*CommentVideoItem `json:"videos"` //视频
+		Images   []*CommentImageItem `json:"images"` //图片
+		Follow   CommentFollow       `json:"follow"`
+		UserInfo UInfo               `json:"info"` //用户信息
 	}
 	OrderComment struct {
-		ShopGoodBit bool          `json:"shop_good_bit"` //是否展示好评度
-		GoodBit     string        `json:"good_bit"`      //好评度
-		Comment     []CommentItem `json:"Comment"`
+		ShopGoodBit bool           `json:"shop_good_bit"` //是否展示好评度
+		GoodBit     string         `json:"good_bit"`      //好评度
+		Comment     []*CommentItem `json:"Comment"`       //评论列表
+		Number      int64          `json:"number"`        //评论数量
 	}
 )
