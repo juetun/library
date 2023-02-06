@@ -31,7 +31,7 @@ type (
 		Follow   *CommentFollow      `json:"follow"`
 		UserInfo *UInfo              `json:"info"` //用户信息
 	}
-	Comment struct {
+	OrderComment struct {
 		ShopGoodBit bool          `json:"shop_good_bit"` //是否展示好评度
 		GoodBit     string        `json:"good_bit"`      //好评度
 		Comment     []CommentItem `json:"Comment"`
