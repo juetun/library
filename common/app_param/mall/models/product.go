@@ -158,17 +158,17 @@ var (
 			Status:    []int8{ProductStatusOffLine},
 			ShowCount: false,
 		},
-		{
-			Label:     "编辑中",
-			Type:      ProductStatusManuscript,
-			Status:    []int8{ProductStatusManuscript},
-			ShowCount: true,
-		},
+		//{
+		//	Label:     "编辑中",
+		//	Type:      ProductStatusManuscript,
+		//	Status:    []int8{ProductStatusManuscript},
+		//	ShowCount: true,
+		//},
 		{
 			Label: "全部商品",
 			Type:  ProductStatusAll,
 			Status: []int8{
-				ProductStatusManuscript,   //草稿中
+				//ProductStatusManuscript,   //草稿中
 				ProductStatusInit,         // 仓库中
 				ProductStatusOnline,       // 在售
 				ProductStatusOffLine,      // 已下架
