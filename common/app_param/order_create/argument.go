@@ -43,12 +43,49 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 		return
 	}
 	r.TimeNow = base.GetNowTimeNormal()
+
+	if err = r.validateSku(); err != nil {
+		return
+	}
+
+	if err = r.validateType(); err != nil {
+		return
+	}
+
+	return
+}
+
+func (r *ArgCreateOrderFromCart) GetSkuIdMap() (res map[string]string) {
+	res = make(map[string]string, len(r.SkuItems))
+	for _, sku := range r.SkuItems {
+		res[sku.SkuId] = sku.SkuId
+	}
+	return
+}
+
+func (r *ArgCreateOrderFromCart) validateType() (err error) {
+	var MapOrderFromType map[string]string
+	if MapOrderFromType, err = SliceOrderFromType.GetMapAsKeyString(); err != nil {
+		return
+	}
+	if _, ok := MapOrderFromType[r.Type]; !ok {
+		err = fmt.Errorf("创建订单来源参数错误")
+		return
+	}
+	return
+}
+
+func (r *ArgCreateOrderFromCart) validateSku() (err error) {
+	if r.SkuString == "" {
+		err = fmt.Errorf("请选择要付款的商品")
+		return
+	}
 	if err = json.Unmarshal([]byte(r.SkuString), &r.SkuItems); err != nil {
 		err = fmt.Errorf("参数异常")
 		return
 	}
 	if len(r.SkuItems) == 0 {
-		err = fmt.Errorf("未选择要操作的商品")
+		err = fmt.Errorf("未选择要付款的商品")
 		return
 	}
 
@@ -58,6 +95,5 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 			return
 		}
 	}
-
 	return
 }
