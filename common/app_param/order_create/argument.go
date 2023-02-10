@@ -9,17 +9,20 @@ import (
 
 type (
 	ArgCreateOrderFromCart struct {
-		app_param.RequestUser
-		SkuString  string                            `json:"sku_items" form:"sku_items"`
-		SkuItems   []*app_param.ArgOrderFromCartItem `json:"-"`
-		Amount     string                            `json:"amount" form:"amount"` // 总金额
-		BuyChannel string                            `json:"buy_channel"`          // 终端渠道号
-		BuyClient  string                            `json:"buy_client"`           // 终端类型
-		AppVersion string                            `json:"app_version"`          // app版本
-		Status     uint8                             `json:"status"`               // 订单状态
-		AddressId  string                            `json:"address_id"`           // 收货地址
-		Express    string                            `json:"express"`              // 默认快递信息
-		PayType    uint8                             `json:"pay_type"`             // 支付类型
+		RequestUser app_param.RequestUser `json:"-" form:"-"`
+		SkuString   string                `json:"sku_items" form:"sku_items"`
+		Amount      string                `json:"amount" form:"amount"` // 总金额
+		BuyChannel  string                `json:"buy_channel"`          // 终端渠道号
+		BuyClient   string                `json:"buy_client"`           // 终端类型
+		AppVersion  string                `json:"app_version"`          // app版本
+		Status      uint8                 `json:"status"`               // 订单状态
+		AddressId   string                `json:"address_id"`           // 收货地址
+		Express     string                `json:"express"`              // 默认快递信息
+		PayType     uint8                 `json:"pay_type"`             // 支付类型
+		Type        string                `json:"type" form:"Type"`     //数据操作路径
+
+		SkuItems []*app_param.ArgOrderFromCartItem `json:"-"`
+		TimeNow  base.TimeNormal                   `json:"-" form:"-"`
 	}
 )
 
@@ -39,6 +42,7 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 	if err = r.RequestUser.InitRequestUser(c); err != nil {
 		return
 	}
+	r.TimeNow = base.GetNowTimeNormal()
 	if err = json.Unmarshal([]byte(r.SkuString), &r.SkuItems); err != nil {
 		err = fmt.Errorf("参数异常")
 		return
