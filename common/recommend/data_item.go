@@ -17,6 +17,9 @@ type (
 		HaveVideo     bool                       `json:"have_video,omitempty"`  //是否有视频
 		Img           string                     `json:"img,omitempty"`         //头图
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`  //详情
+		CanBuy        bool                       `json:"can_buy"`               //是否能够购买
+		ShowError     bool                       `json:"show_error"`            //是否展示错误提示，不显示商品其他内容
+		Mark          string                     `json:"mark"`                  //备注
 		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"` //后缀标签
 		ShowShop      bool                       `json:"show_shop"`             //是否显示店铺名
 		ShopName      string                     `json:"shop_name,omitempty"`   //店铺名称
