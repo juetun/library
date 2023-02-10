@@ -26,6 +26,7 @@ const (
 	ProductStatusInit                         // 仓库中
 	ProductStatusOffLine                      // 已下架
 	ProductStatusOnlineAtTime                 // 定时上架
+	ProductStatusDeprecated                   // 删除
 
 )
 const (

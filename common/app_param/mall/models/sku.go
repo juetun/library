@@ -9,13 +9,14 @@ import (
 )
 
 const (
-	SkuStatusManuscript int8 = iota - 1 //草稿中(指定了spuID的数据)
-	SkuStatusTmp                        //草稿中(ID初始化中)
-	SkuStatusInit                       //可用
-	SkuStatusOnline                     //在线
-	SkuStatusOffLine
-	SkuStatusDeprecated //已删除
+	SkuStatusManuscript = ProductStatusManuscript //草稿中(指定了spuID的数据)
+	SkuStatusTmp        = ProductStatusTmp        //草稿中(ID初始化中)
+	SkuStatusInit       = ProductStatusInit       //可用
+	SkuStatusOnline     = ProductStatusOnline     //在线
+	SkuStatusOffLine    = ProductStatusOffLine
+	SkuStatusDeprecated = ProductStatusDeprecated //已删除
 )
+
 const (
 	//是否有赠品
 	SkuHaveGiftYes uint8 = iota + 1 //有赠品
