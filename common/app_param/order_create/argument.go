@@ -98,6 +98,9 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 			err = fmt.Errorf("您选择的商品数据异常")
 			return
 		}
+		if err = item.ValidateCategory(); err != nil {
+			return
+		}
 	}
 	return
 }
