@@ -18,6 +18,9 @@ type (
 )
 
 func (r *ArgOrderFromCartItem) GetPrice() (res decimal.Decimal, err error) {
+	if r.SkuPrice == "" {
+		r.SkuPrice = "0.00"
+	}
 	if res, err = decimal.NewFromString(r.SkuPrice); err != nil {
 		return
 	}
@@ -29,6 +32,6 @@ func (r *ArgOrderFromCartItem) GetTotalSkuPrice() (res decimal.Decimal, err erro
 	if price, err = r.GetPrice(); err != nil {
 		return
 	}
-	res = price.Mul(decimal.NewFromInt(int64(r.Num)))
+	res = price.Mul(decimal.NewFromInt(r.Num))
 	return
 }
