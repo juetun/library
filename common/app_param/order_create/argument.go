@@ -10,7 +10,7 @@ import (
 type (
 	ArgCreateOrderFromCart struct {
 		RequestUser app_param.RequestUser `json:"-" form:"-"`
-		SkuString   string                `json:"sku_items" form:"sku_items"`
+		SkuString   string                `json:"sku_item" form:"sku_item"`
 		Amount      string                `json:"amount" form:"amount"` // 总金额
 		BuyChannel  string                `json:"buy_channel"`          // 终端渠道号
 		BuyClient   string                `json:"buy_client"`           // 终端类型
