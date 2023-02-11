@@ -7,24 +7,6 @@ import (
 	"github.com/juetun/library/common/app_param"
 )
 
-const (
-	OrderPageCategoryFirst  = "first"  //第一次付款或定金付款
-	OrderPageCategorySecond = "second" //定金预售付尾款
-)
-
-var (
-	SliceOrderPageCategory = base.ModelItemOptions{
-		{
-			Label: "普通商品付款或定金付款",
-			Value: OrderPageCategoryFirst,
-		},
-		{
-			Label: "定金预售尾款",
-			Value: OrderPageCategorySecond,
-		},
-	}
-)
-
 type (
 	ArgCreateOrderFromCart struct {
 		RequestUser app_param.RequestUser             `json:"-" form:"-"`
@@ -38,7 +20,6 @@ type (
 		Express     string                            `json:"express"`              // 默认快递信息
 		PayType     uint8                             `json:"pay_type"`             // 支付类型
 		Type        string                            `json:"type" form:"Type"`     //数据操作路径
-		Category    string                            `json:"category"`
 		SkuItems    []*app_param.ArgOrderFromCartItem `json:"-"`
 		TimeNow     base.TimeNormal                   `json:"-" form:"-"`
 	}
@@ -70,29 +51,11 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 	if err = r.validateSku(); err != nil {
 		return
 	}
-	if err = r.validateCategory(); err != nil {
-		return
-	}
+
 	if err = r.validateType(); err != nil {
 		return
 	}
 
-	return
-}
-
-func (r *ArgCreateOrderFromCart) validateCategory() (err error) {
-	if r.Category == "" {
-		err = fmt.Errorf("请选择付款时机")
-		return
-	}
-	var mapCategory map[string]string
-	if mapCategory, err = SliceOrderPageCategory.GetMapAsKeyString(); err != nil {
-		return
-	}
-	if _, ok := mapCategory[r.Category]; !ok {
-		err = fmt.Errorf("请选择正确的付款时机")
-		return
-	}
 	return
 }
 
