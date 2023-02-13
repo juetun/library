@@ -18,11 +18,13 @@ const (
 const (
 	AdDataDataTypeSpu               int8 = iota + 1 //广告商品信息
 	AdDataDataTypeSocialIntercourse                 //广告社交动态信息
+	AdDataStatusUserSet                             //用户手工设置
 )
 
 const (
 	AdDataStatusCanUse  uint8 = iota + 1 //广告可用
 	AdDataStatusOffLine                  //广告下架
+
 )
 
 var (
@@ -34,6 +36,10 @@ var (
 		{
 			Label: "社交",
 			Value: AdDataDataTypeSocialIntercourse,
+		},
+		{
+			Label: "手工指定",
+			Value: AdDataStatusUserSet,
 		},
 	}
 	SliceAdDataStatus = base.ModelItemOptions{
