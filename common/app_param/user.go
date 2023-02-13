@@ -77,6 +77,8 @@ type (
 		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
 		UShopId            int64           `json:"u_shop_id" form:"u_shop_id"`                           //店铺ID
 		UHaveDashboard     uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
+
+		UHeaderInfo *base.HeaderInfo `json:"u_header_info" form:"u_header_info"` //用户设备信息
 	}
 
 	User struct {
@@ -205,6 +207,12 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 			r.UShopId, _ = strconv.ParseInt(shopId, 10, 64)
 		}
 	}()
+	r.UHeaderInfo = base.NewHeaderInfo()
+
+	if err = r.UHeaderInfo.ParseFromString(ctx, ctx.GinContext.GetHeader(app_obj.HttpHeaderInfo)); err != nil {
+		err = base.NewErrorRuntime(fmt.Errorf("系统异常,解析header失败"), base.ErrorNotLogin)
+		return
+	}
 	if r.UUserHid > 0 {
 		return
 	}
