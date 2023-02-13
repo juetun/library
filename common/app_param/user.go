@@ -39,6 +39,7 @@ type (
 	ResultUserItem struct {
 		UserHid          int64      `json:"user_hid,omitempty"`  // 用户ID
 		Portrait         string     `json:"portrait,omitempty"`  // 头像
+		PortraitUrl      string     `json:"portrait_url"`        //头像链接
 		NickName         string     `json:"nick_name,omitempty"` // 昵称
 		UserName         string     `json:"user_name,omitempty"` // 用户名
 		RealName         string     `json:"real_name"`           // 真实姓名
@@ -155,6 +156,7 @@ func (r *ResultUserItem) InitData(item *User) {
 	if item.UserMain != nil {
 		r.AuthDesc = item.UserMain.AuthDesc
 		r.Portrait = item.UserMain.Portrait
+		r.PortraitUrl = item.UserMain.PortraitUrl
 		r.NickName = item.UserMain.NickName
 		r.Gender = item.UserMain.Gender
 		r.Status = item.UserMain.Status

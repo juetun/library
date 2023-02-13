@@ -62,6 +62,7 @@ type (
 		UserMobileIndex string           `gorm:"column:user_mobile_index;not null;type:varchar(60) COLLATE utf8mb4_bin;default:'';comment:手机号索引" json:"-" `
 		UserEmailIndex  string           `gorm:"column:user_email_index;not null;type:varchar(60) COLLATE utf8mb4_bin;default:'';comment:邮箱索引" json:"-" `
 		Portrait        string           `gorm:"column:portrait;not null;type:varchar(1000);default:'';comment:头图地址;" json:"portrait"`
+		PortraitUrl     string           `json:"portrait_url" gorm:"-"`
 		PortraitStatus  int              `gorm:"column:portrait_status;not null;type:varchar(10);default:'';comment:用户审核状态从右向左每位依次昵称-头像;" json:"portrait_status"`
 		NickName        string           `gorm:"column:nick_name;not null;type:varchar(30);default:'';comment:昵称" json:"nick_name"`
 		UserName        string           `gorm:"column:user_name;not null;size:30;default:'';comment:用户名" json:"user_name" `
