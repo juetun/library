@@ -17,8 +17,8 @@ const (
 
 const (
 	AdDataDataTypeSpu               string = "spu" //广告商品信息
-	AdDataDataTypeSocialIntercourse        = "sns"     //广告社交动态信息
-	AdDataStatusUserSet                                     //用户手工设置
+	AdDataDataTypeSocialIntercourse        = "sns" //广告社交动态信息
+	AdDataStatusUserSet                    = "usr" //用户手工设置
 )
 
 const (
