@@ -19,6 +19,7 @@ type (
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`  //详情
 		CanBuy        bool                       `json:"can_buy"`               //是否能够购买
 		ShowError     bool                       `json:"show_error"`            //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
+		ShopManager   bool                       `json:"shop_manager"`          //当前用户是否为店铺管理员
 		Mark          string                     `json:"mark"`                  //备注
 		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"` //后缀标签
 		ShowShop      bool                       `json:"show_shop"`             //是否显示店铺名
