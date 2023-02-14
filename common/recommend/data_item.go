@@ -78,6 +78,6 @@ func (r *DataItemTag) Default() {
 }
 
 //获取广告唯一Id字符串
-func GetUniqueKey(DataType int8, DataId string) (res string) {
-	return fmt.Sprintf("%d-%s", DataType, DataId)
+func GetUniqueKey(DataType string, DataId string) (res string) {
+	return fmt.Sprintf("%s-%s", DataType, DataId)
 }
