@@ -159,6 +159,12 @@ var (
 			Status:    []int8{ProductStatusOffLine},
 			ShowCount: false,
 		},
+		{
+			Label:     "定时上架",
+			Type:      ProductStatusOnlineAtTime,
+			Status:    []int8{ProductStatusOnlineAtTime},
+			ShowCount: true,
+		},
 		//{
 		//	Label:     "编辑中",
 		//	Type:      ProductStatusManuscript,
