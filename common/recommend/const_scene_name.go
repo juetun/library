@@ -16,8 +16,8 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "mall_product" //广告商品信息
-	AdDataDataTypeSocialIntercourse        = "sns_data"     //广告社交动态信息
+	AdDataDataTypeSpu               string = "spu" //广告商品信息
+	AdDataDataTypeSocialIntercourse        = "sns"     //广告社交动态信息
 	AdDataStatusUserSet                                     //用户手工设置
 )
 
