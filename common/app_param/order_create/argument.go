@@ -20,7 +20,7 @@ type (
 		Express     string                            `json:"express"`              // 默认快递信息
 		PayType     uint8                             `json:"pay_type"`             // 支付类型
 		Type        string                            `json:"type" form:"Type"`     //数据操作路径
-		SkuItems    []*app_param.ArgOrderFromCartItem `json:"-"`
+		SkuItems    []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
 		TimeNow     base.TimeNormal                   `json:"-" form:"-"`
 	}
 

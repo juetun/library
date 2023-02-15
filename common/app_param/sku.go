@@ -8,7 +8,7 @@ const (
 	SkuDataTypeProductDesc     = "sku_product_desc" //商品描述
 	SkuDataTypeStock           = "sku_stock"        //库存
 	SkuDataTypeGift            = "sku_gift"         //赠品
-	SkuDataTypeFreightTemplate = "sku_freight_gift" //运费模板
+	SkuDataTypeFreightTemplate = "sku_freight_temp" //运费模板
 
 	SkuUploadSkuImg          = "sku_img"         // SKU图片
 	SkuSpuUploadImgThumbnail = "spu_img_thumb"   // 商品缩略图

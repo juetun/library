@@ -21,5 +21,6 @@ const (
 	SpuUploadDescription  = "spu_upload_desc" // 商品详情的信息
 	SpuUploadVideo        = "spu_video"       // 上传视频视频地址
 	SpuShopLogo           = "spu_shop_logo"   // 店铺LOGO
+	SpuShopNoticeImg      = "spu_notice_img"  // 店铺公告图片
 )
 
