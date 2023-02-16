@@ -3,8 +3,10 @@ package recommend
 import "fmt"
 
 const (
-	DataItemShowTypeCard    = "card"
-	DataItemShowTypeImgList = "img_list"
+	DataItemShowTypeCard       = "card"        //普通card类型
+	DataItemShowTypeImgList    = "img_list"    //图片列表类型
+	DataItemShowTypeCardRight  = "card_right"  //card图片展示在右边
+	DataItemShowTypeCardDouble = "card_double" //双列
 )
 
 type (
