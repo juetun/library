@@ -75,12 +75,6 @@ var (
 				Label: "下架",
 			},
 		},
-		{
-			ModelItemOption: base.ModelItemOption{
-				Value: SkuStatusDeprecated,
-				Label: "删除",
-			},
-		},
 	}
 )
 
@@ -97,7 +91,7 @@ type (
 		UserHid           int64            `json:"user_hid" gorm:"column:user_hid;default:0;type:bigint(20);not null;comment:发布人用户ID"`
 		ShopId            int64            `gorm:"column:shop_id;index:idx_pro_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
 		ProductId         string           `gorm:"column:product_id;index:idx_pro,priority:1;index:idx_pro_id,priority:2;default:0;type:bigint(20);not null;comment:商品ID" json:"product_id"`
-		SkuStatus         int8             `gorm:"column:sku_status;default:1;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
+		SkuStatus         int8             `gorm:"column:sku_status;default:1;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 4-下架 6-删除" json:"sku_status"`
 		SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
 		Weight            string           `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
 		MaxLimitNum       string           `gorm:"column:max_limit_num;default:0;type:bigint(20);not null;comment:限购数量，每人最多购买数量" json:"max_limit_num"`
