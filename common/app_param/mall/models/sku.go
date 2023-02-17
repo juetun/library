@@ -11,8 +11,7 @@ import (
 const (
 	SkuStatusManuscript = ProductStatusManuscript //草稿中(指定了spuID的数据)
 	SkuStatusTmp        = ProductStatusTmp        //草稿中(ID初始化中)
-	SkuStatusInit       = ProductStatusInit       //可用
-	SkuStatusOnline     = ProductStatusOnline     //在线
+ 	SkuStatusOnline     = ProductStatusOnline     //在线
 	SkuStatusOffLine    = ProductStatusOffLine
 	SkuStatusDeprecated = ProductStatusDeprecated //已删除
 )
@@ -44,10 +43,7 @@ var (
 			Value: SkuStatusTmp,
 			Label: "草稿中",
 		},
-		{
-			Value: SkuStatusInit,
-			Label: "",
-		},
+
 		{
 			Value: SkuStatusOnline,
 			Label: "在售",
