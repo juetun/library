@@ -84,6 +84,7 @@ type (
 		SkuName      string `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:标题" json:"sku_name"`
 		Thumbnail    string `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail"`
 		ThumbnailURL string `json:"thumbnail_url" gorm:"-"`
+		LockKey      string `gorm:"column:lock_key;type:varchar(60);not null;default:'';comment:临时锁的KEy" json:"lock_key"`
 		//SkuPropertyId     int64            `gorm:"column:sku_property_id;default:0;type:bigint(20);not null;comment:商品属性ID" json:"sku_property_id"`
 		SkuAttRelateId int64  `gorm:"column:sku_att_relate_id;default:0;type:bigint(20);not null;comment:商品属性关系ID" json:"sku_att_relate_id"`
 		Image          string `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
