@@ -85,11 +85,11 @@ type (
 		Thumbnail    string `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail"`
 		ThumbnailURL string `json:"thumbnail_url" gorm:"-"`
 		//SkuPropertyId     int64            `gorm:"column:sku_property_id;default:0;type:bigint(20);not null;comment:商品属性ID" json:"sku_property_id"`
-		//SkuAttRelateId    int64            `gorm:"column:sku_att_relate_id;default:0;type:bigint(20);not null;comment:商品属性关系ID" json:"sku_att_relate_id"`
-		Image   string `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
-		Video   string `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
-		UserHid int64  `json:"user_hid" gorm:"column:user_hid;default:0;type:bigint(20);not null;comment:发布人用户ID"`
-		ShopId  int64  `gorm:"column:shop_id;index:idx_pro_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
+		SkuAttRelateId int64  `gorm:"column:sku_att_relate_id;default:0;type:bigint(20);not null;comment:商品属性关系ID" json:"sku_att_relate_id"`
+		Image          string `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
+		Video          string `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
+		UserHid        int64  `json:"user_hid" gorm:"column:user_hid;default:0;type:bigint(20);not null;comment:发布人用户ID"`
+		ShopId         int64  `gorm:"column:shop_id;index:idx_pro_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
 		//ProductId         string           `gorm:"column:product_id;index:idx_pro,priority:1;index:idx_pro_id,priority:2;default:0;type:bigint(20);not null;comment:商品ID" json:"product_id"`
 		SkuStatus int8 `gorm:"column:sku_status;default:1;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
 		//SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
