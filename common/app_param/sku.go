@@ -9,7 +9,6 @@ const (
 	SkuDataTypeProduct         = "sku_product"         //商品信息
 	SkuDataTypeProductDesc     = "sku_product_desc"    //商品描述
 	SkuDataTypeStock           = "sku_stock"           //库存
-	SkuDataTypeRelate          = "sku_property_relate" //SKU属性关系
 	SkuDataTypeProperty        = "sku_property"        //SKU属性
 	SkuDataTypeGift            = "sku_gift"            //赠品
 	SkuDataTypeFreightTemplate = "sku_freight_temp"    //运费模板
