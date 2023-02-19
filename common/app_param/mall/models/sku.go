@@ -3,7 +3,6 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/juetun/library/common/app_param/mall/models"
 	"time"
 
 	"github.com/juetun/base-wrapper/lib/base"
@@ -12,7 +11,7 @@ import (
 const (
 	SkuStatusManuscript = ProductStatusManuscript //草稿中(指定了spuID的数据)
 	SkuStatusTmp        = ProductStatusTmp        //草稿中(ID初始化中)
- 	SkuStatusOnline     = ProductStatusOnline     //在线
+	SkuStatusOnline     = ProductStatusOnline     //在线
 	SkuStatusOffLine    = ProductStatusOffLine
 	SkuStatusDeprecated = ProductStatusDeprecated //已删除
 )
@@ -94,10 +93,10 @@ type (
 		//ProductId         string           `gorm:"column:product_id;index:idx_pro,priority:1;index:idx_pro_id,priority:2;default:0;type:bigint(20);not null;comment:商品ID" json:"product_id"`
 		SkuStatus int8 `gorm:"column:sku_status;default:1;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
 		//SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
-		Weight      string `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
+		Weight string `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
 		//MaxLimitNum int64  `gorm:"column:max_limit_num;default:0;type:bigint(20);not null;comment:限购数量，每人最多购买数量" json:"max_limit_num"`
 		//MinLimitNum int64  `gorm:"column:min_limit_num;default:0;type:bigint(20);not null;comment:必购数量，如2件起购" json:"min_limit_num"`
-		Price       string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		Price string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
 		//DownPayment       string           `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
 		//FinalPayment      string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
 		PriceCost       string `gorm:"column:price_cost;default:0;type:decimal(10,2);not null;comment:成本价" json:"price_cost"`
@@ -190,7 +189,6 @@ func (r *Sku) Default() {
 	}
 }
 
-
 func (r *ProductSKus) UnmarshalBinary(data []byte) (err error) {
 	if len(data) == 0 {
 		*r = []*Sku{}
@@ -231,14 +229,14 @@ func (r *Sku) ParseStatusName() (res string) {
 	return
 }
 
-func (r *Sku) ParseHaveGift() (res string) {
-	var ok bool
-	MapSkuHaveGift, _ := SliceSkuHaveGift.GetMapAsKeyUint8()
-	if res, ok = MapSkuHaveGift[r.HaveGift]; ok {
-		return
-	}
-	return
-}
+//func (r *Sku) ParseHaveGift() (res string) {
+//	var ok bool
+//	MapSkuHaveGift, _ := SliceSkuHaveGift.GetMapAsKeyUint8()
+//	if res, ok = MapSkuHaveGift[r.HaveGift]; ok {
+//		return
+//	}
+//	return
+//}
 func (r *Sku) UnmarshalBinary(data []byte) (err error) {
 	err = json.Unmarshal(data, r)
 	return
@@ -289,7 +287,7 @@ func (r *Sku) defaultSaleOverTime() {
 	}
 }
 
-func (r *Sku) ParseSpuStatus() (res string) {
-	res = ProductParseStatus(r.SpuStatus)
-	return
-}
+//func (r *Sku) ParseSpuStatus() (res string) {
+//	res = ProductParseStatus(r.SpuStatus)
+//	return
+//}
