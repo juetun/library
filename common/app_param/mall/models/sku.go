@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/library/common/app_param/mall/models"
 	"time"
 
 	"github.com/juetun/base-wrapper/lib/base"
@@ -171,32 +172,24 @@ func GetSliceSkuStatusEditOption(skuStatus int8) (res []*SliceSkuStatusEditOptio
 	return
 }
 
-func (r *Sku) DefaultBeforeAdd() {
-	if r.DownPayment == "" {
-		r.DownPayment = "0"
-	}
-	if r.FinalPayment == "" {
-		r.FinalPayment = "0"
-	}
+func (r *Sku) Default() {
+
 	if r.Price == "" {
 		r.Price = "0"
 	}
 	if r.PriceCost == "" {
 		r.PriceCost = "0"
 	}
-	if r.SalesTaxRate == "" {
-		r.SalesTaxRate = "0"
-	}
-	if r.SalesTaxRateValue == "" {
-		r.SalesTaxRateValue = "0"
-	}
-	if r.ProductId == "" {
-		r.ProductId = "0"
-	}
+
 	if r.Weight == "" {
 		r.Weight = "0"
 	}
+
+	if r.SkuStatus == 0 {
+		r.SkuStatus = SkuStatusOffLine
+	}
 }
+
 
 func (r *ProductSKus) UnmarshalBinary(data []byte) (err error) {
 	if len(data) == 0 {
