@@ -41,12 +41,13 @@ type (
 	}
 
 	SkuFreightSingle struct {
-		Num             int              `json:"num"`  //数量
-		Sku             *models.Sku      `json:"sku"`  //SKU信息
-		Spu             *models.Product  `json:"spu"`  //商品信息
-		Shop            *models.Shop     `json:"shop"` //店铺信息
-		TemplateFreight *TemplateFreight //运费模板
-		ToCityId        int64            `json:"to_city_id"` //邮寄城市ID
+		Num             int                       `json:"num"` //数量
+		Sku             *models.Sku               `json:"sku"` //SKU信息
+		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate"`
+		Spu             *models.Product           `json:"spu"`  //商品信息
+		Shop            *models.Shop              `json:"shop"` //店铺信息
+		TemplateFreight *TemplateFreight          //运费模板
+		ToCityId        int64                     `json:"to_city_id"` //邮寄城市ID
 	}
 
 	TemplateFreight struct {
@@ -175,7 +176,7 @@ func (r *PriceFreight) orgSkuCalResultFreight(shopId int64, freight *models.Frei
 	dtm = SkuCalResultFreight{
 		//skuFreightSingle: skuItem,
 		SkuId:      skuCalResultFreight.Sku.GetHid(),
-		SpuId:      skuCalResultFreight.Sku.ProductId,
+		SpuId:      skuCalResultFreight.SkuRelate.ProductId,
 		ShopId:     skuCalResultFreight.Sku.ShopId,
 		TemplateId: skuCalResultFreight.TemplateFreight.Template.ID,
 		ToCityId:   r.ToCityId,
