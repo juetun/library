@@ -1,6 +1,7 @@
 package app_param
 
 const (
+	SkuDataTypeSku             = "sku_data"            //SKU信息
 	SkuDataShop                = "sku_shop"            //店铺信息
 	SkuDataBrand               = "sku_brand"           //店铺品牌
 	SkuDataShopExt             = "sku_shop_ext"        //店铺扩展信息
