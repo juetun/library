@@ -9,6 +9,7 @@ const (
 	SpuDataTypeSKus            = "spu_sku"          // SKU信息
 	SpuDataTypeSKusGift        = "spu_gifts"        // 赠品信息
 	SpuDataTypeSKusStock       = "spu_sku_stock"    // sku库存
+	SpuDataTypeSKusRelate      = "spu_sku_relate"   // sku关联属性
 	SpuDataTypeSKusProperty    = "spu_sku_property" // sku属性
 	SpuDataTypeFreightTemplate = "spu_freight_gift" //运费模板
 
@@ -23,4 +24,3 @@ const (
 	SpuShopLogo           = "spu_shop_logo"   // 店铺LOGO
 	SpuShopNoticeImg      = "spu_notice_img"  // 店铺公告图片
 )
-
