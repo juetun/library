@@ -97,7 +97,8 @@ type (
 		Weight string `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
 		//MaxLimitNum int64  `gorm:"column:max_limit_num;default:0;type:bigint(20);not null;comment:限购数量，每人最多购买数量" json:"max_limit_num"`
 		//MinLimitNum int64  `gorm:"column:min_limit_num;default:0;type:bigint(20);not null;comment:必购数量，如2件起购" json:"min_limit_num"`
-		Price string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		Price      string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		MarketCost string `gorm:"column:market_cost;default:0;type:decimal(10,2);not null;comment:划线价" json:"market_cost"`
 		//DownPayment       string           `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
 		//FinalPayment      string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
 		PriceCost       string `gorm:"column:price_cost;default:0;type:decimal(10,2);not null;comment:成本价" json:"price_cost"`
@@ -184,7 +185,9 @@ func (r *Sku) Default() {
 	if r.Weight == "" {
 		r.Weight = "0"
 	}
-
+	if r.MarketCost == "" {
+		r.MarketCost = "0.00"
+	}
 	if r.SkuStatus == 0 {
 		r.SkuStatus = SkuStatusOffLine
 	}
