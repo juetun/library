@@ -44,7 +44,7 @@ type (
 		Title          string              `json:"title"`
 		SkuName        string              `json:"sku_name"`
 		SpuId          string              `json:"spu_id"`
-		SkuId          int64               `json:"sku_id"`      //购物车数据ID
+		SkuId          string              `json:"sku_id"`      //购物车数据ID
 		SkuPic         string              `json:"sku_pic"`     // 图片
 		SkuStatus      int8                `json:"sku_status"`  // 商品状态
 		StatusName     string              `json:"status_name"` // 商品状态名称 (已下架)
