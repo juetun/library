@@ -48,9 +48,10 @@ type (
 		SkuPic         string              `json:"sku_pic"`     // 图片
 		SkuStatus      int8                `json:"sku_status"`  // 商品状态
 		StatusName     string              `json:"status_name"` // 商品状态名称 (已下架)
+		PriceCate      string              `json:"price_cate"`
 		TotalPrice     string              `json:"total_price"`
 		SaleTypeName   string              `json:"sale_type_name"`
-		HaveVideo      bool                `json:"have_video"`    //是否有视频
+ 		HaveVideo      bool                `json:"have_video"`    //是否有视频
 		MaxLimitNum    int64               `json:"max_limit_num"` //最大添加数
 		MinLimitNum    int64               `json:"min_limit_num"` //最下货物数
 		Mark           string              `json:"mark"`          //商品说明（如 比着加入有无车时降价多少）
