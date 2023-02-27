@@ -55,11 +55,12 @@ type (
 		SkuPic          string              `json:"sku_pic"`     // 图片
 		SkuStatus       int8                `json:"sku_status"`  // 商品状态
 		StatusName      string              `json:"status_name"` // 商品状态名称 (已下架)
+		Price           string              `json:"price"`       //单价
+		Num             int64               `json:"num"`         //商品数量
 		PriceCate       string              `json:"price_cate"`
 		TotalPrice      string              `json:"total_price"`
 		SaleTypeName    string              `json:"sale_type_name"`
 		SaleType        uint8               `json:"sale_type"`
-		Num             int64               `json:"num"`               //商品数量
 		SkuPropertyName string              `json:"sku_property_name"` //SKU属性名
 		DownPayment     string              `json:"down_payment"`      //定金
 		HaveVideo       bool                `json:"have_video"`        //是否有视频
