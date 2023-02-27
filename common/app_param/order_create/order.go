@@ -59,6 +59,7 @@ type (
 		TotalPrice      string              `json:"total_price"`
 		SaleTypeName    string              `json:"sale_type_name"`
 		SaleType        uint8               `json:"sale_type"`
+		Num             int64               `json:"num"`               //商品数量
 		SkuPropertyName string              `json:"sku_property_name"` //SKU属性名
 		DownPayment     string              `json:"down_payment"`      //定金
 		HaveVideo       bool                `json:"have_video"`        //是否有视频
