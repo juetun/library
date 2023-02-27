@@ -48,7 +48,7 @@ type (
 		CouponId string `json:"coupon_id"`
 	}
 	OrderSkuItem struct {
-		Title           string              `json:"title"`
+		//Title           string              `json:"title"`
 		SkuName         string              `json:"sku_name"`
 		SpuId           string              `json:"spu_id"`
 		SkuId           string              `json:"sku_id"`      //购物车数据ID
@@ -58,6 +58,7 @@ type (
 		PriceCate       string              `json:"price_cate"`
 		TotalPrice      string              `json:"total_price"`
 		SaleTypeName    string              `json:"sale_type_name"`
+		SaleType        uint8               `json:"sale_type"`
 		SkuPropertyName string              `json:"sku_property_name"` //SKU属性名
 		DownPayment     string              `json:"down_payment"`      //定金
 		HaveVideo       bool                `json:"have_video"`        //是否有视频
