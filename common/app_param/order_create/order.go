@@ -30,20 +30,21 @@ type (
 	}
 
 	OrderShopItem struct {
-		ShopId      int64        `json:"shop_id"`
-		ShopIcon    string       `json:"shop_icon"`    // 店铺Icon
-		ShopName    string       `json:"shop_name"`    // 店铺名称
-		ShopType    string       `json:"shop_type"`    // 店铺类型
-		Count       int64        `json:"count"`        // 商品总数
-		ShopChecked bool         `json:"shop_checked"` // 店铺选择
-		TotalAmount string       `json:"total_amount"` // 该订单店铺总的金额
-		Products    OrderSkuItem `json:"products"`     // 商品列表
-		SortWeight  int64        `json:"-"`            //排序权重
+		ShopId      int64           `json:"shop_id"`
+		ShopIcon    string          `json:"shop_icon"`    // 店铺Icon
+		ShopName    string          `json:"shop_name"`    // 店铺名称
+		ShopType    string          `json:"shop_type"`    // 店铺类型
+		Count       int64           `json:"count"`        // 商品总数
+		ShopChecked bool            `json:"shop_checked"` // 店铺选择
+		TotalAmount string          `json:"total_amount"` // 该订单店铺总的金额
+		Products    []*OrderSkuItem `json:"products"`     // 商品列表
+		SortWeight  int64           `json:"-"`            //排序权重
 	}
 	OrderSkuItem struct {
 		Title          string              `json:"title"`
 		SkuName        string              `json:"sku_name"`
-		CartId         int64               `json:"cart_id"`     //购物车数据ID
+		SpuId          string              `json:"spu_id"`
+		SkuId          int64               `json:"sku_id"`      //购物车数据ID
 		SkuPic         string              `json:"sku_pic"`     // 图片
 		SkuStatus      int8                `json:"sku_status"`  // 商品状态
 		StatusName     string              `json:"status_name"` // 商品状态名称 (已下架)
