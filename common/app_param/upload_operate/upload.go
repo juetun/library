@@ -25,7 +25,7 @@ type (
 )
 
 func (r *DaoUploadImpl) getDataByUserIdsFromUploadServer(arg *ArgUploadGetInfo) (resData *ResultMapUploadInfo, err error) {
-	resData = &ResultMapUploadInfo{}
+	resData = NewResultMapUploadInfo()
 	var value = url.Values{}
 	var bodyByte []byte
 
@@ -59,7 +59,10 @@ func (r *DaoUploadImpl) getDataByUserIdsFromUploadServer(arg *ArgUploadGetInfo) 
 	if err != nil {
 		return
 	}
-	resData = data.Data
+	if data.Data != nil {
+		resData = data.Data
+	}
+
 	return
 }
 
