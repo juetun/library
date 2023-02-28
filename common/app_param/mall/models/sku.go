@@ -126,31 +126,37 @@ type (
 
 	SkuPropertyRelate struct {
 		ID                int64            `gorm:"column:id;primary_key" json:"id"`
-		ShopId            int64            `gorm:"column:shop_id;default:'';type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
+		ShopId            int64            `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
 		ProductId         string           `gorm:"column:product_id;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
 		CategoryId        int64            `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
 		ParentId          int64            `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
-		Pk                string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(190);not null;comment:商品ID" json:"pk"`
+		Pk                string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
+		SkuName           string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
 		SkuId             string           `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
 		Price             string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
 		IsNotAttrName     uint8            `gorm:"column:is_not_attr_name;type:tinyint(2);not null;default:2;comment:不是属性名 1-真-属性名 2-假-为属性"  json:"is_not_attr_name"`
 		PropertyId        int64            `gorm:"column:property_id;default:0;not null;comment:属性ID" json:"property_id"`
 		SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
+		SaleType          uint8            `gorm:"column:sale_type;not null;type: tinyint(2);default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
 		DownPayment       string           `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
 		FinalPayment      string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
 		FreightTemplate   int64            `gorm:"column:freight_template;type:varchar(80);default:0;not null;comment:运费模板ID" json:"freight_template"`
+		SaleOnlineTime    base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
+		SaleOverTime      *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
 		FinalStartTime    base.TimeNormal  `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
 		FinalOverTime     base.TimeNormal  `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
 		SalesTaxRate      string           `gorm:"column:sales_tax_rate;not null;type:decimal(10,2);default:0;comment:销售税率(百分比)"  json:"sales_tax_rate"`
 		SalesTaxRateValue string           `gorm:"column:sales_tax_rate_value;not null;type:decimal(10,2);default:0;comment:销售税（金额 单位元）"  json:"sales_tax_rate_value"`
 		MaxLimitNum       int64            `gorm:"column:max_limit_num;default:0;type:bigint(20);not null;comment:限购数量，每人最多购买数量" json:"max_limit_num"`
 		MinLimitNum       int64            `gorm:"column:min_limit_num;default:0;type:bigint(20);not null;comment:必购数量，如2件起购" json:"min_limit_num"`
+		IsLeaf            uint8            `gorm:"column:is_leaf;default:2;type:tinyint(2);not null;comment:是否为叶子节点 1-是 2-否" json:"is_leaf"`
 		SkuStatus         int8             `gorm:"column:sku_status;default:1;type:tinyint(2);not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
 		HaveGift          uint8            `gorm:"column:have_gift;default:2;type:tinyint(2);not null;comment:是有有赠品 1-有 2-无" json:"have_gift"`
 		CreatedAt         base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt         base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt         *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
+
 	SkuPropertyRelatesCache []SkuPropertyRelate
 )
 
