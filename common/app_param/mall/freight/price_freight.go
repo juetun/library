@@ -19,7 +19,7 @@ type (
 
 	PriceFreightResult struct {
 		Total    decimal.Decimal                `json:"total"`     //总邮费
-		TotalNum int                            `json:"total_num"` //总邮费
+		TotalNum int64                          `json:"total_num"` //总邮费
 		Shops    map[int64]ShopCalResultFreight //邮费计算结果()
 	}
 
@@ -41,13 +41,13 @@ type (
 	}
 
 	SkuFreightSingle struct {
-		Num             int                       `json:"num"` //数量
+		Num             int64                     `json:"num"` //数量
 		Sku             *models.Sku               `json:"sku"` //SKU信息
 		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate"`
-		Spu             *models.Product           `json:"spu"`  //商品信息
-		Shop            *models.Shop              `json:"shop"` //店铺信息
+		Spu             *models.Product           `json:"spu"`          //商品信息
+		Shop            *models.Shop              `json:"shop"`         //店铺信息
+		FromCityId      int64                     `json:"from_city_id"` //邮寄城市ID
 		TemplateFreight *TemplateFreight          //运费模板
-		ToCityId        int64                     `json:"to_city_id"` //邮寄城市ID
 	}
 
 	TemplateFreight struct {
