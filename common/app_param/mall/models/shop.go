@@ -197,6 +197,7 @@ func (r *Shop) Default() {
 func (r *Shop) GetShopName() (res string) {
 	switch r.ShopEntryType {
 	case ShopEntryTypeGeneral: //普通店
+		res = r.Name
 	case ShopEntryTypeSite: //官方自营店
 		res = fmt.Sprintf("%s官方自营店", r.Name)
 	case ShopEntryTypeOfficial: //官方自营店
@@ -206,7 +207,7 @@ func (r *Shop) GetShopName() (res string) {
 	case ShopEntryTypeAuthorizedStore: //旗舰店
 		res = fmt.Sprintf("%s授权店", r.Name)
 	default:
-
+		res = fmt.Sprintf("未知店铺类型(%d)", r.ShopEntryType)
 	}
 	return
 }
