@@ -8,16 +8,17 @@ import (
 
 type (
 	SkuData struct {
-		Shop            *models.Shop             `json:"shop"`
-		ShopExt         *models.ShopExt          `json:"shop_ext"`
-		ShopNotice      *models.ShopNotice       `json:"shop_notice"`
-		SKu             *models.Sku              `json:"sku"`
-		SkuStock        int64                    `json:"sku_stock"`
-		Product         *models.Product          `json:"product"`          // 商品内容
-		Brand           *models.Brand            `json:"product"`          // 品牌
-		ProductDesc     *models.ProductDesc      `json:"product_desc"`     // 商品详情
-		Gift            []*SkuGiftItem           `json:"gift"`             // 赠品
-		FreightTemplate *freight.TemplateFreight `json:"freight_template"` // 运费模板
+		Shop            *models.Shop              `json:"shop,omitempty"`
+		ShopExt         *models.ShopExt           `json:"shop_ext,omitempty"`
+		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate"`
+		ShopNotice      *models.ShopNotice        `json:"shop_notice,omitempty"`
+		SKu             *models.Sku               `json:"sku,omitempty"`
+		SkuStock        int64                     `json:"sku_stock,omitempty"`
+		Product         *models.Product           `json:"product,omitempty"`          // 商品内容
+		Brand           *models.Brand             `json:"brand,omitempty"`            // 品牌
+		ProductDesc     *models.ProductDesc       `json:"product_desc,omitempty"`     // 商品详情
+		Gift            []*SkuGiftItem            `json:"gift,omitempty"`             // 赠品
+		FreightTemplate *freight.TemplateFreight  `json:"freight_template,omitempty"` // 运费模板
 	}
 
 	SkuGiftItem struct {
