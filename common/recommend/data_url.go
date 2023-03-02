@@ -7,13 +7,23 @@ import (
 	"strings"
 )
 
+const (
+	PageNameSpu  = "spu"
+	PageNameShop = "shop"
+
+	PageNameSns = "sns"
+)
+
 var (
-	MapPageMallName = map[string]string{"spu": "/#/pages/mall/detail/index",}
-	MapPageSNsName  = map[string]string{"sns": "/#/pages/sns/detail/index",}
+	MapPageMallName = map[string]string{
+		PageNameSpu:  "/#/pages/mall/detail/index",
+		PageNameShop: "/#/pages/mall/shop/home/index",
+	}
+	MapPageSNsName = map[string]string{PageNameSns: "/#/pages/sns/detail/index",}
 )
 
 func getPageSpuPathByPageName(pageNames ...string) (res string) {
-	var pageName = "spu"
+	var pageName = PageNameSpu
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
@@ -26,7 +36,7 @@ func getPageSpuPathByPageName(pageNames ...string) (res string) {
 }
 
 func getPageSNSPathByPageName(pageNames ...string) (res string) {
-	var pageName = "sns"
+	var pageName = PageNameSns
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
