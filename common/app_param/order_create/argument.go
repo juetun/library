@@ -16,7 +16,7 @@ type (
 		BuyClient   string                            `json:"buy_client"`           // 终端类型
 		AppVersion  string                            `json:"app_version"`          // app版本
 		Status      uint8                             `json:"status"`               // 订单状态
-		AddressId   string                            `json:"address_id"`           // 收货地址
+		AddressId   int64                             `json:"address_id"`           // 收货地址
 		Express     string                            `json:"express"`              // 默认快递信息
 		PayType     uint8                             `json:"pay_type"`             // 支付类型
 		Type        string                            `json:"type" form:"Type"`     //数据操作路径
