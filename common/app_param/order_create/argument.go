@@ -19,7 +19,8 @@ type (
 		AddressId   int64                             `json:"address_id"`           // 收货地址
 		Express     string                            `json:"express"`              // 默认快递信息
 		PayType     uint8                             `json:"pay_type"`             // 支付类型
-		Type        string                            `json:"type" form:"Type"`     //数据操作路径
+		FlagTester  uint8                             `json:"flag_tester"`
+		Type        string                            `json:"type" form:"Type"` //数据操作路径
 		SkuItems    []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
 		TimeNow     base.TimeNormal                   `json:"-" form:"-"`
 	}
@@ -27,6 +28,15 @@ type (
 	ArgGetInfoByOrderId struct {
 		RequestUser app_param.RequestUser `json:"-" form:"-"`
 		OrderId     string                `json:"order_id" form:"order_id"`
+	}
+	ReceiptUserInfo struct {
+		ProvinceId   string `json:"province_id"`
+		CityId       string `json:"city_id"`
+		AreaId       string `json:"area_id"`
+		Address      string `json:"address"`
+		ZipCode      string `json:"zip_code"`
+		ContactUser  string `json:"contact_user"`
+		ContactPhone string `json:"contact_phone"`
 	}
 )
 
