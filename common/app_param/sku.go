@@ -22,6 +22,10 @@ type (
 		SkuId string `json:"sku_id"`
 	}
 )
+func (r *ArgGetSkuDataStringIds) Default(ctx *base.Context) (err error) {
+
+	return
+}
 
 func (r *ArgGetSkuDataStringIds) GetAllSpuIds() (res []string) {
 
