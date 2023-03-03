@@ -7,6 +7,15 @@ import (
 )
 
 type (
+	ArgGetSkuDataStringIds struct {
+		base.GetDataTypeCommon
+		Ids []*ArgSkuAndSpuIds `json:"ids"`
+	}
+	ArgSkuAndSpuIds struct {
+		SpuId string `json:"spu_id"`
+		SkuId string `json:"sku_id"`
+	}
+
 	SkuData struct {
 		Shop            *models.Shop              `json:"shop,omitempty"`
 		ShopExt         *models.ShopExt           `json:"shop_ext,omitempty"`
