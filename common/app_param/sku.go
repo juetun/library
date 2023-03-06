@@ -27,6 +27,23 @@ func (r *ArgGetSkuDataStringIds) Default(ctx *base.Context) (err error) {
 	return
 }
 
+func (r *ArgGetSkuDataStringIds) GetAllSkuIds() (res []string) {
+
+	var (
+		l        = len(r.IdsCompose)
+		mapSkuId = make(map[string]bool, l)
+	)
+
+	res = make([]string, 0, l)
+	for _, item := range r.IdsCompose {
+		if _, ok := mapSkuId[item.SkuId]; !ok {
+			mapSkuId[item.SkuId] = true
+			res = append(res, item.SkuId)
+		}
+	}
+	return
+}
+
 func (r *ArgGetSkuDataStringIds) GetAllSpuIds() (res []string) {
 
 	var (
