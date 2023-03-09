@@ -15,13 +15,15 @@ type (
 		SpuId string `json:"spu_id"`
 		SkuId string `json:"sku_id"`
 	}
-
+	 
 	SkuData struct {
+		SpuId           string                    `json:"spu_id"`
 		Shop            *models.Shop              `json:"shop,omitempty"`
 		ShopExt         *models.ShopExt           `json:"shop_ext,omitempty"`
-		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate"`
 		ShopNotice      *models.ShopNotice        `json:"shop_notice,omitempty"`
 		SKu             *models.Sku               `json:"sku,omitempty"`
+		SkuPropertyName string                    `json:"sku_property_name"`
+		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate,omitempty"`
 		SkuStock        int64                     `json:"sku_stock,omitempty"`
 		Product         *models.Product           `json:"product,omitempty"`          // 商品内容
 		Brand           *models.Brand             `json:"brand,omitempty"`            // 品牌
