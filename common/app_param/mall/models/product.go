@@ -219,54 +219,54 @@ var (
 
 type (
 	Product struct {
-		ProductID        string                         `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SPUID" json:"product_id"`
-		Title            string                         `gorm:"column:title;type:varchar(200);not null;default:'';comment:标题" json:"title"`
-		UserHid          int64                          `gorm:"column:user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:发布人用户ID" json:"user_hid"`
-		Thumbnail        string                         `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail"`
-		ThumbnailURL     string                         `gorm:"-" json:"thumbnail_url"`
-		Image            string                         `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
-		ImageURL         []*upload_operate.ProductImage `gorm:"-" json:"-"`
-		BrandId          int64                          `gorm:"column:brand_id;type:bigint(20);not null;default:0;comment:品牌ID" json:"brand_id"`
-		Video            string                         `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
-		VideoURL         string                         `gorm:"-" json:"video_url" `
-		ShopId           int64                          `gorm:"column:shop_id;index:idx_shop_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
-		Status           int8                           `gorm:"column:status;index:idx_shop_id,priority:2;index:idx_time,priority:2;default:0;type:tinyint(2);not null;comment:状态" json:"status"`
-		SubTitle         string                         `gorm:"column:sub_title;type:varchar(800);not null;default:'';comment:副标题" json:"sub_title"`
-		MinPrice         string                         `gorm:"column:min_price;index:idx_price,priority:1;default:0;type:decimal(10,2);not null;comment:最低价" json:"min_price"`
-		MaxPrice         string                         `gorm:"column:max_price;index:idx_price,priority:2;default:0;type:decimal(10,2);not null;comment:最高价" json:"max_price"`
-		MinPriceCost     string                         `gorm:"column:min_price_cost;default:0;type:decimal(10,2);not null;comment:最低市场价" json:"min_price_cost"`
-		MaxPriceCost     string                         `gorm:"column:max_price_cost;default:0;type:decimal(10,2);not null;comment:最高市场价" json:"max_price_cost"`
-		MinDownPayment   string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment"`
-		MaxDownPayment   string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment"`
-		TagIds           string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids"`
-		TagIdsArray      []int64                        `json:"tag_ids" gorm:"-"`
-		ServiceIds       string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids"`
-		Keywords         string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords"`
-		SaleNum          int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
-		FreightType      uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type"`
-		FreightTemplate  int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template"`
-		TotalStock       int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock"`
-		CategoryId       int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目" json:"category_id"`
-		SaleType         uint8                          `gorm:"column:sale_type;not null;type: tinyint(2);index:idx_time,priority:3;index:idx_price,priority:3;default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
-		PullOnTime       *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time"`
-		PullOffTime      *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time"`
-		PreheatTimeStart *base.TimeNormal               `gorm:"column:preheat_time_start;comment:预热开始时间" json:"preheat_time_start"`
-		PreheatTimeOver  *base.TimeNormal               `gorm:"column:preheat_time_over;comment:预热结束时间" json:"preheat_time_over"`
-		SaleOnlineTime   base.TimeNormal                `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
-		SaleOverTime     *base.TimeNormal               `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
-		FinalStartTime   base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
-		FinalOverTime    base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
-		DeliveryTime     *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time"` // 预计发货时间
-		SaleCountShow    uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show"`
-		RelateType       uint8                          `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type"`
-		RelateItemId     string                         `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id"`
-		RelateBuyCount   int64                          `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
-		RelateBuyAMount  string                         `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
-		SettleType       uint8                          `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
-		FlagTester       uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:2;comment:是否为测试数据 1-是 2-不是"  json:"flag_tester"`
-		CreatedAt        base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		UpdatedAt        base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		DeletedAt        *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
+		ProductID       string                         `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SPUID" json:"product_id"`
+		Title           string                         `gorm:"column:title;type:varchar(200);not null;default:'';comment:标题" json:"title"`
+		UserHid         int64                          `gorm:"column:user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:发布人用户ID" json:"user_hid"`
+		Thumbnail       string                         `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"-"`
+		ThumbnailURL    string                         `gorm:"-" json:"thumbnail_url"`
+		Image           string                         `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"-"`
+		ImageURL        []*upload_operate.ProductImage `gorm:"-" json:"-"`
+		BrandId         int64                          `gorm:"column:brand_id;type:bigint(20);not null;default:0;comment:品牌ID" json:"brand_id"`
+		Video           string                         `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
+		VideoURL        string                         `gorm:"-" json:"video_url" `
+		ShopId          int64                          `gorm:"column:shop_id;index:idx_shop_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
+		Status          int8                           `gorm:"column:status;index:idx_shop_id,priority:2;index:idx_time,priority:2;default:0;type:tinyint(2);not null;comment:状态" json:"status"`
+		SubTitle        string                         `gorm:"column:sub_title;type:varchar(800);not null;default:'';comment:副标题" json:"sub_title"`
+		MinPrice        string                         `gorm:"column:min_price;index:idx_price,priority:1;default:0;type:decimal(10,2);not null;comment:最低价" json:"min_price"`
+		MaxPrice        string                         `gorm:"column:max_price;index:idx_price,priority:2;default:0;type:decimal(10,2);not null;comment:最高价" json:"max_price"`
+		MinPriceCost    string                         `gorm:"column:min_price_cost;default:0;type:decimal(10,2);not null;comment:最低市场价" json:"min_price_cost"`
+		MaxPriceCost    string                         `gorm:"column:max_price_cost;default:0;type:decimal(10,2);not null;comment:最高市场价" json:"max_price_cost"`
+		MinDownPayment  string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment"`
+		MaxDownPayment  string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment"`
+		TagIds          string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids"`
+		TagIdsArray     []int64                        `json:"tag_ids" gorm:"-"`
+		ServiceIds      string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids"`
+		Keywords        string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords"`
+		SaleNum         int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
+		FreightType     uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type"`
+		FreightTemplate int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template"`
+		TotalStock      int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock"`
+		CategoryId      int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目" json:"category_id"`
+		SaleType        uint8                          `gorm:"column:sale_type;not null;type: tinyint(2);index:idx_time,priority:3;index:idx_price,priority:3;default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
+		PullOnTime      *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time"`
+		PullOffTime     *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time"`
+		//PreheatTimeStart *base.TimeNormal               `gorm:"column:preheat_time_start;comment:预热开始时间" json:"preheat_time_start"`
+		//PreheatTimeOver  *base.TimeNormal               `gorm:"column:preheat_time_over;comment:预热结束时间" json:"preheat_time_over"`
+		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
+		SaleOverTime    *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
+		FinalStartTime  base.TimeNormal  `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
+		FinalOverTime   base.TimeNormal  `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
+		DeliveryTime    *base.TimeNormal `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time"` // 预计发货时间
+		SaleCountShow   uint8            `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show"`
+		RelateType      uint8            `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type"`
+		RelateItemId    string           `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id"`
+		RelateBuyCount  int64            `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
+		RelateBuyAMount string           `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
+		SettleType      uint8            `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
+		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:2;comment:是否为测试数据 1-是 2-不是"  json:"flag_tester"`
+		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
+		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
+		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 
 	ProductTag struct {
@@ -405,40 +405,23 @@ func (r *Product) CanShowPreheat(currentTimes ...time.Time) (showFlag string, ms
 		current = time.Now()
 	}
 	showFlag = ProductShopTypeShow
-
 	r.defaultSaleOverTime()
 	//如果没有设置预热开始时间，则默认选择开售时间
 	// 如果预热开始时间晚于开售时间，则以开售时间为准
-	if r.PreheatTimeStart == nil || r.PreheatTimeStart.Time.IsZero() || r.PreheatTimeStart.Time.After(r.SaleOnlineTime.Time) {
-		r.PreheatTimeStart = &r.SaleOnlineTime
+	if r.PullOnTime == nil || r.PullOnTime.Time.IsZero() || r.PullOnTime.Time.After(r.SaleOnlineTime.Time) {
+		r.PullOnTime = &r.SaleOnlineTime
 	}
 
 	// 如果预热开始时间晚于开售时间，则以开售时间为准
-	if r.PreheatTimeOver == nil || r.PreheatTimeOver.Time.IsZero() || r.PreheatTimeOver.Time.After(r.SaleOnlineTime.Time) { //如果没有设置预热结束时间，则默认选择开售时间
-		r.PreheatTimeOver = &r.SaleOnlineTime
+	if r.PullOffTime == nil || r.PullOffTime.Time.IsZero() || r.PullOffTime.Time.After(r.SaleOnlineTime.Time) { //如果没有设置预热结束时间，则默认选择开售时间
+		r.PullOffTime = r.SaleOverTime
 	}
 
 	//如果当前时间还没到预热开始时间
-	if current.Before(r.PreheatTimeStart.Time) {
+	if current.Before(r.PullOnTime.Time) {
 		showFlag = ProductShopTypeNotShow
 		msg = "未到预热开始时间"
 		return
-	}
-
-	//如果当前时间到预热开始时间但是未到预热结束时间
-	//if current.Before(r.PreheatTimeOver.Time) { //
-	//	showFlag = ProductShopTypeShow
-	//	return
-	//}
-
-	//如果预热结束时间和销售开始时间不等
-	if !r.PreheatTimeOver.Time.Equal(r.SaleOnlineTime.Time) {
-		//当前时间介于 预热结束和正式开售时间之前间 正常不展示
-		if current.After(r.PreheatTimeOver.Time) && current.Before(r.SaleOnlineTime.Time) {
-			showFlag = ProductShopTypeNotShow
-			msg = "预热时间结束,开售未开始"
-			return
-		}
 	}
 
 	return
