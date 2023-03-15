@@ -30,6 +30,23 @@ const (
 	NeedValidateShopYes = true  //需要校验当前用户是否有店铺权限
 	NeedValidateShopNo  = false //不需要校验当前用户是否有有店铺权限
 )
+const (
+	UserHaveDashboardYes uint8 = iota + 1 //用户是否有管理后台权限 (有)
+	UserHaveDashboardNo                   //用户是否有管理后台权限 (无)
+)
+
+var (
+	SliceUserHaveDashboard = base.ModelItemOptions{
+		{
+			Value: UserHaveDashboardYes,
+			Label: "有",
+		},
+		{
+			Value: UserHaveDashboardNo,
+			Label: "无",
+		},
+	}
+)
 
 // 获取用户信息的响应参数结构
 type (
