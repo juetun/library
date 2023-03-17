@@ -3,6 +3,8 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/library/common/recommend"
+	"net/url"
 	"time"
 
 	"github.com/juetun/base-wrapper/lib/base"
@@ -287,6 +289,14 @@ func (r *Sku) JudgeCanBuyStatus(currentTimes ...time.Time) (canBuy bool, pageMes
 func (r *Sku) SetIdWithString(id string) (err error) {
 	r.ID = id
 	//r.ID, err = strconv.ParseInt(id, 10, 64)
+	return
+}
+
+func (r *SkuPropertyRelate) GetProductHref() (res string, err error) {
+	var vals = &url.Values{}
+	vals.Set("id", r.ProductId)
+	vals.Set("sku_id", r.SkuId)
+	res, err = recommend.GetPageLink(vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
 	return
 }
 
