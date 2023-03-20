@@ -40,6 +40,28 @@ type (
 	}
 )
 
+func NewCommentForEdit() (res *CommentForEdit) {
+	res = &CommentForEdit{
+		SendLevel:     "0.00",
+		DeliveryLevel: "0.00",
+		PackingLevel:  "0.00",
+	}
+	return
+}
+
+func (r *CommentForEdit) Default() {
+	if r.SendLevel == "" {
+		r.SendLevel = "0.00"
+	}
+	if r.DeliveryLevel == "" {
+		r.DeliveryLevel = "0.00"
+	}
+	if r.PackingLevel == "" {
+		r.PackingLevel = "0.00"
+	}
+	return
+}
+
 func NewCommentSkuItem() (res *CommentSkuItem) {
 	res = &CommentSkuItem{
 		Videos: make([]*CommentVideoItem, 0, CommentCanImageCount),
