@@ -6,9 +6,9 @@ const (
 
 type (
 	CommentForEdit struct {
-		SendLevel     string            `json:"send_level"`     //快递包装评分
-		DeliveryLevel string            `json:"delivery_level"` //送货速度评分
-		PackingLevel  string            `json:"packing_level"`  //配送员服务
+		SendLevel     float32           `json:"send_level"`     //快递包装评分
+		DeliveryLevel float32           `json:"delivery_level"` //送货速度评分
+		PackingLevel  float32           `json:"packing_level"`  //配送员服务
 		CreatedAt     string            `json:"created_at"`     //订单生成时间
 		OrderId       string            `json:"order_id"`       //订单号
 		SubOrderId    string            `json:"sub_order_id"`   //子订单号
@@ -16,7 +16,6 @@ type (
 	}
 	CommentSkuItem struct {
 		SkuInfo       CommentSku          `json:"sku_info"`
-		CommentLevel  string              `json:"comment_level"` //商品评分
 		Mark          string              `json:"mark"`
 		Videos        []*CommentVideoItem `json:"videos"`          //视频
 		Images        []*CommentImageItem `json:"images"`          //图片
@@ -35,31 +34,19 @@ type (
 		SaleType     uint8         `json:"sale_type"`
 		SaleTypeName string        `json:"sale_type_name"`
 		HaveGift     uint8         `json:"have_gift"`
-		CommentScore string        `json:"comment_score"`   // 商品评论等级
+		CommentScore float32       `json:"comment_score"`   // 商品评论等级
 		Gifts        []*CommentSku `json:"gifts,omitempty"` //赠品
 		Href         string        `json:"href"`
 	}
 )
 
 func NewCommentForEdit() (res *CommentForEdit) {
-	res = &CommentForEdit{
-		SendLevel:     "0.00",
-		DeliveryLevel: "0.00",
-		PackingLevel:  "0.00",
-	}
+	res = &CommentForEdit{}
 	return
 }
 
 func (r *CommentForEdit) Default() {
-	if r.SendLevel == "" {
-		r.SendLevel = "0.00"
-	}
-	if r.DeliveryLevel == "" {
-		r.DeliveryLevel = "0.00"
-	}
-	if r.PackingLevel == "" {
-		r.PackingLevel = "0.00"
-	}
+
 	return
 }
 
