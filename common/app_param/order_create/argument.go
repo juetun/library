@@ -39,6 +39,8 @@ type (
 		ZipCode      string `json:"zip_code"`
 		ContactUser  string `json:"contact_user"`
 		ContactPhone string `json:"contact_phone"`
+
+		FullAddress  string `json:"full_address"`
 	}
 )
 
