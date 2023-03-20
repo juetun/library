@@ -41,7 +41,11 @@ type (
 )
 
 func NewCommentForEdit() (res *CommentForEdit) {
-	res = &CommentForEdit{}
+	res = &CommentForEdit{
+		SendLevel:     5,
+		DeliveryLevel: 5,
+		PackingLevel:  5,
+	}
 	return
 }
 
@@ -52,13 +56,15 @@ func (r *CommentForEdit) Default() {
 
 func NewCommentSkuItem() (res *CommentSkuItem) {
 	res = &CommentSkuItem{
-		Videos: make([]*CommentVideoItem, 0, CommentCanImageCount),
-		Images: make([]*CommentImageItem, 0, CommentCanImageCount),
+		CommentScore: 5,
+		Videos:       make([]*CommentVideoItem, 0, CommentCanImageCount),
+		Images:       make([]*CommentImageItem, 0, CommentCanImageCount),
 	}
 	return
 }
 
 func (r *CommentSkuItem) DeferLogic() {
 	r.ImageCount = len(r.Images) + len(r.Videos)
+
 	r.CanImageCount = CommentCanImageCount
 }
