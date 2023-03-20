@@ -27,6 +27,7 @@ type (
 	CommentSku struct {
 		SkuName      string        `json:"sku_name"`
 		SkuProperty  string        `json:"sku_property"`
+		ThumbnailURL string        `json:"thumbnail_url"`
 		SkuId        string        `json:"sku_id"`
 		SpuId        string        `json:"spu_id"`
 		ShopId       int64         `json:"shop_id"`
