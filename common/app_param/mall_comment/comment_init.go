@@ -35,6 +35,7 @@ type (
 		SaleType     uint8         `json:"sale_type"`
 		SaleTypeName string        `json:"sale_type_name"`
 		HaveGift     uint8         `json:"have_gift"`
+		CommentScore string        `json:"comment_score"`   // 商品评论等级
 		Gifts        []*CommentSku `json:"gifts,omitempty"` //赠品
 		Href         string        `json:"href"`
 	}
@@ -72,5 +73,8 @@ func NewCommentSkuItem() (res *CommentSkuItem) {
 
 func (r *CommentSkuItem) DeferLogic() {
 	r.ImageCount = len(r.Images) + len(r.Videos)
+	if r.SkuInfo.CommentScore == "" {
+		r.SkuInfo.CommentScore = "0.00"
+	}
 	r.CanImageCount = CommentCanImageCount
 }
