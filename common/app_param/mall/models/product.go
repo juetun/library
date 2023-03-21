@@ -507,7 +507,7 @@ func ParseSaleType(SaleType uint8) (res string) {
 	if res, ok = MapSaleType[SaleType]; ok {
 		return
 	}
-	res = fmt.Sprintf("未知类型(%d)", r.SaleType)
+	res = fmt.Sprintf("未知类型(%d)", SaleType)
 	return
 }
 
