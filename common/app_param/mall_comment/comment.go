@@ -12,10 +12,12 @@ type (
 		Like     int64  `json:"like"`
 	}
 	CommentVideoItem struct {
+		Src      string `json:"src"`
 		MainUrl  string `json:"mainUrl"`  //图片地址
 		VideoUrl string `json:"videoUrl"` //视频地址
 	}
 	CommentImageItem struct {
+		Src         string `json:"src"`
 		SmallImgUrl string `json:"smallImgUrl"`
 		BigImgUrl   string `json:"bigImgUrl"`
 		ImgUrl      string `json:"imgUrl"`
