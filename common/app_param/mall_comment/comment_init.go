@@ -1,5 +1,7 @@
 package mall_comment
 
+import "github.com/juetun/library/common/app_param/upload_operate"
+
 const (
 	CommentCanImageCount = 9 //总能够上传的图片数
 )
@@ -69,4 +71,16 @@ func (r *CommentSkuItem) DeferLogic() {
 	r.ImageCount = len(r.Images) + len(r.Videos)
 
 	r.CanImageCount = CommentCanImageCount
+}
+
+
+
+func (r *CommentVideoItem)ParseFromVideo(video *upload_operate.UploadVideo)  {
+	r.MainUrl = video.Cover
+	r.VideoUrl = video.GetShowUrl()
+}
+func (r *CommentImageItem)ParseFromImg(img *upload_operate.UploadImage)  {
+	r.ImgUrl = img.Src
+	r.BigImgUrl = img.Src
+	r.SmallImgUrl = img.Src
 }

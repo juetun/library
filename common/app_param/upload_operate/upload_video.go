@@ -108,8 +108,35 @@ func (r *UploadVideo) ToString() (res string) {
 
 // GetShowUrl 获取视频的播放地址
 func (r *UploadVideo) GetShowUrl() (res ext_up.ShowData) {
+	var (
+		tmp string
+		ok  bool
+	)
 	res = ext_up.ShowData{
-		PlayAddress: map[string]string{},
+		PlayAddress: make(map[string]string, 7),
+	}
+	res.PlayAddress["src"] = r.Src
+
+	if r.HD != "" {
+		res.PlayAddress["hd"] = r.HD
+	}
+	if r.SD != "" {
+		res.PlayAddress["sd"] = r.SD
+	}
+	if r.LD != "" {
+		res.PlayAddress["ld"] = r.LD
+	}
+	if r.Cover != "" {
+		res.PlayAddress["cover"] = r.Cover
+	}
+	if r.DefaultType != "" {
+		res.PlayAddress["default_type"] = r.DefaultType
+		if tmp, ok = res.PlayAddress[r.DefaultType]; ok {
+			res.PlayAddress["play_src"] = tmp
+		}
+		if tmp == "" {
+			res.PlayAddress["play_src"] = res.PlayAddress["src"]
+		}
 	}
 	return
 }

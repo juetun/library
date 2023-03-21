@@ -1,5 +1,7 @@
 package mall_comment
 
+import "github.com/juetun/library/common/app_param/upload_operate/ext_up"
+
 type (
 	UInfo struct {
 		Content  string `json:"content"`
@@ -12,9 +14,8 @@ type (
 		Like     int64  `json:"like"`
 	}
 	CommentVideoItem struct {
-		Src      string `json:"src"`
-		MainUrl  string `json:"mainUrl"`  //图片地址
-		VideoUrl string `json:"videoUrl"` //视频地址
+		Src             string `json:"src"`
+		ext_up.ShowData        //视频地址
 	}
 	CommentImageItem struct {
 		Src         string `json:"src"`
