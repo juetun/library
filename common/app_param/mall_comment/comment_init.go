@@ -12,6 +12,7 @@ type (
 		CreatedAt     string            `json:"created_at"`     //订单生成时间
 		OrderId       string            `json:"order_id"`       //订单号
 		SubOrderId    string            `json:"sub_order_id"`   //子订单号
+		ShopId        int64             `json:"shop_id"`
 		SkuList       []*CommentSkuItem `json:"sku_list"`
 	}
 	CommentSkuItem struct {
