@@ -501,15 +501,18 @@ func (r *Product) ParseSettleType() (res string) {
 	}
 	return
 }
-
-func (r *Product) ParseSaleType() (res string) {
+func ParseSaleType(SaleType uint8) (res string) {
 	var ok bool
 	MapSaleType, _ := SliceSaleType.GetMapAsKeyUint8()
-	if res, ok = MapSaleType[r.SaleType]; ok {
+	if res, ok = MapSaleType[SaleType]; ok {
 		return
 	}
 	res = fmt.Sprintf("未知类型(%d)", r.SaleType)
 	return
+}
+
+func (r *Product) ParseSaleType() (res string) {
+	return ParseSaleType(r.SaleType)
 }
 
 //SPU状态转换

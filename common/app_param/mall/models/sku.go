@@ -300,6 +300,10 @@ func (r *SkuPropertyRelate) GetProductHref() (res string, err error) {
 	return
 }
 
+func (r *SkuPropertyRelate) ParseSaleType() (res string) {
+	return ParseSaleType(r.SaleType)
+}
+
 // 默认销售截止时间
 func (r *Sku) defaultSaleOverTime() {
 	if r.SaleOverTime == nil {
