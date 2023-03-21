@@ -26,6 +26,10 @@ type (
 		CommentScore  float32             `json:"comment_score"`   // 商品评论等级
 		ImageCount    int                 `json:"image_count"`     //图片数
 		CanImageCount int                 `json:"can_image_count"` //总能上传数
+		CommentAt     string              `json:"comment_at"`      //评论时间
+		AddComment    string              `json:"add_comment"`     //追平内容
+		HasAddComment string              `json:"has_add_comment"` //是否已追评
+		AddImages     []*CommentImageItem `json:"add_images"`      //追平图片
 	}
 
 	CommentSku struct {
