@@ -29,7 +29,7 @@ type (
 		SkuProperty  string        `json:"sku_property"`
 		ThumbnailURL string        `json:"thumbnail_url"`
 		SkuId        string        `json:"sku_id"`
-		SkuNum       int           `json:"sku_num"`
+		SkuNum       int64         `json:"sku_num"`
 		SpuId        string        `json:"spu_id"`
 		ShopId       int64         `json:"shop_id"`
 		Price        string        `json:"price"`
