@@ -82,43 +82,31 @@ var (
 
 type (
 	Sku struct {
-		ID           string `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SkUID" json:"sku_id"`
-		SkuName      string `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:标题" json:"sku_name"`
-		Thumbnail    string `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail"`
-		ThumbnailURL string `json:"thumbnail_url" gorm:"-"`
-		LockKey      string `gorm:"column:lock_key;type:varchar(60);not null;default:'';comment:临时锁的KEy" json:"lock_key"`
-		//SkuPropertyId     int64            `gorm:"column:sku_property_id;default:0;type:bigint(20);not null;comment:商品属性ID" json:"sku_property_id"`
-		SkuAttRelateId int64  `gorm:"column:sku_att_relate_id;default:0;type:bigint(20);not null;comment:商品属性关系ID" json:"sku_att_relate_id"`
-		Image          string `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
-		Video          string `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
-		UserHid        int64  `json:"user_hid" gorm:"column:user_hid;default:0;type:bigint(20);not null;comment:发布人用户ID"`
-		ShopId         int64  `gorm:"column:shop_id;index:idx_pro_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
-		//ProductId         string           `gorm:"column:product_id;index:idx_pro,priority:1;index:idx_pro_id,priority:2;default:0;type:bigint(20);not null;comment:商品ID" json:"product_id"`
-		SkuStatus int8 `gorm:"column:sku_status;default:1;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
-		//SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
-		Weight string `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
-		//MaxLimitNum int64  `gorm:"column:max_limit_num;default:0;type:bigint(20);not null;comment:限购数量，每人最多购买数量" json:"max_limit_num"`
-		//MinLimitNum int64  `gorm:"column:min_limit_num;default:0;type:bigint(20);not null;comment:必购数量，如2件起购" json:"min_limit_num"`
-		Price      string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
-		MarketCost string `gorm:"column:market_cost;default:0;type:decimal(10,2);not null;comment:划线价" json:"market_cost"`
-		//DownPayment       string           `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
-		//FinalPayment      string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
-		PriceCost       string `gorm:"column:price_cost;default:0;type:decimal(10,2);not null;comment:成本价" json:"price_cost"`
-		ShopSaleCode    string `gorm:"column:shop_sale_code;type:varchar(80);default:'';not null;comment:商家供货码" json:"shop_sale_code"`
-		ProvideSaleCode string `gorm:"column:provide_sale_code;type:varchar(80);default:'';not null;comment:供货商供货码" json:"provide_sale_code"`
-		//FreightTemplate   int64            `gorm:"column:freight_template;type:varchar(80);default:0;not null;comment:运费模板ID" json:"freight_template"`
-		SaleNum        int              `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
-		SaleOnlineTime base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
-		SaleOverTime   *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
-		//FinalStartTime    base.TimeNormal  `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
-		//FinalOverTime     base.TimeNormal  `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
-		//SalesTaxRate      string           `gorm:"column:sales_tax_rate;not null;type:decimal(10,2);default:0;comment:销售税率(百分比)"  json:"sales_tax_rate"`
-		//SalesTaxRateValue string           `gorm:"column:sales_tax_rate_value;not null;type:decimal(10,2);default:0;comment:销售税（金额 单位元）"  json:"sales_tax_rate_value"`
-		//HaveGift          uint8            `gorm:"column:have_gift;default:2;type:tinyint(2);not null;comment:是有有赠品 1-有 2-无" json:"have_gift"`
-		FlagTester uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:0;comment:是否为测试数据 1-是 0-不是"  json:"flag_tester"`
-		CreatedAt  base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-		UpdatedAt  base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-		DeletedAt  *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
+		ID              string           `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SkUID" json:"sku_id"`
+		SkuName         string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:标题" json:"sku_name"`
+		Thumbnail       string           `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail"`
+		ThumbnailURL    string           `json:"thumbnail_url" gorm:"-"`
+		LockKey         string           `gorm:"column:lock_key;type:varchar(60);not null;default:'';comment:临时锁的KEy" json:"lock_key"`
+		SkuAttRelateId  int64            `gorm:"column:sku_att_relate_id;default:0;type:bigint(20);not null;comment:商品属性关系ID" json:"sku_att_relate_id"`
+		Image           string           `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image"`
+		Video           string           `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
+		UserHid         int64            `json:"user_hid" gorm:"column:user_hid;default:0;type:bigint(20);not null;comment:发布人用户ID"`
+		ShopId          int64            `gorm:"column:shop_id;index:idx_pro_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
+		SkuStatus       int8             `gorm:"column:sku_status;default:4;type:tinyint(2);index:idx_pro_id,priority:3;not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
+		Weight          string           `gorm:"column:weight;default:0;type:decimal(10,2);not null;comment:重量 单位-千克" json:"weight"`
+		Price           string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		MarketCost      string           `gorm:"column:market_cost;default:0;type:decimal(10,2);not null;comment:划线价" json:"market_cost"`
+		PriceCost       string           `gorm:"column:price_cost;default:0;type:decimal(10,2);not null;comment:成本价" json:"price_cost"`
+		ShopSaleCode    string           `gorm:"column:shop_sale_code;type:varchar(80);default:'';not null;comment:商家供货码" json:"shop_sale_code"`
+		ProvideSaleCode string           `gorm:"column:provide_sale_code;type:varchar(80);default:'';not null;comment:供货商供货码" json:"provide_sale_code"`
+		SaleNum         int              `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
+		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
+		SaleOverTime    *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
+		volume          string           `gorm:"column:volume;default:0;type:decimal(10,2);not null;comment:容积" json:"volume"`
+		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:0;comment:是否为测试数据 1-是 0-不是"  json:"flag_tester"`
+		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	ProductSKus              []*Sku
 	SliceSkuStatusEditOption struct {
@@ -195,6 +183,10 @@ func (r *Sku) Default() {
 	}
 	if r.MarketCost == "" {
 		r.MarketCost = "0.00"
+	}
+
+	if r.volume == "" {
+		r.volume = "0"
 	}
 	if r.SkuStatus == 0 {
 		r.SkuStatus = SkuStatusOffLine
