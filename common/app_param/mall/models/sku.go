@@ -24,7 +24,22 @@ const (
 	SkuHaveGiftNo                   //无赠品
 )
 
+const (
+	SkuHaveBindSpuYes uint8 = iota + 1 //是否绑定SPU 已绑定
+	SkuHaveBindSpuNo                   //未绑定
+)
+
 var (
+	SliceSkuHaveBindSpu = base.ModelItemOptions{
+		{
+			Value: SkuHaveBindSpuYes,
+			Label: "已绑定",
+		},
+		{
+			Value: SkuHaveBindSpuNo,
+			Label: "未绑定",
+		},
+	}
 	SliceSkuHaveGift = base.ModelItemOptions{
 		{
 			Value: SkuHaveGiftYes,
@@ -102,8 +117,9 @@ type (
 		SaleNum         int              `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
 		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
 		SaleOverTime    *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
-		volume          string           `gorm:"column:volume;default:0;type:decimal(10,2);not null;comment:容积" json:"volume"`
+		Volume          string           `gorm:"column:volume;default:0;type:decimal(10,2);not null;comment:容积" json:"volume"`
 		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:0;comment:是否为测试数据 1-是 0-不是"  json:"flag_tester"`
+		HaveBindSpu     uint8            `gorm:"column:have_bind_spu;not null;type: tinyint(2);default:0;comment:是否绑定商品 1-是 2-不是"  json:"have_bind_spu"`
 		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
@@ -185,8 +201,8 @@ func (r *Sku) Default() {
 		r.MarketCost = "0.00"
 	}
 
-	if r.volume == "" {
-		r.volume = "0"
+	if r.Volume == "" {
+		r.Volume = "0"
 	}
 	if r.SkuStatus == 0 {
 		r.SkuStatus = SkuStatusOffLine
@@ -233,14 +249,21 @@ func (r *Sku) ParseStatusName() (res string) {
 	return
 }
 
-//func (r *Sku) ParseHaveGift() (res string) {
-//	var ok bool
-//	MapSkuHaveGift, _ := SliceSkuHaveGift.GetMapAsKeyUint8()
-//	if res, ok = MapSkuHaveGift[r.HaveGift]; ok {
-//		return
-//	}
-//	return
-//}
+func ParseHaveBindSpu(HaveBindSpu uint8) (res string) {
+	var ok bool
+	MapSkuHaveBind, _ := SliceSkuHaveBindSpu.GetMapAsKeyUint8()
+	if res, ok = MapSkuHaveBind[HaveBindSpu]; ok {
+		return
+	}
+	res = fmt.Sprintf("未知类型(%v)", HaveBindSpu)
+	return
+}
+
+func (r *Sku) ParseHaveBindSpu() (res string) {
+	res = ParseHaveBindSpu(r.HaveBindSpu)
+	return
+}
+
 func (r *Sku) UnmarshalBinary(data []byte) (err error) {
 	err = json.Unmarshal(data, r)
 	return

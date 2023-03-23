@@ -17,8 +17,8 @@ const (
 )
 
 const (
-	FlagTesterNo  uint8 = iota + 1 // 不为测试数据
-	FlagTesterYes                  // 为测试数据
+	FlagTesterNo  uint8 = iota + 1 // 为测试数据
+	FlagTesterYes                  // 不为测试数据
 )
 
 // 店铺入驻状态
