@@ -1,6 +1,7 @@
 package app_param
 
 const (
+	SpuDataBase                = "spu_data"         //商品信息
 	SpuDataShop                = "spu_shop"         // 店铺信息
 	SpuDataShopExt             = "spu_shop_ext"     // 店铺扩展信息
 	SpuDataShopNotice          = "spu_shop_notice"  // 店铺公告信息
@@ -11,7 +12,7 @@ const (
 	SpuDataTypeSKusStock       = "spu_sku_stock"    // sku库存
 	SpuDataTypeSKusRelate      = "spu_sku_relate"   // sku关联属性
 	SpuDataTypeSKusProperty    = "spu_sku_property" // sku属性
-	SpuDataTypeFreightTemplate = "spu_freight" //运费模板
+	SpuDataTypeFreightTemplate = "spu_freight"      //运费模板
 
 	/*****************************上传信息获取**********************************/
 	//SpuUploadAll          = "spu_img"         // 商品图片获取所有图片 (包括SpuImg前缀的属性如:SpuUploadImgThumbnail,SpuUploadImgPic,SpuSkuImg,SpuUploadDescription）
