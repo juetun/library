@@ -263,7 +263,7 @@ type (
 		RelateBuyCount  int64            `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
 		RelateBuyAMount string           `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
 		SettleType      uint8            `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
-		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:2;comment:是否为测试数据 1-是 2-不是"  json:"flag_tester"`
+		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`

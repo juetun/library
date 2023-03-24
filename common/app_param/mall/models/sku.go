@@ -118,7 +118,7 @@ type (
 		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
 		SaleOverTime    *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
 		Volume          string           `gorm:"column:volume;default:0;type:decimal(10,2);not null;comment:容积" json:"volume"`
-		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:0;comment:是否为测试数据 1-是 0-不是"  json:"flag_tester"`
+		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		HaveBindSpu     uint8            `gorm:"column:have_bind_spu;not null;type: tinyint(2);default:0;comment:是否绑定商品 1-是 2-不是"  json:"have_bind_spu"`
 		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`

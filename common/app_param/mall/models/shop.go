@@ -17,8 +17,8 @@ const (
 )
 
 const (
-	FlagTesterNo  uint8 = iota + 1 // 为测试数据
-	FlagTesterYes                  // 不为测试数据
+	FlagTesterNo  uint8 = iota + 1 // 不为测试数据
+	FlagTesterYes                  // 为测试数据
 )
 
 // 店铺入驻状态
@@ -56,11 +56,11 @@ var (
 	SliceFlagTester = base.ModelItemOptions{
 		{
 			Value: FlagTesterNo,
-			Label: "是",
+			Label: "否",
 		},
 		{
 			Value: FlagTesterYes,
-			Label: "否",
+			Label: "是",
 		},
 	}
 	SliceShopType = base.ModelItemOptions{
@@ -171,7 +171,7 @@ type (
 		ShopType         uint8            `gorm:"column:shop_type;type:tinyint(2);not null;default:1;comment:店铺类型 1-个人店 2-企业店 3-公募 4-非公募" json:"shop_type"`
 		ShopEntryType    uint8            `gorm:"column:shop_entry_type;type:tinyint(2);not null;default:1;comment:店铺入驻类型 1-普通店 2-本站官方自营店 3-官方店 4-旗舰店 5-授权店" json:"shop_entry_type"`
 		Status           uint8            `gorm:"column:status;type:tinyint(2);not null;default:1;comment:店铺审核状态1-审核通过 3-待审核 2-审核失败" json:"status"`
-		FlagTester       uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:2;comment:是否为测试数据店铺 1-是 2-不是"  json:"flag_tester"`
+		FlagTester       uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据店铺 1-是 2-不是"  json:"flag_tester"`
 		AdminUserHid     int64            `gorm:"column:admin_user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:管理管理员账号" json:"admin_user_hid"`
 		NeedVerifyStatus uint8            `gorm:"column:need_verify_status;type:tinyint(2);not null;default:1;comment:需要审核状态 1-审核通过 2-待审核 3-审核失败" json:"need_verify_status"`
 		VerifyStatus     string           `gorm:"column:verify_status;type:varchar(20);not null;default:'';comment:审核数据状态" json:"verify_status"`
