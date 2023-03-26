@@ -29,7 +29,19 @@ const (
 	SkuHaveBindSpuNo                   //未绑定
 )
 
+const ( //供货商供货渠道
+	SkuProvideChannelAliBaba int64 = iota + 1
+)
+
 var (
+	//注意:此数据只能在后边添加,否则会影响数据结构
+	SliceSkuProvideChannel = base.ModelItemOptions{
+		{
+			Value: SkuProvideChannelAliBaba,
+			Label: "阿里巴巴",
+		},
+	}
+
 	SliceSkuHaveBindSpu = base.ModelItemOptions{
 		{
 			Value: SkuHaveBindSpuYes,
@@ -113,6 +125,7 @@ type (
 		MarketCost      string           `gorm:"column:market_cost;default:0;type:decimal(10,2);not null;comment:划线价" json:"market_cost"`
 		PriceCost       string           `gorm:"column:price_cost;default:0;type:decimal(10,2);not null;comment:成本价" json:"price_cost"`
 		ShopSaleCode    string           `gorm:"column:shop_sale_code;type:varchar(80);default:'';not null;comment:商家供货码" json:"shop_sale_code"`
+		ProvideChannel  int64            `gorm:"column:provide_channel;type:bigint(20);not null;default:0;comment:供货渠道" json:"provide_channel"`
 		ProvideSaleCode string           `gorm:"column:provide_sale_code;type:varchar(80);default:'';not null;comment:供货商供货码" json:"provide_sale_code"`
 		SaleNum         int              `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
 		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
@@ -120,9 +133,10 @@ type (
 		Volume          string           `gorm:"column:volume;default:0;type:decimal(10,2);not null;comment:容积" json:"volume"`
 		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		HaveBindSpu     uint8            `gorm:"column:have_bind_spu;not null;type: tinyint(2);default:0;comment:是否绑定商品 1-是 2-不是"  json:"have_bind_spu"`
-		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
+
+		CreatedAt base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+		UpdatedAt base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+		DeletedAt *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	ProductSKus              []*Sku
 	SliceSkuStatusEditOption struct {
