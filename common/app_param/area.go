@@ -28,7 +28,26 @@ type (
 		base.ArgGetByStringIds
 		NameType string `json:"name_type" form:"name_type"`
 	}
+
+	ArgAreaGet struct {
+	}
+	ResultAreaGet     []*ResultAreaGetItem
+	ResultAreaGetItem struct {
+		Value        string               `json:"value"`
+		Label        string               `json:"label"`
+		ProvinceId   string               `json:"province_id"` // 省的编码
+		Level        int                  `json:"level"`
+		SelectCount  int                  `json:"select_count"`
+		Checked      bool                 `json:"checked"`
+		OtherChecked bool                 `json:"other_checked"` //其他地方是否已经选中过了
+		Children     []*ResultAreaGetItem `json:"children"`
+	}
 )
+
+func (r *ArgAreaGet) Default(context *base.Context) (err error) {
+
+	return
+}
 
 func (r *ArgGetByCodes) Default(ctx *base.Context) (err error) {
 
