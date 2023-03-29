@@ -33,15 +33,16 @@ type (
 	}
 	ResultAreaGet     []*ResultAreaGetItem
 	ResultAreaGetItem struct {
-		Value         string `json:"value"`
-		Label         string `json:"label"`
-		ProvinceId    string `json:"province_id"` // 省的编码
-		Level         int    `json:"level"`
-		SelectCount   int    `json:"select_count"`
-		Checked       bool   `json:"checked"`
-		OtherChecked  bool   `json:"other_checked"` //其他地方是否已经选中过了
-		Indeterminate bool   `json:"indeterminate"`
-		Children []*ResultAreaGetItem `json:"children"`
+		Value         string               `json:"value"`
+		Label         string               `json:"label"`
+		ProvinceId    string               `json:"province_id"` // 省的编码
+		Level         int                  `json:"level"`
+		SelectCount   int                  `json:"select_count"`
+		Checked       bool                 `json:"checked"`
+		OtherChecked  bool                 `json:"other_checked"` //其他地方是否已经选中过了
+		Indeterminate bool                 `json:"indeterminate"`
+		Disabled      bool                 `json:"disabled"`
+		Children      []*ResultAreaGetItem `json:"children"`
 	}
 )
 
