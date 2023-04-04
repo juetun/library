@@ -1,14 +1,8 @@
 package upload_operate
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/base-wrapper/lib/plugins/rpc"
-	"github.com/juetun/library/common/app_param"
-	"net/http"
-	"net/url"
 	"regexp"
 	"strings"
 )
@@ -67,12 +61,9 @@ func (r *ProductImages) GetNotDeleteData() (res []ProductImage) {
 	return
 }
 
-func (r *UploadImage) ToString() (res string) {
-	res = r.UploadCommon.ToString()
-	return
-}
+ 
 
-func (r *UploadImage) GetEditorHtml(value string) (res string, err error) {
+func (r *UploadFile) GetEditorHtml(value string) (res string, err error) {
 	var (
 		reg *regexp.Regexp
 	)
@@ -90,49 +81,3 @@ func (r *UploadImage) GetEditorHtml(value string) (res string, err error) {
 	return
 }
 
-// GetShowUrl 获取图片地址的播放地址
-func (r *UploadImage) GetShowUrl() (res *app_param.ResultExcelImportHeaderRelate, err error) {
-	arg := url.Values{}
-	params := rpc.RequestOptions{
-		Context:     r.Context,
-		Method:      http.MethodPost,
-		AppName:     app_param.AppNameUpload,
-		URI:         "/upload/get_img_address",
-		Value:       arg,
-		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
-		Header:      http.Header{},
-	}
-
-	if params.BodyJson, err = r.UploadCommon.ToJson(); err != nil {
-		return
-	}
-	req := rpc.NewHttpRpc(&params).
-		Send()
-	if err = req.Error; err != nil {
-		return
-	}
-	var body []byte
-	if body = req.GetBody().Body; len(body) == 0 {
-		return
-	}
-
-	var resResult struct {
-		Code int                                     `json:"code"`
-		Data app_param.ResultExcelImportHeaderRelate `json:"data"`
-		Msg  string                                  `json:"message"`
-	}
-	if err = json.Unmarshal(body, &resResult); err != nil {
-		return
-	}
-	if resResult.Code > 0 {
-		err = fmt.Errorf(resResult.Msg)
-		return
-	}
-
-	res = &resResult.Data
-	return
-}
-func (r *UploadImage) ParseString(saveUploadString string) (err error) {
-	err = r.UploadCommon.ParseString(saveUploadString)
-	return
-}
