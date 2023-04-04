@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
-	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -15,21 +14,18 @@ import (
 )
 
 type (
-	UploadImage struct {
-		ext_up.UploadCommon
-		Src string `json:"src"`
-	}
+
 	ProductImage struct {
-		UploadImage
+		UploadFile
 		IsThumbnail bool `json:"is_thumb"` // 是否是缩略图
 		Deleted     bool `json:"deleted"`  //是否已删除
 	}
-	ImageHandler  func(uploadImage *UploadImage)
+	ImageHandler  func(uploadImage *UploadFile)
 	ProductImages []ProductImage
 )
 
 func ImageContext(ctx *base.Context) ImageHandler {
-	return func(uploadImage *UploadImage) {
+	return func(uploadImage *UploadFile) {
 		uploadImage.Context = ctx
 	}
 }
@@ -68,15 +64,6 @@ func (r *ProductImages) GetNotDeleteData() (res []ProductImage) {
 		res = append(res, item)
 	}
 
-	return
-}
-
-// NewUploadImage
-func NewUploadImage(options ...ImageHandler) (res *UploadImage) {
-	res = &UploadImage{}
-	for _, option := range options {
-		option(res)
-	}
 	return
 }
 
