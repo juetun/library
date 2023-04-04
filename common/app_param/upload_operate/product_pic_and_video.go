@@ -86,15 +86,15 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 			}
 		}
 	}
-	if len(res.Img) > 0 {
-
-		for id, value := range res.Img {
-			key, duration = r.HandlerGetUploadCacheKey(id, FileTypePicture)
-			if err = r.SetToCacheNew(key, duration, value); err != nil {
-				return
-			}
-		}
-	}
+	//if len(res.Img) > 0 {
+	//
+	//	for id, value := range res.Img {
+	//		key, duration = r.HandlerGetUploadCacheKey(id, FileTypePicture)
+	//		if err = r.SetToCacheNew(key, duration, value); err != nil {
+	//			return
+	//		}
+	//	}
+	//}
 
 	if len(res.Video) > 0 {
 
@@ -105,15 +105,15 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 			}
 		}
 	}
-	if len(res.Material) > 0 {
-
-		for id, value := range res.Material {
-			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeMaterial)
-			if err = r.SetToCacheNew(key, duration, value); err != nil {
-				return
-			}
-		}
-	}
+	//if len(res.Material) > 0 {
+	//
+	//	for id, value := range res.Material {
+	//		key, duration = r.HandlerGetUploadCacheKey(id, FileTypeMaterial)
+	//		if err = r.SetToCacheNew(key, duration, value); err != nil {
+	//			return
+	//		}
+	//	}
+	//}
 	if len(res.File) > 0 {
 		for id, value := range res.File {
 			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeFile)
@@ -183,18 +183,18 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 	//收集缓存中没有的数据ID，便于后边查询使用
 	noCacheIds = NewArgUploadGetInfo()
 
-	for _, it := range arg.ImgKeys {
-		var data *UploadImage
-		if e = r.getFromCache(it, FileTypePicture, data); e != nil {
-			if e != redis.Nil {
-				err = e
-				return
-			}
-			noCacheIds.ImgKeys = append(noCacheIds.ImgKeys, it)
-			return
-		}
-		res.Img[it] = data
-	}
+	//for _, it := range arg.ImgKeys {
+	//	var data *UploadImage
+	//	if e = r.getFromCache(it, FileTypePicture, data); e != nil {
+	//		if e != redis.Nil {
+	//			err = e
+	//			return
+	//		}
+	//		noCacheIds.ImgKeys = append(noCacheIds.ImgKeys, it)
+	//		return
+	//	}
+	//	res.Img[it] = data
+	//}
 	for _, it := range arg.VideoKeys {
 		var data *UploadVideo
 		if e = r.getFromCache(it, FileTypeVideo, data); e != nil {
@@ -221,18 +221,18 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 		res.Music[it] = data
 	}
 
-	for _, it := range arg.Material {
-		var data *UploadMaterial
-		if e = r.getFromCache(it, FileTypeMaterial, data); e != nil {
-			if e != redis.Nil {
-				err = e
-				return
-			}
-			noCacheIds.Material = append(noCacheIds.Material, it)
-			return
-		}
-		res.Material[it] = data
-	}
+	//for _, it := range arg.Material {
+	//	var data *UploadMaterial
+	//	if e = r.getFromCache(it, FileTypeMaterial, data); e != nil {
+	//		if e != redis.Nil {
+	//			err = e
+	//			return
+	//		}
+	//		noCacheIds.Material = append(noCacheIds.Material, it)
+	//		return
+	//	}
+	//	res.Material[it] = data
+	//}
 
 	for _, it := range arg.File {
 		var data *UploadFile
@@ -258,25 +258,21 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromAll(arg *ArgUploadGetInfo) (
 	if res, argCacheNotHave, err = r.getByIdsFromCache(arg); err != nil {
 		return
 	}
-	if len(argCacheNotHave.ImgKeys) == 0 && len(argCacheNotHave.VideoKeys) == 0 && len(arg.MusicKey) == 0 {
+	if len(argCacheNotHave.VideoKeys) == 0 && len(arg.MusicKey) == 0 {
 		return
 	}
 
 	if dt, err = r.GetByIdsFromDb(argCacheNotHave); err != nil {
 		return
 	}
-	for key, value := range dt.Img {
-		res.Img[key] = value
-	}
+
 	for key, value := range dt.Video {
 		res.Video[key] = value
 	}
 	for key, value := range dt.Music {
 		res.Music[key] = value
 	}
-	for key, value := range dt.Material {
-		res.Material[key] = value
-	}
+	 
 	for key, value := range dt.File {
 		res.File[key] = value
 	}
