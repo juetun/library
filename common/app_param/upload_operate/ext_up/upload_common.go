@@ -42,7 +42,7 @@ func (r *UploadCommon) GetKey(keys ...string) (key string) {
 	return
 }
 
-func (r *UploadCommon) GetPk() (res string) {
+func (r *UploadCommon) GetChannelPk() (res string) {
 	res = fmt.Sprintf("%s_%s", r.Type, r.Channel)
 	return
 }
