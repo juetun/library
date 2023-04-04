@@ -272,7 +272,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromAll(arg *ArgUploadGetInfo) (
 	for key, value := range dt.Music {
 		res.Music[key] = value
 	}
-	 
+
 	for key, value := range dt.File {
 		res.File[key] = value
 	}
