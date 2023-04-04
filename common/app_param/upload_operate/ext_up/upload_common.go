@@ -42,6 +42,11 @@ func (r *UploadCommon) GetKey(keys ...string) (key string) {
 	return
 }
 
+func (r *UploadCommon) GetPk() (res string) {
+	res = fmt.Sprintf("%s_%s", r.Type, r.Channel)
+	return
+}
+
 func (r *UploadCommon) ParseString(saveUploadString string) (err error) {
 	if saveUploadString == "" {
 		return
