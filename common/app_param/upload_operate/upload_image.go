@@ -61,7 +61,7 @@ func (r *ProductImages) GetNotDeleteData() (res []ProductImage) {
 	return
 }
 
- 
+
 
 func (r *UploadFile) GetEditorHtml(value string) (res string, err error) {
 	var (

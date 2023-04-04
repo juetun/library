@@ -543,7 +543,7 @@ func (r *Product) SetImage(images string) {
 	r.Image = images
 }
 
-func (r *Product) SetVideo(video *upload_operate.UploadImage) {
+func (r *Product) SetVideo(video *upload_operate.UploadVideo) {
 	if video == nil {
 		return
 	}

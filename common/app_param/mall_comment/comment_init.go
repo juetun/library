@@ -82,7 +82,8 @@ func (r *CommentVideoItem) ParseFromVideo(video *upload_operate.UploadVideo) {
 	r.Src = video.Src
 	r.ShowData = video.GetShowUrl()
 }
-func (r *CommentImageItem) ParseFromImg(img *upload_operate.UploadImage) {
+
+func (r *CommentImageItem) ParseFromImg(img *upload_operate.UploadFile) {
 	r.ImgUrl = img.Src
 	r.BigImgUrl = img.Src
 	r.SmallImgUrl = img.Src
