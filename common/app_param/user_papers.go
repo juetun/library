@@ -115,7 +115,7 @@ var (
 type (
 	DataPapersGroupShopProperty struct {
 		ShowType     string `json:"show_type"` //DataPapersGroupShopPropertyRadio DataPapersGroupShopPropertyCheckbox  DataPapersGroupShopPropertySelect
-		ShowTypeName string `json:"show_type_name"`
+		ShowTypeName string `json:"show_type_name,omitempty"`
 	}
 )
 
@@ -126,6 +126,7 @@ func (r *DataPapersGroupShopProperty) ParseShowType() (res string) {
 	MapDataPapersGroupShopProperty, _ := SliceDataPapersGroupShopProperty.GetMapAsKeyString()
 	var ok bool
 	if res, ok = MapDataPapersGroupShopProperty[r.ShowType]; ok {
+		r.ShowTypeName = res
 		return
 	}
 
