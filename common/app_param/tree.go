@@ -3,6 +3,7 @@ package app_param
 type (
 	TreeOption struct {
 		Title           string        `json:"title"`           //标题
+		Value           string        `json:"value"`           //值
 		Expand          bool          `json:"expand"`          //是否展开直子节点
 		Disabled        bool          `json:"disabled"`        //禁掉响应
 		DisableCheckbox bool          `json:"disableCheckbox"` //禁掉 checkbox
