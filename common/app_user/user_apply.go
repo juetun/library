@@ -6,6 +6,7 @@ const (
 	UpdateBatchTypeInfo        = "shop_info"    //店铺信息
 	UpdateBatchTypeBrand       = "shop_brand"   //店铺品牌
 	UpdateBatchTypeCate        = "shop_cate"    //店铺类目
+	UpdateBatchTypeAuthType    = "auth_type"    //店铺入驻审核
 	UpdateBatchTypeUserProfile = "user_profile" //用户资料
 )
 const (
@@ -33,6 +34,10 @@ var (
 		{
 			Value: UpdateBatchTypeUserProfile,
 			Label: "用户资料",
+		},
+		{
+			Value: UpdateBatchTypeAuthType,
+			Label: "店铺入驻",
 		},
 	}
 )
