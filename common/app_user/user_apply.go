@@ -5,6 +5,8 @@ import "github.com/juetun/base-wrapper/lib/base"
 const (
 	UpdateBatchTypeInfo        = "shop_info"    //店铺信息
 	UpdateBatchTypeBrand       = "shop_brand"   //店铺品牌
+	UpdateBatchTypeCompany     = "company"      //企业信息
+	UpdateBatchTypeManager     = "manager"      //代理人信息
 	UpdateBatchTypeCate        = "shop_cate"    //店铺类目
 	UpdateBatchTypeAuthType    = "auth_type"    //店铺入驻审核
 	UpdateBatchTypeAvatar      = "avatar"       //用户头像审核
@@ -43,6 +45,14 @@ var (
 		{
 			Value: UpdateBatchTypeAvatar,
 			Label: "用户头像",
+		},
+		{
+			Value: UpdateBatchTypeCompany,
+			Label: "企业信息",
+		},
+		{
+			Value: UpdateBatchTypeManager,
+			Label: "代理人信息",
 		},
 	}
 )
