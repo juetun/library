@@ -39,7 +39,8 @@ const (
 	ShopNeedVerifyStatusOk       uint8 = iota + 1 //审核通过
 	ShopNeedVerifyStatusUpdating                  //审核中
 	ShopNeedVerifyStatusFailure                   //审核失败
-	ShopNeedVerifyStatusExpire                    // 店铺资质已过期
+	ShopNeedVerifyStatusExpire                    //店铺资质已过期
+	ShopNeedVerifyStatusEdit                      //资质审核编辑中
 )
 
 //修改店铺信息支持的字段
@@ -51,8 +52,33 @@ const (
 	ShopCanUpdateColumnBgImage       = "bg_image" //修改背景图
 )
 
+const (
+	ShopSliceVerifyStatusValue   = "0" // 初始化
+	ShopSliceVerifyStatusOk      = "1" // 审核成功
+	ShopSliceVerifyStatusIng     = "2" // 审核中
+	ShopSliceVerifyStatusFailure = "3" // 审核失败
+)
+
 // 0-个人店 1-企业店 2-公募 3-公募
 var (
+	SliceShopSliceVerifyStatus = base.ModelItemOptions{
+		{
+			Value: ShopSliceVerifyStatusValue,
+			Label: "初始化",
+		},
+		{
+			Value: ShopSliceVerifyStatusOk,
+			Label: "审核成功",
+		},
+		{
+			Value: ShopSliceVerifyStatusIng,
+			Label: "审核中",
+		},
+		{
+			Value: ShopSliceVerifyStatusFailure,
+			Label: "审核失败",
+		},
+	}
 	SliceFlagTester = base.ModelItemOptions{
 		{
 			Value: FlagTesterNo,
@@ -136,14 +162,11 @@ var (
 			Value: ShopNeedVerifyStatusExpire,
 			Label: "资质已过期",
 		},
+		{
+			Value: ShopNeedVerifyStatusEdit,
+			Label: "资料上传中",
+		},
 	}
-)
-
-const (
-	ShopSliceVerifyStatusValue   = "0" // 初始化
-	ShopSliceVerifyStatusOk      = "1" // 审核成功
-	ShopSliceVerifyStatusIng     = "2" // 审核中
-	ShopSliceVerifyStatusFailure = "3" // 审核失败
 )
 
 const (
@@ -240,6 +263,16 @@ func (r *Shop) ParseShopNeedVerifyStatus() (res string) {
 		return
 	}
 	res = fmt.Sprintf("未知(%d)", r.NeedVerifyStatus)
+	return
+}
+
+func (r *Shop) ParseVerifyStatus() (res string) {
+	mapKey, _ := SliceShopSliceVerifyStatus.GetMapAsKeyString()
+	if dt, ok := mapKey[r.VerifyStatus]; ok {
+		res = dt
+		return
+	}
+	res = fmt.Sprintf("未知(%d)", r.VerifyStatus)
 	return
 }
 
