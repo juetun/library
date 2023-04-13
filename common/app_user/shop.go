@@ -14,14 +14,19 @@ import (
 
 //根据店铺ID获取店铺信息
 func GetShopDataByUIds(ctx *base.Context, shopIds []int64, dataTypes ...string) (res map[int64]*mall.ShopData, err error) {
+	res = map[int64]*mall.ShopData{}
+	if len(shopIds) == 0 {
+		return
+	}
 	var value = url.Values{}
 	var shopID = make([]string, 0, len(shopIds))
 	for _, value := range shopIds {
 		shopID = append(shopID, fmt.Sprintf("%d", value))
 	}
-	uIds := strings.Join(shopID, ",")
-	value.Set("user_hid", uIds)
-	value.Set("data_type", strings.Join(dataTypes, ","))
+	value.Set("shop_ids", strings.Join(shopID, ","))
+	if len(dataTypes) > 0 {
+		value.Set("data_type", strings.Join(dataTypes, ","))
+	}
 	ro := rpc.RequestOptions{
 		Method:      http.MethodGet,
 		AppName:     app_param.AppNameMall,
