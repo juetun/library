@@ -12,6 +12,15 @@ import (
 	"strings"
 )
 
+type (
+	ArgUserReviewSubmit struct {
+		BatchId  string `json:"batch_id" form:"batch_id"`
+		DataType string `json:"data_type" form:"data_type"`
+		Mark     string `json:"mark" form:"mark"`
+		Status   uint8  `json:"status" form:"status"`
+	}
+)
+
 //根据店铺ID获取店铺信息
 func GetShopDataByUIds(ctx *base.Context, shopIds []int64, dataTypes ...string) (res map[int64]*mall.ShopData, err error) {
 	res = map[int64]*mall.ShopData{}
@@ -49,5 +58,37 @@ func GetShopDataByUIds(ctx *base.Context, shopIds []int64, dataTypes ...string) 
 		return
 	}
 	res = data.Data
+	return
+}
+
+func (r *ArgUserReviewSubmit) Default(ctx *base.Context) (err error) {
+	if r.BatchId == "" || r.BatchId == "0" {
+		err = fmt.Errorf("请选择您要审核信息")
+		return
+	}
+	if err = r.validateDataType(); err != nil {
+		return
+	}
+	switch r.Status {
+	case UserApplyStatusFailure:
+		if r.Mark == "" {
+			err = fmt.Errorf("请填写审核失败的备注")
+			return
+		}
+	case UserApplyStatusUsing:
+	default:
+		err = fmt.Errorf("审核状态当前只支持审核成功和审核失败")
+		return
+	}
+	return
+}
+
+func (r *ArgUserReviewSubmit) validateDataType() (err error) {
+	var mapDataType map[string]string
+	mapDataType, _ = SliceUpdateBatchType.GetMapAsKeyString()
+	if _, ok := mapDataType[r.DataType]; !ok {
+		err = fmt.Errorf("当前暂不支持你审核的数据类型")
+		return
+	}
 	return
 }
