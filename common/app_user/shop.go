@@ -14,6 +14,7 @@ import (
 
 type (
 	ArgUserReviewSubmit struct {
+		UserHid  int64  `json:"user_hid" form:"user_hid"`
 		BatchId  string `json:"batch_id" form:"batch_id"`
 		DataType string `json:"data_type" form:"data_type"`
 		Mark     string `json:"mark" form:"mark"`
@@ -78,6 +79,10 @@ func (r *ArgUserReviewSubmit) Default(ctx *base.Context) (err error) {
 	case UserApplyStatusUsing:
 	default:
 		err = fmt.Errorf("审核状态当前只支持审核成功和审核失败")
+		return
+	}
+	if r.UserHid == 0 {
+		err = fmt.Errorf("请选择数据所属用户")
 		return
 	}
 	return
