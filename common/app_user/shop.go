@@ -14,12 +14,13 @@ import (
 
 type (
 	ArgUserReviewSubmit struct {
-		ShopId   int64  `json:"shop_id" form:"shop_id"`
-		UserHid  int64  `json:"user_hid" form:"user_hid"`
-		BatchId  string `json:"batch_id" form:"batch_id"`
-		DataType string `json:"data_type" form:"data_type"`
-		Mark     string `json:"mark" form:"mark"`
-		Status   uint8  `json:"status" form:"status"`
+		ShopId   int64           `json:"shop_id" form:"shop_id"`
+		UserHid  int64           `json:"user_hid" form:"user_hid"`
+		BatchId  string          `json:"batch_id" form:"batch_id"`
+		DataType string          `json:"data_type" form:"data_type"`
+		Mark     string          `json:"mark" form:"mark"`
+		Status   uint8           `json:"status" form:"status"`
+		TimeNow  base.TimeNormal `json:"time_now" form:"time_now"`
 	}
 )
 
