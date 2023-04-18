@@ -24,11 +24,13 @@ const (
 
 // 店铺入驻状态
 const (
-	ShopStatusInit     = app_user.UserApplyStatusInit    // 入驻状态初始化
-	ShopStatusOk       = app_user.UserApplyStatusUsing   // 入驻状态审核通过
-	ShopStatusFailure  = app_user.UserApplyStatusFailure // 入驻状态审核失败
-	ShopStatusInvalid  = app_user.UserApplyStatusInvalid //已失效
-	ShopStatusAuditing = app_user.UserApplyStatusSubmit  //审核中
+	ShopStatusOk       uint8 = iota + 1                       //入驻状态审核通过
+	ShopStatusInvalid                                         //已失效
+	ShopStatusFailure                                         //入驻状态审核失败
+	ShopStatusInit           = app_user.UserApplyStatusInit   // 入驻状态初始化
+	ShopStatusAuditing       = app_user.UserApplyStatusSubmit //审核中
+
+
 )
 
 const (

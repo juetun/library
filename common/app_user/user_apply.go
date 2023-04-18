@@ -1,6 +1,9 @@
 package app_user
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/mall/models"
+)
 
 const (
 	UpdateBatchTypeInfo        = "shop_info"    //店铺信息
@@ -13,11 +16,13 @@ const (
 	UpdateBatchTypeUserProfile = "user_profile" //用户资料
 )
 const (
-	UserApplyStatusUsing   uint8 = iota + 1 //使用中
-	UserApplyStatusInvalid                  //失效
-	UserApplyStatusFailure                  //审核失败
-	UserApplyStatusInit                     //编辑中
-	UserApplyStatusSubmit                   //提交审核
+	//审核状态用店铺审核状态值同步
+	UserApplyStatusUsing   = models.ShopStatusOk       //使用中
+	UserApplyStatusInvalid = models.ShopStatusInvalid  //失效
+	UserApplyStatusFailure = models.ShopStatusFailure  //审核失败
+	UserApplyStatusInit    = models.ShopStatusInit     //编辑中
+	UserApplyStatusSubmit  = models.ShopStatusAuditing //提交审核
+
 )
 
 var (
