@@ -87,6 +87,9 @@ func (r *ArgUserReviewSubmit) Default(ctx *base.Context) (err error) {
 		err = fmt.Errorf("请选择数据所属用户")
 		return
 	}
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
 	return
 }
 
