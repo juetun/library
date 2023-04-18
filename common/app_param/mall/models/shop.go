@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_user"
 	"strings"
 )
 
@@ -24,12 +23,11 @@ const (
 
 // 店铺入驻状态
 const (
-	ShopStatusOk       uint8 = iota + 1                       //入驻状态审核通过
-	ShopStatusInvalid                                         //已失效
-	ShopStatusFailure                                         //入驻状态审核失败
-	ShopStatusInit           = app_user.UserApplyStatusInit   // 入驻状态初始化
-	ShopStatusAuditing       = app_user.UserApplyStatusSubmit //审核中
-
+	ShopStatusOk       uint8 = iota + 1 //入驻状态审核通过
+	ShopStatusInvalid                   //已失效
+	ShopStatusFailure                   //入驻状态审核失败
+	ShopStatusInit                      // 入驻状态初始化
+	ShopStatusAuditing                  //审核中
 
 )
 
