@@ -31,6 +31,7 @@ const (
 
 const ( //供货商供货渠道
 	SkuProvideChannelAliBaba int64 = iota + 1
+	SkuProvideChannelDown
 )
 
 var (
@@ -39,6 +40,10 @@ var (
 		{
 			Value: SkuProvideChannelAliBaba,
 			Label: "阿里巴巴",
+		},
+		{
+			Value: SkuProvideChannelDown,
+			Label: "线下渠道",
 		},
 	}
 
