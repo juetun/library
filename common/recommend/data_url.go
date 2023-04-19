@@ -21,6 +21,7 @@ const (
 const (
 	//店铺后台界面名称
 	UserShopInfo = "shop_info"
+	UserShopHome = "shop_home"
 )
 
 var (
@@ -31,6 +32,7 @@ var (
 	MapPageSNsName  = map[string]string{PageNameSns: "/#/pages/sns/detail/index",}
 	MapPageUserShop = map[string]string{
 		UserShopInfo: "/shop/info",
+		UserShopHome: "/",
 	}
 )
 
