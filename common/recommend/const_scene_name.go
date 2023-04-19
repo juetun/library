@@ -16,9 +16,10 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "spu" //商品信息
-	AdDataDataTypeSocialIntercourse        = "sns" //广告社交动态信息
-	AdDataStatusUserSet                    = "usr" //用户手工设置
+	AdDataDataTypeSpu               string = "spu"       //商品信息
+	AdDataDataTypeSocialIntercourse        = "sns"       //广告社交动态信息
+	AdDataStatusUserSet                    = "usr"       //用户手工设置
+	AdDataDataTypeUserShop                 = "user_shop" //店铺后台
 )
 
 const (
@@ -40,6 +41,10 @@ var (
 		{
 			Label: "手工指定",
 			Value: AdDataStatusUserSet,
+		},
+		{
+			Label: "店铺后台",
+			Value: AdDataDataTypeUserShop,
 		},
 	}
 	SliceAdDataStatus = base.ModelItemOptions{
