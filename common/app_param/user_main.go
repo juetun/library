@@ -37,8 +37,8 @@ var (
 var (
 	UserMainTableNumber int64 = 2
 	UserMainStatusMap         = map[int]string{
-		UserMainStatusInit:    "未审核",
-		UserMainStatusOk:      "审核通过",
+		UserMainStatusInit:    "未认证",
+		UserMainStatusOk:      "已认证",
 		UserMainStatusFailure: "审核失败",
 		UserMainStatusWaiting: "待审核",
 	}
