@@ -2,15 +2,13 @@ package app_param
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
+	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
-
-	"github.com/juetun/base-wrapper/lib/app/app_obj"
-	"github.com/juetun/base-wrapper/lib/base"
 )
 
 // 获取用户信息对应的表
@@ -54,26 +52,26 @@ type (
 		List map[int64]ResultUserItem `json:"list"`
 	}
 	ResultUserItem struct {
-		UserHid          int64      `json:"user_hid,omitempty"`  // 用户ID
-		Portrait         string     `json:"portrait,omitempty"`  // 头像
-		PortraitUrl      string     `json:"portrait_url"`        //头像链接
-		NickName         string     `json:"nick_name,omitempty"` // 昵称
-		UserName         string     `json:"user_name,omitempty"` // 用户名
-		RealName         string     `json:"real_name"`           // 真实姓名
-		Gender           int        `json:"gender,omitempty"`    //
-		Status           int        `json:"status,omitempty"`    //
-		Score            int        `json:"score,omitempty"`     //
-		AuthDesc         string     `json:"auth_desc,omitempty"` // 认证描述
-		IsV              int        `json:"is_v,omitempty"`      // 用户头像加V
-		Remark           string     `json:"remark" `             // 个性签名
-		Signature        string     `json:"signature,omitempty"`
-		RegisterChannel  string     `json:"register_channel,omitempty"`
-		CountryCode      string     `json:"country_code,omitempty"`
-		Mobile           string     `json:"mobile,omitempty"`
-		MobileVerifiedAt *time.Time `json:"mobile_verified_at,omitempty"`
-		Email            string     `json:"email,omitempty"`
-		EmailVerifiedAt  *time.Time `json:"email_verified_at,omitempty"`
-		ShopId           int64      `json:"shop_id"`
+		UserHid          int64            `json:"user_hid,omitempty"`  // 用户ID
+		Portrait         string           `json:"portrait,omitempty"`  // 头像
+		PortraitUrl      string           `json:"portrait_url"`        //头像链接
+		NickName         string           `json:"nick_name,omitempty"` // 昵称
+		UserName         string           `json:"user_name,omitempty"` // 用户名
+		RealName         string           `json:"real_name"`           // 真实姓名
+		Gender           int              `json:"gender,omitempty"`    //
+		Status           int              `json:"status,omitempty"`    //
+		Score            int              `json:"score,omitempty"`     //
+		AuthDesc         string           `json:"auth_desc,omitempty"` // 认证描述
+		IsV              int              `json:"is_v,omitempty"`      // 用户头像加V
+		Remark           string           `json:"remark" `             // 个性签名
+		Signature        string           `json:"signature,omitempty"`
+		RegisterChannel  string           `json:"register_channel,omitempty"`
+		CountryCode      string           `json:"country_code,omitempty"`
+		Mobile           string           `json:"mobile,omitempty"`
+		MobileVerifiedAt *base.TimeNormal `json:"mobile_verified_at,omitempty"`
+		Email            string           `json:"email,omitempty"`
+		EmailVerifiedAt  *base.TimeNormal `json:"email_verified_at,omitempty"`
+		ShopId           int64            `json:"shop_id"`
 
 		UserMobileIndex   string          `json:"user_mobile_index"`
 		UserEmailIndex    string          `json:"user_email_index"`
@@ -108,13 +106,25 @@ type (
 		UserMobile *UserMobile `json:"user_mobile,omitempty"`
 	}
 	UserIndex struct {
-		ID         int64            `gorm:"column:id;primary_key" json:"-"`
-		UserName   string           `gorm:"column:user_name;not null;type:varchar(50) COLLATE utf8mb4_bin;uniqueIndex;comment:用户名" json:"user_name" `
-		TmpAccount string           `gorm:"column:tmp_account;not null;type:varchar(200) COLLATE utf8mb4_bin;comment:注册时临时账号" json:"tmp_account" `
-		IsUse      int              `json:"is_use" gorm:"column:is_use;type:tinyint(1);default:0;comment:是否启用 0-启用 大于0-已启用"`
-		CreatedAt  base.TimeNormal  `json:"created_at" gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;" `
-		UpdatedAt  base.TimeNormal  `json:"updated_at" gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;" `
-		DeletedAt  *base.TimeNormal `json:"deleted_at" gorm:"column:deleted_at;" `
+		ID            int64            `gorm:"column:id;primary_key" json:"-"`
+		UserName      string           `gorm:"column:user_name;not null;type:varchar(50) COLLATE utf8mb4_bin;default:'';uniqueIndex;comment:用户名" json:"user_name" `
+		TmpAccount    string           `gorm:"column:tmp_account;not null;type:varchar(200) COLLATE utf8mb4_bin;default:'';comment:注册时临时账号" json:"tmp_account" `
+		IsUse         int              `json:"is_use" gorm:"column:is_use;not null;type:tinyint(1);default:0;comment:是否启用 0-未启用 大于0-已启用"`
+		AttendNum     int64            `gorm:"column:attend_num;not null;default:0;type:bigint(20);comment:关注数 实时性不是高" json:"attend_num"`   // 关注数
+		LoveNum       int64            `gorm:"column:love_num;not null;default:0;type:bigint(20);comment:点赞数 实时性不是高" json:"love_num"`       // 点赞数
+		CommentNum    int64            `gorm:"column:comment_num;not null;default:0;type:bigint(20);comment:评论数 实时性不是高" json:"comment_num"` // 评论数
+		ApplyFlag     string           `gorm:"column:apply_flag;not null;type:varchar(200) COLLATE utf8mb4_bin;default:'';comment:审核位管理" json:"apply_flag" `
+		UpdateBatchId string           `gorm:"column:update_batch_id;not null;type:varchar(200) COLLATE utf8mb4_bin;default:'';comment:变更数据的ID" json:"update_batch_id" `
+		AuthType      uint8            `gorm:"column:auth_type;not null;type:tinyint(2);default:0;comment:认证类型 0-个人用户 1-企业用户" json:"auth_type"`
+		Status        int              `gorm:"column:status;not null;type:tinyint(1);default:0;comment:状态 0-可用 1-不可用" json:"status"`
+		Email         string           `gorm:"column:email;not null;type:varchar(100);default:'';index:idx_email;comment:邮箱" json:"-"`
+		CountryCode   string           `gorm:"column:country_code;type:varchar(15) COLLATE utf8mb4_bin;default:'';index:inx_mobile,priority:2;not null;comment:手机国别默认86" json:"country_code"`
+		Mobile        string           `gorm:"column:mobile;not null;default:'';type:varchar(20) COLLATE utf8mb4_bin;index:inx_mobile,priority:1;comment:手机号" json:"-"`
+		CreatedAt     base.TimeNormal  `json:"created_at" gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;" `
+		UpdatedAt     base.TimeNormal  `json:"updated_at" gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;" `
+		DeletedAt     *base.TimeNormal `json:"-" gorm:"column:deleted_at;"`
+		DataName      string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
+		TbName        string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
 	}
 	UserInfo struct {
 		ID                int             `gorm:"column:id;primary_key" json:"id"`
@@ -138,21 +148,21 @@ type (
 	}
 
 	UserEmail struct {
-		ID              int        `gorm:"column:id;primary_key" json:"-"`
-		UserHid         int64      `json:"user_hid" gorm:"column:user_hid;uniqueIndex:idx_userhid,priority:1;type:bigint(20);default:0;not null;"`
-		UserIndexHid    string     `json:"user_index_hid" gorm:"column:user_index_hid;type:varchar(60);not null;comment:user_main表位置"`
-		Email           string     `gorm:"column:email;uniqueIndex:idx_email,priority:1;not null;type:varchar(100);default:0;comment:邮箱" json:"-"`
-		EmailVerifiedAt *time.Time `gorm:"column:email_verified_at;not null;uniqueIndex:idx_email,priority:3;type:datetime;default:'2000-01-01 00:00:00';comment:认证时间;" json:"-"`
-		IsDel           int        `json:"is_del" gorm:"column:is_del;uniqueIndex:idx_userhid,priority:2;uniqueIndex:idx_email,priority:2;type:tinyint(2);default:0;comment:是否删除0-未删除 大于0-已删除"`
+		ID              int              `gorm:"column:id;primary_key" json:"-"`
+		UserHid         int64            `json:"user_hid" gorm:"column:user_hid;uniqueIndex:idx_userhid,priority:1;type:bigint(20);default:0;not null;"`
+		UserIndexHid    string           `json:"user_index_hid" gorm:"column:user_index_hid;type:varchar(60);not null;comment:user_main表位置"`
+		Email           string           `gorm:"column:email;uniqueIndex:idx_email,priority:1;not null;type:varchar(100);default:0;comment:邮箱" json:"-"`
+		EmailVerifiedAt *base.TimeNormal `gorm:"column:email_verified_at;not null;uniqueIndex:idx_email,priority:3;type:datetime;default:'2000-01-01 00:00:00';comment:认证时间;" json:"-"`
+		IsDel           int              `json:"is_del" gorm:"column:is_del;uniqueIndex:idx_userhid,priority:2;uniqueIndex:idx_email,priority:2;type:tinyint(2);default:0;comment:是否删除0-未删除 大于0-已删除"`
 	}
 	UserMobile struct {
-		ID               int        `gorm:"column:id;primary_key" json:"-"`
-		UserHid          int64      `json:"user_hid" gorm:"column:user_hid;uniqueIndex:inx_userhid,priority:1;not null;default:0;type:bigint(20) COLLATE utf8mb4_bin;"`
-		UserIndexHid     string     `json:"user_index_hid" gorm:"column:user_index_hid;not null;default:'';type:varchar(60) COLLATE utf8mb4_bin;comment:user_main表位置"`
-		CountryCode      string     `gorm:"column:country_code;uniqueIndex:idx_mobile,priority:2;type:varchar(15) COLLATE utf8mb4_bin;not null;comment:手机国别默认86" json:"country_code"`
-		Mobile           string     `gorm:"column:mobile;not null;default:'';uniqueIndex:idx_mobile,priority:1;type:varchar(20) COLLATE utf8mb4_bin;comment:手机号" json:"-"`
-		MobileVerifiedAt *time.Time `json:"mobile_verified_at" gorm:"column:mobile_verified_at;not null;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
-		IsDel            int        `json:"is_del" gorm:"column:is_del;type:tinyint(2);uniqueIndex:inx_userhid,priority:2;uniqueIndex:idx_mobile,priority:3;not null;idx_mobile,priority:1;default:0;comment:是否删除0-未删除 大于0-已删除"`
+		ID               int              `gorm:"column:id;primary_key" json:"-"`
+		UserHid          int64            `json:"user_hid" gorm:"column:user_hid;uniqueIndex:inx_userhid,priority:1;not null;default:0;type:bigint(20) COLLATE utf8mb4_bin;"`
+		UserIndexHid     string           `json:"user_index_hid" gorm:"column:user_index_hid;not null;default:'';type:varchar(60) COLLATE utf8mb4_bin;comment:user_main表位置"`
+		CountryCode      string           `gorm:"column:country_code;uniqueIndex:idx_mobile,priority:2;type:varchar(15) COLLATE utf8mb4_bin;not null;comment:手机国别默认86" json:"country_code"`
+		Mobile           string           `gorm:"column:mobile;not null;default:'';uniqueIndex:idx_mobile,priority:1;type:varchar(20) COLLATE utf8mb4_bin;comment:手机号" json:"-"`
+		MobileVerifiedAt *base.TimeNormal `json:"mobile_verified_at" gorm:"column:mobile_verified_at;not null;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
+		IsDel            int              `json:"is_del" gorm:"column:is_del;type:tinyint(2);uniqueIndex:inx_userhid,priority:2;uniqueIndex:idx_mobile,priority:3;not null;idx_mobile,priority:1;default:0;comment:是否删除0-未删除 大于0-已删除"`
 	}
 )
 
