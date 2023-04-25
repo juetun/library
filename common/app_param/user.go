@@ -63,8 +63,7 @@ const (
 )
 
 var (
-	UserInfoNumber int64 = 2
-	IdCardSecret         = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
+ 	IdCardSecret         = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
 
 	RegisterChannelMap = map[string]string{
 		RegisterChannelAdmin:   "管理后台",
