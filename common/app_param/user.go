@@ -46,6 +46,37 @@ var (
 	}
 )
 
+
+
+const (
+	RegisterChannelAdmin   = "admin"   // 客服后台注册的账号 渠道标记
+	RegisterChannelAndroid = "android" // 客服后台注册的账号 安卓
+	RegisterChannelIos     = "ios"     // 客服后台注册的账号 ios
+	RegisterChannelH5      = "h5"      // 客服后台注册的账号 h5
+	RegisterChannelWebSite = "website" // 客服后台注册的账号 h5
+	RegisterChannelWeiXin  = "wei_xin" // 客服后台注册的账号 微信
+	RegisterChannelWeiBo   = "wei_bo"  // 客服后台注册的账号 微博
+)
+
+const (
+	DefaultBirthDay = "1970-01-01" //默认生日
+)
+
+var (
+	UserInfoNumber int64 = 2
+	IdCardSecret         = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
+
+	RegisterChannelMap = map[string]string{
+		RegisterChannelAdmin:   "管理后台",
+		RegisterChannelAndroid: "安卓",
+		RegisterChannelIos:     "IOS",
+		RegisterChannelH5:      "m站",
+		RegisterChannelWebSite: "网站",
+		RegisterChannelWeiXin:  "微信",
+		RegisterChannelWeiBo:   "微博",
+	}
+)
+
 // 获取用户信息的响应参数结构
 type (
 	ResultUser struct {
