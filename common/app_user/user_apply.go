@@ -66,24 +66,24 @@ var (
 	//用户资料审核状态
 	SliceUserApplyStatus = base.ModelItemOptions{
 		{
-			Label: "审核通过",
-			Value: UserApplyStatusUsing,
-		},
-		{
-			Label: "已失效",
-			Value: UserApplyStatusInvalid,
+			Label: "审核中...",
+			Value: UserApplyStatusSubmit,
 		},
 		{
 			Label: "审核失败",
 			Value: UserApplyStatusFailure,
 		},
 		{
-			Label: "编辑中...",
-			Value: UserApplyStatusInit,
+			Label: "已失效",
+			Value: UserApplyStatusInvalid,
 		},
 		{
-			Label: "审核中...",
-			Value: UserApplyStatusSubmit,
+			Label: "审核通过",
+			Value: UserApplyStatusUsing,
+		},
+		{
+			Label: "编辑中...",
+			Value: UserApplyStatusInit,
 		},
 	}
 )
