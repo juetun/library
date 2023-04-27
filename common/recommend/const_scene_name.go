@@ -29,6 +29,7 @@ const (
 )
 
 var (
+	 
 	SliceAdDataType = base.ModelItemOptions{ //
 		{
 			Label: "电商",
@@ -39,25 +40,11 @@ var (
 			Value: AdDataDataTypeSocialIntercourse,
 		},
 		{
-			Label: "手工指定",
-			Value: AdDataStatusUserSet,
-		},
-	}
-	SliceDataTypeLink = base.ModelItemOptions{ //
-		{
-			Label: "电商",
-			Value: AdDataDataTypeSpu,
-		},
-		{
-			Label: "社交",
-			Value: AdDataDataTypeSocialIntercourse,
-		},
-		{
-			Label: "手工指定",
+			Label: "客服手工指定",
 			Value: AdDataStatusUserSet,
 		},
 		{
-			Label: "店铺后台",
+			Label: "客户店铺手工指定",
 			Value: AdDataDataTypeUserShop,
 		},
 	}
