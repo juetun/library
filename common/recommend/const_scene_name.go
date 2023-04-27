@@ -38,6 +38,16 @@ var (
 			Label: "社交",
 			Value: AdDataDataTypeSocialIntercourse,
 		},
+	}
+	SliceDataTypeLink = base.ModelItemOptions{ //
+		{
+			Label: "电商",
+			Value: AdDataDataTypeSpu,
+		},
+		{
+			Label: "社交",
+			Value: AdDataDataTypeSocialIntercourse,
+		},
 		{
 			Label: "手工指定",
 			Value: AdDataStatusUserSet,
