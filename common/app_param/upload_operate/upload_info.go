@@ -34,8 +34,8 @@ func (r *ArgUploadGetInfo) Default(c *base.Context) (err error) {
 func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
 	res = &ArgUploadGetInfo{
 		//ImgKeys:   make([]string, 0, 50),
-		VideoKeys: make([]string, 0, 10),
-		MusicKey:  make([]string, 0, 10),
+		VideoKeys: make([]string, 0, 50),
+		MusicKey:  make([]string, 0, 50),
 		//Material:  make([]string, 0, 50),
 		File: make([]string, 0, 50),
 	}
