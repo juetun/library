@@ -29,7 +29,17 @@ const (
 )
 
 var (
-	 
+	//业务数据
+	SliceAdDataTypeBiz = base.ModelItemOptions{
+		{
+			Label: "电商",
+			Value: AdDataDataTypeSpu,
+		},
+		{
+			Label: "社交",
+			Value: AdDataDataTypeSocialIntercourse,
+		},
+	}
 	SliceAdDataType = base.ModelItemOptions{ //
 		{
 			Label: "电商",
