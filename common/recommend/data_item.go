@@ -11,12 +11,13 @@ const (
 
 type (
 	DataItem struct {
-		Title         string                     `json:"title,omitempty"`       //标题
-		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`    //前缀标签
-		DataType      string                     `json:"data_type"`             //数据类型
-		DataId        string                     `json:"data_id"`               //数据ID
-		Link          string                     `json:"link"`                  //链接地址
-		HaveVideo     bool                       `json:"have_video,omitempty"`  //是否有视频
+		Title         string                     `json:"title,omitempty"`      //标题
+		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`   //前缀标签
+		DataType      string                     `json:"data_type"`            //数据类型
+		DataId        string                     `json:"data_id"`              //数据ID
+		Link          string                     `json:"link"`                 //链接地址
+		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
+		ImgData       string                     `json:"-"`
 		Img           string                     `json:"img,omitempty"`         //头图
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`  //详情
 		CanBuy        bool                       `json:"can_buy"`               //是否能够购买
