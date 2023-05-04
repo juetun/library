@@ -47,9 +47,6 @@ func getPageSpuPathByPageName(pageNames ...string) (res string) {
 		pageName = pageNames[0]
 	}
 
-	if tmp, ok := MapDataTypeBiz[pageName]; ok {
-		pageName = tmp
-	}
 	if tmp, ok := MapPageMallName[pageName]; ok {
 		res = tmp
 		return
@@ -62,9 +59,7 @@ func getPageUserShopPathByPageName(pageNames ...string) (res string) {
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
-	if tmp, ok := MapDataTypeBiz[pageName]; ok {
-		pageName = tmp
-	}
+
 	if tmp, ok := MapPageUserShop[pageName]; ok {
 		res = tmp
 		return
@@ -95,6 +90,10 @@ func GetPageLink(urlValue *url.Values, dataType string, pageNames ...string) (re
 			urlValue1    = url.Values{}
 			paramsDivide = "?"
 		)
+
+		if tmp, ok := MapDataTypeBiz[dataType]; ok {
+			dataType = tmp
+		}
 		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
 			stringValue = fmt.Sprintf("//%s%s", tmp, getPageUserShopPathByPageName(pageNames...))
 		} else {
@@ -122,6 +121,9 @@ func GetPageLink(urlValue *url.Values, dataType string, pageNames ...string) (re
 			urlValue1    = url.Values{}
 			paramsDivide = "?"
 		)
+		if tmp, ok := MapDataTypeBiz[dataType]; ok {
+			dataType = tmp
+		}
 		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
 			stringValue = fmt.Sprintf("//%s%s", tmp, getPageSpuPathByPageName(pageNames...))
 		} else {
@@ -149,6 +151,9 @@ func GetPageLink(urlValue *url.Values, dataType string, pageNames ...string) (re
 			urlValue1    = url.Values{}
 			paramsDivide = "?"
 		)
+		if tmp, ok := MapDataTypeBiz[dataType]; ok {
+			dataType = tmp
+		}
 		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
 			stringValue = fmt.Sprintf("//%s%s", tmp, getPageSNSPathByPageName(pageNames...))
 		} else {
