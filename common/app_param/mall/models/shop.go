@@ -66,7 +66,7 @@ const (
 	ShopSliceVerifyStatusIcon = "shop_icon"
 )
 
- var (
+var (
 	SliceShopSliceVerifyStatus = base.ModelItemOptions{
 		{
 			Value: ShopSliceVerifyStatusValue,
@@ -195,20 +195,20 @@ type (
 	Shop struct {
 		ShopID           int64            `gorm:"column:shop_id;primary_key" json:"shop_id"`
 		Name             string           `gorm:"column:name;type:varchar(255);not null;default:'';comment:店铺名称" json:"name"`
-		Logo             string           `gorm:"column:icon;type:varchar(255);not null;default:'';comment:店铺logo" json:"icon"`
+		Logo             string           `gorm:"column:icon;type:varchar(255);not null;default:'';comment:店铺logo" json:"-"`
 		LogoUrl          string           `gorm:"-" json:"logo_url" `
 		BgImageUrl       string           `json:"bg_image_url" gorm:"-"`
 		BgImage          string           `gorm:"column:bg_image;type:varchar(255);not null;default:'';comment:店铺背景图" json:"bg_image"`
 		ShopType         uint8            `gorm:"column:shop_type;type:tinyint(2);not null;default:1;comment:店铺类型 1-个人店 2-企业店 3-公募 4-非公募" json:"shop_type"`
 		ShopEntryType    uint8            `gorm:"column:shop_entry_type;type:tinyint(2);not null;default:1;comment:店铺入驻类型 1-普通店 2-本站官方自营店 3-官方店 4-旗舰店 5-授权店" json:"shop_entry_type"`
-		Status           uint8            `gorm:"column:status;type:tinyint(2);not null;default:1;comment:店铺审核状态1-审核通过 3-待审核 2-审核失败" json:"status"`
-		FlagTester       uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据店铺 1-是 2-不是"  json:"flag_tester"`
+		Status           int8             `gorm:"column:status;type:tinyint(2);not null;default:1;comment:店铺审核状态1-审核通过 3-待审核 2-审核失败" json:"status"`
+		FlagTester       uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		AdminUserHid     int64            `gorm:"column:admin_user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:管理管理员账号" json:"admin_user_hid"`
-		NeedVerifyStatus uint8            `gorm:"column:need_verify_status;type:tinyint(2);not null;default:1;comment:需要审核状态 1-审核通过 2-待审核 3-审核失败" json:"need_verify_status"`
+		NeedVerifyStatus int8             `gorm:"column:need_verify_status;type:tinyint(2);not null;default:1;comment:当前需要审核状态 1-审核通过 2-待审核 3-审核失败" json:"need_verify_status"`
 		VerifyStatus     string           `gorm:"column:verify_status;type:varchar(20);not null;default:'';comment:审核数据状态" json:"verify_status"`
 		CreatedAt        base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt        base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"deleted_at"`
+		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 )
 
@@ -265,7 +265,7 @@ func (r *Shop) ParseFlagTester() (res string) {
 }
 
 func (r *Shop) ParseShopNeedVerifyStatus() (res string) {
-	mapKey, _ := SliceShopNeedVerifyStatus.GetMapAsKeyUint8()
+	mapKey, _ := SliceShopNeedVerifyStatus.GetMapAsKeyInt8()
 	if dt, ok := mapKey[r.NeedVerifyStatus]; ok {
 		res = dt
 		return
@@ -297,7 +297,7 @@ func (r *Shop) ParseShopEntryType() (res string) {
 
 // ParseStatus 店铺状态
 func (r *Shop) ParseStatus() (res string) {
-	mapShopStatus, _ := SliceShopStatus.GetMapAsKeyUint8()
+	mapShopStatus, _ := SliceShopStatus.GetMapAsKeyInt8()
 	if dt, ok := mapShopStatus[r.Status]; ok {
 		res = dt
 		return

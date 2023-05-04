@@ -49,7 +49,7 @@ const (
 	AuditingStatusWaiting = const_apply.ApplyStatusAuditing //待审核
 )
 
- 
+
 const (
 	PapersIsNeverExpiresYes uint8 = iota + 1 //永久有效
 	PapersIsNeverExpiresNo                   //有过期时间
