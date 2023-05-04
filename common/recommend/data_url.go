@@ -24,6 +24,11 @@ const (
 	UserShopHome = "shop_home"
 )
 
+var MapDataTypeBiz = map[string]string{
+	AdDataDataTypeSpu:               PageNameSpu, //商品信息
+	AdDataDataTypeSocialIntercourse: PageNameSns, //广告社交动态信息
+}
+
 var (
 	MapPageMallName = map[string]string{
 		PageNameSpu:  "/#/pages/mall/detail/index",
@@ -42,6 +47,9 @@ func getPageSpuPathByPageName(pageNames ...string) (res string) {
 		pageName = pageNames[0]
 	}
 
+	if tmp, ok := MapDataTypeBiz[pageName]; ok {
+		pageName = tmp
+	}
 	if tmp, ok := MapPageMallName[pageName]; ok {
 		res = tmp
 		return
@@ -54,7 +62,9 @@ func getPageUserShopPathByPageName(pageNames ...string) (res string) {
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
-
+	if tmp, ok := MapDataTypeBiz[pageName]; ok {
+		pageName = tmp
+	}
 	if tmp, ok := MapPageUserShop[pageName]; ok {
 		res = tmp
 		return
