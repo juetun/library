@@ -24,5 +24,6 @@ type (
 		Plain     bool   `json:"plain"`               //是否为空心样式	Boolean	false
 		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
 		Mark      bool   `json:"mark"`                //是否为标记样式
+		TitleDesc string `json:"title_desc"`          //信息说明备注
 	}
 )
