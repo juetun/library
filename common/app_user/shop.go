@@ -19,7 +19,7 @@ type (
 		BatchId  string          `json:"batch_id" form:"batch_id"`
 		DataType string          `json:"data_type" form:"data_type"`
 		Mark     string          `json:"mark" form:"mark"`
-		Status   uint8           `json:"status" form:"status"`
+		Status   int8            `json:"status" form:"status"`
 		TimeNow  base.TimeNormal `json:"time_now" form:"time_now"`
 	}
 )
