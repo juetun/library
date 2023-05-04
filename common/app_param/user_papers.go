@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/const_apply"
 )
 
 //用户资质是否需要填写类型
@@ -42,11 +43,13 @@ const (
 )
 
 const (
-	AuditingStatusOk      uint8 = iota + 1 // 品牌状态初始化
-	AuditingStatusInit                     // 品牌状态审核通过
-	AuditingStatusFailure                  // 品牌状态审核失败
-	AuditingStatusWaiting                  //待审核
+	AuditingStatusOk      = const_apply.ApplyStatusOk       // 品牌状态初始化
+	AuditingStatusInit    = const_apply.ApplyStatusInit     // 品牌状态审核通过
+	AuditingStatusFailure = const_apply.ApplyStatusFailure  // 品牌状态审核失败
+	AuditingStatusWaiting = const_apply.ApplyStatusAuditing //待审核
 )
+
+ 
 const (
 	PapersIsNeverExpiresYes uint8 = iota + 1 //永久有效
 	PapersIsNeverExpiresNo                   //有过期时间
