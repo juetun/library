@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/const_apply"
 	"strings"
 )
 
@@ -23,12 +24,11 @@ const (
 
 // 店铺入驻状态
 const (
-	ShopStatusOk       uint8 = iota + 1 //入驻状态审核通过
-	ShopStatusInvalid                   //已失效
-	ShopStatusFailure                   //入驻状态审核失败
-	ShopStatusInit                      // 入驻状态初始化
-	ShopStatusAuditing                  //审核中
-
+	ShopStatusOk       = const_apply.ApplyStatusOk       //入驻状态审核通过
+	ShopStatusInvalid  = const_apply.ApplyStatusInvalid  //已失效
+	ShopStatusFailure  = const_apply.ApplyStatusFailure  //入驻状态审核失败
+	ShopStatusInit     = const_apply.ApplyStatusInit     //入驻状态初始化
+	ShopStatusAuditing = const_apply.ApplyStatusAuditing //审核中
 )
 
 const (
@@ -39,11 +39,11 @@ const (
 )
 
 const (
-	ShopNeedVerifyStatusOk       uint8 = iota + 1 //审核通过
-	ShopNeedVerifyStatusUpdating                  //审核中
-	ShopNeedVerifyStatusFailure                   //审核失败
-	ShopNeedVerifyStatusExpire                    //店铺资质已过期
-	ShopNeedVerifyStatusEdit                      //资质审核编辑中
+	ShopNeedVerifyStatusOk       = const_apply.ApplyStatusOk          //审核通过
+	ShopNeedVerifyStatusUpdating = const_apply.ApplyStatusAuditing    //审核中
+	ShopNeedVerifyStatusFailure  = const_apply.ApplyStatusFailure     //审核失败
+	ShopNeedVerifyStatusExpire   = const_apply.ApplyStatusTimeInvalid //店铺资质已过期
+	ShopNeedVerifyStatusEdit     = const_apply.ApplyStatusInit        //资质审核编辑中
 )
 
 //修改店铺信息支持的字段
@@ -56,14 +56,17 @@ const (
 )
 
 const (
-	ShopSliceVerifyStatusValue   = "0" // 初始化
-	ShopSliceVerifyStatusOk      = "1" // 审核成功
-	ShopSliceVerifyStatusIng     = "2" // 审核中
-	ShopSliceVerifyStatusFailure = "3" // 审核失败
+	ShopSliceVerifyStatusValue   = const_apply.ApplyStatusInit     // 初始化
+	ShopSliceVerifyStatusOk      = const_apply.ApplyStatusOk       // 审核成功
+	ShopSliceVerifyStatusIng     = const_apply.ApplyStatusAuditing // 审核中
+	ShopSliceVerifyStatusFailure = const_apply.ApplyStatusFailure  // 审核失败
 )
 
-// 0-个人店 1-企业店 2-公募 3-公募
-var (
+const (
+	ShopSliceVerifyStatusIcon = "shop_icon"
+)
+
+ var (
 	SliceShopSliceVerifyStatus = base.ModelItemOptions{
 		{
 			Value: ShopSliceVerifyStatusValue,
@@ -178,13 +181,7 @@ var (
 			Label: "资料上传中",
 		},
 	}
-)
 
-const (
-	ShopSliceVerifyStatusIcon = "shop_icon"
-)
-
-var (
 	//注意:此数据只能在后边添加,否则会影响数据结构
 	SliceVerifyStatus = base.ModelItemOptions{
 		{
@@ -371,7 +368,7 @@ func (r *Shop) verifyStatusFormat(runes []byte) (mapValue map[string]string) {
 		if k < l {
 			mapValue[item.Value.(string)] = string(runes[k])
 		} else {
-			mapValue[item.Value.(string)] = ShopSliceVerifyStatusValue
+			mapValue[item.Value.(string)] = fmt.Sprintf("%v", ShopSliceVerifyStatusValue)
 		}
 
 	}

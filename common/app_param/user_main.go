@@ -3,6 +3,7 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/const_apply"
 	"gorm.io/gorm"
 	"strconv"
 	"strings"
@@ -10,19 +11,20 @@ import (
 )
 
 const (
-	UserMainStatusInit    = 0 // 用户注册初始化(待审核)
-	UserMainStatusOk      = 1 // 用户审核通过
-	UserMainStatusFailure = 2 // 用户审核失败
-	UserMainStatusWaiting = 3 // 待审核
+	UserMainStatusInit    = const_apply.ApplyStatusInit     // 用户注册初始化(待审核)
+	UserMainStatusOk      = const_apply.ApplyStatusOk       // 用户审核通过
+	UserMainStatusFailure = const_apply.ApplyStatusFailure  // 用户审核失败
+	UserMainStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 
 	UserMainGenderMale   = 0 // 男性
 	UserMainGenderFeMale = 1 // 女性
 
-	UserMainPortraitStatusInit    = 0 // 头像初始化
-	UserMainPortraitStatusOk      = 1 // 审核通过
-	UserMainPortraitStatusFailure = 2 // 审核失败
-	UserMainPortraitStatusWaiting = 3 // 待审核
+	UserMainPortraitStatusInit    = const_apply.ApplyStatusInit     // 头像初始化
+	UserMainPortraitStatusOk      = const_apply.ApplyStatusOk       // 审核通过
+	UserMainPortraitStatusFailure = const_apply.ApplyStatusFailure  // 审核失败
+	UserMainPortraitStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 )
+
 const (
 	UserMainAuthTypeGeneral uint8 = iota //个人用户
 	UserMainAuthTypeCompany              //企业用户
@@ -33,25 +35,25 @@ var (
 		{Label: "个人", Value: UserMainAuthTypeGeneral},
 		{Label: "企业", Value: UserMainAuthTypeCompany},
 	}
+	SliceUserMainStatus = base.ModelItemOptions{
+		{Label: "未认证", Value: UserMainStatusInit},
+		{Label: "已认证", Value: UserMainStatusOk},
+		{Label: "审核失败", Value: UserMainStatusFailure},
+		{Label: "待审核", Value: UserMainStatusWaiting},
+	}
+	SliceUserMainPortraitStatus = base.ModelItemOptions{
+		{Label: "未审核", Value: UserMainPortraitStatusInit},
+		{Label: "审核通过", Value: UserMainPortraitStatusOk},
+		{Label: "审核失败", Value: UserMainPortraitStatusFailure},
+		{Label: "待审核", Value: UserMainPortraitStatusWaiting},
+	}
+	SliceUserMainGender = base.ModelItemOptions{
+		{Label: "男", Value: UserMainGenderMale},
+		{Label: "女", Value: UserMainGenderFeMale},
+	}
 )
 var (
 	UserMainTableNumber int64 = 2
-	UserMainStatusMap         = map[int]string{
-		UserMainStatusInit:    "未认证",
-		UserMainStatusOk:      "已认证",
-		UserMainStatusFailure: "审核失败",
-		UserMainStatusWaiting: "待审核",
-	}
-	UserMainGenderMap = map[int]string{
-		UserMainGenderMale:   "男",
-		UserMainGenderFeMale: "女",
-	}
-	UserMainPortraitStatusMap = map[int]string{
-		UserMainPortraitStatusInit:    "未审核",
-		UserMainPortraitStatusOk:      "审核通过",
-		UserMainPortraitStatusFailure: "审核失败",
-		UserMainPortraitStatusWaiting: "待审核",
-	}
 )
 
 type (
@@ -63,11 +65,11 @@ type (
 		UserEmailIndex  string           `gorm:"column:user_email_index;not null;type:varchar(60) COLLATE utf8mb4_bin;default:'';comment:邮箱索引" json:"-" `
 		Portrait        string           `gorm:"column:portrait;not null;type:varchar(1000);default:'';comment:头图地址;" json:"portrait"`
 		PortraitUrl     string           `json:"portrait_url" gorm:"-"`
-		PortraitStatus  int              `gorm:"column:portrait_status;not null;type:varchar(10);default:'';comment:用户审核状态从右向左每位依次昵称-头像;" json:"portrait_status"`
+		PortraitStatus  int8             `gorm:"column:portrait_status;not null;type:varchar(10);default:'';comment:用户审核状态从右向左每位依次昵称-头像;" json:"portrait_status"`
 		NickName        string           `gorm:"column:nick_name;not null;type:varchar(30);default:'';comment:昵称" json:"nick_name"`
 		UserName        string           `gorm:"column:user_name;not null;size:30;default:'';comment:用户名" json:"user_name" `
-		Gender          int              `gorm:"column:gender;not null;type:tinyint(1);default:0;comment:性别 0-男 1-女" json:"gender"`
-		Status          int              `gorm:"column:status;not null;type:tinyint(1);default:0;comment:状态 0-可用 1-不可用" json:"status"`
+		Gender          uint8            `gorm:"column:gender;not null;type:tinyint(1);default:0;comment:性别 0-男 1-女" json:"gender"`
+		Status          int8             `gorm:"column:status;not null;type:tinyint(1);default:0;comment:状态 0-可用 1-不可用" json:"status"`
 		Score           int              `gorm:"column:score;not null;type:int(10);default:0;comment:用户积分" json:"score"`
 		Balance         float64          `gorm:"column:balance;not null;type:decimal(10,2);default:0;comment:用户账户余额" json:"balance"`
 		CurrentShopId   int64            `gorm:"column:current_shop_id;not null;default:0;comment:当前店铺ID" json:"current_shop_id"`
@@ -153,7 +155,10 @@ func (r *UserMain) GetTableComment() (res string) {
 	return
 }
 func (r *UserMain) ParseStatusString() (res string, err error) {
-
+	var UserMainStatusMap map[int8]string
+	if UserMainStatusMap, err = SliceUserMainStatus.GetMapAsKeyInt8(); err != nil {
+		return
+	}
 	if dt, ok := UserMainStatusMap[r.Status]; ok {
 		res = dt
 		return
@@ -173,6 +178,7 @@ func (r *UserMain) ParseAuthType() (res string) {
 }
 
 func (r *UserMain) ParseGender() (res string) {
+	var UserMainGenderMap, _ = SliceUserMainGender.GetMapAsKeyUint8()
 	if dt, ok := UserMainGenderMap[r.Gender]; ok {
 		res = dt
 		return
@@ -182,7 +188,8 @@ func (r *UserMain) ParseGender() (res string) {
 }
 
 func (r *UserMain) ParsePortraitStatus() (res string) {
-	if dt, ok := UserMainPortraitStatusMap[r.PortraitStatus]; ok {
+	var userMainPortraitStatusMap, _ = SliceUserMainPortraitStatus.GetMapAsKeyInt8()
+	if dt, ok := userMainPortraitStatusMap[r.PortraitStatus]; ok {
 		res = dt
 		return
 	}

@@ -46,8 +46,6 @@ var (
 	}
 )
 
-
-
 const (
 	RegisterChannelAdmin   = "admin"   // 客服后台注册的账号 渠道标记
 	RegisterChannelAndroid = "android" // 客服后台注册的账号 安卓
@@ -63,7 +61,7 @@ const (
 )
 
 var (
- 	IdCardSecret         = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
+	IdCardSecret = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
 
 	RegisterChannelMap = map[string]string{
 		RegisterChannelAdmin:   "管理后台",
@@ -88,8 +86,8 @@ type (
 		NickName         string           `json:"nick_name,omitempty"` // 昵称
 		UserName         string           `json:"user_name,omitempty"` // 用户名
 		RealName         string           `json:"real_name"`           // 真实姓名
-		Gender           int              `json:"gender,omitempty"`    //
-		Status           int              `json:"status,omitempty"`    //
+		Gender           uint8            `json:"gender,omitempty"`    //
+		Status           int8             `json:"status,omitempty"`    //
 		Score            int              `json:"score,omitempty"`     //
 		AuthDesc         string           `json:"auth_desc,omitempty"` // 认证描述
 		IsV              int              `json:"is_v,omitempty"`      // 用户头像加V
@@ -116,8 +114,8 @@ type (
 		UPortrait          string          `json:"u_portrait" form:"u_portrait"`                         //头像
 		UNickName          string          `json:"u_nick_name" form:"u_nick_name"`                       //昵称
 		UUserName          string          `json:"u_user_name" form:"u_user_name"`                       //账号
-		UGender            int             `json:"u_gender" form:"u_gender"`                             //性别
-		UStatus            int             `json:"u_status" form:"u_status"`                             //状态
+		UGender            uint8           `json:"u_gender" form:"u_gender"`                             //性别
+		UStatus            int8            `json:"u_status" form:"u_status"`                             //状态
 		UScore             int             `json:"u_score" form:"u_score"`                               //积分
 		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
 		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
