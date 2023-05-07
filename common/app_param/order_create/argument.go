@@ -9,22 +9,23 @@ import (
 
 type (
 	ArgCreateOrderFromCart struct {
-		RequestUser     app_param.RequestUser             `json:"-" form:"-"`
-		SkuString       string                            `json:"sku_item" form:"sku_item"`
-		Amount          string                            `json:"amount" form:"amount"` // 总金额
-		App             string                            `json:"app" form:"app"`
-		BuyChannel      string                            `json:"buy_channel" form:"buy_channel"` // 终端渠道号
-		BuyClient       string                            `json:"buy_client" form:"buy_client"`   // 终端类型
-		AppVersion      string                            `json:"app_version" form:"app_version"` // app版本
-		Status          uint8                             `json:"status" form:"status"`           // 订单状态
-		AddressId       int64                             `json:"address_id" form:"address_id"`   // 收货地址
-		Express         string                            `json:"express" form:"express"`         // 默认快递信息
-		PayType         uint8                             `json:"pay_type" form:"pay_type"`       // 支付类型
-		FlagTester      uint8                             `json:"flag_tester" form:"flag_tester"`
-		Type            string                            `json:"type" form:"Type"` //数据操作路径
-		ReceiptUserInfo *ReceiptUserInfo                  `json:"receipt_user_info" form:"receipt_user_info"`
-		SkuItems        []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
-		TimeNow         base.TimeNormal                   `json:"-" form:"-"`
+		RequestUser       app_param.RequestUser             `json:"-" form:"-"`
+		SkuString         string                            `json:"sku_item" form:"sku_item"`
+		Amount            string                            `json:"amount" form:"amount"` // 总金额
+		App               string                            `json:"app" form:"app"`
+		BuyChannel        string                            `json:"buy_channel" form:"buy_channel"` // 终端渠道号
+		BuyClient         string                            `json:"buy_client" form:"buy_client"`   // 终端类型
+		AppVersion        string                            `json:"app_version" form:"app_version"` // app版本
+		Status            uint8                             `json:"status" form:"status"`           // 订单状态
+		AddressId         int64                             `json:"address_id" form:"address_id"`   // 收货地址
+		Express           string                            `json:"express" form:"express"`         // 默认快递信息
+		PayType           uint8                             `json:"pay_type" form:"pay_type"`       // 支付类型
+		FlagTester        uint8                             `json:"flag_tester" form:"flag_tester"`
+		Type              string                            `json:"type" form:"Type"` //数据操作路径
+		ReceiptUserInfo   *ReceiptUserInfo                  `json:"receipt_user_info" form:"receipt_user_info"`
+		SkuItems          []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
+		TimeNow           base.TimeNormal                   `json:"-" form:"-"`
+		GetDataTypeCommon base.GetDataTypeCommon            `json:"-" form:"-"`
 	}
 
 	ArgGetInfoByOrderId struct {

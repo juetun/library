@@ -60,6 +60,20 @@ type (
 		Mark  string          `json:"mark"`
 	}
 	OptionPriceFreight func(*PriceFreight)
+
+	EmsAddressFreight struct {
+		ID           int64  `json:"id"`
+		Title        string `json:"title"`
+		UserHid      int64  `json:"user_hid"`
+		ProvinceId   string `json:"province_id"`
+		CityId       string `json:"city_id"`
+		AreaId       string `json:"area_id"`
+		Address      string `json:"address"`
+		ZipCode      string `json:"zip_code"`
+		ContactUser  string `json:"contact_user"`
+		ContactPhone string `json:"contact_phone"`
+		Status       uint8  `json:"status"`
+	}
 )
 
 //计算邮费动作
