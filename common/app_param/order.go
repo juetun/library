@@ -36,6 +36,8 @@ type (
 		FreightTplId  int64  `json:"freight_tpl_id,omitempty" form:"freight_tpl_id"` // 运费模板
 		SubOrderId    string `json:"sub_order_id,omitempty" form:"sub_order_id"`
 		Category      string `json:"category,omitempty" form:"category"`
+		SpuFlagTester uint8  `json:"spu_flag_tester,omitempty" form:"spu_flag_tester"`
+		SkuFlagTester uint8  `json:"sku_flag_tester,omitempty" form:"sku_flag_tester"`
 		FreightAmount string `json:"freight_amount,omitempty" form:"freight_amount"` // 邮费
 	}
 )

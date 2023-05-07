@@ -20,7 +20,6 @@ type (
 		AddressId         int64                             `json:"address_id,omitempty" form:"address_id"`   // 收货地址
 		Express           string                            `json:"express,omitempty" form:"express"`         // 默认快递信息
 		PayType           uint8                             `json:"pay_type,omitempty" form:"pay_type"`       // 支付类型
-		FlagTester        uint8                             `json:"flag_tester,omitempty" form:"flag_tester"`
 		Type              string                            `json:"type,omitempty" form:"Type"` //数据操作路径
 		ReceiptUserInfo   *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
 		SkuItems          []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
