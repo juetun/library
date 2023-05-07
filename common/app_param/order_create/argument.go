@@ -40,7 +40,7 @@ type (
 		ContactUser  string `json:"contact_user"`
 		ContactPhone string `json:"contact_phone"`
 
-		FullAddress  string `json:"full_address"`
+		FullAddress string `json:"full_address"`
 	}
 )
 
@@ -109,8 +109,11 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 
 	for _, item := range r.SkuItems {
 		if item.SkuId == "" {
-			err = fmt.Errorf("您选择的商品数据异常")
+			err = fmt.Errorf("您选择的商品数据异常(sku_id)")
 			return
+		}
+		if item.SpuId == "" {
+			err = fmt.Errorf("您选择的商品数据异常(spu_id)")
 		}
 		if err = item.ValidateCategory(); err != nil {
 			return
