@@ -48,6 +48,7 @@ type (
 		Shop              *models.Shop              `json:"shop"` //店铺信息
 		EmsAddressFreight *EmsAddressFreight        `json:"ems_address_freight"`
 		TemplateFreight   *TemplateFreight          //运费模板
+		FromCityId string                           `json:"from_city_id"`
 	}
 
 	TemplateFreight struct {
