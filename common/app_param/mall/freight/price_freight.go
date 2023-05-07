@@ -110,8 +110,10 @@ func (r *PriceFreight) groupData() {
 }
 
 //添加参与邮费计算的SKU信息
-func (r *PriceFreight) AppendNeedCalSKus(sKusFreight ...*SkuFreightSingle) {
+func (r *PriceFreight) AppendNeedCalSKus(sKusFreight ...*SkuFreightSingle) (res *PriceFreight) {
+	res = r
 	r.sKusFreight = append(r.sKusFreight, sKusFreight...)
+	return
 }
 
 func (r *PriceFreight) calculateShop() (err error) {
