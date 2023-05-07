@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/library/common/app_param/upload_operate"
+	"github.com/juetun/library/common/const_apply"
 	"strconv"
 	"strings"
 	"time"
@@ -334,7 +335,7 @@ func (r *Product) DefaultBeforeAdd() {
 		r.FreightType = FreightTypeExpressDelivery
 	}
 	if r.FlagTester == 0 {
-		r.FlagTester = FlagTesterNo
+		r.FlagTester = const_apply.FlagTesterNo
 	}
 	if r.SaleType == 0 {
 		r.SaleType = SaleTypeGeneral
@@ -633,7 +634,7 @@ func (r *Product) JudgeSaleTypeDownFinal(currentTimes ...time.Time) (notCanPay b
 }
 
 func (r *Product) ParseFlagTester() (res string) {
-	sliceFlagTester, _ := SliceFlagTester.GetMapAsKeyUint8()
+	sliceFlagTester, _ := const_apply.SliceFlagTester.GetMapAsKeyUint8()
 	if dt, ok := sliceFlagTester[r.FlagTester]; ok {
 		res = dt
 		return
