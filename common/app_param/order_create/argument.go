@@ -114,6 +114,7 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 		}
 		if item.SpuId == "" {
 			err = fmt.Errorf("您选择的商品数据异常(spu_id)")
+			return
 		}
 		if err = item.ValidateCategory(); err != nil {
 			return
