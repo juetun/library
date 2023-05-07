@@ -11,9 +11,9 @@ type (
 	//邮费计算结构体
 	PriceFreight struct {
 		context     *base.Context                           `json:"-"`
-		sKusFreight []*SkuFreightSingle                     `json:"-"`          //计算邮费的每个SKU需要的数据
-		ToCityId    int64                                   `json:"to_city_id"` //城市ID
-		dataGroup   map[int64]map[string][]SkuFreightSingle `json:"-"`          //数据按照 店铺ID  SPU_ID分组
+		sKusFreight []*SkuFreightSingle                     `json:"-"`           //计算邮费的每个SKU需要的数据
+		EmsAddress  *EmsAddressFreight                      `json:"ems_address"` //城市ID
+		dataGroup   map[int64]map[string][]SkuFreightSingle `json:"-"`           //数据按照 店铺ID  SPU_ID分组
 		Result      PriceFreightResult                      `json:"result"`
 	}
 
@@ -34,20 +34,20 @@ type (
 		SpuId        string          `json:"spu_id"`
 		ShopId       int64           `json:"shop_id"`
 		TemplateId   int64           `json:"template_id"`   //邮费模板ID
-		ToCityId     int64           `json:"to_city_id"`    //邮寄城市ID
+		ToCityId     string          `json:"to_city_id"`    //邮寄城市ID
 		FreightPrice decimal.Decimal `json:"freight_price"` //邮费价格
 		Mark         string          `json:"mark"`          //备注
 		//skuFreightSingle *SkuFreightSingle `json:"-"`             //计算需要的数据
 	}
 
 	SkuFreightSingle struct {
-		Num             int64                     `json:"num"` //数量
-		Sku             *models.Sku               `json:"sku"` //SKU信息
-		SkuRelate       *models.SkuPropertyRelate `json:"sku_relate"`
-		Spu             *models.Product           `json:"spu"`          //商品信息
-		Shop            *models.Shop              `json:"shop"`         //店铺信息
-		FromCityId      int64                     `json:"from_city_id"` //邮寄城市ID
-		TemplateFreight *TemplateFreight          //运费模板
+		Num               int64                     `json:"num"` //数量
+		Sku               *models.Sku               `json:"sku"` //SKU信息
+		SkuRelate         *models.SkuPropertyRelate `json:"sku_relate"`
+		Spu               *models.Product           `json:"spu"`  //商品信息
+		Shop              *models.Shop              `json:"shop"` //店铺信息
+		EmsAddressFreight *EmsAddressFreight        `json:"ems_address_freight"`
+		TemplateFreight   *TemplateFreight          //运费模板
 	}
 
 	TemplateFreight struct {
@@ -75,6 +75,11 @@ type (
 		Status       uint8  `json:"status"`
 	}
 )
+
+func (r *EmsAddressFreight) GetToCityId() (res string) {
+	res = r.CityId
+	return
+}
 
 //计算邮费动作
 func (r *PriceFreight) Calculate() (err error) {
@@ -154,7 +159,7 @@ func (r *PriceFreight) calSku(skuCalResultFreight *SkuFreightSingle, freight *mo
 func (r *PriceFreight) getFreightParameters(single *SkuFreightSingle) (notSupportSend bool, res *models.FreightTemplateArea) {
 
 	for _, item := range single.TemplateFreight.Areas {
-		if item.CityId == r.ToCityId {
+		if item.CityId == r.EmsAddress.GetToCityId() {
 			res = item
 			return
 		}
@@ -195,7 +200,7 @@ func (r *PriceFreight) orgSkuCalResultFreight(shopId int64, freight *models.Frei
 		SpuId:      skuCalResultFreight.SkuRelate.ProductId,
 		ShopId:     skuCalResultFreight.Sku.ShopId,
 		TemplateId: skuCalResultFreight.TemplateFreight.Template.ID,
-		ToCityId:   r.ToCityId,
+		ToCityId:   r.EmsAddress.GetToCityId(),
 	}
 
 	//如果不支持邮寄城市
@@ -262,9 +267,9 @@ func OptionFreightContext(context *base.Context) OptionPriceFreight {
 	}
 }
 
-func OptionFreightToCityId(toCityId int64) OptionPriceFreight {
+func OptionFreightEmsAddress(EmsAddress *EmsAddressFreight) OptionPriceFreight {
 	return func(freight *PriceFreight) {
-		freight.ToCityId = toCityId
+		freight.EmsAddress = EmsAddress
 	}
 }
 

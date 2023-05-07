@@ -64,9 +64,9 @@ type FreightTemplateArea struct {
 	ID                   int64            `gorm:"column:id;primary_key" json:"id"`
 	TemplateId           int64            `gorm:"column:template_id;type:bigint(20);not null;default:0;comment:模板id"  json:"template_id"`
 	ShopId               int64            `gorm:"column:shop_id;type:bigint(20);not null;default:0;comment:店铺id" json:"shop_id"`
-	ProvinceId           int64            `gorm:"column:province_id;type:bigint(10);not null;default:0;comment:收货省" json:"province_id"`
-	CityId               int64            `gorm:"column:city_id;type:bigint(10);not null;default:0;comment:收货市" json:"city_id"`
-	AreaId               int64            `gorm:"column:area_id;type:int(10);not null;default:0;comment:收货区或县" json:"area_id"`
+	ProvinceId           string           `gorm:"column:province_id;type:varchar(30);not null;default:'';comment:收货省" json:"province_id"`
+	CityId               string           `gorm:"column:city_id;type:varchar(30);not null;default:'';comment:收货市" json:"city_id"`
+	AreaId               string           `gorm:"column:area_id;type:varchar(30);not null;default:'';comment:收货区或县" json:"area_id"`
 	FreeFreight          uint8            `gorm:"column:free_freight;type:tinyint(1);not null;default:1;comment:是否包邮 1-包邮 2-自定义运费 3-有条件包邮" json:"free_freight"`
 	FreightCal           uint8            `gorm:"column:freight_cal;type:tinyint(1);not null;default:1;comment:计价方式 1-按重量计算 2-按件数计算" json:"freight_cal"`
 	SendType             uint8            `gorm:"column:send_type;type:tinyint(1);not null;default:1;comment:运送方式 1-快递 2-EMS 3-平邮" json:"send_type"`

@@ -39,17 +39,21 @@ var (
 
 type (
 	FreightTemplate struct {
-		ID          int64            `gorm:"column:id;primary_key" json:"id"`
-		ShopId      int64            `gorm:"column:shop_id;type:bigint(20);not null;default:0;comment:店铺id" json:"shop_id"`
-		Title       string           `gorm:"column:title;type:varchar(200);not null;default:'';comment:模板名称" json:"title"`
-		ProvinceId  int64            `gorm:"column:province_id;type:bigint(10);not null;default:0;comment:发货省" json:"province_id"`
-		CityId      int64            `gorm:"column:city_id;type:bigint(10);not null;default:0;comment:发货市" json:"city_id"`
-		AreaId      int64            `gorm:"column:area_id;type:int(10);not null;default:0;comment:发货区或县" json:"area_id"`
-		FreeFreight uint8            `gorm:"column:free_freight;type:tinyint(2);not null;default:1;comment:是否包邮1-包邮 2-买家承担运费 3-有条件包邮" json:"free_freight"`
-		PricingMode uint8            `gorm:"column:pricing_mode;type:tinyint(2);not null;default:1;comment:计价方式1-按件数 2-按重量" json:"pricing_mode"`
-		CreatedAt   base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
-		UpdatedAt   base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
-		DeletedAt   *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
+		ID               int64            `gorm:"column:id;primary_key" json:"id"`
+		ShopId           int64            `gorm:"column:shop_id;type:bigint(20);not null;default:0;comment:店铺id" json:"shop_id"`
+		Title            string           `gorm:"column:title;type:varchar(200);not null;default:'';comment:模板名称" json:"title"`
+		ProvinceId       int64            `gorm:"column:province_id;type:bigint(10);not null;default:0;comment:发货省" json:"province_id"`
+		CityId           int64            `gorm:"column:city_id;type:bigint(10);not null;default:0;comment:发货市" json:"city_id"`
+		AreaId           int64            `gorm:"column:area_id;type:int(10);not null;default:0;comment:发货区或县" json:"area_id"`
+		FreeFreight      uint8            `gorm:"column:free_freight;type:tinyint(2);not null;default:1;comment:是否包邮1-包邮 2-买家承担运费 3-有条件包邮" json:"free_freight"`
+		PricingMode      uint8            `gorm:"column:pricing_mode;type:tinyint(2);not null;default:1;comment:计价方式1-按件数 2-按重量" json:"pricing_mode"`
+		HaveUse          uint8            `gorm:"column:have_use;type:tinyint(2);not null;default:2;comment:是否已使用1-已使用 2-未使用" json:"have_use"`
+		SaleArea         string           `gorm:"column:sale_area;type:text;not null;comment:允许发货区域json" json:"sale_area"`
+		FreeCondition    string           `gorm:"column:free_condition;type:text;not null;comment:指定包邮条件"  json:"free_condition"`
+		PostageCondition uint8            `gorm:"column:postage_condition;type:tinyint(2);not null;default:1;comment:是否包邮1-包邮 2-买家承担运费 3-有条件包邮" json:"postage_condition"`
+		CreatedAt        base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
+		UpdatedAt        base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
+		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	FreightTemplatesCache []*FreightTemplate
 )
