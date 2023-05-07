@@ -20,7 +20,7 @@ type (
 		AddressId         int64                             `json:"address_id,omitempty" form:"address_id"`   // 收货地址
 		Express           string                            `json:"express,omitempty" form:"express"`         // 默认快递信息
 		PayType           uint8                             `json:"pay_type,omitempty" form:"pay_type"`       // 支付类型
-		Type              string                            `json:"type,omitempty" form:"Type"` //数据操作路径
+		Type              string                            `json:"type,omitempty" form:"Type"`               //数据操作路径
 		ReceiptUserInfo   *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
 		SkuItems          []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
 		TimeNow           base.TimeNormal                   `json:"-" form:"-"`
@@ -48,6 +48,7 @@ func (r *ArgCreateOrderFromCart) GetShopIds() (shopIds []int64) {
 	shopIds = make([]int64, 0, len(r.SkuItems))
 	mapShopIds := make(map[int64]bool, len(r.SkuItems))
 	for _, item := range r.SkuItems {
+
 		if _, ok := mapShopIds[item.ShopId]; !ok {
 			shopIds = append(shopIds, item.ShopId)
 			mapShopIds[item.ShopId] = true
@@ -95,6 +96,7 @@ func (r *ArgCreateOrderFromCart) validateType() (err error) {
 
 //重新组织SkuString的值
 func (r *ArgCreateOrderFromCart) RestSkuStringWithSkuItems() (err error) {
+
 	if r.SkuItems == nil {
 		return
 	}
@@ -121,6 +123,7 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 	}
 
 	for _, item := range r.SkuItems {
+		item.Default()
 		if item.SkuId == "" {
 			err = fmt.Errorf("您选择的商品数据异常(sku_id)")
 			return

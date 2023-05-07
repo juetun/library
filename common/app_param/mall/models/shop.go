@@ -17,10 +17,6 @@ const (
 	ShopEntryTypeAuthorizedStore                  // 授权店
 )
 
-const (
-	FlagTesterNo  uint8 = iota + 1 // 不为测试数据
-	FlagTesterYes                  // 为测试数据
-)
 
 // 店铺入驻状态
 const (
@@ -85,16 +81,7 @@ var (
 			Label: "审核失败",
 		},
 	}
-	SliceFlagTester = base.ModelItemOptions{
-		{
-			Value: FlagTesterNo,
-			Label: "否",
-		},
-		{
-			Value: FlagTesterYes,
-			Label: "是",
-		},
-	}
+
 	SliceShopType = base.ModelItemOptions{
 		{
 			Value: ShopTypePerson,

@@ -3,6 +3,7 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/const_apply"
 	"github.com/shopspring/decimal"
 )
 
@@ -74,4 +75,13 @@ func (r *ArgOrderFromCartItem) GetTotalSkuPrice() (res decimal.Decimal, err erro
 	}
 	res = price.Mul(decimal.NewFromInt(r.Num))
 	return
+}
+
+func (r *ArgOrderFromCartItem) Default() {
+	if r.SkuFlagTester == 0 {
+		r.SkuFlagTester = const_apply.FlagTesterNo
+	}
+	if r.SpuFlagTester == 0 {
+		r.SkuFlagTester = const_apply.FlagTesterNo
+	}
 }
