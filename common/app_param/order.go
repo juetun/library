@@ -5,6 +5,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/shopspring/decimal"
 )
+
 const (
 	OrderPageCategoryFirst  = "first"  //第一次付款或定金付款
 	OrderPageCategorySecond = "second" //定金预售付尾款
@@ -22,19 +23,20 @@ var (
 		},
 	}
 )
+
 type (
 	ArgOrderFromCartItem struct {
-		ShopId        int64  `json:"shop_id" form:"shop_id"`               // 店铺ID
-		SpuId         string `json:"spu_id" form:"spu_id"`                 // 商品ID
-		SkuId         string `json:"sku_id" form:"sku_id"`                 // sku地址
-		Num           int64  `json:"num" form:"num"`                       // 商品数量
-		SaleType      uint8  `json:"sale_type" form:"sale_type"`           // 销售类型
-		SkuPrice      string `json:"sku_price" form:"sku_price"`           // SPU项目本次要支付的单价(定金预售定金金额或尾款金额 sku_price)
-		SkuSetPrice   string `json:"sku_set_price" form:"sku_set_price"`   // SPU项目本的单价
-		FreightTplId  int64  `json:"freight_tpl_id" form:"freight_tpl_id"` // 运费模板
-		SubOrderId    string `json:"sub_order_id" form:"sub_order_id"`
-		Category      string `json:"category" form:"category"`
-		FreightAmount string `json:"freight_amount" form:"freight_amount"` // 邮费
+		ShopId        int64  `json:"shop_id,omitempty" form:"shop_id"`               // 店铺ID
+		SpuId         string `json:"spu_id,omitempty" form:"spu_id"`                 // 商品ID
+		SkuId         string `json:"sku_id,omitempty" form:"sku_id"`                 // sku地址
+		Num           int64  `json:"num,omitempty" form:"num"`                       // 商品数量
+		SaleType      uint8  `json:"sale_type,omitempty" form:"sale_type"`           // 销售类型
+		SkuPrice      string `json:"sku_price,omitempty" form:"sku_price"`           // SPU项目本次要支付的单价(定金预售定金金额或尾款金额 sku_price)
+		SkuSetPrice   string `json:"sku_set_price,omitempty" form:"sku_set_price"`   // SPU项目本的单价
+		FreightTplId  int64  `json:"freight_tpl_id,omitempty" form:"freight_tpl_id"` // 运费模板
+		SubOrderId    string `json:"sub_order_id,omitempty" form:"sub_order_id"`
+		Category      string `json:"category,omitempty" form:"category"`
+		FreightAmount string `json:"freight_amount,omitempty" form:"freight_amount"` // 邮费
 	}
 )
 
