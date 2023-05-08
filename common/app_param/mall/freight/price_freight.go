@@ -48,7 +48,7 @@ type (
 		Shop              *models.Shop              `json:"shop"` //店铺信息
 		EmsAddressFreight *EmsAddressFreight        `json:"ems_address_freight"`
 		TemplateFreight   *TemplateFreight          //运费模板
-		FromCityId string                           `json:"from_city_id"`
+		FromCityId        string                    `json:"from_city_id"`
 	}
 
 	TemplateFreight struct {
@@ -83,12 +83,15 @@ func (r *EmsAddressFreight) GetToCityId() (res string) {
 }
 
 //计算邮费动作
-func (r *PriceFreight) Calculate() (err error) {
+func (r *PriceFreight) Calculate() (res *PriceFreightResult, err error) {
 	//先将数据按照店铺进行分组
 	r.groupData()
 
 	//按店铺计算邮费
-	err = r.calculateShop()
+	if err = r.calculateShop(); err != nil {
+		return
+	}
+	res = &r.Result
 	return
 }
 
@@ -275,7 +278,10 @@ func OptionFreightEmsAddress(EmsAddress *EmsAddressFreight) OptionPriceFreight {
 }
 
 func NewPriceFreight(options ...OptionPriceFreight) *PriceFreight {
-	p := &PriceFreight{sKusFreight: make([]*SkuFreightSingle, 0, 16)}
+	p := &PriceFreight{
+		sKusFreight: make([]*SkuFreightSingle, 0, 16),
+		dataGroup:   make(map[int64]map[string][]SkuFreightSingle, 16),
+	}
 	for _, option := range options {
 		option(p)
 	}
