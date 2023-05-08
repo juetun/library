@@ -15,7 +15,7 @@ type (
 		SpuId string `json:"spu_id"`
 		SkuId string `json:"sku_id"`
 	}
-	 
+
 	SkuData struct {
 		SpuId           string                    `json:"spu_id"`
 		Shop            *models.Shop              `json:"shop,omitempty"`
@@ -69,3 +69,21 @@ type (
 		SkuGiftId          int64            `json:"sku_gift_id"`
 	}
 )
+
+
+//sku_name获取规则,优先从SkuRelate中获取,如果名称为空 则从SKu中获取
+func (r *SkuData) GetSkuName() (res string) {
+	if r.SkuRelate != nil {
+		res = r.SkuRelate.SkuName
+		if res != "" {
+			return
+		}
+
+	}
+	if r.SKu != nil {
+		res = r.SKu.SkuName
+		return
+	}
+
+	return
+}
