@@ -5,26 +5,28 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/app_param/mall/freight"
 )
 
 type (
 	ArgCreateOrderFromCart struct {
-		RequestUser       app_param.RequestUser             `json:"-" form:"-"`
-		SkuString         string                            `json:"sku_item,omitempty" form:"sku_item"`
-		Amount            string                            `json:"amount,omitempty" form:"amount"` // 总金额
-		App               string                            `json:"app,omitempty" form:"app"`
-		BuyChannel        string                            `json:"buy_channel,omitempty" form:"buy_channel"` // 终端渠道号
-		BuyClient         string                            `json:"buy_client,omitempty" form:"buy_client"`   // 终端类型
-		AppVersion        string                            `json:"app_version,omitempty" form:"app_version"` // app版本
-		Status            uint8                             `json:"status,omitempty" form:"status"`           // 订单状态
-		AddressId         int64                             `json:"address_id,omitempty" form:"address_id"`   // 收货地址
-		Express           string                            `json:"express,omitempty" form:"express"`         // 默认快递信息
-		PayType           uint8                             `json:"pay_type,omitempty" form:"pay_type"`       // 支付类型
-		Type              string                            `json:"type,omitempty" form:"Type"`               //数据操作路径
-		ReceiptUserInfo   *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
-		SkuItems          []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
-		TimeNow           base.TimeNormal                   `json:"-" form:"-"`
-		GetDataTypeCommon base.GetDataTypeCommon            `json:"-" form:"-"`
+		RequestUser        app_param.RequestUser             `json:"-" form:"-"`
+		SkuString          string                            `json:"sku_item,omitempty" form:"sku_item"`
+		Amount             string                            `json:"amount,omitempty" form:"amount"` // 总金额
+		App                string                            `json:"app,omitempty" form:"app"`
+		BuyChannel         string                            `json:"buy_channel,omitempty" form:"buy_channel"` // 终端渠道号
+		BuyClient          string                            `json:"buy_client,omitempty" form:"buy_client"`   // 终端类型
+		AppVersion         string                            `json:"app_version,omitempty" form:"app_version"` // app版本
+		Status             uint8                             `json:"status,omitempty" form:"status"`           // 订单状态
+		AddressId          int64                             `json:"address_id,omitempty" form:"address_id"`   // 收货地址
+		Express            string                            `json:"express,omitempty" form:"express"`         // 默认快递信息
+		PayType            uint8                             `json:"pay_type,omitempty" form:"pay_type"`       // 支付类型
+		Type               string                            `json:"type,omitempty" form:"Type"`               //数据操作路径
+		ReceiptUserInfo    *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
+		PriceFreightResult *freight.PriceFreightResult       `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
+		SkuItems           []*app_param.ArgOrderFromCartItem `json:"-" form:"-"`
+		TimeNow            base.TimeNormal                   `json:"-" form:"-"`
+		GetDataTypeCommon  base.GetDataTypeCommon            `json:"dt_common" form:"dt_common"`
 	}
 
 	ArgGetInfoByOrderId struct {
