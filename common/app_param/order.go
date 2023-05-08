@@ -43,7 +43,7 @@ type (
 		ShopSaleCode    string `json:"shop_sale_code,omitempty" form:"shop_sale_code"`
 		SkuPropertyName string `json:"sku_property_name,omitempty" form:"sku_property_name"`
 		ProvideChannel  int64  `json:"provide_channel,omitempty" form:"provide_channel"`
-		ProvideSaleCode int64  `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
+		ProvideSaleCode string `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
 	}
 )
 
