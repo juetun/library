@@ -135,6 +135,12 @@ func (r *PriceFreight) groupData() {
 //添加参与邮费计算的SKU信息
 func (r *PriceFreight) AppendNeedCalSKus(sKusFreight ...*SkuFreightSingle) (res *PriceFreight) {
 	res = r
+	var (
+		l = len(sKusFreight)
+	)
+	r.sKusFreight = make([]*SkuFreightSingle, 0, l)
+	r.dataGroup = make(map[int64]map[string][]SkuFreightSingle, l)
+	r.Result.Shops = make(map[int64]ShopCalResultFreight, l)
 	r.sKusFreight = append(r.sKusFreight, sKusFreight...)
 	return
 }
@@ -281,13 +287,13 @@ func NewPriceFreight(options ...OptionPriceFreight) *PriceFreight {
 	p := &PriceFreight{
 		sKusFreight: make([]*SkuFreightSingle, 0, 16),
 		dataGroup:   make(map[int64]map[string][]SkuFreightSingle, 16),
-		Result:PriceFreightResult{
+		Result: PriceFreightResult{
 			Total:    decimal.NewFromInt(0),
 			TotalNum: 0,
-			Shops:    make(map[int64]ShopCalResultFreight,16),
+			Shops:    make(map[int64]ShopCalResultFreight, 16),
 		},
 	}
- 	for _, option := range options {
+	for _, option := range options {
 		option(p)
 	}
 	return p
