@@ -3,7 +3,6 @@ package freight
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/models"
 	"github.com/shopspring/decimal"
 )
@@ -13,7 +12,7 @@ type (
 	PriceFreight struct {
 		context     *base.Context                           `json:"-"`
 		sKusFreight []*SkuFreightSingle                     `json:"-"`           //计算邮费的每个SKU需要的数据
-		EmsAddress  *mall.ResultGetByAddressIdsItem         `json:"ems_address"` //城市ID
+		EmsAddress  *ResultGetByAddressIdsItem         `json:"ems_address"` //城市ID
 		dataGroup   map[int64]map[string][]SkuFreightSingle `json:"-"`           //数据按照 店铺ID  SPU_ID分组
 		Result      PriceFreightResult                      `json:"result"`
 	}
@@ -47,7 +46,7 @@ type (
 		SkuRelate         *models.SkuPropertyRelate       `json:"sku_relate"`
 		Spu               *models.Product                 `json:"spu"`  //商品信息
 		Shop              *models.Shop                    `json:"shop"` //店铺信息
-		EmsAddressFreight *mall.ResultGetByAddressIdsItem `json:"ems_address_freight"`
+		EmsAddressFreight *ResultGetByAddressIdsItem `json:"ems_address_freight"`
 		TemplateFreight   *TemplateFreight                //运费模板
 		FromCityId        string                          `json:"from_city_id"`
 	}
@@ -62,7 +61,29 @@ type (
 		Mark  string          `json:"mark"`
 	}
 	OptionPriceFreight func(*PriceFreight)
+
+
+	ResultGetByAddressIdsItem struct {
+		Id           int64  `json:"id"`
+		ProvinceId   string `json:"province_id"`
+		CityId       string `json:"city_id"`
+		AreaId       string `json:"area_id"`
+		Province     string `json:"province"`
+		City         string `json:"city"`
+		Area         string `json:"area"`
+		Title        string `json:"title"`
+		Address      string `json:"address"`
+		AreaAddress  string `json:"area_address"`
+		ContactUser  string `json:"contact_user"`
+		ContactPhone string `json:"contact_phone"`
+		FullAddress  string `json:"full_address"`
+	}
 )
+
+func (r *ResultGetByAddressIdsItem) GetToCityId() (res string) {
+	res = r.CityId
+	return
+}
 
 //计算邮费动作
 func (r *PriceFreight) Calculate() (res *PriceFreightResult, err error) {
@@ -259,7 +280,7 @@ func OptionFreightContext(context *base.Context) OptionPriceFreight {
 	}
 }
 
-func OptionFreightEmsAddress(EmsAddress *mall.ResultGetByAddressIdsItem) OptionPriceFreight {
+func OptionFreightEmsAddress(EmsAddress *ResultGetByAddressIdsItem) OptionPriceFreight {
 	return func(freight *PriceFreight) {
 		freight.EmsAddress = EmsAddress
 	}

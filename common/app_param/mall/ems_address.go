@@ -3,6 +3,7 @@ package mall
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/mall/freight"
 	"strconv"
 	"strings"
 )
@@ -14,29 +15,11 @@ type (
 		Ids []int64 `json:"-" form:"-"`
 	}
 
-	ResultGetByAddressIds map[int64]*ResultGetByAddressIdsItem
+	ResultGetByAddressIds map[int64]*freight.ResultGetByAddressIdsItem
 
-	ResultGetByAddressIdsItem struct {
-		Id           int64  `json:"id"`
-		ProvinceId   string `json:"province_id"`
-		CityId       string `json:"city_id"`
-		AreaId       string `json:"area_id"`
-		Province     string `json:"province"`
-		City         string `json:"city"`
-		Area         string `json:"area"`
-		Title        string `json:"title"`
-		Address      string `json:"address"`
-		AreaAddress  string `json:"area_address"`
-		ContactUser  string `json:"contact_user"`
-		ContactPhone string `json:"contact_phone"`
-		FullAddress  string `json:"full_address"`
-	}
 )
 
-func (r *ResultGetByAddressIdsItem) GetToCityId() (res string) {
-	res = r.CityId
-	return
-}
+
 
 func (r *ArgGetByAddressIds) Default(ctx *base.Context) (err error) {
 	idString := strings.Split(r.IdString, ",")
