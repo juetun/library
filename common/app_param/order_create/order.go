@@ -27,7 +27,7 @@ type (
 
 	ResultGetInfoByOrderItem struct {
 		OrderId   string           `json:"order_id"`   //订单ID号
-		Status    string           `json:"status"`     //订单状态
+		Status    uint8            `json:"status"`     //订单状态
 		ShopItems []*OrderShopItem `json:"shop_items"` //商品列表（按店铺分组）
 	}
 
