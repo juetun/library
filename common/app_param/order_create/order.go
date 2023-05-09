@@ -26,9 +26,10 @@ type (
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem
 
 	ResultGetInfoByOrderItem struct {
-		OrderId   string           `json:"order_id"`   //订单ID号
-		Status    uint8            `json:"status"`     //订单状态
-		ShopItems []*OrderShopItem `json:"shop_items"` //商品列表（按店铺分组）
+		OrderId    string           `json:"order_id"`    //订单ID号
+		Status     uint8            `json:"status"`      //订单状态
+		StatusName string           `json:"status_name"` //订单状态中文描述
+		ShopItems  []*OrderShopItem `json:"shop_items"`  //商品列表（按店铺分组）
 	}
 
 	OrderShopItem struct {
