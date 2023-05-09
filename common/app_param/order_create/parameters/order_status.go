@@ -9,6 +9,7 @@ import (
 const (
 	OrderStatusInit         uint8 = 10 // 订单初始化
 	OrderStatusPaying       uint8 = 20 // 付款中
+	OrderStatusCancel       uint8 = 24 // 已取消
 	OrderStatusPayFailure   uint8 = 25 // 付款失败
 	OrderStatusPayingFinish uint8 = 30 // 付款完成(待发货)
 
@@ -42,7 +43,6 @@ var (
 			Value: OrderStatusInit,
 			Label: "待支付",
 		},
-
 		{
 			Value: OrderStatusPaying,
 			Label: "付款中",
@@ -50,6 +50,10 @@ var (
 		{
 			Value: OrderStatusPayingFinish,
 			Label: "已付款",
+		},
+		{
+			Value: OrderStatusCancel,
+			Label: "已取消",
 		},
 		{
 			Value: OrderStatusPayFailure,
@@ -122,10 +126,12 @@ var (
 var StatusRelation = map[uint8]StatusNext{
 	OrderStatusInit: { // 订单初始化状态的下一个状态
 		OrderStatusPaying,
+		OrderStatusCancel,
 	},
 	OrderStatusPaying: { // 付款中
 		OrderStatusPayingFinish,
 		OrderStatusPayFailure,
+		OrderStatusCancel,
 	},
 	OrderStatusPayFailure: { //付款失败
 		OrderStatusPayingFinish, //手工改成付款成功
