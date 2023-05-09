@@ -33,6 +33,11 @@ type (
 	}
 )
 
+func (r *ResultGetByAddressIdsItem) GetToCityId() (res string) {
+	res = r.CityId
+	return
+}
+
 func (r *ArgGetByAddressIds) Default(ctx *base.Context) (err error) {
 	idString := strings.Split(r.IdString, ",")
 	r.Ids = make([]int64, 0, len(idString))
