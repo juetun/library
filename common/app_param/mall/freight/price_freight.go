@@ -281,8 +281,13 @@ func NewPriceFreight(options ...OptionPriceFreight) *PriceFreight {
 	p := &PriceFreight{
 		sKusFreight: make([]*SkuFreightSingle, 0, 16),
 		dataGroup:   make(map[int64]map[string][]SkuFreightSingle, 16),
+		Result:PriceFreightResult{
+			Total:    decimal.NewFromInt(0),
+			TotalNum: 0,
+			Shops:    make(map[int64]ShopCalResultFreight,16),
+		},
 	}
-	for _, option := range options {
+ 	for _, option := range options {
 		option(p)
 	}
 	return p
