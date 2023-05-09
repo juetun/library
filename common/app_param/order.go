@@ -12,7 +12,22 @@ const (
 	OrderPageCategorySecond = "second" //定金预售付尾款
 )
 
+const (
+	OrderShopDetailPriceCateFirst  uint8 = iota + 1 //第一次付款或定金付款
+	OrderShopDetailPriceCateSecond                  //定金预售付尾款
+)
+
 var (
+	SliceOrderShopDetailPriceCate = base.ModelItemOptions{
+		{
+			Label: "普通商品付款或定金付款",
+			Value: OrderShopDetailPriceCateFirst,
+		},
+		{
+			Label: "定金预售尾款",
+			Value: OrderShopDetailPriceCateSecond,
+		},
+	}
 	SliceOrderPageCategory = base.ModelItemOptions{
 		{
 			Label: "普通商品付款或定金付款",

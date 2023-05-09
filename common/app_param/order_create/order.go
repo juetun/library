@@ -60,7 +60,8 @@ type (
 		StatusName      string              `json:"status_name"` // 商品状态名称 (已下架)
 		Price           string              `json:"price"`       //单价
 		Num             int64               `json:"num"`         //商品数量
-		PriceCate       string              `json:"price_cate"`
+		PriceCate       uint8               `json:"price_cate"`  //定金类型当前商品类型为定金预售时1-首付款 2-尾款
+		PriceCateName   string              `json:"price_cate_name"`
 		TotalPrice      string              `json:"total_price"`
 		SaleTypeName    string              `json:"sale_type_name"`
 		SaleType        uint8               `json:"sale_type"`
