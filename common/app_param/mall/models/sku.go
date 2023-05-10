@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/library/common/recommend"
+	"github.com/shopspring/decimal"
 	"net/url"
 	"time"
 
@@ -204,6 +205,13 @@ func GetSliceSkuStatusEditOption(skuStatus int8) (res []*SliceSkuStatusEditOptio
 	return
 }
 
+func (r *Sku) GetWeightDecimal() (weight decimal.Decimal, err error) {
+	weight = decimal.NewFromFloat(0)
+	if r.Weight != "" {
+		weight, err = decimal.NewFromString(r.Weight)
+	}
+	return
+}
 func (r *Sku) Default() {
 
 	if r.Price == "" {

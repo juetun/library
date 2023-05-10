@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/shopspring/decimal"
 )
 
 const (
@@ -37,6 +38,58 @@ var (
 	}
 )
 
+const (
+	FreightTemplateTitleMaxLength = 580 //运费模板最大长度支持
+)
+const (
+	FreightTemplateFreeFreightFree                = iota + 1 // 包邮
+	FreightTemplateFreeFreightPay                            // 买家承担运费
+	FreightTemplateFreeFreightFreeWithAsCondition            // 有条件包邮
+)
+
+const (
+	FreightTemplateHasUseYes        = iota + 1 // 已使用
+	FreightTemplateHasUseInit                  // 未使用 3
+	FreightTemplateHasUseDeprecated            // 已弃用
+)
+
+const (
+	FreightTemplateFreightCalWeight = iota + 1 // 按重量
+	FreightTemplateFreightCalVolume            // 按容积
+	FreightTemplateFreightCalNum               // 按数量
+)
+
+const (
+	// FreightTemplateSendTypeExpressDelivery 运送方式 1-快递 2-EMS 3-平邮
+	FreightTemplateSendTypeExpressDelivery = iota + 1 // 快递 快递中等
+	FreightTemplateSendTypeEms                        // EMS 飞机空运
+	FreightTemplateSendTypeGeneral                    // 平邮 平邮最慢
+)
+
+var MapFreightTemplateFreeFreight = map[uint8]string{
+	FreightTemplateFreeFreightFree:                "包邮",
+	FreightTemplateFreeFreightPay:                 "不包邮",
+	FreightTemplateFreeFreightFreeWithAsCondition: "有条件包邮",
+}
+
+var MapFreightTemplateHasUse = map[uint8]string{
+	FreightTemplateHasUseInit:       "未使用",
+	FreightTemplateHasUseYes:        "已使用",
+	FreightTemplateHasUseDeprecated: "已弃用",
+}
+
+var MapFreightTemplateFreightCal = map[uint8]string{
+	FreightTemplateFreightCalWeight: "按重量",
+	FreightTemplateFreightCalVolume: "按容积",
+	FreightTemplateFreightCalNum:    "按数量",
+}
+
+var MapFreightTemplateSendType = map[uint8]string{
+	FreightTemplateSendTypeExpressDelivery: "快递",
+	FreightTemplateSendTypeEms:             "EMS",
+	FreightTemplateSendTypeGeneral:         "平邮",
+}
+
 type (
 	FreightTemplate struct {
 		ID               int64            `gorm:"column:id;primary_key" json:"id"`
@@ -56,29 +109,153 @@ type (
 		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	FreightTemplatesCache []*FreightTemplate
+
+	FreightFreeCondition struct {
+		AreaCode    []string `json:"a"` //区域
+		FreightType uint8    `json:"ft"`
+		FullPrice   string   `json:"fp"`
+		FullNumber  uint32   `json:"fn"`
+	}
+	FreightSaleArea struct {
+		AreaCode   []string `json:"a"`  //区域
+		FirstGoods string   `json:"fg"` //首件数
+		FirstPay   string   `json:"fp"` //首费
+		ExtGoods   string   `json:"eg"` //续件数
+		ExtPrice   string   `json:"ep"` //续费
+
+	}
 )
 
-func (r *FreightTemplatesCache) UnmarshalBinary(data []byte) (err error) {
-	if len(data) == 0 {
-		*r = []*FreightTemplate{}
+func (r *FreightSaleArea) GetFirstPay() (res decimal.Decimal, err error) {
+	res = decimal.NewFromInt(0)
+	if r.FirstPay != "" {
+		if res, err = decimal.NewFromString(r.FirstPay); err != nil {
+			return
+		}
 	}
-	err = json.Unmarshal(data, r)
 	return
 }
 
-//实现 序列化方法 encoding.BinaryMarshaler
-func (r *FreightTemplatesCache) MarshalBinary() (data []byte, err error) {
-	if len(*r) == 0 {
-		data = []byte{}
+func (r *FreightSaleArea) GetExtPrice() (res decimal.Decimal, err error) {
+	res = decimal.NewFromInt(0)
+	if r.ExtPrice != "" {
+		if res, err = decimal.NewFromString(r.ExtPrice); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func (r *FreightSaleArea) GetFirstGoods() (firstGoods decimal.Decimal, err error) {
+	firstGoods = decimal.NewFromInt(0)
+	if r.FirstGoods == "" {
 		return
 	}
-	data, err = json.Marshal(r)
+	if firstGoods, err = decimal.NewFromString(r.FirstGoods); err != nil {
+		return
+	}
+	return
+}
+
+func (r *FreightSaleArea) GetExtGoods() (extGoods decimal.Decimal, err error) {
+	extGoods = decimal.NewFromInt(0)
+	if r.ExtGoods == "" {
+		return
+	}
+	if extGoods, err = decimal.NewFromString(r.ExtGoods); err != nil {
+		return
+	}
+
+	return
+}
+
+func (r *FreightSaleArea) GetPriceByUnit(num int64) (res decimal.Decimal, desc string, err error) {
+	numDecimal := decimal.NewFromInt(num)
+	res = decimal.NewFromInt(0)
+	var zeroDecimal = decimal.NewFromInt(0)
+	var firstGoods decimal.Decimal
+	if firstGoods, err = r.GetFirstGoods(); err != nil {
+		desc = "参数异常(首件数)"
+		return
+	}
+	var firstPay decimal.Decimal
+	if firstPay, err = r.GetFirstPay(); err != nil {
+		desc = "参数异常(首费数)"
+		return
+	}
+	res = res.Add(firstPay)
+	if numDecimal.LessThan(firstGoods) {
+		return
+	}
+
+	var extGoods decimal.Decimal
+	if extGoods, err = r.GetExtGoods(); err != nil {
+		desc = "参数异常(续件数)"
+		return
+	}
+	if extGoods.Equal(zeroDecimal) { //如果续重为0 则不参与计算
+		return
+	}
+	var ExtPrice decimal.Decimal
+	if ExtPrice, err = r.GetExtPrice(); err != nil {
+		desc = "参数异常(续费数)"
+		return
+	}
+	//如果续费数为0页可用推出不参与计算
+	if ExtPrice.Equal(decimal.NewFromInt(0)) {
+		return
+	}
+	step := numDecimal.Sub(firstGoods).Div(extGoods).Ceil()
+	res = res.Add(step.Mul(ExtPrice))
+	return
+}
+
+func (r *FreightSaleArea) GetPriceByWeight(weightSummary decimal.Decimal) (res decimal.Decimal, desc string, err error) {
+	res = decimal.NewFromInt(0)
+
+	res = decimal.NewFromInt(0)
+	var zeroDecimal = decimal.NewFromInt(0)
+	var firstGoods decimal.Decimal
+	if firstGoods, err = r.GetFirstGoods(); err != nil {
+		desc = "参数异常(首重数)"
+		return
+	}
+	var firstPay decimal.Decimal
+	if firstPay, err = r.GetFirstPay(); err != nil {
+		desc = "参数异常(首费数)"
+		return
+	}
+	res = res.Add(firstPay)
+	if weightSummary.LessThan(firstGoods) {
+		return
+	}
+
+	var extGoods decimal.Decimal
+	if extGoods, err = r.GetExtGoods(); err != nil {
+		desc = "参数异常(续重数)"
+		return
+	}
+	if extGoods.Equal(zeroDecimal) { //如果续重为0 则不参与计算
+		return
+	}
+	var ExtPrice decimal.Decimal
+	if ExtPrice, err = r.GetExtPrice(); err != nil {
+		desc = "参数异常(续费数)"
+		return
+	}
+	//如果续费数为0页可用推出不参与计算
+	if ExtPrice.Equal(decimal.NewFromInt(0)) {
+		return
+	}
+	step := weightSummary.Sub(firstGoods).Div(extGoods).Ceil()
+	res = res.Add(step.Mul(ExtPrice))
 	return
 }
 
 func (r *FreightTemplate) TableName() string {
 	return fmt.Sprintf("%sfreight_template", TablePrefix)
 }
+
 func (r *FreightTemplate) GetTableComment() (res string) {
 	res = "运费模板"
 	return
@@ -106,6 +283,46 @@ func (r *FreightTemplate) ParseFreeFreight() (res string) {
 	return
 }
 
+func (r *FreightTemplate) SetFreeCondition(data []*FreightFreeCondition) (err error) {
+	if len(data) == 0 {
+		return
+	}
+	var res []byte
+	if res, err = json.Marshal(data); err != nil {
+		return
+	}
+	r.FreeCondition = string(res)
+	return
+}
+
+func (r *FreightTemplate) ParseFreeCondition() (res []*FreightFreeCondition, err error) {
+	if r.FreeCondition == "" {
+		return
+	}
+	err = json.Unmarshal([]byte(r.FreeCondition), &res)
+	return
+}
+
+func (r *FreightTemplate) SetSaleArea(data []*FreightSaleArea) (err error) {
+	if len(data) == 0 {
+		return
+	}
+	var res []byte
+	if res, err = json.Marshal(data); err != nil {
+		return
+	}
+	r.SaleArea = string(res)
+	return
+}
+
+func (r *FreightTemplate) ParseSaleArea() (res []*FreightSaleArea, err error) {
+	if r.SaleArea == "" {
+		return
+	}
+	err = json.Unmarshal([]byte(r.SaleArea), &res)
+	return
+}
+
 func (r *FreightTemplate) ParsePricingMode() (res string) {
 	var mapSlice map[uint8]string
 	mapSlice, _ = SliceFreightTemplatePricingMode.GetMapAsKeyUint8()
@@ -114,5 +331,28 @@ func (r *FreightTemplate) ParsePricingMode() (res string) {
 		return
 	}
 	res = fmt.Sprintf("未知类型(%d)", r.PricingMode)
+	return
+}
+
+func (r *FreightTemplatesCache) UnmarshalBinary(data []byte) (err error) {
+	if len(data) == 0 {
+		*r = []*FreightTemplate{}
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *FreightTemplatesCache) MarshalBinary() (data []byte, err error) {
+	if len(*r) == 0 {
+		data = []byte{}
+		return
+	}
+	data, err = json.Marshal(r)
+	return
+}
+
+func (r *FreightTemplate) Default() {
+
 	return
 }
