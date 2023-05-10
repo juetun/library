@@ -123,8 +123,9 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 		err = fmt.Errorf("未选择要付款的商品")
 		return
 	}
-
+	var skuItems = make([]*app_param.ArgOrderFromCartItem, 0, len(r.SkuItems))
 	for _, item := range r.SkuItems {
+
 		item.Default()
 		if item.SkuId == "" {
 			err = fmt.Errorf("您选择的商品数据异常(sku_id)")
@@ -137,6 +138,11 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 		if err = item.ValidateCategory(); err != nil {
 			return
 		}
+		if !item.Checked {
+			continue
+		}
+		skuItems = append(skuItems, item)
 	}
+	r.SkuItems = skuItems
 	return
 }
