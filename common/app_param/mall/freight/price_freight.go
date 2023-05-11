@@ -13,7 +13,8 @@ type (
 		context     *base.Context                           `json:"-"`
 		sKusFreight []*SkuFreightSingle                     `json:"-"`           //计算邮费的每个SKU需要的数据
 		EmsAddress  *ResultGetByAddressIdsItem              `json:"ems_address"` //城市ID
-		dataGroup   map[int64]map[string][]SkuFreightSingle `json:"-"`           //数据按照 店铺ID  SPU_ID分组
+		ToCityId    string                                  `json:"to_city_id"`
+		dataGroup   map[int64]map[string][]SkuFreightSingle `json:"-"` //数据按照 店铺ID  SPU_ID分组
 		Result      PriceFreightResult                      `json:"result"`
 	}
 
@@ -84,9 +85,9 @@ type (
 		FullAddress  string `json:"full_address"`
 	}
 	CalCaseFreight struct {
-		FreightSaleArea *models.FreightSaleArea      //计算邮费条件条件基数
-		ExtCase         *models.FreightFreeCondition //补充条件 （如 满多少包邮之类）
-		PricingMode     uint8                        //计价方式
+		FreightSaleArea *models.FreightSaleAreaBase      //计算邮费条件条件基数
+		ExtCase         *models.FreightFreeConditionBase //补充条件 （如 满多少包邮之类）
+		PricingMode     uint8                            //计价方式
 	}
 )
 
@@ -232,7 +233,7 @@ func (r *PriceFreight) initExtCase(single *SkuFreightSingle, res *CalCaseFreight
 		var isBreak = false
 		for _, it := range item.AreaCode {
 			if it == r.EmsAddress.GetToCityId() {
-				res.ExtCase = item
+				res.ExtCase = &item.FreightFreeConditionBase
 				isBreak = true
 				break
 			}
@@ -249,14 +250,15 @@ func (r *PriceFreight) initFreightSaleArea(single *SkuFreightSingle, res *CalCas
 	var (
 		areas []*models.FreightSaleArea
 	)
+	r.ToCityId = r.EmsAddress.GetToCityId()
 	if areas, err = single.TemplateFreight.Template.ParseSaleArea(); err != nil {
 		return
 	}
 	for _, item := range areas {
 		var isBreak = false
 		for _, it := range item.AreaCode {
-			if it == r.EmsAddress.GetToCityId() {
-				res.FreightSaleArea = item
+			if it == r.ToCityId {
+				res.FreightSaleArea = &item.FreightSaleAreaBase
 				isBreak = true
 				break
 			}

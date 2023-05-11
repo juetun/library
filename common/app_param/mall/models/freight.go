@@ -66,29 +66,28 @@ const (
 	FreightTemplateSendTypeGeneral                    // 平邮 平邮最慢
 )
 
-var MapFreightTemplateFreeFreight = map[uint8]string{
-	FreightTemplateFreeFreightFree:                "包邮",
-	FreightTemplateFreeFreightPay:                 "不包邮",
-	FreightTemplateFreeFreightFreeWithAsCondition: "有条件包邮",
-}
-
-var MapFreightTemplateHasUse = map[uint8]string{
-	FreightTemplateHasUseInit:       "未使用",
-	FreightTemplateHasUseYes:        "已使用",
-	FreightTemplateHasUseDeprecated: "已弃用",
-}
-
-var MapFreightTemplateFreightCal = map[uint8]string{
-	FreightTemplateFreightCalWeight: "按重量",
-	FreightTemplateFreightCalVolume: "按容积",
-	FreightTemplateFreightCalNum:    "按数量",
-}
-
-var MapFreightTemplateSendType = map[uint8]string{
-	FreightTemplateSendTypeExpressDelivery: "快递",
-	FreightTemplateSendTypeEms:             "EMS",
-	FreightTemplateSendTypeGeneral:         "平邮",
-}
+var (
+	MapFreightTemplateFreeFreight = map[uint8]string{
+		FreightTemplateFreeFreightFree:                "包邮",
+		FreightTemplateFreeFreightPay:                 "不包邮",
+		FreightTemplateFreeFreightFreeWithAsCondition: "有条件包邮",
+	}
+	MapFreightTemplateHasUse = map[uint8]string{
+		FreightTemplateHasUseInit:       "未使用",
+		FreightTemplateHasUseYes:        "已使用",
+		FreightTemplateHasUseDeprecated: "已弃用",
+	}
+	MapFreightTemplateFreightCal = map[uint8]string{
+		FreightTemplateFreightCalWeight: "按重量",
+		FreightTemplateFreightCalVolume: "按容积",
+		FreightTemplateFreightCalNum:    "按数量",
+	}
+	MapFreightTemplateSendType = map[uint8]string{
+		FreightTemplateSendTypeExpressDelivery: "快递",
+		FreightTemplateSendTypeEms:             "EMS",
+		FreightTemplateSendTypeGeneral:         "平邮",
+	}
+)
 
 type (
 	FreightTemplate struct {
@@ -111,22 +110,27 @@ type (
 	FreightTemplatesCache []*FreightTemplate
 
 	FreightFreeCondition struct {
-		AreaCode    []string `json:"a"` //区域
-		FreightType uint8    `json:"ft"`
-		FullPrice   string   `json:"fp"`
-		FullNumber  uint32   `json:"fn"`
+		AreaCode []string `json:"a"` //区域
+		FreightFreeConditionBase
+	}
+	FreightFreeConditionBase struct {
+		FreightType uint8  `json:"ft"`
+		FullPrice   string `json:"fp"`
+		FullNumber  uint32 `json:"fn"`
 	}
 	FreightSaleArea struct {
-		AreaCode   []string `json:"a"`  //区域
-		FirstGoods string   `json:"fg"` //首件数
-		FirstPay   string   `json:"fp"` //首费
-		ExtGoods   string   `json:"eg"` //续件数
-		ExtPrice   string   `json:"ep"` //续费
-
+		AreaCode []string `json:"a"` //区域
+		FreightSaleAreaBase
+	}
+	FreightSaleAreaBase struct {
+		FirstGoods string `json:"fg"` //首件数
+		FirstPay   string `json:"fp"` //首费
+		ExtGoods   string `json:"eg"` //续件数
+		ExtPrice   string `json:"ep"` //续费
 	}
 )
 
-func (r *FreightSaleArea) GetFirstPay() (res decimal.Decimal, err error) {
+func (r *FreightSaleAreaBase) GetFirstPay() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
 	if r.FirstPay != "" {
 		if res, err = decimal.NewFromString(r.FirstPay); err != nil {
@@ -136,7 +140,7 @@ func (r *FreightSaleArea) GetFirstPay() (res decimal.Decimal, err error) {
 	return
 }
 
-func (r *FreightSaleArea) GetExtPrice() (res decimal.Decimal, err error) {
+func (r *FreightSaleAreaBase) GetExtPrice() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
 	if r.ExtPrice != "" {
 		if res, err = decimal.NewFromString(r.ExtPrice); err != nil {
@@ -146,7 +150,7 @@ func (r *FreightSaleArea) GetExtPrice() (res decimal.Decimal, err error) {
 	return
 }
 
-func (r *FreightSaleArea) GetFirstGoods() (firstGoods decimal.Decimal, err error) {
+func (r *FreightSaleAreaBase) GetFirstGoods() (firstGoods decimal.Decimal, err error) {
 	firstGoods = decimal.NewFromInt(0)
 	if r.FirstGoods == "" {
 		return
@@ -157,7 +161,7 @@ func (r *FreightSaleArea) GetFirstGoods() (firstGoods decimal.Decimal, err error
 	return
 }
 
-func (r *FreightSaleArea) GetExtGoods() (extGoods decimal.Decimal, err error) {
+func (r *FreightSaleAreaBase) GetExtGoods() (extGoods decimal.Decimal, err error) {
 	extGoods = decimal.NewFromInt(0)
 	if r.ExtGoods == "" {
 		return
@@ -169,7 +173,7 @@ func (r *FreightSaleArea) GetExtGoods() (extGoods decimal.Decimal, err error) {
 	return
 }
 
-func (r *FreightSaleArea) GetPriceByUnit(num int64) (res decimal.Decimal, desc string, err error) {
+func (r *FreightSaleAreaBase) GetPriceByUnit(num int64) (res decimal.Decimal, desc string, err error) {
 	numDecimal := decimal.NewFromInt(num)
 	res = decimal.NewFromInt(0)
 	var zeroDecimal = decimal.NewFromInt(0)
@@ -210,7 +214,7 @@ func (r *FreightSaleArea) GetPriceByUnit(num int64) (res decimal.Decimal, desc s
 	return
 }
 
-func (r *FreightSaleArea) GetPriceByWeight(weightSummary decimal.Decimal) (res decimal.Decimal, desc string, err error) {
+func (r *FreightSaleAreaBase) GetPriceByWeight(weightSummary decimal.Decimal) (res decimal.Decimal, desc string, err error) {
 	res = decimal.NewFromInt(0)
 
 	res = decimal.NewFromInt(0)
