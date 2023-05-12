@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/shopspring/decimal"
+	"strings"
 )
 
 const (
@@ -15,8 +16,22 @@ const (
 	FreightTemplatePricingModeUnit   uint8 = iota + 1 //按件数
 	FreightTemplatePricingModeWeight                  //按重量
 )
+const (
+	FreeConditionOptAnd uint8 = iota + 1 //且 逻辑 两个条件都满足
+	FreeConditionOptOr                   //或 逻辑 两个条件满足一个即可
+)
 
 var (
+	SliceFreeConditionOpt = base.ModelItemOptions{
+		{
+			Label: "所有条件",
+			Value: FreeConditionOptAnd,
+		},
+		{
+			Label: "任一条件",
+			Value: FreeConditionOptOr,
+		},
+	}
 	//注意:此数据只能在后边添加,否则会影响数据结构
 	SliceFreightTemplateFree = base.ModelItemOptions{
 		{
@@ -174,84 +189,102 @@ func (r *FreightSaleAreaBase) GetExtGoods() (extGoods decimal.Decimal, err error
 }
 
 func (r *FreightSaleAreaBase) GetPriceByUnit(num int64) (res decimal.Decimal, desc string, err error) {
+	var descList = make([]string, 0, 10)
+	defer func() {
+		desc = strings.Join(descList, ",")
+	}()
 	numDecimal := decimal.NewFromInt(num)
 	res = decimal.NewFromInt(0)
 	var zeroDecimal = decimal.NewFromInt(0)
 	var firstGoods decimal.Decimal
 	if firstGoods, err = r.GetFirstGoods(); err != nil {
-		desc = "参数异常(首件数)"
+		descList = append(descList, "参数异常(首件数)")
 		return
 	}
 	var firstPay decimal.Decimal
 	if firstPay, err = r.GetFirstPay(); err != nil {
-		desc = "参数异常(首费数)"
+		descList = append(descList, "参数异常(首费数)")
 		return
 	}
 	res = res.Add(firstPay)
-	if numDecimal.LessThan(firstGoods) {
+	if numDecimal.LessThanOrEqual(firstGoods) { //未超过首件付基础运费
+		descList = append(descList, "首件基础运费")
+		res = firstPay
 		return
 	}
-
+	descList = append(descList, fmt.Sprintf("基础费￥%v", firstPay.StringFixed(2)))
 	var extGoods decimal.Decimal
 	if extGoods, err = r.GetExtGoods(); err != nil {
-		desc = "参数异常(续件数)"
+		descList = append(descList, "参数异常(续件数)")
 		return
 	}
-	if extGoods.Equal(zeroDecimal) { //如果续重为0 则不参与计算
+	if extGoods.Equal(zeroDecimal) { //如果续件为0 则不参与计算
+		descList = append(descList, "续件未配置")
 		return
 	}
 	var ExtPrice decimal.Decimal
 	if ExtPrice, err = r.GetExtPrice(); err != nil {
-		desc = "参数异常(续费数)"
+		descList = append(descList, "参数异常(续费数)")
 		return
 	}
 	//如果续费数为0页可用推出不参与计算
 	if ExtPrice.Equal(decimal.NewFromInt(0)) {
+		descList = append(descList, "续件(续费数)未配置")
 		return
 	}
 	step := numDecimal.Sub(firstGoods).Div(extGoods).Ceil()
+	descList = append(descList, fmt.Sprintf("续费:%v*%v", step, ExtPrice.StringFixed(2)))
 	res = res.Add(step.Mul(ExtPrice))
 	return
 }
 
 func (r *FreightSaleAreaBase) GetPriceByWeight(weightSummary decimal.Decimal) (res decimal.Decimal, desc string, err error) {
 	res = decimal.NewFromInt(0)
-
-	res = decimal.NewFromInt(0)
+	var descList = make([]string, 0, 10)
+	defer func() {
+		desc = strings.Join(descList, ",")
+	}()
 	var zeroDecimal = decimal.NewFromInt(0)
 	var firstGoods decimal.Decimal
 	if firstGoods, err = r.GetFirstGoods(); err != nil {
-		desc = "参数异常(首重数)"
+		descList = append(descList, "参数异常(首重数)")
 		return
 	}
 	var firstPay decimal.Decimal
 	if firstPay, err = r.GetFirstPay(); err != nil {
-		desc = "参数异常(首费数)"
+		descList = append(descList, "参数异常(首费数)")
 		return
 	}
 	res = res.Add(firstPay)
-	if weightSummary.LessThan(firstGoods) {
+
+	//如果总重量小于等于首重，则只付基础运费
+	if weightSummary.LessThanOrEqual(firstGoods) {
+		res = firstPay
+		descList = append(descList, "首重基础运费")
 		return
 	}
-
+	descList = append(descList, fmt.Sprintf("基础费￥%v", firstPay.StringFixed(2)))
 	var extGoods decimal.Decimal
 	if extGoods, err = r.GetExtGoods(); err != nil {
-		desc = "参数异常(续重数)"
+		descList = append(descList, "参数异常(续重数)")
 		return
 	}
 	if extGoods.Equal(zeroDecimal) { //如果续重为0 则不参与计算
+		descList = append(descList, "续重未配置")
 		return
 	}
 	var ExtPrice decimal.Decimal
 	if ExtPrice, err = r.GetExtPrice(); err != nil {
-		desc = "参数异常(续费数)"
+		descList = append(descList, "参数异常(续费数)")
 		return
 	}
 	//如果续费数为0页可用推出不参与计算
 	if ExtPrice.Equal(decimal.NewFromInt(0)) {
+		descList = append(descList, "续重(续费数)未配置")
 		return
 	}
 	step := weightSummary.Sub(firstGoods).Div(extGoods).Ceil()
+	descList = append(descList, fmt.Sprintf("续费:%v*%v", step, ExtPrice.StringFixed(2)))
 	res = res.Add(step.Mul(ExtPrice))
 	return
 }
