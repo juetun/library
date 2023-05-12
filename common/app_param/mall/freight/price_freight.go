@@ -1,6 +1,7 @@
 package freight
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/mall/models"
@@ -27,13 +28,13 @@ type (
 	}
 
 	ShopCalResultFreight struct {
-		ShopId             int64                     `json:"shop_id"` //店铺ID
-		FreightTotal       decimal.Decimal           `json:"-"`       //店铺总邮费
-		FreightTotalString string                    `json:"freight_total"`
-		ShopTotalNum       int64                     `json:"shop_total_num"` //店铺商品总数
-		SkuFreight         []*SkuCalResultFreight    `json:"sku_freight"`    //邮费价格
-		Summary            AttrSummary               `json:"summary"`        //店铺数据汇总 总重量、总体积 总件数
-		CalParameter       map[int64]*CalCaseFreight `json:"cal_parameter"`  //计算邮费的基本参数
+		ShopId             int64                  `json:"shop_id"` //店铺ID
+		FreightTotal       decimal.Decimal        `json:"-"`       //店铺总邮费
+		FreightTotalString string                 `json:"freight_total"`
+		ShopTotalNum       int64                  `json:"shop_total_num"` //店铺商品总数
+		SkuFreight         []*SkuCalResultFreight `json:"sku_freight"`    //邮费价格
+		Summary            AttrSummary            `json:"summary"`        //店铺数据汇总 总重量、总体积 总件数
+		CalParameter       *CalCaseFreight        `json:"cal_parameter"`  //计算邮费的基本参数
 	}
 	CalResultFreight struct {
 		FreightId          int64                  `json:"shop_id"` //店铺ID
@@ -106,9 +107,15 @@ type (
 	CalCaseFreight struct {
 		FreightSaleArea *models.FreightSaleAreaBase      `json:"base,omitempty"` //计算邮费条件基本规则
 		ExtCase         *models.FreightFreeConditionBase `json:"ext,omitempty"`  //补充条件 （如 满多少包邮之类）
-		PricingMode     uint8                            `json:"pri_mode"`   //计价方式
+		PricingMode     uint8                            `json:"pri_mode"`       //计价方式
 	}
 )
+
+func (r *SkuCalResultFreight) Default() {
+	r.FreightPriceString = r.FreightPrice.StringFixed(2)
+	r.AttrSummary.Default()
+	return
+}
 
 //重新初始化数据设置包邮
 func (r *CalResultFreight) ReInitSkuFreightFree(desc string) {
@@ -270,6 +277,16 @@ func (r *PriceFreight) calculateShop() (err error) {
 	return
 }
 
+func (r *CalCaseFreight) ToJson() (res string) {
+	if r == nil {
+		return
+	}
+	var bt []byte
+	bt, _ = json.Marshal(r)
+	res = string(bt)
+	return
+}
+
 func (r *PriceFreight) getFreightParameters(single *SkuFreightSingle) (notSupportSend, isFreeFreight bool, res *CalCaseFreight, err error) {
 	if single.TemplateFreight == nil || single.TemplateFreight.Template.ID == 0 {
 		err = fmt.Errorf("数据异常（spu_id:%v）未配置运费模板", single.Spu.ProductID)
@@ -377,6 +394,7 @@ func (r *PriceFreight) freightCalBase(freightCalResultFreight []SkuFreightSingle
 			calResultFreight.Summary.Volume = shopCalResultFreight.Summary.Volume.Add(dtm.Volume)
 			calResultFreight.Summary.Weight = shopCalResultFreight.Summary.Weight.Add(dtm.Weight)
 			calResultFreight.FreightTotal = shopCalResultFreight.FreightTotal.Add(dtm.FreightPrice)
+			dtm.Default()
 			calResultFreight.SkuFreight = append(calResultFreight.SkuFreight, dtm)
 		}
 	}
@@ -489,7 +507,7 @@ func (r *PriceFreight) calEveryFreight(freightCalResultFreight []SkuFreightSingl
 	if freight, err = r.freightCalBase(freightCalResultFreight, shopCalResultFreight); err != nil {
 		return
 	}
-	shopCalResultFreight.CalParameter[freightId] = freight
+	shopCalResultFreight.CalParameter = freight
 	shopCalResultFreight.Default()
 
 	return
@@ -548,7 +566,6 @@ func (r *PriceFreight) orgSkuCalResultFreight(freight *CalCaseFreight, notSuppor
 //计算每个店铺的邮费金额
 //shopItemData 每个店铺的商品计算邮费的基本信息（按照SPU分组的映射）
 func (r *PriceFreight) calEveryShop(shopItemData map[int64][]SkuFreightSingle, shopCalResultFreight *ShopCalResultFreight) (err error) {
-	shopCalResultFreight.CalParameter = make(map[int64]*CalCaseFreight, len(shopItemData))
 	for freightId, spuCalResultFreight := range shopItemData {
 
 		//按照【店铺ID】【运费模板维度】分组计算邮费
