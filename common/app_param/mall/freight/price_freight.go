@@ -35,8 +35,9 @@ type (
 		SkuFreight         []*SkuCalResultFreight          `json:"-"`              // 邮费价格
 		MapSkuFreight      map[string]*SkuCalResultFreight `json:"map_sku_freight"`
 		Summary            AttrSummary                     `json:"summary"`       // 店铺数据汇总 总重量、总体积 总件数
-		CalParameter       map[int64]*CalCaseFreight       `json:"cal_parameter"` // 计算邮费的基本参数
+		CalParameter       CalParameterMap                 `json:"cal_parameter"` // 计算邮费的基本参数
 	}
+	CalParameterMap  map[int64]*CalCaseFreight
 	CalResultFreight struct {
 		FreightId          int64                  `json:"shop_id"` //店铺ID
 		FreightTotal       decimal.Decimal        `json:"-"`       //店铺总邮费
@@ -284,7 +285,14 @@ func (r *PriceFreight) calculateShop() (err error) {
 	return
 }
 
-func (r *CalCaseFreight) ToJson() (res string) {
+func (r *CalParameterMap) UnJson(calParameter string) (err error) {
+	if r == nil {
+		r = &CalParameterMap{}
+	}
+	err = json.Unmarshal([]byte(calParameter), r)
+	return
+}
+func (r *CalParameterMap) ToJson() (res string) {
 	if r == nil {
 		return
 	}
