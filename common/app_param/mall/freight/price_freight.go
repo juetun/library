@@ -28,14 +28,15 @@ type (
 	}
 
 	ShopCalResultFreight struct {
-		ShopId             int64                           `json:"shop_id"`        // 店铺ID
-		FreightTotal       decimal.Decimal                 `json:"-"`              // 店铺总邮费
-		FreightTotalString string                          `json:"freight_total"`  // 总邮费
-		ShopTotalNum       int64                           `json:"shop_total_num"` // 店铺商品总数
-		SkuFreight         []*SkuCalResultFreight          `json:"-"`              // 邮费价格
-		MapSkuFreight      map[string]*SkuCalResultFreight `json:"map_sku_freight"`
-		Summary            AttrSummary                     `json:"summary"`       // 店铺数据汇总 总重量、总体积 总件数
-		CalParameter       CalParameterMap                 `json:"cal_parameter"` // 计算邮费的基本参数
+		ShopId             int64                           `json:"shop_id"` // 店铺ID
+		FreightTotalString string                          `json:"ft"`      // 总邮费
+		ShopTotalNum       int64                           `json:"stn"`     // 店铺商品总数
+		MapSkuFreight      map[string]*SkuCalResultFreight `json:"msf"`     // sku 邮费计算信息
+		Summary            AttrSummary                     `json:"s"`       // 店铺数据汇总 总重量、总体积 总件数
+		CalParameter       CalParameterMap                 `json:"cp"`      // 计算邮费的基本参数
+
+		SkuFreight   []*SkuCalResultFreight `json:"-"` // 邮费价格
+		FreightTotal decimal.Decimal        `json:"-"` // 店铺总邮费
 	}
 	CalParameterMap  map[int64]*CalCaseFreight
 	CalResultFreight struct {
@@ -48,12 +49,12 @@ type (
 	}
 	AttrSummary struct { //店铺汇总数据
 		SkuTotalPrice       decimal.Decimal `json:"-"` //价格
-		SkuTotalPriceString string          `json:"sku_total_price"`
-		Num                 int64           `json:"num"`    //件数
-		Weight              decimal.Decimal `json:"-"`      //重量
-		WeightString        string          `json:"weight"` //重量
+		SkuTotalPriceString string          `json:"sku_tp"`
+		Num                 int64           `json:"num"` //件数
+		Weight              decimal.Decimal `json:"-"`   //重量
+		WeightString        string          `json:"wg"`  //重量
 		Volume              decimal.Decimal `json:"-"`
-		VolumeString        string          `json:"volume"`
+		VolumeString        string          `json:"vl"`
 	}
 	SkuCalResultFreight struct {
 		Pk                 string          `json:"pk"`
@@ -109,9 +110,9 @@ type (
 		FullAddress  string `json:"full_address"`
 	}
 	CalCaseFreight struct {
-		FreightSaleArea *models.FreightSaleAreaBase      `json:"base,omitempty"` //计算邮费条件基本规则
-		ExtCase         *models.FreightFreeConditionBase `json:"ext,omitempty"`  //补充条件 （如 满多少包邮之类）
-		PricingMode     uint8                            `json:"pri_mode"`       //计价方式
+		FreightSaleArea *models.FreightSaleAreaBase      `json:"bs,omitempty"` //计算邮费条件基本规则
+		ExtCase         *models.FreightFreeConditionBase `json:"ec,omitempty"` //补充条件 （如 满多少包邮之类）
+		PricingMode     uint8                            `json:"pm"`           //计价方式
 	}
 )
 
@@ -123,7 +124,6 @@ func (r *SkuCalResultFreight) Default() {
 
 //重新初始化数据设置包邮
 func (r *CalResultFreight) ReInitSkuFreightFree(desc string) {
-	return
 	r.FreightTotal = decimal.NewFromInt(0)
 	for key, item := range r.SkuFreight {
 		if item.Mark != "" {
