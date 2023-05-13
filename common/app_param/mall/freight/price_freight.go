@@ -21,20 +21,20 @@ type (
 	}
 
 	PriceFreightResult struct {
-		Total       decimal.Decimal                 `json:"-"`         //总邮费
-		TotalString string                          `json:"total"`     //总费用
-		TotalNum    int64                           `json:"total_num"` //总邮费
-		Shops       map[int64]*ShopCalResultFreight `json:"shops"`     //邮费计算结果()
+		Total       decimal.Decimal                 `json:"-"`         // 总邮费
+		TotalString string                          `json:"total"`     // 总费用
+		TotalNum    int64                           `json:"total_num"` // 总邮费
+		Shops       map[int64]*ShopCalResultFreight `json:"shops"`     // 邮费计算结果()
 	}
 
 	ShopCalResultFreight struct {
-		ShopId             int64                  `json:"shop_id"` //店铺ID
-		FreightTotal       decimal.Decimal        `json:"-"`       //店铺总邮费
-		FreightTotalString string                 `json:"freight_total"`
-		ShopTotalNum       int64                  `json:"shop_total_num"` //店铺商品总数
-		SkuFreight         []*SkuCalResultFreight `json:"sku_freight"`    //邮费价格
-		Summary            AttrSummary            `json:"summary"`        //店铺数据汇总 总重量、总体积 总件数
-		CalParameter       *CalCaseFreight        `json:"cal_parameter"`  //计算邮费的基本参数
+		ShopId             int64                  `json:"shop_id"`        // 店铺ID
+		FreightTotal       decimal.Decimal        `json:"-"`              // 店铺总邮费
+		FreightTotalString string                 `json:"freight_total"`  // 总邮费
+		ShopTotalNum       int64                  `json:"shop_total_num"` // 店铺商品总数
+		SkuFreight         []*SkuCalResultFreight `json:"sku_freight"`    // 邮费价格
+		Summary            AttrSummary            `json:"summary"`        // 店铺数据汇总 总重量、总体积 总件数
+		CalParameter       *CalCaseFreight        `json:"cal_parameter"`  // 计算邮费的基本参数
 	}
 	CalResultFreight struct {
 		FreightId          int64                  `json:"shop_id"` //店铺ID
@@ -75,6 +75,7 @@ type (
 		EmsAddressFreight *ResultGetByAddressIdsItem `json:"ems_address_freight"` //收货地址信息
 		TemplateFreight   *TemplateFreight           `json:"template_freight"`    //运费模板
 		FromCityId        string                     `json:"from_city_id"`        //发货城市,预留字段
+		Pk                string                     `json:"pk"`                  //唯一值
 	}
 
 	TemplateFreight struct {
