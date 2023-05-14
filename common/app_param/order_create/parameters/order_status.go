@@ -11,6 +11,7 @@ const (
 	OrderStatusPaying       uint8 = 20 // 付款中
 	OrderStatusCancel       uint8 = 24 // 已取消
 	OrderStatusPayFailure   uint8 = 25 // 付款失败
+	OrderStatusPayExpire       uint8 = 26 // 下单超时
 	OrderStatusPayingFinish uint8 = 30 // 付款完成(待发货)
 
 	OrderStatusGoodWaiting      uint8 = 35 // 待发货
@@ -54,6 +55,10 @@ var (
 		{
 			Value: OrderStatusCancel,
 			Label: "已取消",
+		},
+		{
+			Value: OrderStatusPayExpire,
+			Label: "下单超时",
 		},
 		{
 			Value: OrderStatusPayFailure,
