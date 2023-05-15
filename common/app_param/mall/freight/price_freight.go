@@ -28,15 +28,14 @@ type (
 	}
 
 	ShopCalResultFreight struct {
-		ShopId             int64                           `json:"shop_id"` // 店铺ID
-		FreightTotalString string                          `json:"ft"`      // 总邮费
-		ShopTotalNum       int64                           `json:"stn"`     // 店铺商品总数
-		MapSkuFreight      map[string]*SkuCalResultFreight `json:"msf"`     // sku 邮费计算信息
-		Summary            AttrSummary                     `json:"s"`       // 店铺数据汇总 总重量、总体积 总件数
-		CalParameter       CalParameterMap                 `json:"cp"`      // 计算邮费的基本参数
-
-		SkuFreight   []*SkuCalResultFreight `json:"-"` // 邮费价格
-		FreightTotal decimal.Decimal        `json:"-"` // 店铺总邮费
+		ShopId             int64                           `json:"shop_id"`         // 店铺ID
+		FreightTotalString string                          `json:"freight_total"`   // 总邮费
+		ShopTotalNum       int64                           `json:"shop_total_num"`  // 店铺商品总数
+		MapSkuFreight      map[string]*SkuCalResultFreight `json:"map_sku_freight"` // sku 邮费计算信息
+		Summary            AttrSummary                     `json:"summary"`         // 店铺数据汇总 总重量、总体积 总件数
+		CalParameter       CalParameterMap                 `json:"cal_parameter"`   // 计算邮费的基本参数
+		SkuFreight         []*SkuCalResultFreight          `json:"-"`               // 邮费价格
+		FreightTotal       decimal.Decimal                 `json:"-"`               // 店铺总邮费
 	}
 	CalParameterMap  map[int64]*CalCaseFreight
 	CalResultFreight struct {
