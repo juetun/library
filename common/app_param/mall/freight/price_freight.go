@@ -71,11 +71,18 @@ type (
 	}
 
 	SkuFreightSingle struct {
-		Num               int64                      `json:"num"`                 //数量
-		Sku               *models.Sku                `json:"sku"`                 //SKU信息
-		SkuRelate         *models.SkuPropertyRelate  `json:"sku_relate"`          //SKU信息 relate
-		Spu               *models.Product            `json:"spu"`                 //商品信息
-		Shop              *models.Shop               `json:"shop"`                //店铺信息
+		Num               int64  `json:"num"`                 //数量
+		SkuWeight         string `json:"sku_weight"`          //sku重量
+		SkuVolume         string `json:"sku_volume"`          //sku体积
+		ShopId            int64  `json:"shop_id"`             //店铺ID号
+		FreightTemplateId int64  `json:"freight_template_id"` //运费模板ID号
+		SpuID             string `json:"spu_id"`              //商品ID号
+		SkuId             string `json:"sku_id"`              //商品信息
+		SkuRelatePrice    string `json:"sku_relate_price"`    //商品价格
+		//Sku               *models.Sku                `json:"sku"`                 //SKU信息
+		//SkuRelate         *models.SkuPropertyRelate  `json:"sku_relate"`          //SKU信息 relate
+		//Spu               *models.Product            `json:"spu"`                 //商品信息
+		//Shop              *models.Shop               `json:"shop"`                //店铺信息
 		EmsAddressFreight *ResultGetByAddressIdsItem `json:"ems_address_freight"` //收货地址信息
 		TemplateFreight   *TemplateFreight           `json:"template_freight"`    //运费模板
 		FromCityId        string                     `json:"from_city_id"`        //发货城市,预留字段
@@ -150,9 +157,9 @@ func (r *ShopCalResultFreight) Default() {
 
 func (r *SkuFreightSingle) GetWeight() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
-	r.Sku.Default()
+	//r.Sku.Default()
 	var weight decimal.Decimal
-	if weight, err = decimal.NewFromString(r.Sku.Weight); err != nil {
+	if weight, err = decimal.NewFromString(r.SkuWeight); err != nil {
 		return
 	}
 	res = weight.Mul(decimal.NewFromInt(r.Num))
@@ -161,9 +168,9 @@ func (r *SkuFreightSingle) GetWeight() (res decimal.Decimal, err error) {
 
 func (r *SkuFreightSingle) GetVolume() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
-	r.Sku.Default()
+	//r.Sku.Default()
 	var volume decimal.Decimal
-	if volume, err = decimal.NewFromString(r.Sku.Volume); err != nil {
+	if volume, err = decimal.NewFromString(r.SkuVolume); err != nil {
 		return
 	}
 	res = volume.Mul(decimal.NewFromInt(r.Num))
@@ -175,18 +182,6 @@ func (r *AttrSummary) Default() {
 	r.WeightString = r.Weight.StringFixed(2)
 	r.VolumeString = r.Volume.StringFixed(2)
 }
-
-//func (r *PriceFreightResult) MarshalJSON() (res []byte, err error) {
-//	r.TotalString = r.Total.StringFixed(2)
-//	res, err = json.Marshal(r)
-//	return
-//}
-//
-//func (r *ShopCalResultFreight) MarshalJSON() (res []byte, err error) {
-//	r.ShopTotalString = r.ShopTotal.StringFixed(2)
-//	res, err = json.Marshal(r)
-//	return
-//}
 
 func (r *ResultGetByAddressIdsItem) GetToCityId() (res string) {
 	res = r.CityId
@@ -210,7 +205,7 @@ func (r *PriceFreight) Calculate() (res *PriceFreightResult, err error) {
 
 func (r *PriceFreight) orgGroupParameters(skuItem *SkuFreightSingle, l int, dataItem *ShopCalResultFreight) (err error) {
 
-	r.dataGroup[skuItem.Sku.ShopId][skuItem.Spu.FreightTemplate] = append(r.dataGroup[skuItem.Sku.ShopId][skuItem.Spu.FreightTemplate],
+	r.dataGroup[skuItem.ShopId][skuItem.FreightTemplateId] = append(r.dataGroup[skuItem.ShopId][skuItem.FreightTemplateId],
 		*skuItem)
 
 	return
@@ -229,11 +224,11 @@ func (r *PriceFreight) groupData() (err error) {
 	)
 	for _, skuItem := range r.sKusFreight {
 
-		if dataItem, ok = r.Result.Shops[skuItem.Sku.ShopId]; !ok {
+		if dataItem, ok = r.Result.Shops[skuItem.ShopId]; !ok {
 			dataItem = &ShopCalResultFreight{
 				FreightTotal:       decimal.NewFromInt(0),
 				FreightTotalString: "0.00",
-				ShopId:             skuItem.Shop.ShopID,
+				ShopId:             skuItem.ShopId,
 				SkuFreight:         make([]*SkuCalResultFreight, 0, l),
 				Summary: AttrSummary{
 					Num:           0,
@@ -244,12 +239,12 @@ func (r *PriceFreight) groupData() (err error) {
 			}
 			dataItem.Summary.Default()
 		}
-		r.Result.Shops[skuItem.Sku.ShopId] = dataItem
-		if _, ok = r.dataGroup[skuItem.Sku.ShopId]; !ok {
-			r.dataGroup[skuItem.Sku.ShopId] = map[int64][]SkuFreightSingle{}
+		r.Result.Shops[skuItem.ShopId] = dataItem
+		if _, ok = r.dataGroup[skuItem.ShopId]; !ok {
+			r.dataGroup[skuItem.ShopId] = map[int64][]SkuFreightSingle{}
 		}
-		if _, ok = r.dataGroup[skuItem.Sku.ShopId][skuItem.Spu.FreightTemplate]; !ok {
-			r.dataGroup[skuItem.Sku.ShopId][skuItem.Spu.FreightTemplate] = make([]SkuFreightSingle, 0, l)
+		if _, ok = r.dataGroup[skuItem.ShopId][skuItem.FreightTemplateId]; !ok {
+			r.dataGroup[skuItem.ShopId][skuItem.FreightTemplateId] = make([]SkuFreightSingle, 0, l)
 		}
 		if err = r.orgGroupParameters(skuItem, l, dataItem); err != nil {
 			return
@@ -304,7 +299,7 @@ func (r *CalParameterMap) ToJson() (res string) {
 
 func (r *PriceFreight) getFreightParameters(single *SkuFreightSingle) (notSupportSend, isFreeFreight bool, res *CalCaseFreight, err error) {
 	if single.TemplateFreight == nil || single.TemplateFreight.Template.ID == 0 {
-		err = fmt.Errorf("数据异常（spu_id:%v）未配置运费模板", single.Spu.ProductID)
+		err = fmt.Errorf("数据异常（spu_id:%v）未配置运费模板", single.SpuID)
 		return
 	}
 	res = &CalCaseFreight{
@@ -530,9 +525,9 @@ func (r *PriceFreight) calEveryFreight(freightCalResultFreight []SkuFreightSingl
 
 func (r *PriceFreight) initSkuCalResultFreight(skuCalResultFreight *SkuFreightSingle) (dtm *SkuCalResultFreight, err error) {
 	dtm = &SkuCalResultFreight{
-		SkuId:      skuCalResultFreight.Sku.GetHid(),
-		SpuId:      skuCalResultFreight.SkuRelate.ProductId,
-		ShopId:     skuCalResultFreight.Sku.ShopId,
+		SkuId:      skuCalResultFreight.SkuId,
+		SpuId:      skuCalResultFreight.SpuID,
+		ShopId:     skuCalResultFreight.ShopId,
 		TemplateId: skuCalResultFreight.TemplateFreight.Template.ID,
 		ToCityId:   r.EmsAddress.GetToCityId(),
 		AttrSummary: AttrSummary{
@@ -540,6 +535,7 @@ func (r *PriceFreight) initSkuCalResultFreight(skuCalResultFreight *SkuFreightSi
 			Volume: decimal.NewFromInt(0),
 			Num:    skuCalResultFreight.Num,
 		},
+		Pk: skuCalResultFreight.Pk,
 	}
 	if dtm.Weight, err = skuCalResultFreight.GetWeight(); err != nil {
 		return
@@ -554,7 +550,7 @@ func (r *PriceFreight) initSkuCalResultFreight(skuCalResultFreight *SkuFreightSi
 func (r *PriceFreight) orgSkuCalResultFreight(freight *CalCaseFreight, notSupportSend, isFreeFreight bool, skuCalResultFreight *SkuFreightSingle) (dtm *SkuCalResultFreight, err error) {
 	var resFreightSku *ResFreightSku
 	dtm, err = r.initSkuCalResultFreight(skuCalResultFreight)
-	dtm.Pk = skuCalResultFreight.Pk
+
 	if err != nil {
 		return
 	}
@@ -598,7 +594,7 @@ func (r *PriceFreight) getFreightPrice(freight *SkuFreightSingle, areas *CalCase
 	var (
 		skuPrice decimal.Decimal
 	)
-	if skuPrice, err = decimal.NewFromString(freight.SkuRelate.Price); err != nil {
+	if skuPrice, err = decimal.NewFromString(freight.SkuRelatePrice); err != nil {
 		return
 	}
 	res = &ResFreightSku{
@@ -637,7 +633,7 @@ func (r *PriceFreight) getEverySkuFreightNeedPayPrice(resFreightSku *ResFreightS
 
 	case models.FreightTemplatePricingModeWeight: //按重量
 		var weight, totalWeight decimal.Decimal
-		if weight, err = freight.Sku.GetWeightDecimal(); err != nil {
+		if weight, err = freight.GetWeight(); err != nil {
 			return
 		}
 		totalWeight = weight.Mul(decimal.NewFromInt(freight.Num))
