@@ -26,10 +26,22 @@ type (
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem
 
 	ResultGetInfoByOrderItem struct {
-		OrderId    string           `json:"order_id"`    //订单ID号
-		Status     uint8            `json:"status"`      //订单状态
-		StatusName string           `json:"status_name"` //订单状态中文描述
-		ShopItems  []*OrderShopItem `json:"shop_items"`  //商品列表（按店铺分组）
+		StatusName         string           `json:"status_name"` //订单状态中文描述
+		ShopItems          []*OrderShopItem `json:"shop_items"`  //商品列表（按店铺分组）
+		UserHid            int64            `json:"user_hid"`
+		OrderId            string           `json:"order_id"` //订单ID号
+		ProductNum         int64            `json:"product_num"`
+		Status             uint8            `json:"status"` //订单状态
+		SubStatus          uint8            `json:"sub_status"`
+		AddressId          int64            `json:"address_id"`
+		PayType            uint8            `json:"pay_type"`
+		Amount             string           `json:"amount"` //支付总金额
+		PayAmount          string           `json:"pay_amount"`
+		TotalPostage       string           `json:"total_postage"`
+		ProductAmount      string           `json:"product_amount"`
+		ShopDiscountAmount string           `json:"shop_discount_amount"`
+		PlatDiscountAmount string           `json:"plat_discount_amount"`
+		Mark               string           `json:"mark"`
 	}
 
 	OrderShopItem struct {
