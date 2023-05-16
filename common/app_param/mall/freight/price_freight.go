@@ -21,10 +21,16 @@ type (
 	}
 
 	PriceFreightResult struct {
-		Total       decimal.Decimal                 `json:"-"`         // 总邮费
-		TotalString string                          `json:"total"`     // 总费用
-		TotalNum    int64                           `json:"total_num"` // 总邮费
-		Shops       map[int64]*ShopCalResultFreight `json:"shops"`     // 邮费计算结果()
+		ProductAmountString  string                          `json:"product_amount"`  // 货物总金额,Db存储使用
+		ProductAmount        decimal.Decimal                 `json:"-"`               // 货物总金额,计算使用
+		DiscountAmountString string                          `json:"discount_amount"` // 优惠总金额,Db存储使用
+		DiscountAmount       decimal.Decimal                 `json:"-"`               // 优惠总金额,计算使用
+		TotalAmountString    string                          `json:"total_amount"`    // 总费用,Db存储使用
+		TotalAmount          decimal.Decimal                 `json:"-"`               // 总费用,计算使用
+		TotalPostage         decimal.Decimal                 `json:"-"`               // 总邮费,Db存储使用
+		TotalPostageString   string                          `json:"total_postage"`   // 总邮费用,计算使用
+		TotalNum             int64                           `json:"total_num"`       // 总商品数
+		Shops                map[int64]*ShopCalResultFreight `json:"shops"`           // 邮费计算结果()
 	}
 
 	ShopCalResultFreight struct {
@@ -34,7 +40,7 @@ type (
 		MapSkuFreight      map[string]*SkuCalResultFreight `json:"map_sku_freight"` // sku 邮费计算信息
 		Summary            AttrSummary                     `json:"summary"`         // 店铺数据汇总 总重量、总体积 总件数
 		CalParameter       CalParameterMap                 `json:"cal_parameter"`   // 计算邮费的基本参数
-		SkuFreight         []*SkuCalResultFreight          `json:"-"`               // 邮费价格
+		SkuFreight         []*SkuCalResultFreight          `json:"-"`               // 信息
 		FreightTotal       decimal.Decimal                 `json:"-"`               // 店铺总邮费
 	}
 	CalParameterMap  map[int64]*CalCaseFreight
@@ -47,6 +53,7 @@ type (
 		Summary            AttrSummary            `json:"summary"`        //店铺数据汇总 总重量、总体积 总件数
 	}
 	AttrSummary struct { //店铺汇总数据
+		DiscountAmount      decimal.Decimal `json:"-"` //优惠信息
 		SkuTotalPrice       decimal.Decimal `json:"-"` //价格
 		SkuTotalPriceString string          `json:"sku_tp"`
 		Num                 int64           `json:"num"` //件数
@@ -70,18 +77,14 @@ type (
 	}
 
 	SkuFreightSingle struct {
-		Num               int64  `json:"num"`                 //数量
-		SkuWeight         string `json:"sku_weight"`          //sku重量
-		SkuVolume         string `json:"sku_volume"`          //sku体积
-		ShopId            int64  `json:"shop_id"`             //店铺ID号
-		FreightTemplateId int64  `json:"freight_template_id"` //运费模板ID号
-		SpuID             string `json:"spu_id"`              //商品ID号
-		SkuId             string `json:"sku_id"`              //商品信息
-		SkuRelatePrice    string `json:"sku_relate_price"`    //商品价格
-		//Sku               *models.Sku                `json:"sku"`                 //SKU信息
-		//SkuRelate         *models.SkuPropertyRelate  `json:"sku_relate"`          //SKU信息 relate
-		//Spu               *models.Product            `json:"spu"`                 //商品信息
-		//Shop              *models.Shop               `json:"shop"`                //店铺信息
+		Num               int64                      `json:"num"`                 //数量
+		SkuWeight         string                     `json:"sku_weight"`          //sku重量
+		SkuVolume         string                     `json:"sku_volume"`          //sku体积
+		ShopId            int64                      `json:"shop_id"`             //店铺ID号
+		FreightTemplateId int64                      `json:"freight_template_id"` //运费模板ID号
+		SpuID             string                     `json:"spu_id"`              //商品ID号
+		SkuId             string                     `json:"sku_id"`              //商品信息
+		SkuRelatePrice    string                     `json:"sku_relate_price"`    //商品价格
 		EmsAddressFreight *ResultGetByAddressIdsItem `json:"ems_address_freight"` //收货地址信息
 		TemplateFreight   *TemplateFreight           `json:"template_freight"`    //运费模板
 		FromCityId        string                     `json:"from_city_id"`        //发货城市,预留字段
@@ -156,6 +159,9 @@ func (r *ShopCalResultFreight) Default() {
 
 func (r *SkuFreightSingle) GetWeight() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
+	if r.SkuWeight == "" {
+		return
+	}
 	//r.Sku.Default()
 	var weight decimal.Decimal
 	if weight, err = decimal.NewFromString(r.SkuWeight); err != nil {
@@ -167,6 +173,9 @@ func (r *SkuFreightSingle) GetWeight() (res decimal.Decimal, err error) {
 
 func (r *SkuFreightSingle) GetVolume() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
+	if r.SkuVolume == "" {
+		return
+	}
 	//r.Sku.Default()
 	var volume decimal.Decimal
 	if volume, err = decimal.NewFromString(r.SkuVolume); err != nil {
@@ -230,10 +239,11 @@ func (r *PriceFreight) groupData() (err error) {
 				ShopId:             skuItem.ShopId,
 				SkuFreight:         make([]*SkuCalResultFreight, 0, l),
 				Summary: AttrSummary{
-					Num:           0,
-					SkuTotalPrice: decimal.NewFromInt(0),
-					Weight:        decimal.NewFromInt(0),
-					Volume:        decimal.NewFromInt(0),
+					Num:            0,
+					DiscountAmount: decimal.NewFromInt(0),
+					SkuTotalPrice:  decimal.NewFromInt(0),
+					Weight:         decimal.NewFromInt(0),
+					Volume:         decimal.NewFromInt(0),
 				},
 			}
 			dataItem.Summary.Default()
@@ -272,10 +282,19 @@ func (r *PriceFreight) calculateShop() (err error) {
 		if err = r.calEveryShop(r.dataGroup[shopData.ShopId], shopData); err != nil {
 			return
 		}
-		r.Result.Total = r.Result.Total.Add(shopData.FreightTotal)
+		r.Result.ProductAmount = r.Result.ProductAmount.Add(shopData.Summary.SkuTotalPrice)
+		r.Result.DiscountAmount = r.Result.DiscountAmount.Add(shopData.Summary.DiscountAmount)
+		r.Result.TotalPostage = r.Result.TotalPostage.Add(shopData.FreightTotal)
 		r.Result.TotalNum += shopData.ShopTotalNum
 	}
-	r.Result.TotalString = r.Result.Total.StringFixed(2)
+
+	//总额计算 商品总额 - 优惠金额 +邮费金额
+	r.Result.TotalAmount = r.Result.ProductAmount.Sub(r.Result.DiscountAmount).Add(r.Result.TotalPostage)
+
+	r.Result.ProductAmountString = r.Result.ProductAmount.StringFixed(2)
+	r.Result.DiscountAmountString = r.Result.DiscountAmount.StringFixed(2)
+	r.Result.TotalAmountString = r.Result.TotalAmount.StringFixed(2)
+	r.Result.TotalPostageString = r.Result.TotalPostage.StringFixed(2)
 	return
 }
 
@@ -286,6 +305,7 @@ func (r *CalParameterMap) UnJson(calParameter string) (err error) {
 	err = json.Unmarshal([]byte(calParameter), r)
 	return
 }
+
 func (r *CalParameterMap) ToJson() (res string) {
 	if r == nil {
 		return
@@ -591,11 +611,14 @@ func (r *PriceFreight) calEveryShop(shopItemData map[int64][]SkuFreightSingle, s
 //获取SKU的邮费
 func (r *PriceFreight) getFreightPrice(freight *SkuFreightSingle, areas *CalCaseFreight) (res *ResFreightSku, err error) {
 	var (
-		skuPrice decimal.Decimal
+		skuPrice = decimal.NewFromInt(0)
 	)
-	if skuPrice, err = decimal.NewFromString(freight.SkuRelatePrice); err != nil {
-		return
+	if freight.SkuRelatePrice != "" {
+		if skuPrice, err = decimal.NewFromString(freight.SkuRelatePrice); err != nil {
+			return
+		}
 	}
+
 	res = &ResFreightSku{
 		SkuTotalPrice: skuPrice.Mul(decimal.NewFromInt(freight.Num)),
 		FreightPrice:  decimal.NewFromInt(0),
@@ -662,9 +685,12 @@ func NewPriceFreight(options ...OptionPriceFreight) *PriceFreight {
 		sKusFreight: make([]*SkuFreightSingle, 0, 16),
 		dataGroup:   make(map[int64]map[int64][]SkuFreightSingle, 16),
 		Result: PriceFreightResult{
-			Total:    decimal.NewFromInt(0),
-			TotalNum: 0,
-			Shops:    make(map[int64]*ShopCalResultFreight, 16),
+			TotalPostage:   decimal.NewFromInt(0), //邮费
+			TotalAmount:    decimal.NewFromInt(0), //总费用
+			DiscountAmount: decimal.NewFromInt(0), //
+			ProductAmount:  decimal.NewFromInt(0),
+			TotalNum:       0,
+			Shops:          make(map[int64]*ShopCalResultFreight, 16),
 		},
 	}
 	for _, option := range options {
