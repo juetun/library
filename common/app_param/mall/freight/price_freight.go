@@ -21,16 +21,18 @@ type (
 	}
 
 	PriceFreightResult struct {
-		ProductAmountString  string                          `json:"product_amount"`  // 货物总金额,Db存储使用
-		ProductAmount        decimal.Decimal                 `json:"-"`               // 货物总金额,计算使用
-		DiscountAmountString string                          `json:"discount_amount"` // 优惠总金额,Db存储使用
-		DiscountAmount       decimal.Decimal                 `json:"-"`               // 优惠总金额,计算使用
-		TotalAmountString    string                          `json:"total_amount"`    // 总费用,Db存储使用
-		TotalAmount          decimal.Decimal                 `json:"-"`               // 总费用,计算使用
-		TotalPostage         decimal.Decimal                 `json:"-"`               // 总邮费,Db存储使用
-		TotalPostageString   string                          `json:"total_postage"`   // 总邮费用,计算使用
-		TotalNum             int64                           `json:"total_num"`       // 总商品数
-		Shops                map[int64]*ShopCalResultFreight `json:"shops"`           // 邮费计算结果()
+		ProductAmountString      string                          `json:"product_amount"`              // 货物总金额,Db存储使用
+		ProductAmount            decimal.Decimal                 `json:"-"`                           // 货物总金额,计算使用
+		ShopDiscountAmountString string                          `json:"shop_discount_amount_string"` // 店铺优惠总金额,Db存储使用
+		ShopDiscountAmount       decimal.Decimal                 `json:"-"`                           // 店铺优惠总金额,计算使用
+		PlatDiscountAmount       decimal.Decimal                 `json:"-"`                           // 平台优惠总金额,计算使用
+		PlatDiscountAmountString string                          `json:"plat_discount_amount"`        // 平台优惠总金额,计算使用
+		TotalAmountString        string                          `json:"total_amount"`                // 总费用,Db存储使用
+		TotalAmount              decimal.Decimal                 `json:"-"`                           // 总费用,计算使用
+		TotalPostage             decimal.Decimal                 `json:"-"`                           // 总邮费,Db存储使用
+		TotalPostageString       string                          `json:"total_postage"`               // 总邮费用,计算使用
+		TotalNum                 int64                           `json:"total_num"`                   // 总商品数
+		Shops                    map[int64]*ShopCalResultFreight `json:"shops"`                       // 邮费计算结果()
 	}
 
 	ShopCalResultFreight struct {
@@ -53,8 +55,9 @@ type (
 		Summary            AttrSummary            `json:"summary"`        //店铺数据汇总 总重量、总体积 总件数
 	}
 	AttrSummary struct { //店铺汇总数据
-		DiscountAmount      decimal.Decimal `json:"-"` //优惠信息
-		SkuTotalPrice       decimal.Decimal `json:"-"` //价格
+		ShopDiscountAmount  decimal.Decimal `json:"shop_discount_amount"` //优惠信息
+		PlatDiscountAmount  decimal.Decimal `json:"plat_discount_amount"` //优惠信息
+		SkuTotalPrice       decimal.Decimal `json:"-"`                    //价格
 		SkuTotalPriceString string          `json:"sku_tp"`
 		Num                 int64           `json:"num"` //件数
 		Weight              decimal.Decimal `json:"-"`   //重量
@@ -239,11 +242,12 @@ func (r *PriceFreight) groupData() (err error) {
 				ShopId:             skuItem.ShopId,
 				SkuFreight:         make([]*SkuCalResultFreight, 0, l),
 				Summary: AttrSummary{
-					Num:            0,
-					DiscountAmount: decimal.NewFromInt(0),
-					SkuTotalPrice:  decimal.NewFromInt(0),
-					Weight:         decimal.NewFromInt(0),
-					Volume:         decimal.NewFromInt(0),
+					Num:                0,
+					ShopDiscountAmount: decimal.NewFromInt(0),
+					PlatDiscountAmount: decimal.NewFromInt(0),
+					SkuTotalPrice:      decimal.NewFromInt(0),
+					Weight:             decimal.NewFromInt(0),
+					Volume:             decimal.NewFromInt(0),
 				},
 			}
 			dataItem.Summary.Default()
@@ -283,16 +287,17 @@ func (r *PriceFreight) calculateShop() (err error) {
 			return
 		}
 		r.Result.ProductAmount = r.Result.ProductAmount.Add(shopData.Summary.SkuTotalPrice)
-		r.Result.DiscountAmount = r.Result.DiscountAmount.Add(shopData.Summary.DiscountAmount)
+		r.Result.ShopDiscountAmount = r.Result.ShopDiscountAmount.Add(shopData.Summary.ShopDiscountAmount)
 		r.Result.TotalPostage = r.Result.TotalPostage.Add(shopData.FreightTotal)
 		r.Result.TotalNum += shopData.ShopTotalNum
 	}
 
-	//总额计算 商品总额 - 优惠金额 +邮费金额
-	r.Result.TotalAmount = r.Result.ProductAmount.Sub(r.Result.DiscountAmount).Add(r.Result.TotalPostage)
+	//总额计算 商品总额 - 店铺优惠金额-平台优惠 +邮费金额
+	r.Result.TotalAmount = r.Result.ProductAmount.Sub(r.Result.ShopDiscountAmount).Sub(r.Result.PlatDiscountAmount).Add(r.Result.TotalPostage)
 
 	r.Result.ProductAmountString = r.Result.ProductAmount.StringFixed(2)
-	r.Result.DiscountAmountString = r.Result.DiscountAmount.StringFixed(2)
+	r.Result.ShopDiscountAmountString = r.Result.ShopDiscountAmount.StringFixed(2) //店铺优惠
+	r.Result.PlatDiscountAmountString = r.Result.PlatDiscountAmount.StringFixed(2) //平台优惠
 	r.Result.TotalAmountString = r.Result.TotalAmount.StringFixed(2)
 	r.Result.TotalPostageString = r.Result.TotalPostage.StringFixed(2)
 	return
@@ -685,12 +690,13 @@ func NewPriceFreight(options ...OptionPriceFreight) *PriceFreight {
 		sKusFreight: make([]*SkuFreightSingle, 0, 16),
 		dataGroup:   make(map[int64]map[int64][]SkuFreightSingle, 16),
 		Result: PriceFreightResult{
-			TotalPostage:   decimal.NewFromInt(0), //邮费
-			TotalAmount:    decimal.NewFromInt(0), //总费用
-			DiscountAmount: decimal.NewFromInt(0), //
-			ProductAmount:  decimal.NewFromInt(0),
-			TotalNum:       0,
-			Shops:          make(map[int64]*ShopCalResultFreight, 16),
+			TotalPostage:       decimal.NewFromInt(0), //邮费
+			TotalAmount:        decimal.NewFromInt(0), //总费用
+			ShopDiscountAmount: decimal.NewFromInt(0), //
+			PlatDiscountAmount: decimal.NewFromInt(0), //
+			ProductAmount:      decimal.NewFromInt(0),
+			TotalNum:           0,
+			Shops:              make(map[int64]*ShopCalResultFreight, 16),
 		},
 	}
 	for _, option := range options {
