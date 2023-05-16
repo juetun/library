@@ -55,7 +55,8 @@ type (
 		Products    []*OrderSkuItem     `json:"products"`     // 商品列表
 		Delivery    OrderSkuDelivery    `json:"delivery"`     // 邮费信息
 		Coupon      OrderShopItemCoupon `json:"coupon"`       // 优惠券信息
-		Mark        string              `json:"mark"`         //备注
+		SubOrderId  string              `json:"sub_order_id"` // 子单号
+		Mark        string              `json:"mark"`         // 备注
 		SortWeight  int64               `json:"-"`            // 排序权重
 	}
 	OrderShopItemCoupon struct {
