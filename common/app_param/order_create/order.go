@@ -89,9 +89,9 @@ type (
 		SortWeight      int64               `json:"-"`
 	}
 	OrderSkuDelivery struct {
-		Mark   string `json:"mark"`    //备注
-		Cost   string `json:"cost"`    //费用
-		IsFree bool   `json:"is_free"` //是否包邮
+		PostageMark string `json:"postage_mark"` //备注
+		Cost        string `json:"cost"`         //费用
+		IsFree      bool   `json:"is_free"`      //是否包邮
 	}
 	OrderDataItemTag struct {
 		Type      string `json:"type"`                //标签类型，可选值为primary success danger warning	默认	default
