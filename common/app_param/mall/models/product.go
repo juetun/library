@@ -249,26 +249,25 @@ type (
 		TotalStock      int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock"`
 		CategoryId      int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目" json:"category_id"`
 		SaleType        uint8                          `gorm:"column:sale_type;not null;type: tinyint(2);index:idx_time,priority:3;index:idx_price,priority:3;default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
-		PullOnTime      *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time"`
-		PullOffTime     *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time"`
-		//PreheatTimeStart *base.TimeNormal               `gorm:"column:preheat_time_start;comment:预热开始时间" json:"preheat_time_start"`
-		//PreheatTimeOver  *base.TimeNormal               `gorm:"column:preheat_time_over;comment:预热结束时间" json:"preheat_time_over"`
-		SaleOnlineTime  base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
-		SaleOverTime    *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
-		FinalStartTime  base.TimeNormal  `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
-		FinalOverTime   base.TimeNormal  `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
-		DeliveryTime    *base.TimeNormal `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time"` // 预计发货时间
-		SaleCountShow   uint8            `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show"`
-		RelateType      uint8            `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type"`
-		RelateItemId    string           `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id"`
-		RelateBuyCount  int64            `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
-		RelateBuyAMount string           `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
-		SettleType      uint8            `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
-		FlagTester      uint8            `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
-		CreatedAt       base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		UpdatedAt       base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		DeletedAt       *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
+		PullOnTime      *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time,omitempty"`
+		PullOffTime     *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time,omitempty"`
+		SaleOnlineTime  base.TimeNormal                `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:开售时间(可购买时间)" json:"sale_online_time"`
+		SaleOverTime    *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
+		FinalStartTime  base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
+		FinalOverTime   base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
+		DeliveryTime    *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
+		SaleCountShow   uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show"`
+		RelateType      uint8                          `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type"`
+		RelateItemId    string                         `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id"`
+		RelateBuyCount  int64                          `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
+		RelateBuyAMount string                         `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
+		SettleType      uint8                          `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
+		FlagTester      uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
+		CreatedAt       base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
+		UpdatedAt       base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
+		DeletedAt       *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
+
 
 	ProductTag struct {
 		ID             int64  `json:"id"`

@@ -153,10 +153,10 @@ type (
 	SkuPropertyRelate struct {
 		ID                int64            `gorm:"column:id;primary_key" json:"id"`
 		ShopId            int64            `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
-		ProductId         string           `gorm:"column:product_id;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
+		ProductId         string           `gorm:"column:product_id;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
 		CategoryId        int64            `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
 		ParentId          int64            `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
-		Pk                string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
+		Pk                string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
 		SkuName           string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
 		SkuId             string           `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
 		Price             string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
@@ -182,7 +182,6 @@ type (
 		UpdatedAt         base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt         *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
-
 	SkuPropertyRelatesCache []SkuPropertyRelate
 )
 
