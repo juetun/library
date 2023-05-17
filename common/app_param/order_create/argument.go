@@ -11,6 +11,7 @@ import (
 type (
 	ArgCreateOrderFromCart struct {
 		RequestUser        app_param.RequestUser             `json:"-" form:"-"`
+		OrderId            string                            `json:"order_id" form:"order_id"` //订单ID号
 		SkuString          string                            `json:"sku_item,omitempty" form:"sku_item"`
 		Amount             string                            `json:"amount,omitempty" form:"amount"` // 总金额
 		App                string                            `json:"app,omitempty" form:"app"`
