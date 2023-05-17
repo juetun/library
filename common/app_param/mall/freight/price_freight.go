@@ -112,6 +112,7 @@ type (
 		CityId       string `json:"city_id"`
 		AreaId       string `json:"area_id"`
 		Province     string `json:"province"`
+		UserHid      int64  `json:"user_hid"`
 		City         string `json:"city"`
 		Area         string `json:"area"`
 		Title        string `json:"title"`
