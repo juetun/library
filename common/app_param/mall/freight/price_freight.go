@@ -40,6 +40,8 @@ type (
 		FreightTotalString string                          `json:"freight_total"`   // 总邮费
 		ShopTotalNum       int64                           `json:"shop_total_num"`  // 店铺商品总数
 		MapSkuFreight      map[string]*SkuCalResultFreight `json:"map_sku_freight"` // sku 邮费计算信息
+		TotalAmountString  string                          `json:"total_amount"`    //总金额
+		TotalAmount        decimal.Decimal                 `json:"-"`               //总金额
 		Summary            AttrSummary                     `json:"summary"`         // 店铺数据汇总 总重量、总体积 总件数
 		CalParameter       CalParameterMap                 `json:"cal_parameter"`   // 计算邮费的基本参数
 		SkuFreight         []*SkuCalResultFreight          `json:"-"`               // 信息
@@ -58,10 +60,10 @@ type (
 		ShopDiscountAmount  decimal.Decimal `json:"shop_discount_amount"` //优惠信息
 		PlatDiscountAmount  decimal.Decimal `json:"plat_discount_amount"` //优惠信息
 		SkuTotalPrice       decimal.Decimal `json:"-"`                    //价格
-		SkuTotalPriceString string          `json:"sku_tp"`
-		Num                 int64           `json:"num"` //件数
-		Weight              decimal.Decimal `json:"-"`   //重量
-		WeightString        string          `json:"wg"`  //重量
+		SkuTotalPriceString string          `json:"sku_tp"`               //商品总价
+		Num                 int64           `json:"num"`                  //件数
+		Weight              decimal.Decimal `json:"-"`                    //重量
+		WeightString        string          `json:"wg"`                   //重量
 		Volume              decimal.Decimal `json:"-"`
 		VolumeString        string          `json:"vl"`
 	}
@@ -154,6 +156,7 @@ func (r *CalResultFreight) ReInitSkuFreightFree(desc string) {
 func (r *ShopCalResultFreight) Default() {
 	r.Summary.Default()
 	r.FreightTotalString = r.FreightTotal.StringFixed(2)
+	r.TotalAmountString = r.TotalAmount.StringFixed(2)
 	r.MapSkuFreight = make(map[string]*SkuCalResultFreight, len(r.SkuFreight))
 	for _, item := range r.SkuFreight {
 		r.MapSkuFreight[item.Pk] = item
@@ -223,6 +226,26 @@ func (r *PriceFreight) orgGroupParameters(skuItem *SkuFreightSingle, l int, data
 	return
 }
 
+func NewShopCalResultFreight(shopId int64, l int) (res *ShopCalResultFreight) {
+	res = &ShopCalResultFreight{
+		TotalAmount:        decimal.NewFromFloat(0),
+		FreightTotal:       decimal.NewFromInt(0),
+		FreightTotalString: "0.00",
+		ShopId:             shopId,
+		SkuFreight:         make([]*SkuCalResultFreight, 0, l),
+		Summary: AttrSummary{
+			Num:                0,
+			ShopDiscountAmount: decimal.NewFromInt(0),
+			PlatDiscountAmount: decimal.NewFromInt(0),
+			SkuTotalPrice:      decimal.NewFromInt(0),
+			Weight:             decimal.NewFromInt(0),
+			Volume:             decimal.NewFromInt(0),
+		},
+	}
+	res.Summary.Default()
+	return
+}
+
 //先将数据按照店铺进行分组
 func (r *PriceFreight) groupData() (err error) {
 	var (
@@ -237,20 +260,7 @@ func (r *PriceFreight) groupData() (err error) {
 	for _, skuItem := range r.sKusFreight {
 
 		if dataItem, ok = r.Result.Shops[skuItem.ShopId]; !ok {
-			dataItem = &ShopCalResultFreight{
-				FreightTotal:       decimal.NewFromInt(0),
-				FreightTotalString: "0.00",
-				ShopId:             skuItem.ShopId,
-				SkuFreight:         make([]*SkuCalResultFreight, 0, l),
-				Summary: AttrSummary{
-					Num:                0,
-					ShopDiscountAmount: decimal.NewFromInt(0),
-					PlatDiscountAmount: decimal.NewFromInt(0),
-					SkuTotalPrice:      decimal.NewFromInt(0),
-					Weight:             decimal.NewFromInt(0),
-					Volume:             decimal.NewFromInt(0),
-				},
-			}
+			dataItem = NewShopCalResultFreight(skuItem.ShopId, l)
 			dataItem.Summary.Default()
 		}
 		r.Result.Shops[skuItem.ShopId] = dataItem
@@ -287,6 +297,13 @@ func (r *PriceFreight) calculateShop() (err error) {
 		if err = r.calEveryShop(r.dataGroup[shopData.ShopId], shopData); err != nil {
 			return
 		}
+
+		shopData.TotalAmount = shopData.TotalAmount.
+			Add(shopData.Summary.SkuTotalPrice).
+			Add(shopData.FreightTotal).
+			Sub(shopData.Summary.ShopDiscountAmount).
+			Sub(shopData.Summary.PlatDiscountAmount)
+
 		r.Result.ProductAmount = r.Result.ProductAmount.Add(shopData.Summary.SkuTotalPrice)
 		r.Result.ShopDiscountAmount = r.Result.ShopDiscountAmount.Add(shopData.Summary.ShopDiscountAmount)
 		r.Result.TotalPostage = r.Result.TotalPostage.Add(shopData.FreightTotal)
@@ -294,7 +311,10 @@ func (r *PriceFreight) calculateShop() (err error) {
 	}
 
 	//总额计算 商品总额 - 店铺优惠金额-平台优惠 +邮费金额
-	r.Result.TotalAmount = r.Result.ProductAmount.Sub(r.Result.ShopDiscountAmount).Sub(r.Result.PlatDiscountAmount).Add(r.Result.TotalPostage)
+	r.Result.TotalAmount = r.Result.ProductAmount.
+		Sub(r.Result.ShopDiscountAmount).
+		Sub(r.Result.PlatDiscountAmount).
+		Add(r.Result.TotalPostage)
 
 	r.Result.ProductAmountString = r.Result.ProductAmount.StringFixed(2)
 	r.Result.ShopDiscountAmountString = r.Result.ShopDiscountAmount.StringFixed(2) //店铺优惠
