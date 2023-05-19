@@ -47,13 +47,13 @@ var (
 )
 
 const (
-	RegisterChannelAdmin   = "admin"   // 客服后台注册的账号 渠道标记
-	RegisterChannelAndroid = "android" // 客服后台注册的账号 安卓
-	RegisterChannelIos     = "ios"     // 客服后台注册的账号 ios
-	RegisterChannelH5      = "h5"      // 客服后台注册的账号 h5
-	RegisterChannelWebSite = "website" // 客服后台注册的账号 h5
-	RegisterChannelWeiXin  = "wei_xin" // 客服后台注册的账号 微信
-	RegisterChannelWeiBo   = "wei_bo"  // 客服后台注册的账号 微博
+	RegChannelAdmin   = "admin"   // 客服后台注册的账号 渠道标记
+	RegChannelAndroid = "android" // 客服后台注册的账号 安卓
+	RegChannelIos     = "ios"     // 客服后台注册的账号 ios
+	RegChannelH5      = "h5"      // 客服后台注册的账号 h5
+	RegChannelWebSite = "website" // 客服后台注册的账号 h5
+	RegChannelWeiXin  = "wei_xin" // 客服后台注册的账号 微信
+	RegChannelWeiBo   = "wei_bo"  // 客服后台注册的账号 微博
 )
 
 const (
@@ -64,13 +64,13 @@ var (
 	IdCardSecret = "ABCDEFGHIJKLMNOP" // 加密KEY长度必须为16的倍数
 
 	RegisterChannelMap = map[string]string{
-		RegisterChannelAdmin:   "管理后台",
-		RegisterChannelAndroid: "安卓",
-		RegisterChannelIos:     "IOS",
-		RegisterChannelH5:      "m站",
-		RegisterChannelWebSite: "网站",
-		RegisterChannelWeiXin:  "微信",
-		RegisterChannelWeiBo:   "微博",
+		RegChannelAdmin:   "管理后台",
+		RegChannelAndroid: "安卓",
+		RegChannelIos:     "IOS",
+		RegChannelH5:      "m站",
+		RegChannelWebSite: "网站",
+		RegChannelWeiXin:  "微信",
+		RegChannelWeiBo:   "微博",
 	}
 )
 
