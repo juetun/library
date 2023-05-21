@@ -299,6 +299,9 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 }
 
 func (r *RequestUser) SetResultUser(user *ResultUser) {
+	if user == nil {
+		return
+	}
 	var userInfo ResultUserItem
 	var ok bool
 	if userInfo, ok = user.List[r.UUserHid]; !ok {
