@@ -256,6 +256,12 @@ func (r *RequestUser) HaveShop() (res bool, err error) {
 func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...bool) (err error) {
 
 	defer func() {
+		if len(needValidateShop) > 0 {
+			if needValidateShop[0] && r.UShopId == 0 {
+				err = base.NewErrorRuntime(fmt.Errorf("对不起,您当前的账号没有店铺管理权限"), base.ErrorHasNotPermit)
+				return
+			}
+		}
 		if r.UShopId > 0 {
 			return
 		}
@@ -264,14 +270,10 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 			r.UShopId, _ = strconv.ParseInt(shopId, 10, 64)
 		}
 	}()
-	//r.UHeaderInfo = base.NewHeaderInfo()
-	//
-	//if err = r.UHeaderInfo.ParseFromString(ctx, ctx.GinContext.GetHeader(app_obj.HttpHeaderInfo)); err != nil {
-	//	err = base.NewErrorRuntime(fmt.Errorf("系统异常,解析header失败"), base.ErrorNotLogin)
-	//	return
-	//}
-	if r.UUserHid > 0 {
-		return
+	//获取用户信息
+	if r.UUserHid == 0 {
+		jwtUser, _ := base.TokenValidate(ctx, true)
+		r.UUserHid = jwtUser.UserId
 	}
 	var uidString string
 	if uidString = ctx.GinContext.GetHeader(app_obj.HttpUserHid); uidString == "" || uidString == "null" {
@@ -283,18 +285,11 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 		return
 	}
 	var user *ResultUser
-	uidString = fmt.Sprintf("%d", r.UUserHid)
-	if user, err = GetResultUserByUid(uidString, ctx); err != nil {
+	if user, err = GetResultUserByUid(fmt.Sprintf("%d", r.UUserHid), ctx); err != nil {
 		return
 	}
 	r.SetResultUser(user)
-	if len(needValidateShop) > 0 {
-		if needValidateShop[0] && r.UShopId == 0 {
-			err = base.NewErrorRuntime(fmt.Errorf("对不起,您当前的账号没有店铺管理权限"), base.ErrorHasNotPermit)
 
-			return
-		}
-	}
 	return
 }
 
