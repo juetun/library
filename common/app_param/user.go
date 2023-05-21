@@ -320,6 +320,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 }
 
 func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err error) {
+	res = &ResultUser{List: make(map[int64]ResultUserItem, )}
 	var value = url.Values{}
 
 	value.Set("user_hid", userId)
