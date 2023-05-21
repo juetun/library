@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"net/http"
 	"net/url"
@@ -272,7 +273,7 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	}()
 	//获取用户信息
 	if r.UUserHid == 0 {
-		jwtUser, _ := base.TokenValidate(ctx, true)
+		jwtUser, _ := common.TokenValidate(ctx, true)
 		r.UUserHid = jwtUser.UserId
 	}
 	var uidString string
