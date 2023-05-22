@@ -32,6 +32,7 @@ type (
 		ExtraMsg      string                     `json:"extra_msg"`             //携带的其他信息
 		ShowType      string                     `json:"show_type"`             //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`    //子列表
+		ShowTime      string                     `json:"show_time,omitempty"`
 	}
 	DataItemTag struct {
 		Type      string `json:"type"`                //标签类型，可选值为primary success danger warning	默认	default
