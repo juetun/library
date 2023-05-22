@@ -62,9 +62,7 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 	if err = r.RequestUser.InitRequestUser(c); err != nil {
 		return
 	}
-	if err = r.InitHeaderInfo(c.GinContext); err != nil {
-		return
-	}
+	
 	r.TimeNow = base.GetNowTimeNormal()
 
 	if err = r.validateSku(); err != nil {
