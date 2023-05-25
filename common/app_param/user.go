@@ -127,12 +127,10 @@ type (
 	}
 
 	User struct {
-		UserHid    int64       `json:"user_hid"`
-		UserIndex  *UserIndex  `json:"user_index,omitempty"`
-		UserMain   *UserMain   `json:"user_main,omitempty"`
-		UserEmail  *UserEmail  `json:"user_email,omitempty"`
-		UserInfo   *UserInfo   `json:"user_info,omitempty"`
-		UserMobile *UserMobile `json:"user_mobile,omitempty"`
+		UserHid   int64      `json:"user_hid"`
+		UserIndex *UserIndex `json:"user_index,omitempty"`
+		UserMain  *UserMain  `json:"user_main,omitempty"`
+		UserInfo  *UserInfo  `json:"user_info,omitempty"`
 	}
 	UserIndex struct {
 		ID            int64            `gorm:"column:id;primary_key" json:"-"`
@@ -156,24 +154,36 @@ type (
 		TbName        string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
 	}
 	UserInfo struct {
-		ID                int             `gorm:"column:id;primary_key" json:"id"`
-		RealName          string          `gorm:"column:real_name;type:varchar(60);not null;comment:真实姓名"  json:"real_name"`
-		UserIndexHid      string          `gorm:"column:user_index_hid;type:varchar(60);not null;comment:user_main表位置" json:"user_index_hid"`
-		UserHid           int64           `gorm:"column:user_hid;not null;uniqueIndex:idx_userhid;default:0;type:bigint(20) COLLATE utf8mb4_bin" json:"user_hid"`
-		RememberToken     string          `gorm:"column:remember_token;not null;default:'';size:500;comment:登录的token" json:"remember_token"`
-		MsgReadTimeCursor base.TimeNormal `gorm:"column:msg_read_time_cursor;not null;default:CURRENT_TIMESTAMP;comment:最近一次读取系统公告时间" json:"msg_read_time_cursor"`
-		Level             string          `gorm:"column:level;not null;type:tinyint(2);default:0;comment:用户等级0-普通用户" json:"level"`
-		Remark            string          `json:"remark" gorm:"column:remark;not null;type:varchar(150);default:'';comment:个性签名"` // 个性签名
-		Password          string          `gorm:"column:password;not null;type:varchar(256) COLLATE utf8mb4_general_ci;comment:密码" json:"password"`
-		IdCard            string          `gorm:"column:id_card;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:身份证号加密串" json:"id_card"`
-		IdCardSuffix      string          `gorm:"column:id_card_suffix;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:后缀后6位字符" json:"id_card_suffix"`
-		QQ                string          `gorm:"column:qq;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:qq" json:"qq"`
-		WeiXin            string          `gorm:"column:wei_xin;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:微信账号" json:"wei_xin"`
-		DingDing          string          `gorm:"column:ding_ding;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:钉钉账号" json:"ding_ding"`
-		WeiBo             string          `gorm:"column:wei_bo;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:微博账号" json:"wei_bo"`
-		Signature         string          `gorm:"column:signature;not null;type:varchar(256) COLLATE utf8mb4_general_ci;comment:用户签名" json:"signature"`
-		RegisterChannel   string          `gorm:"column:register_channel;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:账号注册渠道" json:"register_channel"`
-		InviteCode        int64           `gorm:"column:invite_code;not null;default:0;type:int(10);comment:邀请码" json:"invite_code"`
+		ID                int              `gorm:"column:id;primary_key" json:"id"`
+		RealName          string           `gorm:"column:real_name;type:varchar(60);not null;comment:真实姓名"  json:"real_name"`
+		UserIndexHid      string           `gorm:"column:user_index_hid;type:varchar(60);not null;comment:user_main表位置" json:"user_index_hid"`
+		UserHid           int64            `gorm:"column:user_hid;not null;uniqueIndex:idx_userhid;type:bigint(20) COLLATE utf8mb4_bin" json:"user_hid"`
+		Remark            string           `json:"remark" gorm:"column:remark;not null;type:varchar(150);default:'';comment:个性签名"` // 个性签名
+		RememberToken     string           `gorm:"column:remember_token;not null;default:'';size:500;comment:登录的token" json:"remember_token"`
+		MsgReadTimeCursor base.TimeNormal  `gorm:"column:msg_read_time_cursor;not null;default:CURRENT_TIMESTAMP;comment:最近一次读取系统公告时间" json:"msg_read_time_cursor"`
+		Level             uint8            `gorm:"column:level;not null;type:tinyint(2);default:0;comment:用户等级0-普通用户" json:"level"`
+		Password          string           `gorm:"column:password;not null;type:varchar(256) COLLATE utf8mb4_general_ci;comment:密码" json:"password"`
+		IdCard            string           `gorm:"column:id_card;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:身份证号加密串" json:"id_card"`
+		IdCardSuffix      string           `gorm:"column:id_card_suffix;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:后缀后6位字符" json:"id_card_suffix"`
+		QQ                string           `gorm:"column:qq;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:qq" json:"qq"`
+		WeiXin            string           `gorm:"column:wei_xin;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:微信账号" json:"wei_xin"`
+		BirthDay          base.TimeNormal  `gorm:"column:birth_day;not null;default:'1970-01-01';type:date;comment:出生日期" json:"birth_day"`
+		BirCountry        string           `gorm:"column:bir_country;not null;type:varchar(30) COLLATE utf8mb4_general_ci;comment:国籍" json:"bir_country"`
+		BirProvinceId     int              `gorm:"column:bir_province_id;not null;type:int(10);default:0;comment:出生省份" json:"bir_province_id"`
+		BirCityId         int              `gorm:"column:bir_city_id;not null;type:int(10);default:0;comment:出生城市" json:"bir_city_id"`
+		BirAreaId         int              `gorm:"column:bir_area_id;not null;type:int(10);default:0;comment:出生区或县" json:"bir_area_id"`
+		DingDing          string           `gorm:"column:ding_ding;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:钉钉账号" json:"ding_ding"`
+		WeiBo             string           `gorm:"column:wei_bo;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:微博账号" json:"wei_bo"`
+		Signature         string           `gorm:"column:signature;not null;type:varchar(256) COLLATE utf8mb4_general_ci;comment:用户签名" json:"signature"`
+		RegisterChannel   string           `gorm:"column:register_channel;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:账号注册渠道" json:"register_channel"`
+		InviteCode        int64            `gorm:"column:invite_code;not null;default:0;type:int(10);comment:邀请码" json:"invite_code"`
+		AttendNum         int64            `gorm:"column:attend_num;not null;default:0;type:bigint(20);comment:关注数 实时性不是高" json:"attend_num"`   // 关注数
+		LoveNum           int64            `gorm:"column:love_num;not null;default:0;type:bigint(20);comment:点赞数 实时性不是高" json:"love_num"`       // 点赞数
+		CommentNum        int64            `gorm:"column:comment_num;not null;default:0;type:bigint(20);comment:评论数 实时性不是高" json:"comment_num"` // 评论数
+		MobileVerifiedAt  *base.TimeNormal `json:"mobile_verified_at" gorm:"column:mobile_verified_at;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
+		EmailVerifiedAt   *base.TimeNormal `gorm:"column:email_verified_at;uniqueIndex:idx_email,priority:3;type:datetime;default:'2000-01-01 00:00:00';comment:认证时间;" json:"-"`
+		DataName          string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
+		TbName            string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
 	}
 
 	UserEmail struct {
@@ -218,8 +228,6 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.Status = item.UserMain.Status
 		r.Score = item.UserMain.Score
 		r.IsV = item.UserMain.IsV
-		r.UserEmailIndex = item.UserMain.UserEmailIndex
-		r.UserMobileIndex = item.UserMain.UserMobileIndex
 		r.HaveDashboard = item.UserMain.HaveDashboard
 		r.ShopId = item.UserMain.CurrentShopId
 	}
@@ -233,14 +241,6 @@ func (r *ResultUserItem) InitData(item *User) {
 
 	}
 
-	if item.UserEmail != nil {
-		r.Email = item.UserEmail.Email
-		r.EmailVerifiedAt = item.UserEmail.EmailVerifiedAt
-	}
-	if item.UserMobile != nil {
-		r.Mobile = item.UserMobile.Mobile
-		r.CountryCode = item.UserMobile.CountryCode
-	}
 	return
 }
 
