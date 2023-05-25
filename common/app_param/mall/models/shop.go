@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/const_apply"
+	"github.com/juetun/library/common/recommend"
+	"net/url"
 	"strings"
 )
 
@@ -209,6 +211,13 @@ func (r *Shop) Default() {
 	r.Status = 1
 	r.FlagTester = 2
 	r.NeedVerifyStatus = 1
+	return
+}
+
+func (r *Shop) GetHref() (res string, err error) {
+	var vals = &url.Values{}
+	vals.Set("shop_id", fmt.Sprintf("%d", r.ShopID))
+	res, err = recommend.GetPageLink(vals, recommend.AdDataDataTypeSpu, recommend.PageNameShop)
 	return
 }
 
