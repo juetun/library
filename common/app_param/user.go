@@ -16,10 +16,10 @@ import (
 const (
 	UserDataTypeIndex = "user_index"
 
- 	UserDataTypeMain     = "user_main"
+	UserDataTypeMain     = "user_main"
 	UserDataTypePortrait = "user_portrait" //用户头像
 	UserDataTypeInfo     = "user_info"
- 
+
 	UserHidDivString      = "_" // 用户ID字符串切割
 	UpdateColumnDivString = "." // 修改用户数据时传参的分割符
 )
@@ -321,7 +321,7 @@ func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err 
 	var value = url.Values{}
 
 	value.Set("user_hid", userId)
-	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo, UserDataTypeEmail, UserDataTypeMobile}, ","))
+	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo}, ","))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     AppNameUser,
