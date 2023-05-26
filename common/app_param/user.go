@@ -16,12 +16,10 @@ import (
 const (
 	UserDataTypeIndex = "user_index"
 
-	UserDataTypeEmail    = "user_email"
-	UserDataTypeMain     = "user_main"
+ 	UserDataTypeMain     = "user_main"
 	UserDataTypePortrait = "user_portrait" //用户头像
 	UserDataTypeInfo     = "user_info"
-	UserDataTypeMobile   = "user_mobile"
-
+ 
 	UserHidDivString      = "_" // 用户ID字符串切割
 	UpdateColumnDivString = "." // 修改用户数据时传参的分割符
 )
