@@ -20,6 +20,22 @@ const (
 	AppNameSocialIntercourse = "api-sns"          //社交
 )
 
+const (
+	TerminalMina    = "mina"
+	TerminalH5      = "h5"
+	TerminalAndroid = "android"
+	TerminalIos     = "ios"
+)
+
+var (
+	SliceTerminal = base.ModelItemOptions{
+		{Label: "小程序", Value: TerminalMina},
+		{Label: "h5", Value: TerminalH5},
+		{Label: "安卓", Value: TerminalAndroid},
+		{Label: "IOS", Value: TerminalIos},
+	}
+)
+
 //标签类型定义
 const (
 	DataPapersGroupCategoryTag          = "user_tag"           // 用户标签
