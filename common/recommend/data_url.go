@@ -2,6 +2,7 @@ package recommend
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/plugins_lib"
 	"net/url"
 	"strings"
@@ -81,7 +82,7 @@ func getPageSNSPathByPageName(pageNames ...string) (res string) {
 }
 
 //获取页面链接
-func GetPageLink(urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
+func GetPageLink(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
 
 	switch dataType {
 	case AdDataDataTypeUserShop:
