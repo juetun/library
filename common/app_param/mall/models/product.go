@@ -3,8 +3,11 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param/upload_operate"
 	"github.com/juetun/library/common/const_apply"
+	"github.com/juetun/library/common/recommend"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -268,7 +271,6 @@ type (
 		DeletedAt       *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
 
-
 	ProductTag struct {
 		ID             int64  `json:"id"`
 		Label          string `json:"label"`
@@ -467,6 +469,13 @@ func (r *Product) getCurrentTime(currentTimes ...time.Time) (current time.Time) 
 	} else {
 		current = time.Now()
 	}
+	return
+}
+
+func (r *Product) GetProductHref(headerInfo *common.HeaderInfo) (res string, err error) {
+	var vals = &url.Values{}
+	vals.Set("id", r.ProductID)
+	res, err = recommend.GetPageLink(headerInfo, vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
 	return
 }
 

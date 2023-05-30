@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/recommend"
 	"github.com/shopspring/decimal"
 	"net/url"
@@ -333,11 +334,11 @@ func (r *Sku) SetIdWithString(id string) (err error) {
 	return
 }
 
-func (r *SkuPropertyRelate) GetProductHref() (res string, err error) {
+func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res string, err error) {
 	var vals = &url.Values{}
 	vals.Set("id", r.ProductId)
 	vals.Set("sku_id", r.SkuId)
-	res, err = recommend.GetPageLink(vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
+	res, err = recommend.GetPageLink(headerInfo, vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
 	return
 }
 
