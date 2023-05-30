@@ -31,7 +31,7 @@ const (
 	OrderStatusReturnMoneyFinished     uint8 = 12  // 退款完成
 
 	OrderStatusFinished uint8 = 100 // 订单结束
-	OrderStatusError    uint8 = 201 // 订单支付数据异常
+	OrderStatusError    uint8 = 110 // 订单支付数据异常
 )
 
 const (
