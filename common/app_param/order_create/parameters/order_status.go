@@ -122,7 +122,7 @@ var (
 		},
 		{
 			Value: OrderStatusError,
-			Label: "订单结束",
+			Label: "支付异常",
 		},
 	}
 )
