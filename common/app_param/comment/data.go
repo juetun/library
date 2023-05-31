@@ -74,6 +74,7 @@ var (
 type (
 	ArgActData struct {
 		common.HeaderInfo
+		ShopId   int64           `json:"shop_id" form:"shop_id"`
 		UserHid  int64           `json:"user_hid" form:"user_hid"`
 		ActType  string          `json:"act_type" form:"act_type"`
 		DataType int32           `json:"data_type" form:"data_type"`
