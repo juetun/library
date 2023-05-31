@@ -16,10 +16,12 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "1"       //商品信息
-	AdDataDataTypeSocialIntercourse        = "2"       //广告社交动态信息
-	AdDataStatusUserSet                    = "3"       //用户手工设置
+	AdDataDataTypeSpu               string = "1" //商品信息
+	AdDataDataTypeSku                      = "5" //sku信息
+	AdDataDataTypeSocialIntercourse        = "2" //广告社交动态信息
+	AdDataStatusUserSet                    = "3" //用户手工设置
 	AdDataDataTypeUserShop                 = "4" //店铺后台
+
 )
 
 const (
@@ -42,12 +44,16 @@ var (
 	}
 	SliceAdDataType = base.ModelItemOptions{ //
 		{
-			Label: "电商",
+			Label: "电商_SPU",
 			Value: AdDataDataTypeSpu,
 		},
 		{
 			Label: "社交",
 			Value: AdDataDataTypeSocialIntercourse,
+		},
+		{
+			Label: "电商_SKU",
+			Value: AdDataDataTypeSku,
 		},
 		{
 			Label: "客服手工指定",
