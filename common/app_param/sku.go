@@ -3,6 +3,7 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/common"
 )
 
 const (
@@ -13,6 +14,7 @@ const (
 
 type (
 	ArgGetSkuDataStringIds struct {
+		common.HeaderInfo
 		base.GetDataTypeCommon
 		IdsCompose []*SkuAndSpuIdCompose `json:"ids_compose"` //ID参数组合
 		DataTypes  []string              `json:"data_types"`  //获取数据类型 取值范围和获取SPU的数据类型一致
@@ -22,8 +24,9 @@ type (
 		SkuId string `json:"sku_id"`
 	}
 )
-func (r *ArgGetSkuDataStringIds) Default(ctx *base.Context) (err error) {
 
+func (r *ArgGetSkuDataStringIds) Default(ctx *base.Context) (err error) {
+	_ = r.InitHeaderInfo(ctx.GinContext)
 	return
 }
 
