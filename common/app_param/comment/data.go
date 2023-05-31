@@ -78,9 +78,13 @@ type (
 		UserHid  int64           `json:"user_hid" form:"user_hid"`
 		ActType  string          `json:"act_type" form:"act_type"`
 		DataType int32           `json:"data_type" form:"data_type"`
-		DataIds  []string        `json:"data_ids" form:"data_ids"`
+		DataIds  []*ActDataItem  `json:"data_ids" form:"data_ids"`
 		DoType   string          `json:"do_type" form:"do_type"`
 		TimeNow  base.TimeNormal `json:"time_now" form:"time_now"`
+	}
+	ActDataItem struct {
+		DataId string `json:"data_id"`
+		ShopId int64  `json:"shop_id"`
 	}
 	ResultActDat struct {
 		Result bool `json:"result"`
