@@ -31,6 +31,7 @@ type (
 		ShopName      string                     `json:"shop_name,omitempty"`   //店铺名称
 		CurrentAccUId int64                      `json:"current_acc_uid"`       //获取数据的用户ID
 		ShopId        int64                      `json:"shop_id,omitempty"`     //店铺ID
+		ShopLink      interface{}                `json:"shop_link"`             //链接地址 小程序对象DataItemLinkMina
 		ExtraMsg      string                     `json:"extra_msg"`             //携带的其他信息
 		ShowType      string                     `json:"show_type"`             //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`    //子列表
