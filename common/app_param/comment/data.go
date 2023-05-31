@@ -74,10 +74,12 @@ var (
 type (
 	ArgActData struct {
 		common.HeaderInfo
-		UserHid int64    `json:"user_hid" form:"user_hid"`
-		ActType string   `json:"act_type" form:"act_type"`
-		DataIds []string `json:"data_ids" form:"data_ids"`
-		DoType  string   `json:"do_type" form:"do_type"`
+		UserHid  int64           `json:"user_hid" form:"user_hid"`
+		ActType  string          `json:"act_type" form:"act_type"`
+		DataType uint8           `json:"data_type" form:"data_type"`
+		DataIds  []string        `json:"data_ids" form:"data_ids"`
+		DoType   string          `json:"do_type" form:"do_type"`
+		TimeNow  base.TimeNormal `json:"time_now" form:"time_now"`
 	}
 	ResultActDat struct {
 		Result bool `json:"result"`
@@ -93,6 +95,9 @@ func (r *ArgActData) Default(c *base.Context) (err error) {
 	}
 	if err = r.validateActType(); err != nil {
 		return
+	}
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
 	}
 	return
 }
