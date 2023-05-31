@@ -45,7 +45,7 @@ type (
 		SaleTypeName string        `json:"sale_type_name"`
 		HaveGift     uint8         `json:"have_gift"`
 		Gifts        []*CommentSku `json:"gifts,omitempty"` //赠品
-		Href         string        `json:"href"`
+		Href         interface{}   `json:"href"`
 	}
 )
 
