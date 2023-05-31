@@ -214,7 +214,7 @@ func (r *Shop) Default() {
 	return
 }
 
-func (r *Shop) GetHref(headerInfo *common.HeaderInfo) (res string, err error) {
+func (r *Shop) GetHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
 	var vals = &url.Values{}
 	vals.Set("shop_id", fmt.Sprintf("%d", r.ShopID))
 	res, err = recommend.GetPageLink(headerInfo, vals, recommend.AdDataDataTypeSpu, recommend.PageNameShop)

@@ -334,7 +334,7 @@ func (r *Sku) SetIdWithString(id string) (err error) {
 	return
 }
 
-func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res string, err error) {
+func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
 	var vals = &url.Values{}
 	vals.Set("id", r.ProductId)
 	vals.Set("sku_id", r.SkuId)

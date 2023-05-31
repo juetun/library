@@ -472,7 +472,7 @@ func (r *Product) getCurrentTime(currentTimes ...time.Time) (current time.Time) 
 	return
 }
 
-func (r *Product) GetProductHref(headerInfo *common.HeaderInfo) (res string, err error) {
+func (r *Product) GetProductHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
 	var vals = &url.Values{}
 	vals.Set("id", r.ProductID)
 	res, err = recommend.GetPageLink(headerInfo, vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
