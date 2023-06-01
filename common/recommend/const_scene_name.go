@@ -23,6 +23,7 @@ const (
 	AdDataStatusUserSet                    = "3" //用户手工设置
 	AdDataDataTypeUserShop                 = "4" //店铺后台
 
+	AdDataDataTypeOther = "200" //其他数据
 )
 
 const (

@@ -14,6 +14,8 @@ const (
 	PageNameSpu  = "spu"
 	PageNameShop = "shop"
 	PageNameUsr  = "user"
+
+	PageNameOther = "other" //无实际意义拼接数据使用
 )
 
 const (
@@ -29,11 +31,14 @@ const (
 
 var (
 	MapDataTypeBiz = map[string]string{
-		AdDataDataTypeSpu:               PageNameSpu,  //商品信息（spu）
-		AdDataDataTypeSku:               PageNameSpu,  //商品(sku)信息
-		AdDataDataTypeUserShop:          PageNameShop, //店铺信息
-		AdDataDataTypeUser:              PageNameUsr,  //用户信息
-		AdDataDataTypeSocialIntercourse: PageNameSns,  //广告社交动态信息
+		AdDataDataTypeSpu:               PageNameSpu,   //商品信息（spu）
+		AdDataDataTypeSku:               PageNameSpu,   //商品(sku)信息
+		AdDataDataTypeUserShop:          PageNameShop,  //店铺信息
+		AdDataDataTypeUser:              PageNameUsr,   //用户信息
+		AdDataDataTypeSocialIntercourse: PageNameSns,   //广告社交动态信息
+
+
+		AdDataDataTypeOther:             PageNameOther, //其他信息
 	}
 	MapPageMallName = map[string]string{
 		PageNameSpu:  "/#/pages/mall/detail/index",
