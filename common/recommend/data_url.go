@@ -31,14 +31,13 @@ const (
 
 var (
 	MapDataTypeBiz = map[string]string{
-		AdDataDataTypeSpu:               PageNameSpu,   //商品信息（spu）
-		AdDataDataTypeSku:               PageNameSpu,   //商品(sku)信息
-		AdDataDataTypeUserShop:          PageNameShop,  //店铺信息
-		AdDataDataTypeUser:              PageNameUsr,   //用户信息
-		AdDataDataTypeSocialIntercourse: PageNameSns,   //广告社交动态信息
+		AdDataDataTypeSpu:               PageNameSpu,  //商品信息（spu）
+		AdDataDataTypeSku:               PageNameSpu,  //商品(sku)信息
+		AdDataDataTypeUserShop:          PageNameShop, //店铺信息
+		AdDataDataTypeUser:              PageNameUsr,  //用户信息
+		AdDataDataTypeSocialIntercourse: PageNameSns,  //广告社交动态信息
 
-
-		AdDataDataTypeOther:             PageNameOther, //其他信息
+		AdDataDataTypeOther: PageNameOther, //其他信息
 	}
 	MapPageMallName = map[string]string{
 		PageNameSpu:  "/#/pages/mall/detail/index",
@@ -119,9 +118,12 @@ func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, da
 		}
 		preUrl := dataSlice[0 : l-1]
 		stringValue = strings.Join(preUrl, paramsDivide)
-		for key, value := range urlValue1 {
-			urlValue.Set(key, strings.Join(value, ""))
+		if urlValue1 != nil {
+			for key, value := range urlValue1 {
+				urlValue.Set(key, strings.Join(value, ""))
+			}
 		}
+
 	}
 	res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, urlValue.Encode())
 	return
@@ -164,9 +166,12 @@ func getPageLinkMina(urlValue *url.Values, dataType string, pageNames ...string)
 	}
 	res.PageName = pageName
 	res.Query = make(map[string]interface{}, 10)
-	for key := range *urlValue {
-		res.Query[key] = urlValue.Get(key)
+	if urlValue != nil {
+		for key := range *urlValue {
+			res.Query[key] = urlValue.Get(key)
+		}
 	}
+
 	return
 }
 
