@@ -1,6 +1,7 @@
 package recommend
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
@@ -19,6 +20,7 @@ type (
 		Types            []string        `json:"-" form:"-"`
 		TimeNow          base.TimeNormal `json:"time_now" form:"time_now"`
 		HeaderInfoString string          `json:"header_info" form:"header_info"`
+		KeyWord          string          `json:"key_word" form:"key_word"`
 	}
 	ResultPageSearch struct {
 		response.Pager
@@ -40,7 +42,10 @@ func (r *ArgPageSearch) ResetTypes() {
 }
 
 func (r *ArgPageSearch) Default(c *base.Context) (err error) {
-
+	if r.KeyWord == "" {
+		err = fmt.Errorf("请选择您要搜索数据的关键词")
+		return
+	}
 	if err = r.InitHeaderInfo(c.GinContext); err != nil {
 		return
 	}
