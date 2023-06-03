@@ -1,7 +1,6 @@
 package recommend
 
 import (
-	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
@@ -42,10 +41,7 @@ func (r *ArgPageSearch) ResetTypes() {
 }
 
 func (r *ArgPageSearch) Default(c *base.Context) (err error) {
-	if r.KeyWord == "" {
-		err = fmt.Errorf("请选择您要搜索数据的关键词")
-		return
-	}
+ 
 	if err = r.InitHeaderInfo(c.GinContext); err != nil {
 		return
 	}
