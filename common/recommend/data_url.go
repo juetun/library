@@ -118,10 +118,12 @@ func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, da
 	if tmp, ok := MapDataTypeBiz[dataType]; ok {
 		dataType = tmp
 	}
-	if tmp, ok := plugins_lib.WebMap[dataType]; ok {
-		stringValue = fmt.Sprintf("//%s%s", tmp, getPagePathHandler(pageNames...))
-	} else {
-		stringValue = fmt.Sprintf("//localhost:3000%s", getPagePathHandler(pageNames...))
+	if getPagePathHandler != nil {
+		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
+			stringValue = fmt.Sprintf("//%s%s", tmp, getPagePathHandler(pageNames...))
+		} else {
+			stringValue = fmt.Sprintf("//localhost:3000%s", getPagePathHandler(pageNames...))
+		}
 	}
 	var (
 		dataSlice = strings.Split(stringValue, paramsDivide)
@@ -152,7 +154,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
 			AdDataDataTypeUser:              getPageSpuPathByPageUer,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
-			AdDataDataTypeOther:             nil,
+			AdDataDataTypeOther:             getPageSpuPathByPageName,
 		}
 
 		ok      bool
