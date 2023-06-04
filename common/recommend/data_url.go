@@ -69,19 +69,6 @@ func getPageSpuPathByPageName(pageNames ...string) (res string) {
 	return
 }
 
-func getPageSpuPathByPageUer(pageNames ...string) (res string) {
-	var pageName = PageNameSpu
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
-
-	if tmp, ok := MapPageMallName[pageName]; ok {
-		res = tmp
-		return
-	}
-	return
-}
-
 func getPageUserShopPathByPageName(pageNames ...string) (res string) {
 	var pageName = UserShopInfo
 	if len(pageNames) > 0 {
@@ -152,7 +139,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
 			AdDataDataTypeSku:               getPageSpuPathByPageName,
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
-			AdDataDataTypeUser:              getPageSpuPathByPageUer,
+			AdDataDataTypeUser:              getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
 			AdDataDataTypeOther:             getPageSpuPathByPageName,
 		}
