@@ -40,8 +40,10 @@ var (
 		AdDataDataTypeOther: PageNameOther, //其他信息
 	}
 	MapPageMallName = map[string]string{
-		PageNameSpu:  "/#/pages/mall/detail/index",
-		PageNameShop: "/#/pages/mall/shop/home/index",
+		PageNameSpu:                     "/#/pages/mall/detail/index",
+		PageNameShop:                    "/#/pages/mall/shop/home/index",
+		PageNameUsr:                     "/#/pages/user/view/index",
+		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
 	}
 	MapPageSNsName  = map[string]string{PageNameSns: "/#/pages/sns/detail/index",}
 	MapPageUserShop = map[string]string{
@@ -55,6 +57,19 @@ type (
 )
 
 func getPageSpuPathByPageName(pageNames ...string) (res string) {
+	var pageName = PageNameSpu
+	if len(pageNames) > 0 {
+		pageName = pageNames[0]
+	}
+
+	if tmp, ok := MapPageMallName[pageName]; ok {
+		res = tmp
+		return
+	}
+	return
+}
+
+func getPageSpuPathByPageUer(pageNames ...string) (res string) {
 	var pageName = PageNameSpu
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
@@ -132,17 +147,20 @@ func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, da
 func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
 	var (
 		mapGetPagePath = map[string]GetPagePathHandler{
-			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
+			AdDataDataTypeSku:               getPageSpuPathByPageName,
+			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
+			AdDataDataTypeUser:              getPageSpuPathByPageUer,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
 			AdDataDataTypeOther:             nil,
 		}
+
 		ok      bool
 		handler GetPagePathHandler
 	)
 	if dataType != AdDataDataTypeOther {
 		if handler, ok = mapGetPagePath[dataType]; !ok {
-			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型")
+			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", dataType)
 			return
 		}
 	}
