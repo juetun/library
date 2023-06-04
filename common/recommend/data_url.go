@@ -135,13 +135,16 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+			AdDataDataTypeOther:             nil,
 		}
 		ok      bool
 		handler GetPagePathHandler
 	)
-	if handler, ok = mapGetPagePath[dataType]; !ok {
-		err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型")
-		return
+	if dataType != AdDataDataTypeOther {
+		if handler, ok = mapGetPagePath[dataType]; !ok {
+			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型")
+			return
+		}
 	}
 	if res, err = getPageLink(handler, urlValue, dataType, pageNames...); err != nil {
 		return
