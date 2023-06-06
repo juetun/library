@@ -3,6 +3,7 @@ package app_user
 import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/mall/models"
+	"github.com/juetun/library/common/const_apply"
 )
 
 const (
@@ -82,8 +83,12 @@ var (
 			Value: UserApplyStatusUsing,
 		},
 		{
-			Label: "编辑中...",
+			Label: "初始化...",
 			Value: UserApplyStatusInit,
+		},
+		{
+			Label: "编辑中...",
+			Value: const_apply.ApplyStatusTimeEditing,
 		},
 	}
 )
