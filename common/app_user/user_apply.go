@@ -67,7 +67,7 @@ var (
 	//用户资料审核状态
 	SliceUserApplyStatus = base.ModelItemOptions{
 		{
-			Label: "待审核...",
+			Label: "审核完成",
 			Value: UserApplyStatusSubmit,
 		},
 		{
