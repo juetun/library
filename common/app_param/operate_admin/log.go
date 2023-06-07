@@ -17,6 +17,8 @@ type (
 	}
 	AddAdminLog struct {
 		UserHid     int64           `json:"user_hid"`
+		DataType    string          `json:"data_type"` //数据类型
+		DataId      string          `json:"data_id"`   //数据ID
 		Module      string          `json:"module"`
 		Description string          `json:"description"`
 		CreatedAt   base.TimeNormal `json:"created_at"`
