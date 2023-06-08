@@ -27,7 +27,8 @@ var (
 type (
 	UploadFile struct {
 		ext_up.UploadCommon
-		Src string `json:"src"`
+		IsImg uint8  `json:"is_img"`
+		Src   string `json:"src"`
 	}
 	FileHandler func(UploadFile *UploadFile)
 )
