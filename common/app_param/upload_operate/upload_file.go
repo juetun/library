@@ -6,6 +6,24 @@ import (
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 )
 
+const (
+	UploadFileIsImgYes uint8 = iota + 1 //是否为图片
+	UploadFileIsImgNo                   //不是图片
+)
+
+var (
+	SliceUploadFileIsImg = base.ModelItemOptions{
+		{
+			Value: UploadFileIsImgYes,
+			Label: "图片",
+		},
+		{
+			Value: UploadFileIsImgNo,
+			Label: "非图片",
+		},
+	}
+)
+
 type (
 	UploadFile struct {
 		ext_up.UploadCommon
