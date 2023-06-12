@@ -3,7 +3,6 @@ package app_param
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/juetun/app-api-user/web/models"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/const_apply"
 )
@@ -49,7 +48,6 @@ const (
 	AuditingStatusFailure = const_apply.ApplyStatusFailure  // 品牌状态审核失败
 	AuditingStatusWaiting = const_apply.ApplyStatusAuditing //待审核
 )
-
 
 const (
 	PapersIsNeverExpiresYes uint8 = iota + 1 //永久有效
@@ -130,8 +128,6 @@ type (
 		CanSubmitApply bool   `json:"can_submit_apply"`
 	}
 )
-
-
 
 func (r *DataPapersGroupShopProperty) ParseShowType() (res string) {
 	if r.ShowType == "" { //默认类型
