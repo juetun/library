@@ -3,6 +3,7 @@ package app_param
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/app-api-user/web/models"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/const_apply"
 )
@@ -120,7 +121,17 @@ type (
 		ShowType     string `json:"show_type"` //DataPapersGroupShopPropertyRadio DataPapersGroupShopPropertyCheckbox  DataPapersGroupShopPropertySelect
 		ShowTypeName string `json:"show_type_name,omitempty"`
 	}
+
+	ResultGetUpdateBatch struct {
+		UserHid        int64  `json:"user_hid"`
+		ShopId         int64  `json:"shop_id"`
+		BatchId        string `json:"batch_id"`
+		Status         int8   `json:"status"`
+		CanSubmitApply bool   `json:"can_submit_apply"`
+	}
 )
+
+
 
 func (r *DataPapersGroupShopProperty) ParseShowType() (res string) {
 	if r.ShowType == "" { //默认类型
