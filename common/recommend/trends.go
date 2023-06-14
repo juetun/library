@@ -24,11 +24,29 @@ type (
 		Desc      string          `json:"desc,omitempty"` //动态内容
 		Time      base.TimeNormal `json:"time"`           //时间
 	}
-	TrendContents  []*TrendContent
+	TrendContents struct {
+		Data []*TrendContent `json:"data"`
+	}
 	ResultAddTrend struct {
 		Result bool `json:"result"`
 	}
 )
+
+func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[int64][]*TrendContent, err error) {
+	var l = len(r.Data)
+	userHIds = make([]int64, 0, l)
+	dataMap = make(map[int64][]*TrendContent, l)
+
+	for _, item := range r.Data {
+		if _, ok := dataMap[item.UserHid]; !ok {
+			dataMap[item.UserHid] = make([]*TrendContent, 0, l)
+			userHIds = append(userHIds, item.UserHid)
+			continue
+		}
+		dataMap[item.UserHid] = append(dataMap[item.UserHid], item)
+	}
+	return
+}
 
 func (r *TrendContents) GetJsonByte() (bytes []byte, err error) {
 	bytes, err = json.Marshal(r)
@@ -41,7 +59,7 @@ func (r *TrendContents) Default(ctx *base.Context) (err error) {
 }
 
 //TODO 添加多条动态 ,当前直接调用接口写入数据库,后续建议使用MQ写入队列 解耦
-func AddTrends(ctx *base.Context, data TrendContents) (err error) {
+func AddTrends(ctx *base.Context, data *TrendContents) (err error) {
 	arg := url.Values{}
 	params := rpc.RequestOptions{
 		Context:     ctx,
@@ -85,6 +103,8 @@ func AddTrends(ctx *base.Context, data TrendContents) (err error) {
 
 //添加一条动态
 func AddTrend(ctx *base.Context, data *TrendContent) (err error) {
-	err = AddTrends(ctx, []*TrendContent{data})
+	err = AddTrends(ctx, &TrendContents{
+		Data: []*TrendContent{data},
+	})
 	return
 }
