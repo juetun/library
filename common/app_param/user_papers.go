@@ -125,6 +125,7 @@ type (
 		ShopId         int64  `json:"shop_id"`
 		BatchId        string `json:"batch_id"`
 		Status         int8   `json:"status"`
+		Type           string `json:"type"`
 		CanSubmitApply bool   `json:"can_submit_apply"`
 	}
 )
