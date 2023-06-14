@@ -14,6 +14,7 @@ import (
 type (
 	//动态信息
 	TrendContent struct {
+		UserHid   int64           `json:"user_hid"`             //用户信息
 		DataType  string          `json:"data_type"`            //数据类型
 		DataId    string          `json:"data_id"`              //数据ID
 		Img       string          `json:"img,omitempty"`        //头图
@@ -31,6 +32,11 @@ type (
 
 func (r *TrendContents) GetJsonByte() (bytes []byte, err error) {
 	bytes, err = json.Marshal(r)
+	return
+}
+
+func (r *TrendContents) Default(ctx *base.Context) (err error) {
+
 	return
 }
 
