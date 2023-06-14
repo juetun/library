@@ -32,18 +32,19 @@ type (
 	}
 )
 
-func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[int64][]*TrendContent, err error) {
+func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[string][]*TrendContent, err error) {
 	var l = len(r.Data)
 	userHIds = make([]int64, 0, l)
-	dataMap = make(map[int64][]*TrendContent, l)
-
+	dataMap = make(map[string][]*TrendContent, l)
+	var kv string
 	for _, item := range r.Data {
-		if _, ok := dataMap[item.UserHid]; !ok {
-			dataMap[item.UserHid] = make([]*TrendContent, 0, l)
+		kv = fmt.Sprintf("%v", item.UserHid)
+		if _, ok := dataMap[kv]; !ok {
+			dataMap[kv] = make([]*TrendContent, 0, l)
 			userHIds = append(userHIds, item.UserHid)
 			continue
 		}
-		dataMap[item.UserHid] = append(dataMap[item.UserHid], item)
+		dataMap[kv] = append(dataMap[kv], item)
 	}
 	return
 }
