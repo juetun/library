@@ -126,6 +126,7 @@ type (
 		BatchId        string `json:"batch_id"`
 		Status         int8   `json:"status"`
 		Type           string `json:"type"`
+		IsInit         uint8  `json:"is_init"`
 		CanSubmitApply bool   `json:"can_submit_apply"`
 	}
 )
