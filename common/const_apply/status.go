@@ -13,8 +13,8 @@ const (
 )
 
 const (
-	InitYes = iota + 1 //初始化
-	InitNo             // 非初始化
+	InitYes uint8 = iota + 1 //初始化
+	InitNo                   // 非初始化
 )
 
 var (
