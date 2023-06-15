@@ -74,7 +74,7 @@ func (r *ArgUserReviewSubmit) Default(ctx *base.Context) (err error) {
 	}
 	switch r.Status {
 	case UserApplyStatusFailure:
-		if r.Mark == "" {
+		if r.DataType != UpdateBatchTypeAuthType && r.Mark == "" {
 			err = fmt.Errorf("请填写审核失败的备注")
 			return
 		}
