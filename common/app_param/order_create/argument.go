@@ -1,6 +1,7 @@
 package order_create
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
@@ -21,8 +22,10 @@ type (
 		PayType            uint8                             `json:"pay_type,omitempty" form:"pay_type"`     // 支付类型
 		Type               string                            `json:"type,omitempty" form:"Type"`             //数据操作路径
 		ReceiptUserInfo    *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
-		PriceFreightResult *freight.PriceFreightResult       `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
-		SkuItems           []*app_param.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`
+		PriceFreightResult *freight.PriceFreightResult       `json:"freight_result" form:"freight_result"`       //订单的邮费计算结果 api-mall服务侧计算
+		SkuItems           []*app_param.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`         //商品详情
+		OrderSrcChannel    string                            `json:"order_src_channel" form:"order_src_channel"` //订单来源渠道
+		OrderSrcLoc        string                            `json:"order_src_loc" form:"order_src_loc"`
 		TimeNow            base.TimeNormal                   `json:"-" form:"-"`
 		GetDataTypeCommon  base.GetDataTypeCommon            `json:"dt_common" form:"dt_common"`
 	}
@@ -44,6 +47,17 @@ type (
 	}
 )
 
+func (r *ReceiptUserInfo) GetJson() (res string, err error) {
+	if r == nil {
+		return
+	}
+	var bt []byte
+	if bt, err = json.Marshal(r); err != nil {
+		return
+	}
+	res = string(bt)
+	return
+}
 func (r *ArgCreateOrderFromCart) GetShopIds() (shopIds []int64) {
 	shopIds = make([]int64, 0, len(r.SkuItems))
 	mapShopIds := make(map[int64]bool, len(r.SkuItems))
