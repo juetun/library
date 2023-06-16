@@ -35,6 +35,22 @@ type (
 		CouponId     string `json:"coupon_id"`      //优惠券ID
 		Num          int    `json:"num"`            //使用优惠券数据量
 	}
+	ArgGetUserCouponByShopId struct {
+		UserHid int64   `json:"user_hid"` //使用优惠券的用户
+		ShopIds []int64 `json:"shop_ids"`
+	}
+
+	ResultGetUserCouponByShopId struct {
+		Data []*ResultGetUserCouponByShopIdItem `json:"data"`
+	}
+
+	ResultGetUserCouponByShopIdItem struct {
+		UseCouponDataItem
+		ShopId int64 `json:"shop_id"`
+
+		Desc string `json:"desc"` //优惠券信息描述
+	}
+
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem
 
 	ResultGetInfoByOrderItem struct {
@@ -117,10 +133,27 @@ type (
 	}
 )
 
+
+func (r *ArgGetUserCouponByShopId) Default(ctx *base.Context) (err error)  {
+	if r.UserHid == 0 {
+		err = fmt.Errorf("请选择查看优惠券的用户")
+		return
+	}
+
+	return
+}
+
 func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 	if r.UserHid == 0 {
 		err = fmt.Errorf("请选择使用优惠券的用户")
 		return
+	}
+
+	//默认优惠券数量
+	for _, item := range r.Data {
+		if item.Num == 0 {
+			item.Num = 1
+		}
 	}
 	return
 }
