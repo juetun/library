@@ -26,9 +26,10 @@ var (
 type (
 	//使用优惠券信息
 	ArgUseCouponData struct {
-		UserHid int64                `json:"user_hid"` //使用优惠券的用户
-		Data    []*UseCouponDataItem `json:"data"`
+		UserHid int64             `json:"user_hid"` //使用优惠券的用户
+		Data    UseCouponDataList `json:"data"`
 	}
+	UseCouponDataList []*UseCouponDataItem
 	UseCouponDataItem struct {
 		UserCouponId int64  `json:"user_coupon_id"` //用户优惠券存储的数据ID
 		CouponId     string `json:"coupon_id"`      //优惠券ID

@@ -24,8 +24,10 @@ type (
 		ReceiptUserInfo    *ReceiptUserInfo                  `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
 		PriceFreightResult *freight.PriceFreightResult       `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
 		SkuItems           []*app_param.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`   //商品详情
-		TimeNow           base.TimeNormal        `json:"-" form:"-"`
-		GetDataTypeCommon base.GetDataTypeCommon `json:"dt_common" form:"dt_common"`
+		GetDataTypeCommon  base.GetDataTypeCommon            `json:"dt_common" form:"dt_common"`
+		Coupons            UseCouponDataList                 `json:"coupons"` //优惠券信息
+
+		TimeNow base.TimeNormal `json:"-" form:"-"`
 	}
 
 	ArgGetInfoByOrderId struct {
