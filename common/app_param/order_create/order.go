@@ -1,6 +1,7 @@
 package order_create
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 )
 
@@ -23,6 +24,16 @@ var (
 )
 
 type (
+	//使用优惠券信息
+	ArgUseCouponData struct {
+		UserHid int64                `json:"user_hid"` //使用优惠券的用户
+		Data    []*UseCouponDataItem `json:"data"`
+	}
+	UseCouponDataItem struct {
+		UserCouponId int64  `json:"user_coupon_id"` //用户优惠券存储的数据ID
+		CouponId     string `json:"coupon_id"`      //优惠券ID
+		Num          int    `json:"num"`            //使用优惠券数据量
+	}
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem
 
 	ResultGetInfoByOrderItem struct {
@@ -104,3 +115,11 @@ type (
 		Mark      bool   `json:"mark"`                //是否为标记样式
 	}
 )
+
+func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
+	if r.UserHid == 0 {
+		err = fmt.Errorf("请选择使用优惠券的用户")
+		return
+	}
+	return
+}
