@@ -1,6 +1,9 @@
 package app_param
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+	"sync"
+)
 
 const (
 	AppNameAdmin             = "admin-main"
@@ -49,6 +52,10 @@ var MapDataPapersGroupCategory = map[string]string{
 	DataPapersGroupCategoryMallBrand:    "电商品牌",
 }
 var (
+	//当前动作服务支持的动动作 key 和key对应的描述映射
+	//如: map[string]string{"user_reg":"用户注册信息"}
+	TrendsTypes = make(map[string]string, 150)
+
 	SliceAppNames = base.ModelItemOptions{
 		{
 			Label: "客服后台",
@@ -108,3 +115,28 @@ var (
 		},
 	}
 )
+
+//添加动态类型 map格式
+func AppendTrendsTypesAsMap(mapTrendTypes map[string]string) {
+	if len(mapTrendTypes) == 0 {
+		return
+	}
+	var (
+		syncLock sync.RWMutex
+	)
+	syncLock.Lock()
+	defer syncLock.Unlock()
+	for key, item := range mapTrendTypes {
+		TrendsTypes[key] = item
+	}
+	return
+}
+
+//添加动态类型 ModelItemOptions格式
+func AppendTrendsTypesAsModelItemOptions(trendsTypes base.ModelItemOptions) {
+	var (
+		mapTrendTypes, _ = trendsTypes.GetMapAsKeyString()
+	)
+	AppendTrendsTypesAsMap(mapTrendTypes)
+	return
+}

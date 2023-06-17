@@ -2,7 +2,7 @@ package plugins_lib
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sync"
 
 	"github.com/juetun/base-wrapper/lib/app/app_start"
@@ -26,7 +26,7 @@ func PluginWebMap(arg *app_start.PluginsOperate) (err error) {
 
 	var yamlFile []byte
 	var filePath = common.GetConfigFilePath("webmap.yaml")
-	if yamlFile, err = ioutil.ReadFile(filePath); err != nil {
+	if yamlFile, err = os.ReadFile(filePath); err != nil {
 		io.SystemOutFatalf("yamlFile.Get err #%v \n", err)
 	}
 	if err = yaml.Unmarshal(yamlFile, &WebMap); err != nil {

@@ -33,6 +33,7 @@ type (
 	//动态信息
 	TrendContent struct {
 		UserHid        int64           `json:"user_hid"`             //用户信息
+		ActionType     string          `json:"action_type"`          //操作动作
 		DataType       string          `json:"data_type"`            //数据类型
 		DataId         string          `json:"data_id"`              //数据ID
 		Img            string          `json:"img,omitempty"`        //头图
@@ -52,12 +53,16 @@ type (
 	}
 )
 
-func (r *TrendContent) Default() (res string) {
+func (r *TrendContent) Default() (err error) {
 	if r.AttendUserShow == 0 {
 		r.AttendUserShow = TrendContentShowYes
 	}
 	if r.UserShow == 0 {
 		r.UserShow = TrendContentShowYes
+	}
+	if _, ok := app_param.ActionsTypes[r.DataType]; !ok {
+		err = fmt.Errorf("当前服务不支持您选择的动态类型(%v),请在服务初始化时(一般main.go中通过预加载设置)", r.DataType)
+		return
 	}
 	return
 }
@@ -106,7 +111,9 @@ func (r *TrendContents) GetJsonByte() (bytes []byte, err error) {
 
 func (r *TrendContents) Default(ctx *base.Context) (err error) {
 	for _, item := range r.Data {
-		item.Default()
+		if err = item.Default(); err != nil {
+			return
+		}
 	}
 	return
 }
