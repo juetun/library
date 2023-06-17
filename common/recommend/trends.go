@@ -60,6 +60,10 @@ func (r *TrendContent) Default() (err error) {
 	if r.UserShow == 0 {
 		r.UserShow = TrendContentShowYes
 	}
+	if r.ActionType == "" {
+		err = fmt.Errorf("请选择动态类型(%v)", r.ActionType)
+		return
+	}
 	if _, ok := app_param.TrendsTypes[r.DataType]; !ok {
 		err = fmt.Errorf("当前服务不支持您选择的动态类型(%v),请在服务初始化时(一般main.go中通过预加载设置)", r.DataType)
 		return
