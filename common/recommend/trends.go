@@ -33,7 +33,7 @@ type (
 	//动态信息
 	TrendContent struct {
 		UserHid        int64           `json:"user_hid"`             //用户信息
-		ActionType     string          `json:"action_type"`          //操作动作
+		TrendType      string          `json:"trend_type"`           //动态类型
 		DataType       string          `json:"data_type"`            //数据类型
 		DataId         string          `json:"data_id"`              //数据ID
 		Img            string          `json:"img,omitempty"`        //头图
@@ -60,8 +60,8 @@ func (r *TrendContent) Default() (err error) {
 	if r.UserShow == 0 {
 		r.UserShow = TrendContentShowYes
 	}
-	if r.ActionType == "" {
-		err = fmt.Errorf("请选择动态类型(%v)", r.ActionType)
+	if r.TrendType == "" {
+		err = fmt.Errorf("请选择动态类型(%v)", r.TrendType)
 		return
 	}
 	if _, ok := app_param.TrendsTypes[r.DataType]; !ok {
@@ -91,12 +91,21 @@ func (r *TrendContent) ParseUserShow() (res string) {
 	return
 }
 
-func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[string][]*TrendContent, err error) {
-	var l = len(r.Data)
+func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[string][]*TrendContent, trendTypeKeys []string, err error) {
+	var (
+		l           = len(r.Data)
+		kv          string
+		mapTrendKey = make(map[string]bool, l)
+	)
+	trendTypeKeys = make([]string, 0, l)
 	userHIds = make([]int64, 0, l)
 	dataMap = make(map[string][]*TrendContent, l)
-	var kv string
+
 	for _, item := range r.Data {
+		if _, ok := mapTrendKey[item.TrendType]; !ok {
+			trendTypeKeys = append(trendTypeKeys, item.TrendType)
+			mapTrendKey[item.TrendType] = true
+		}
 		kv = fmt.Sprintf("%v", item.UserHid)
 		if _, ok := dataMap[kv]; !ok {
 			dataMap[kv] = make([]*TrendContent, 0, l)
