@@ -194,3 +194,51 @@ func AddTrend(ctx *base.Context, data *TrendContent) (err error) {
 	})
 	return
 }
+
+// ReplaceTrendTypes
+func ReplaceTrendTypes(ctx *base.Context, data *ArgReplaceTrendType) (err error) {
+	arg := url.Values{}
+	params := rpc.RequestOptions{
+		Context:     ctx,
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameComment,
+		URI:         "/replace_trend_types",
+		Value:       arg,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+		Header:      http.Header{},
+	}
+	if ctx != nil && ctx.GinContext != nil {
+		params.Header.Set(app_obj.HttpHeaderInfo, ctx.GinContext.GetHeader(app_obj.HttpHeaderInfo))
+	}
+	if params.BodyJson, err = data.GetJsonByte(); err != nil {
+		return
+	}
+	req := rpc.NewHttpRpc(&params).
+		Send().GetBody()
+	if err = req.Error; err != nil {
+		return
+	}
+	var body []byte
+	if body = req.Body; len(body) == 0 {
+		return
+	}
+
+	var resResult struct {
+		Code int                    `json:"code"`
+		Data ResultReplaceTrendType `json:"data"`
+		Msg  string                 `json:"message"`
+	}
+	if err = json.Unmarshal(body, &resResult); err != nil {
+		return
+	}
+	if resResult.Code > 0 {
+		err = fmt.Errorf(resResult.Msg)
+		return
+	}
+	return
+}
+
+func (r *ArgReplaceTrendType) GetJsonByte() (res []byte, err error) {
+	res, err = json.Marshal(r)
+	return
+}
