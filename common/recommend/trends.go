@@ -52,7 +52,18 @@ type (
 	ResultAddTrend struct {
 		Result bool `json:"result"`
 	}
+	ArgReplaceTrendType struct {
+		Types base.ModelItemOptions `json:"types"`
+	}
+	ResultReplaceTrendType struct {
+		Result bool `json:"result"`
+	}
 )
+
+func (r *ArgReplaceTrendType) Default(ctx *base.Context) (err error) {
+
+	return
+}
 
 func (r *TrendContent) Default() (err error) {
 	if r.AttendUserShow == 0 {
