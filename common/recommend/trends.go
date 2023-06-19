@@ -197,6 +197,9 @@ func AddTrend(ctx *base.Context, data *TrendContent) (err error) {
 
 // ReplaceTrendTypes
 func ReplaceTrendTypes(ctx *base.Context, data *ArgReplaceTrendType) (err error) {
+	if len(data.Types) == 0 {
+		return
+	}
 	arg := url.Values{}
 	params := rpc.RequestOptions{
 		Context:     ctx,
