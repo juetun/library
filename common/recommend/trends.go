@@ -53,7 +53,8 @@ type (
 		Result bool `json:"result"`
 	}
 	ArgReplaceTrendType struct {
-		Types base.ModelItemOptions `json:"types"`
+		Types   base.ModelItemOptions `json:"types"`
+		TimeNow base.TimeNormal       `json:"-" form:"-"`
 	}
 	ResultReplaceTrendType struct {
 		Result bool `json:"result"`
@@ -61,7 +62,7 @@ type (
 )
 
 func (r *ArgReplaceTrendType) Default(ctx *base.Context) (err error) {
-
+	r.TimeNow = base.GetNowTimeNormal()
 	return
 }
 
