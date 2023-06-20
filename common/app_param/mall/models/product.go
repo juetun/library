@@ -295,6 +295,17 @@ type (
 		Status    []int8 `json:"status"`
 	}
 	SpuStatusTabs []SpuStatusTab
+
+	PageTag struct {
+		Label     string `json:"label"`
+		Closable  bool   `json:"closable"`  //标签是否可以关闭
+		Checkable bool   `json:"checkable"` //标签是否可以选择
+		Checked   bool   `json:"checked"`   //标签的选中状态
+		Type      string `json:"type"`      //	标签的样式类型，可选值为 border、dot或不填	String	-
+		Color     string `json:"color"`     //标签颜色，预设颜色值为default、primary、success、warning、error、blue、green、red、yellow、pink、magenta、volcano、orange、gold、lime、cyan、geekblue、purple，你也可以自定义颜色值。	String	default
+		name      string `json:"name"`      //	当前标签的名称，使用 v-for，并支持关闭时，会比较有用	String | Number	-
+		Size      string `json:"size"`      // large、medium、default
+	}
 )
 
 func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
@@ -346,6 +357,65 @@ func (r *Product) DefaultBeforeAdd() {
 	}
 }
 
+func (r *Product) GetHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
+	var urlValue = url.Values{}
+	urlValue.Set("id", r.ProductID)
+	res, err = recommend.GetPageLink(headerInfo, &urlValue, recommend.AdDataDataTypeSpu)
+	return
+}
+
+func (r *Product) GetPageTags() (res []*PageTag) {
+	res = make([]*PageTag, 0, 3)
+	saleTypeTag := GetPageTagsWithSaleType(r.SaleType)
+	if saleTypeTag != nil {
+		res = append(res, saleTypeTag)
+	}
+
+	testTag := GetPageTagsTester(r.FlagTester)
+	if testTag != nil {
+		res = append(res, testTag)
+	}
+	return
+}
+
+
+func GetPageTagsTester(FlagTester uint8) (dt *PageTag) {
+	switch FlagTester {
+	case const_apply.FlagTesterYes:
+		dt = NewPageTag()
+		dt.Label = "测试"
+		dt.Color = "error"
+	case 0:
+		dt = NewPageTag()
+		dt.Label = "是否测试异常"
+		dt.Color = "error"
+	}
+	return
+}
+
+func GetPageTagsWithSaleType(saleType uint8) (dt *PageTag) {
+	switch saleType {
+	case SaleTypePreSale:
+		mapSaleType, _ := SliceSaleType.GetMapAsKeyUint8()
+		dt = NewPageTag()
+		dt.Color = "success"
+		dt.Label = mapSaleType[saleType]
+	case SaleTypeDown:
+		mapSaleType, _ := SliceSaleType.GetMapAsKeyUint8()
+		dt = NewPageTag()
+		dt.Label = mapSaleType[saleType]
+		dt.Color = "warning"
+	case SaleTypeGeneral:
+		//dt = NewPageTag()
+		//dt.Label = "普通商品"
+		//dt.Color = "green"
+	case 0:
+		dt = NewPageTag()
+		dt.Label = "销售类型异常"
+		dt.Color = "error"
+	}
+	return
+}
 func (r *Product) ParseServiceItem() (res []ServiceItem, serviceIds []int64, err error) {
 	res = make([]ServiceItem, 0, len(ProductTagList))
 	serviceIds = make([]int64, 0, len(ProductTagList))
@@ -702,4 +772,18 @@ func (r *Product) GetHaveVideo() (res bool) {
 		res = true
 	}
 	return
+}
+
+
+
+func NewPageTag() (res *PageTag) {
+	res = &PageTag{}
+	res.Default()
+	return
+}
+
+func (r *PageTag) Default() {
+	r.Checked = true
+	r.Size = "default"
+	r.Type = "border"
 }
