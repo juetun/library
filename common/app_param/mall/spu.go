@@ -75,7 +75,7 @@ func GetSpusWithDataTypeBySpuId(ctx *base.Context, spuIds *ArgGetSpuDataWithSpuI
 	params := rpc.RequestOptions{
 		Context:     ctx,
 		Method:      http.MethodPost,
-		AppName:     app_param.AppNameComment,
+		AppName:     app_param.AppNameMall,
 		URI:         "/product/get_spu_map_by_ids",
 		Value:       arg,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
