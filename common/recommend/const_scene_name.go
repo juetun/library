@@ -18,6 +18,7 @@ const (
 const (
 	AdDataDataTypeSpu               string = "1" //商品信息
 	AdDataDataTypeSku                      = "5" //sku信息
+	AdDataDataTypeSpuCategory              = "7" //商品类目
 	AdDataDataTypeUser                     = "6" //用户信息
 	AdDataDataTypeSocialIntercourse        = "2" //广告社交动态信息
 	AdDataStatusUserSet                    = "3" //用户手工设置
@@ -29,7 +30,6 @@ const (
 const (
 	AdDataStatusCanUse  uint8 = iota + 1 //广告可用
 	AdDataStatusOffLine                  //广告下架
-
 )
 
 var (
