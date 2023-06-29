@@ -22,7 +22,7 @@ const (
 )
 
 //用户浏览缓存的KEY
-func GetUserBrowser(userHid int64) (res string) {
+func GetUserBrowserCacheKey(userHid int64) (res string) {
 	res = fmt.Sprintf("u:bw:%v", userHid)
 	return
 }
@@ -68,7 +68,7 @@ func SetUserBrowser(ctx *base.Context, userHid int64, dataList []*UserBrowser, c
 
 	var (
 		ctxt = getCtx(ctxs...)
-		key  = GetUserBrowser(userHid)
+		key  = GetUserBrowserCacheKey(userHid)
 	)
 
 	if len(data) > 0 {
