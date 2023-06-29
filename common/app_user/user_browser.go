@@ -6,14 +6,16 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/common"
 )
 
 type (
 	UserBrowser struct {
-		UserHid   int64           `json:"-"`
-		DataType  string          `json:"data_type"`
-		DataId    string          `json:"data_id"`
-		TimeStamp base.TimeNormal `json:"time_stamp"`
+		HeaderInfo *common.HeaderInfo `json:"-"`
+		UserHid    int64              `json:"-"`
+		DataType   string             `json:"data_type"`
+		DataId     string             `json:"data_id"`
+		TimeStamp  base.TimeNormal    `json:"time_stamp"`
 	}
 )
 
