@@ -12,11 +12,12 @@ import (
 
 type (
 	UserBrowser struct {
-		HeaderInfo *common.HeaderInfo `json:"-"`
-		UserHid    int64              `json:"-"`
-		DataType   string             `json:"data_type"`
-		DataId     string             `json:"data_id"`
-		TimeStamp  base.TimeNormal    `json:"time_stamp"`
+		HeaderInfo     *common.HeaderInfo `json:"-"`
+		UserHid        int64              `json:"-"`
+		DataType       string             `json:"t"`
+		DataId         string             `json:"i"`
+		TimeStamp      base.TimeNormal    `json:"-"`
+		TimeStampScore float64            `json:"ts"`
 	}
 )
 
@@ -64,11 +65,12 @@ func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.
 	)
 
 	for _, item = range dataList {
+		item.TimeStampScore = float64(item.TimeStamp.UnixNano())
 		if _, ok := groupData[item.UserHid]; !ok {
 			groupData[item.UserHid] = make([]*redis.Z, 0, )
 		}
 		dataItem = &redis.Z{
-			Score:  float64(item.TimeStamp.UnixNano()),
+			Score:  item.TimeStampScore,
 			Member: item,
 		}
 		groupData[item.UserHid] = append(groupData[item.UserHid], dataItem)
