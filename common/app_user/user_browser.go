@@ -2,6 +2,7 @@ package app_user
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
@@ -94,5 +95,23 @@ func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.
 
 	}
 
+	return
+}
+
+func (r *UserBrowser) UnmarshalBinary(data []byte) (err error) {
+	if r == nil {
+		r = &UserBrowser{}
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *UserBrowser) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		r = &UserBrowser{}
+		return
+	}
+	data, err = json.Marshal(r)
 	return
 }
