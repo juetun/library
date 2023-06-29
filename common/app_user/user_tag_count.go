@@ -14,6 +14,7 @@ const (
 	UseTagAttendedCount  = "attended_num"       //粉丝数
 	UseTagMyAttendCount  = "my_attend"          //我关注数量
 	UseTagLoveCount      = "my_love"            //我的点赞数
+	UseTagSeeCount       = "my_see"             //我的喜欢(浏览)
 	UseCollectCount      = "my_collect"         //我的收藏
 	UseCanUseCouponCount = "can_use_coupon_num" //可用优惠券数量
 	UseTagScoreCount     = "score_num"          //积分数
