@@ -35,6 +35,16 @@ func getUserTagKeyByUid(userHid int64) (res string) {
 
 //设置用户的tag标签值
 func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Context) (err error) {
+	defer func() {
+		if err == nil || ctx == nil {
+			return
+		}
+		ctx.Error(map[string]interface{}{
+			"data": data,
+			"err":  err.Error(),
+		}, "SetUseTagCount")
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
+	}()
 	var ctxt context.Context
 	if len(ctxs) == 0 {
 		ctxt = context.TODO()
@@ -52,6 +62,17 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 
 //获取用户的数量
 func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...context.Context) (count float64, err error) {
+	defer func() {
+		if err == nil || ctx == nil {
+			return
+		}
+		ctx.Error(map[string]interface{}{
+			"useHid": useHid,
+			"tagKey": tagKey,
+			"err":    err.Error(),
+		}, "GetUseTagCount")
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
+	}()
 	var ctxt context.Context
 	if len(ctxs) == 0 {
 		ctxt = context.TODO()
