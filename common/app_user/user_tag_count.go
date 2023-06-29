@@ -12,6 +12,9 @@ const (
 	UseTagUnReadMsgCount = "unread_msg"         //未读消息
 	UseTagCartNumCount   = "cart_num_msg"       //购物车数量
 	UseTagAttendedCount  = "attended_num"       //粉丝数
+	UseTagMyAttendCount  = "my_attend"          //我关注数量
+	UseTagLoveCount      = "my_love"            //我的点赞数
+	UseCollectCount      = "my_collect"         //我的收藏
 	UseCanUseCouponCount = "can_use_coupon_num" //可用优惠券数量
 	UseTagScoreCount     = "score_num"          //积分数
 	UseTagExportCount    = "export_num"         //导出数据未下载的数量
@@ -46,6 +49,9 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 		}, "SetUseTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
+	if len(data) == 0 {
+		return
+	}
 	var ctxt context.Context
 	if len(ctxs) == 0 {
 		ctxt = context.TODO()
@@ -63,6 +69,9 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 
 //获取用户的数量
 func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...context.Context) (count float64, err error) {
+	if useHid == 0 || tagKey == "" {
+		return
+	}
 	defer func() {
 		if err == nil || ctx == nil {
 			return
