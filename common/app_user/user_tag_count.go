@@ -9,11 +9,12 @@ import (
 )
 
 const (
-	UseTagUnReadMsgCount = "unread_msg"   //未读消息
-	UseTagCartNumCount   = "cart_num_msg" //购物车数量
-	UseTagAttendedCount  = "attended_num" //粉丝数
-	UseTagScoreCount     = "score_num"    //积分数
-	UseTagExportCount    = "export_num"   //导出数据未下载的数量
+	UseTagUnReadMsgCount = "unread_msg"         //未读消息
+	UseTagCartNumCount   = "cart_num_msg"       //购物车数量
+	UseTagAttendedCount  = "attended_num"       //粉丝数
+	UseCanUseCouponCount = "can_use_coupon_num" //可用优惠券数量
+	UseTagScoreCount     = "score_num"          //积分数
+	UseTagExportCount    = "export_num"         //导出数据未下载的数量
 )
 
 const (
