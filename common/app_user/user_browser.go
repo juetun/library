@@ -17,7 +17,7 @@ type (
 		DataType       string             `json:"t"`
 		DataId         string             `json:"i"`
 		TimeStamp      base.TimeNormal    `json:"-"`
-		TimeStampScore float64            `json:"ts"`
+		TimeStampScore float64            `json:"-"`
 	}
 )
 
