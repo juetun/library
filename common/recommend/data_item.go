@@ -37,6 +37,7 @@ type (
 		ShowType      string                     `json:"show_type"`             //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`    //子列表
 		ShowTime      string                     `json:"show_time,omitempty"`
+		OtherData     interface{}                `json:"other_data,omitempty"` //其他数据
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
