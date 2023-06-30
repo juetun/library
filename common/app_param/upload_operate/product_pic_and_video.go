@@ -158,7 +158,6 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 				"Type": Type,
 				"err":  err.Error(),
 			}, "CacheProductPicAndVideoActionGetFromCache")
-			err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 			return
 		}
 	}()
@@ -168,8 +167,7 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 		return
 	}
 
-	if errString := cmd.Scan(data).Error(); errString != "" {
-		err = fmt.Errorf(errString)
+	if err = cmd.Scan(data); err != nil {
 		return
 	}
 	return
@@ -182,21 +180,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 
 	//收集缓存中没有的数据ID，便于后边查询使用
 	noCacheIds = NewArgUploadGetInfo()
-
-	//for _, it := range arg.ImgKeys {
-	//	var data *UploadImage
-	//	if e = r.getFromCache(it, FileTypePicture, data); e != nil {
-	//		if e != redis.Nil {
-	//			err = e
-	//			return
-	//		}
-	//		noCacheIds.ImgKeys = append(noCacheIds.ImgKeys, it)
-	//		return
-	//	}
-	//	res.Img[it] = data
-	//}
 	for _, it := range arg.VideoKeys {
-		var data *UploadVideo
+		var data = &UploadVideo{}
 		if e = r.getFromCache(it, FileTypeVideo, data); e != nil {
 			if e != redis.Nil {
 				err = e
@@ -207,9 +192,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 		}
 		res.Video[it] = data
 	}
-
 	for _, it := range arg.MusicKey {
-		var data *UploadMusic
+		var data = &UploadMusic{}
 		if e = r.getFromCache(it, FileTypeMusic, data); e != nil {
 			if e != redis.Nil {
 				err = e
@@ -220,22 +204,8 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 		}
 		res.Music[it] = data
 	}
-
-	//for _, it := range arg.Material {
-	//	var data *UploadMaterial
-	//	if e = r.getFromCache(it, FileTypeMaterial, data); e != nil {
-	//		if e != redis.Nil {
-	//			err = e
-	//			return
-	//		}
-	//		noCacheIds.Material = append(noCacheIds.Material, it)
-	//		return
-	//	}
-	//	res.Material[it] = data
-	//}
-
 	for _, it := range arg.File {
-		var data *UploadFile
+		var data = &UploadFile{}
 		if e = r.getFromCache(it, FileTypeFile, data); e != nil {
 			if e != redis.Nil {
 				err = e
