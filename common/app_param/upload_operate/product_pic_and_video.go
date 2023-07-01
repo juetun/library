@@ -189,7 +189,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 				return
 			}
 			noCacheIds.VideoKeys = append(noCacheIds.VideoKeys, it)
-			return
+			continue
 		}
 		res.Video[it] = data
 	}
@@ -201,7 +201,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 				return
 			}
 			noCacheIds.MusicKey = append(noCacheIds.MusicKey, it)
-			return
+			continue
 		}
 		res.Music[it] = data
 	}
@@ -213,7 +213,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 				return
 			}
 			noCacheIds.File = append(noCacheIds.File, it)
-			return
+			continue
 		}
 		res.File[it] = data
 	}
