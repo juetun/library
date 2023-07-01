@@ -158,9 +158,9 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 				"Type": Type,
 				"err":  err.Error(),
 			}, "CacheProductPicAndVideoActionGetFromCache")
+			err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 			return
 		}
-		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 	key, _ := r.HandlerGetUploadCacheKey(id, Type)
 	cmd := r.Context.CacheClient.Get(r.Ctx, key)
