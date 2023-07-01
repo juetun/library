@@ -152,7 +152,7 @@ func (r *CacheProductPicAndVideoAction) Action() (res *ResultMapUploadInfo, err 
 
 func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string, data interface{}) (err error) {
 	defer func() {
-		if err != nil {
+		if err != nil && err != redis.Nil {
 			r.Context.Info(map[string]interface{}{
 				"id":   id,
 				"Type": Type,
@@ -160,6 +160,7 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 			}, "CacheProductPicAndVideoActionGetFromCache")
 			return
 		}
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 	key, _ := r.HandlerGetUploadCacheKey(id, Type)
 	cmd := r.Context.CacheClient.Get(r.Ctx, key)
