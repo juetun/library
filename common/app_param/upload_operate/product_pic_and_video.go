@@ -229,7 +229,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromAll(arg *ArgUploadGetInfo) (
 	if res, argCacheNotHave, err = r.getByIdsFromCache(arg); err != nil {
 		return
 	}
-	if len(argCacheNotHave.VideoKeys) == 0 && len(arg.MusicKey) == 0 {
+	if len(argCacheNotHave.VideoKeys) == 0 && len(arg.MusicKey) == 0 && len(arg.File) == 0 {
 		return
 	}
 
