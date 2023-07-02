@@ -59,6 +59,13 @@ func (r *UserBrowser) MarshalBinary() (data []byte, err error) {
 	return
 }
 
+func (r *UserBrowser) Default() (err error) {
+	if r.TimeStampScore == 0 && !r.TimeStamp.IsZero() {
+		r.TimeStampScore = float64(r.TimeStamp.UnixNano())
+	}
+	return
+}
+
 //设置用户的tag标签值
 func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.Context) (err error) {
 	defer func() {
@@ -84,7 +91,9 @@ func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.
 	)
 
 	for _, item = range dataList {
-
+		if err = item.Default(); err != nil {
+			return
+		}
 		if _, ok := groupData[item.UserHid]; !ok {
 			groupData[item.UserHid] = make([]*redis.Z, 0, )
 		}
