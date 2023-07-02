@@ -19,12 +19,6 @@ type (
 		TimeStamp      base.TimeNormal    `json:"-"`
 		TimeStampScore float64            `json:"-"`
 	}
-	UserBrowserDetail struct {
-		UserHid   int64           `json:"u"`
-		DataType  string          `json:"t"`
-		DataId    string          `json:"i"`
-		TimeStamp base.TimeNormal `json:"ts"`
-	}
 )
 
 const (
@@ -39,17 +33,29 @@ func GetUserBrowserCacheKey(userHid int64) (res string) {
 	return
 }
 
-func GetUserBrowserCacheKeyDetail(key string) (res string) {
-	res = fmt.Sprintf("u:bk:%v", key)
-	return
-}
-
 func getCtx(ctxs ...context.Context) (ctx context.Context) {
 	if len(ctxs) == 0 {
 		ctx = context.TODO()
 	} else {
 		ctx = ctxs[0]
 	}
+	return
+}
+
+func (r *UserBrowser) UnmarshalBinary(data []byte) (err error) {
+	if len(data) == 0 {
+		return
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *UserBrowser) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		return
+	}
+	data, err = json.Marshal(r)
 	return
 }
 
@@ -74,23 +80,17 @@ func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.
 		cacheClient, _ = app_obj.GetRedisClient(UserBrowserCacheNameSpace)
 		dataItem       *redis.Z
 		item           *UserBrowser
-		dataEveryItem  *UserBrowserDetail
 		groupData      = make(map[int64][]*redis.Z, l)
 	)
 
 	for _, item = range dataList {
-		dataEveryItem = &UserBrowserDetail{
-			UserHid:   item.UserHid,
-			DataType:  item.DataType,
-			DataId:    item.DataId,
-			TimeStamp: item.TimeStamp,
-		}
+
 		if _, ok := groupData[item.UserHid]; !ok {
 			groupData[item.UserHid] = make([]*redis.Z, 0, )
 		}
 		dataItem = &redis.Z{
 			Score:  item.TimeStampScore,
-			Member: dataEveryItem,
+			Member: item,
 		}
 		groupData[item.UserHid] = append(groupData[item.UserHid], dataItem)
 	}
@@ -114,26 +114,6 @@ func SetUserBrowser(ctx *base.Context, dataList []*UserBrowser, ctxs ...context.
 				return
 			}
 		}
-
 	}
-
-	return
-}
-
-func (r *UserBrowserDetail) UnmarshalBinary(data []byte) (err error) {
-	if r == nil {
-		r = &UserBrowserDetail{}
-	}
-	err = json.Unmarshal(data, r)
-	return
-}
-
-//实现 序列化方法 encoding.BinaryMarshaler
-func (r *UserBrowserDetail) MarshalBinary() (data []byte, err error) {
-	if r == nil {
-		r = &UserBrowserDetail{}
-		return
-	}
-	data, err = json.Marshal(r)
 	return
 }
