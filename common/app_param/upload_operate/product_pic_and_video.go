@@ -65,7 +65,7 @@ func (r *CacheProductPicAndVideoAction) SetToCacheNew(key string, duration time.
 		r.Context.Info(map[string]interface{}{
 			"data":           data,
 			"key":            key,
-			"duration":       duration,
+			"period":       duration,
 			"expireTimeRand": expireTimeRand,
 		}, "CacheActionSetToCache")
 		return
