@@ -23,6 +23,7 @@ type (
 		MusicKey  []string `json:"music_key"`
 		//Material  []string `json:"material"`
 		File []string `json:"file"`
+		base.GetDataTypeCommon
 	}
 )
 
