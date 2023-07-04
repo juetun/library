@@ -1,6 +1,9 @@
 package upload_operate
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"encoding/json"
+	"github.com/juetun/base-wrapper/lib/base"
+)
 
 type (
 	UploadInfo struct {
@@ -26,6 +29,23 @@ type (
 		base.GetDataTypeCommon
 	}
 )
+
+func (r *UploadInfo) UnmarshalBinary(data []byte) (err error) {
+	if data == nil {
+		return
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *UploadInfo) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		return
+	}
+	data, err = json.Marshal(r)
+	return
+}
 
 func (r *ArgUploadGetInfo) Default(c *base.Context) (err error) {
 

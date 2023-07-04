@@ -1,14 +1,11 @@
 package upload_operate
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/base"
-	"regexp"
-	"strings"
 )
 
 type (
-
 	ProductImage struct {
 		UploadFile
 		IsThumbnail bool `json:"is_thumb"` // 是否是缩略图
@@ -61,23 +58,19 @@ func (r *ProductImages) GetNotDeleteData() (res []ProductImage) {
 	return
 }
 
-
-
-func (r *UploadFile) GetEditorHtml(value string) (res string, err error) {
-	var (
-		reg *regexp.Regexp
-	)
-	res = value
-	res = strings.ReplaceAll(res, "%", "%%")
-	if reg, err = regexp.Compile(`src="[^"]+"`); err != nil {
+func (r *ProductImages) UnmarshalBinary(data []byte) (err error) {
+	if data == nil {
 		return
 	}
-
-	repl := fmt.Sprintf(`src="%s"`, r.Src)
-	res = reg.ReplaceAllStringFunc(value, func(s string) (res string) {
-		res = repl
-		return
-	})
+	err = json.Unmarshal(data, r)
 	return
 }
 
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *ProductImages) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		return
+	}
+	data, err = json.Marshal(r)
+	return
+}

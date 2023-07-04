@@ -1,6 +1,7 @@
 package upload_operate
 
 import (
+	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/base"
 
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
@@ -35,6 +36,23 @@ func (r *UploadMusic) ToString() (res string) {
 
 func (r *UploadMusic) ParseString(saveUploadString string) (err error) {
 	err = r.UploadCommon.ParseString(saveUploadString)
+	return
+}
+
+func (r *UploadMusic) UnmarshalBinary(data []byte) (err error) {
+	if data == nil {
+		return
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *UploadMusic) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		return
+	}
+	data, err = json.Marshal(r)
 	return
 }
 
