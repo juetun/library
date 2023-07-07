@@ -19,7 +19,7 @@ type (
 		MicroApp string `json:"micro_app" form:"micro_app"`
 	}
 
-	ResultGetCacheParamConfig map[string]redis_pkg.CacheProperty
+	ResultGetCacheParamConfig map[string]*redis_pkg.CacheProperty
 )
 
 func (r *ArgClearCacheByKeyPrefix) Default(c *base.Context) (err error) {
