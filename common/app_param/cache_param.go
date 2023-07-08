@@ -11,6 +11,39 @@ import (
 	"net/url"
 )
 
+const (
+	CacheDataTypeHashString  uint8 = iota + 1 //字符串
+	CacheDataTypeHashHash                     //哈希
+	CacheDataTypeHashList                     //列表
+	CacheDataTypeHashSet                      //集合
+	CacheDataTypeHashSortSet                  //有序集合
+)
+
+var (
+	SliceCacheDataType = base.ModelItemOptions{
+		{
+			Label: "字符串",
+			Value: CacheDataTypeHashString,
+		},
+		{
+			Label: "哈希",
+			Value: CacheDataTypeHashHash,
+		},
+		{
+			Label: "列表",
+			Value: CacheDataTypeHashList,
+		},
+		{
+			Label: "集合",
+			Value: CacheDataTypeHashSet,
+		},
+		{
+			Label: "有序集合",
+			Value: CacheDataTypeHashSortSet,
+		},
+	}
+)
+
 type (
 	ArgClearCacheByKeyPrefix struct {
 		MicroApp  string `json:"micro_app" form:"micro_app"`
@@ -54,8 +87,14 @@ func ReloadAppCacheConfig(ctx *base.Context, argGetCacheParamConfig *ArgGetCache
 	if params.BodyJson, err = json.Marshal(argGetCacheParamConfig); err != nil {
 		return
 	}
+
 	req := rpc.NewHttpRpc(&params).
-		Send().GetBody()
+		Send()
+	if req.GetResp().StatusCode == http.StatusNotFound {
+		err = fmt.Errorf("服务(%v)不支持您要访问的接口", argGetCacheParamConfig.MicroApp)
+		return
+	}
+	req = req.GetBody()
 	if err = req.Error; err != nil {
 		return
 	}
