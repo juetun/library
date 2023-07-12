@@ -20,8 +20,9 @@ type (
 		DataTypes  []string              `json:"data_types"`  //获取数据类型 取值范围和获取SPU的数据类型一致
 	}
 	SkuAndSpuIdCompose struct {
-		SpuId string `json:"spu_id"`
-		SkuId string `json:"sku_id"`
+		ShopId int64  `json:"shop_id"` //店铺ID非必须参数，特定场景使用
+		SpuId  string `json:"spu_id"`  //SPU_id 必有参数,
+		SkuId  string `json:"sku_id"`  //sku_id 必有参数,
 	}
 )
 
