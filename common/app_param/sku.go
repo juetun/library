@@ -31,6 +31,36 @@ func (r *ArgGetSkuDataStringIds) Default(ctx *base.Context) (err error) {
 	return
 }
 
+func (r *ArgGetSkuDataStringIds) GetAllIds() (shopIds []int64, spuIds, skuIds []string) {
+
+	var (
+		l         = len(r.IdsCompose)
+		mapSkuId  = make(map[string]bool, l)
+		mapShopId = make(map[int64]bool, l)
+		mapSpuId  = make(map[string]bool, l)
+	)
+	shopIds = make([]int64, 0, l)
+	spuIds = make([]string, 0, l)
+	skuIds = make([]string, 0, l)
+	for _, item := range r.IdsCompose {
+		if _, ok := mapSkuId[item.SkuId]; !ok {
+			mapSkuId[item.SkuId] = true
+			skuIds = append(skuIds, item.SkuId)
+		}
+
+		if _, ok := mapShopId[item.ShopId]; !ok {
+			mapShopId[item.ShopId] = true
+			shopIds = append(shopIds, item.ShopId)
+		}
+
+		if _, ok := mapSpuId[item.SpuId]; !ok {
+			mapSpuId[item.SpuId] = true
+			spuIds = append(spuIds, item.SpuId)
+		}
+	}
+	return
+}
+
 func (r *ArgGetSkuDataStringIds) GetAllSkuIds() (res []string) {
 
 	var (
