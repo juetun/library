@@ -47,12 +47,12 @@ func (r *ArgGetSkuDataStringIds) GetAllIds() (shopIds []int64, spuIds, skuIds []
 			mapSkuId[item.SkuId] = true
 			skuIds = append(skuIds, item.SkuId)
 		}
-
-		if _, ok := mapShopId[item.ShopId]; !ok {
-			mapShopId[item.ShopId] = true
-			shopIds = append(shopIds, item.ShopId)
+		if item.ShopId > 0 {
+			if _, ok := mapShopId[item.ShopId]; !ok {
+				mapShopId[item.ShopId] = true
+				shopIds = append(shopIds, item.ShopId)
+			}
 		}
-
 		if _, ok := mapSpuId[item.SpuId]; !ok {
 			mapSpuId[item.SpuId] = true
 			spuIds = append(spuIds, item.SpuId)
