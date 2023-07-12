@@ -85,13 +85,15 @@ var (
 
 type (
 	ArgWriteRecommendData struct {
-		Ctx      *base.Context `json:"-"`         //上下文信息
-		UserHid  int64         `json:"user_hid"`  //用户
-		DataType string        `json:"data_type"` //数据类型
-		DataId   string        `json:"data_id"`   //数据ID
-		SceneKey string        `json:"scene_key"`
-		Status   uint8         `json:"status"`
-		Weight   int64         `json:"weight"`
+		Ctx         *base.Context    `json:"-"`             //上下文信息
+		UserHid     int64            `json:"user_hid"`      //用户
+		DataType    string           `json:"data_type"`     //数据类型
+		DataId      string           `json:"data_id"`       //数据ID
+		SceneKey    string           `json:"scene_key"`     //场景KEY
+		Status      uint8            `json:"status"`        //状态
+		PullOnTime  *base.TimeNormal `json:"pull_on_time"`  //上架时间
+		PullOffTime *base.TimeNormal `json:"pull_off_time"` //下架时间
+		Weight      int64            `json:"weight"`        //权重
 	}
 )
 
