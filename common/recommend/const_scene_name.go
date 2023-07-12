@@ -16,6 +16,10 @@ const (
 )
 
 const (
+	TableAdDataCommon = "common" //推荐公共数据存储
+)
+
+const (
 	AdDataDataTypeSpu               string = "1" //商品信息
 	AdDataDataTypeSku                      = "5" //sku信息
 	AdDataDataTypeSpuCategory              = "7" //商品类目
@@ -83,7 +87,7 @@ type (
 	ArgWriteRecommendData struct {
 		Ctx      *base.Context `json:"-"`         //上下文信息
 		UserHid  int64         `json:"user_hid"`  //用户
-		DataType int8          `json:"data_type"` //数据类型
+		DataType string        `json:"data_type"` //数据类型
 		DataId   string        `json:"data_id"`   //数据ID
 		SceneKey string        `json:"scene_key"`
 		Status   uint8         `json:"status"`
@@ -93,10 +97,10 @@ type (
 
 func (r *ArgWriteRecommendData) Default() (err error) {
 	var (
-		dataTypeMap map[int8]string
+		dataTypeMap map[string]string
 		ok          bool
 	)
-	if dataTypeMap, err = SliceAdDataType.GetMapAsKeyInt8(); err != nil {
+	if dataTypeMap, err = SliceAdDataType.GetMapAsKeyString(); err != nil {
 		if _, ok = dataTypeMap[r.DataType]; !ok {
 			err = fmt.Errorf("当前不支持你选择的数据类型")
 			r.Ctx.Error(map[string]interface{}{
@@ -128,12 +132,12 @@ func WriteRecommendData(arg *ArgWriteRecommendData) (res bool, err error) {
 		return
 	}
 	var value = url.Values{}
-	value.Set("user_hid", fmt.Sprintf("%d", arg.UserHid))
-	value.Set("data_type", fmt.Sprintf("%d", arg.DataType))
+	value.Set("user_hid", fmt.Sprintf("%v", arg.UserHid))
+	value.Set("data_type", fmt.Sprintf("%v", arg.DataType))
 	value.Set("data_id", arg.DataId)
 	value.Set("scene_key", arg.SceneKey)
-	value.Set("status", fmt.Sprintf("%d", arg.Status))
-	value.Set("weight", fmt.Sprintf("%d", arg.Weight))
+	value.Set("status", fmt.Sprintf("%v", arg.Status))
+	value.Set("weight", fmt.Sprintf("%v", arg.Weight))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodGet,
 		AppName:     app_param.AppNameRecommend,
