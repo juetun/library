@@ -1,6 +1,7 @@
 package recommend
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
@@ -127,38 +128,40 @@ func (r *ArgWriteRecommendData) Default() (err error) {
 	return
 }
 
+func (r *ArgWriteRecommendData) GetJson() (res []byte, err error) {
+	res, err = json.Marshal(r)
+	return
+}
+
 //TODO 根据店铺ID获取店铺信息，
 //当前采用接口直接发送，后续采用消息队列解耦重新实现
 func WriteRecommendData(arg *ArgWriteRecommendData) (res bool, err error) {
 	if err = arg.Default(); err != nil {
 		return
 	}
-	var value = url.Values{}
-	value.Set("user_hid", fmt.Sprintf("%v", arg.UserHid))
-	value.Set("data_type", fmt.Sprintf("%v", arg.DataType))
-	value.Set("data_id", arg.DataId)
-	value.Set("scene_key", arg.SceneKey)
-	value.Set("status", fmt.Sprintf("%v", arg.Status))
-	value.Set("weight", fmt.Sprintf("%v", arg.Weight))
+
 	ro := rpc.RequestOptions{
 		Method:      http.MethodGet,
 		AppName:     app_param.AppNameRecommend,
 		URI:         "/recommend/write_data",
 		Header:      http.Header{},
-		Value:       value,
+		Value:       url.Values{},
 		Context:     arg.Ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
 	}
 	var data = struct {
 		Code int                                   `json:"code"`
 		Data struct{ Result bool `json:"result"` } `json:"data"`
 		Msg  string                                `json:"message"`
 	}{}
-	err = rpc.NewHttpRpc(&ro).
+
+	if err = rpc.NewHttpRpc(&ro).
 		Send().
 		GetBody().
-		Bind(&data).Error
-	if err != nil {
+		Bind(&data).Error; err != nil {
 		return
 	}
 	res = data.Data.Result
