@@ -141,7 +141,7 @@ func WriteRecommendData(arg *ArgWriteRecommendData) (res bool, err error) {
 	}
 
 	ro := rpc.RequestOptions{
-		Method:      http.MethodGet,
+		Method:      http.MethodPost,
 		AppName:     app_param.AppNameRecommend,
 		URI:         "/recommend/write_data",
 		Header:      http.Header{},
