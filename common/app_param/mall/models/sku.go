@@ -82,7 +82,7 @@ var (
 
 		{
 			Value: SkuStatusOnline,
-			Label: "在售",
+			Label: "已上架",
 		},
 		{
 			Value: SkuStatusOffLine,
