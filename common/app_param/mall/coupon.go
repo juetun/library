@@ -36,8 +36,8 @@ type (
 	}
 
 	ResultGetCanUsePlatCoupon struct {
-		CurrentUse *CouponInfo   `json:"current_use"` //当前选中的最优秀优惠券
-		CanUse     []*CouponInfo `json:"can_use"`     //当前账号可使用的所有优惠券
+		CurrentUse *CouponInfo   `json:"current_use,omitempty"` //当前选中的最优秀优惠券
+		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
 	}
 	CouponInfo struct {
 		UserCouponId int64  `json:"user_coupon_id"` //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
@@ -45,8 +45,8 @@ type (
 		Label        string `json:"label"`          //优惠券名称
 	}
 	ShopCouponList struct {
-		CurrentUse []*CouponInfo `json:"current_use"` //当前选中的最优秀优惠券
-		CanUse     []*CouponInfo `json:"can_use"`     //当前账号可使用的所有优惠券
+		CurrentUse []*CouponInfo `json:"current_use,omitempty"` //当前选中的最优秀优惠券
+		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
 	}
 )
 
