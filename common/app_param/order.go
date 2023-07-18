@@ -43,6 +43,7 @@ var (
 type (
 	ArgOrderFromCartItem struct {
 		ShopId          int64  `json:"shop_id,omitempty" form:"shop_id"`                 // 店铺ID
+		CategoryId      int64  `json:"-" form:"-"`                                       // 商品类目
 		SpuId           string `json:"spu_id,omitempty" form:"spu_id"`                   // 商品ID
 		SkuId           string `json:"sku_id,omitempty" form:"sku_id"`                   // sku地址
 		Num             int64  `json:"num,omitempty" form:"num"`                         // 商品数量
