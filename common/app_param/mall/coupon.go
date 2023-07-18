@@ -31,8 +31,8 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon    ResultGetCanUsePlatCoupon `json:"plat_coupon"`     //平台券信息
-		MapShopCoupon map[int64]ShopCouponList  `json:"map_shop_coupon"` //店铺优惠券信息
+		PlatCoupon    *ResultGetCanUsePlatCoupon `json:"plat_coupon"`     //平台券信息
+		MapShopCoupon map[int64]*ShopCouponList  `json:"map_shop_coupon"` //店铺优惠券信息
 	}
 
 	ResultGetCanUsePlatCoupon struct {
@@ -40,9 +40,27 @@ type (
 		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
 	}
 	CouponInfo struct {
-		UserCouponId int64  `json:"user_coupon_id"` //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
-		CouponId     int64  `json:"coupon_id"`      //用户优惠券编号(优惠券ID)
-		Label        string `json:"label"`          //优惠券名称
+		ID             int64  `json:"id"`    //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
+		Title          string `json:"title"` //优惠券名称
+		TitleMark      string `json:"title_mark"`
+		Status         uint8  `json:"status"`
+		StatusName     string `json:"status_name"`
+		CouponTypeName string `json:"coupon_type_name"`
+		CouponID       string `json:"coupon_id"`  //用户优惠券编号(优惠券ID)
+		StartTime      string `json:"start_time"` //有效期开始时间
+		OverTime       string `json:"over_time"`  //有效期结束时间
+		CreateTime     string `json:"create_time"`
+		UserMark       string `json:"user_mark"` //使用说明
+		UseAreaMark    string `json:"use_area_mark"`
+		UseAreaLabel   string `json:"use_area_label"`
+		Full           string `json:"full"`
+		Decr           string `json:"decr"`
+		Rebate         string `json:"rebate"`
+		Cate           uint8  `json:"cate"`
+		CateName       string `json:"cate_name"`
+		EffectTimeDesc string `json:"effect_time_desc"`
+		Disabled       bool   `json:"disabled"` //数据不合法(过期 或已删除等状态)
+		CanUse         bool   `json:"can_use"`  //当前是否能够使用（优惠券使用期限未到false ）
 	}
 	ShopCouponList struct {
 		CurrentUse []*CouponInfo `json:"current_use,omitempty"` //当前选中的最优秀优惠券
@@ -64,7 +82,7 @@ func (r *ArgGetCanUseCoupon) Default(ctx *base.Context) (err error) {
 func (r *ShopCouponList) GetLabels(res []string) {
 	res = make([]string, 0, len(r.CurrentUse))
 	for _, item := range r.CurrentUse {
-		res = append(res, item.Label)
+		res = append(res, item.Title)
 	}
 	return
 }
