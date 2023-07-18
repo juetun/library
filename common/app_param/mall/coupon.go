@@ -25,22 +25,28 @@ type (
 		ShopSpu map[int64]*ArgShopSpu `json:"shop_spu" form:"shop_spu"`
 	}
 	ArgShopSpu struct {
-		ShopId int64    `json:"shop_id" form:"shop_id"`
-		SpuId  []string `json:"spu_id" form:"spu_id"`
+		ShopId     int64  `json:"shop_id" form:"shop_id"`         //店铺ID
+		CategoryId int64  `json:"category_id" form:"category_id"` //商品类目ID
+		SpuId      string `json:"spu_id" form:"spu_id"`           //商品ID
 	}
 
 	ResultGetCanUseCoupon struct {
 		PlatCoupon    ResultGetCanUsePlatCoupon `json:"plat_coupon"`     //平台券信息
 		MapShopCoupon map[int64]ShopCouponList  `json:"map_shop_coupon"` //店铺优惠券信息
 	}
-	ShopCouponList            []*ResultCanUseCoupon
+
 	ResultGetCanUsePlatCoupon struct {
-		UserCouponId int64  `json:"user_coupon_id"`
-		Label        string `json:"label"`
+		CurrentUse *CouponInfo   `json:"current_use"` //当前选中的最优秀优惠券
+		CanUse     []*CouponInfo `json:"can_use"`     //当前账号可使用的所有优惠券
 	}
-	ResultCanUseCoupon struct {
-		UserCouponId int64  `json:"user_coupon_id"`
-		Label        string `json:"label"`
+	CouponInfo struct {
+		UserCouponId int64  `json:"user_coupon_id"` //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
+		CouponId     int64  `json:"coupon_id"`      //用户优惠券编号(优惠券ID)
+		Label        string `json:"label"`          //优惠券名称
+	}
+	ShopCouponList struct {
+		CurrentUse []*CouponInfo `json:"current_use"` //当前选中的最优秀优惠券
+		CanUse     []*CouponInfo `json:"can_use"`     //当前账号可使用的所有优惠券
 	}
 )
 
@@ -56,8 +62,8 @@ func (r *ArgGetCanUseCoupon) Default(ctx *base.Context) (err error) {
 }
 
 func (r *ShopCouponList) GetLabels(res []string) {
-	res = make([]string, 0, len(*r))
-	for _, item := range *r {
+	res = make([]string, 0, len(r.CurrentUse))
+	for _, item := range r.CurrentUse {
 		res = append(res, item.Label)
 	}
 	return
