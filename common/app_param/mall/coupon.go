@@ -20,24 +20,28 @@ type (
 	ResGetCouponBindData map[string]bool
 
 	ArgGetCanUseCoupon struct {
-		TimeNow base.TimeNormal         `json:"time_now" form:"time_now"`
-		UserHid int64                   `json:"user_hid" form:"user_hid"`
-		ShopSpu map[int64][]*ArgShopSpu `json:"shop_spu" form:"shop_spu"`
+		TimeNow     base.TimeNormal         `json:"time_now" form:"time_now"`
+		UserHid     int64                   `json:"user_hid" form:"user_hid"`
+		ShopSpu     map[int64][]*ArgShopSpu `json:"shop_spu" form:"shop_spu"`
+		TotalAmount string                  `json:"total_amount" form:"total_amount"` //商品总金额
 	}
 	ArgShopSpu struct {
 		ShopId     int64  `json:"shop_id" form:"shop_id"`         //店铺ID
 		CategoryId int64  `json:"category_id" form:"category_id"` //商品类目ID
 		SpuId      string `json:"spu_id" form:"spu_id"`           //商品ID
+		Amount     string `json:"amount" form:"amount"`           //商品金额
 	}
 
 	ResultGetCanUseCoupon struct {
 		PlatCoupon    *ResultGetCanUsePlatCoupon `json:"plat_coupon"`     //平台券信息
 		MapShopCoupon map[int64]*ShopCouponList  `json:"map_shop_coupon"` //店铺优惠券信息
+		DecrAmount    string                     `json:"decr_amount"`     //总扣减金额
 	}
 
 	ResultGetCanUsePlatCoupon struct {
 		CurrentUse *CouponInfo   `json:"current_use,omitempty"` //当前选中的最优秀优惠券
 		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
+		DecrAmount string        `json:"decr_amount"`           //总扣减金额
 	}
 	CouponInfo struct {
 		ID             int64  `json:"id"`    //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
@@ -65,6 +69,7 @@ type (
 	ShopCouponList struct {
 		CurrentUse []*CouponInfo `json:"current_use,omitempty"` //当前选中的最优秀优惠券
 		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
+		DecrAmount string        `json:"decr_amount"`           //总扣减金额
 	}
 )
 
