@@ -20,9 +20,9 @@ type (
 	ResGetCouponBindData map[string]bool
 
 	ArgGetCanUseCoupon struct {
-		TimeNow base.TimeNormal      `json:"time_now" form:"time_now"`
-		UserHid int64                `json:"user_hid" form:"user_hid"`
-		ShopSpu map[int64]ArgShopSpu `json:"shop_spu" form:"shop_spu"`
+		TimeNow base.TimeNormal       `json:"time_now" form:"time_now"`
+		UserHid int64                 `json:"user_hid" form:"user_hid"`
+		ShopSpu map[int64]*ArgShopSpu `json:"shop_spu" form:"shop_spu"`
 	}
 	ArgShopSpu struct {
 		ShopId int64    `json:"shop_id" form:"shop_id"`
