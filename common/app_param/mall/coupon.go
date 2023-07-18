@@ -33,15 +33,15 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon    *ResultGetCanUsePlatCoupon `json:"plat_coupon"`     //平台券信息
-		MapShopCoupon map[int64]*ShopCouponList  `json:"map_shop_coupon"` //店铺优惠券信息
-		DecrAmount    string                     `json:"decr_amount"`     //总扣减金额
+		PlatCoupon    *ResultGetCanUsePlatCoupon `json:"plat_coupon,omitempty"`     //平台券信息
+		MapShopCoupon map[int64]*ShopCouponList  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
+		DecrAmount    string                     `json:"decr_amount,omitempty"`     //总扣减金额
 	}
 
 	ResultGetCanUsePlatCoupon struct {
 		CurrentUse *CouponInfo   `json:"current_use,omitempty"` //当前选中的最优秀优惠券
 		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
-		DecrAmount string        `json:"decr_amount"`           //总扣减金额
+		DecrAmount string        `json:"decr_amount,omitempty"` //总扣减金额
 	}
 	CouponInfo struct {
 		ID             int64  `json:"id"`    //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
