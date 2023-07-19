@@ -36,10 +36,10 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon    *CanUsePlatCoupon           `json:"plat_coupon,omitempty"`     //平台券信息
-		MapShopCoupon map[int64]*CanUsePlatCoupon `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
-		MapSpuCoupon  map[int64]*CanUsePlatCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
-		DecrAmount    string                      `json:"decr_amount,omitempty"`     //总扣减金额
+		PlatCoupon    *CanUsePlatCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
+		MapShopCoupon map[int64]*CanUsePlatCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
+		MapSpuCoupon  map[string]*CanUsePlatCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
+		DecrAmount    string                       `json:"decr_amount,omitempty"`     //总扣减金额
 	}
 
 	CanUsePlatCoupon struct {
