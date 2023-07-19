@@ -185,17 +185,37 @@ func getPageLinkMina(urlValue *url.Values, dataType string, pageNames ...string)
 	return
 }
 
+func getDefault(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res interface{}, err error) {
+	if urlValue == nil {
+		urlValue = &url.Values{}
+	}
+	if headerInfo.HApp != "" {
+		urlValue.Set("h_app", headerInfo.HApp)
+	}
+	if headerInfo.HTerminal != "" {
+		urlValue.Set("h_terminal", headerInfo.HTerminal)
+	}
+	if headerInfo.HChannel != "" {
+		urlValue.Set("h_channel", headerInfo.HChannel)
+	}
+	if headerInfo.HVersion != "" {
+		urlValue.Set("h_version", headerInfo.HVersion)
+	}
+	res, err = getPageLinkDefault(urlValue, dataType, pageNames...)
+	return
+}
+
 //获取页面链接
 func GetPageLink(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res interface{}, err error) {
 	switch headerInfo.HTerminal {
 	case app_param.TerminalMina: //小程序
 		res, err = getPageLinkMina(urlValue, dataType, pageNames...)
+	case app_param.TerminalAndroid: //安卓
+		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
+	case app_param.TerminalIos: //IOS
+		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
 	default:
-		//TerminalMina    = "mina"
-		//TerminalH5      = "h5"
-		//TerminalAndroid = "android"
-		//TerminalIos     = "ios"
-		res, err = getPageLinkDefault(urlValue, dataType, pageNames...)
+		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
 	}
 
 	return
