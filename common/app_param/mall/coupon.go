@@ -7,6 +7,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
+	"github.com/shopspring/decimal"
 	"net/http"
 	"net/url"
 )
@@ -20,19 +21,22 @@ type (
 	ResGetCouponBindData map[string]bool
 
 	ArgGetCanUseCoupon struct {
-		TimeNow base.TimeNormal        `json:"time_now" form:"time_now"`
-		UserHid int64                  `json:"user_hid" form:"user_hid"`
-		Amount  string                 `json:"amount" form:"amount"` //商品总金额
-		ShopSpu []*ArgCanUseCouponShop `json:"shop_spu" form:"shop_spu"`
+		TimeNow       base.TimeNormal        `json:"time_now" form:"time_now"`
+		UserHid       int64                  `json:"user_hid" form:"user_hid"`
+		Amount        string                 `json:"amount" form:"amount"` //商品总金额
+		AmountDecimal decimal.Decimal        `json:"-" form:"-"`           //特殊用途,计算金额过渡变量
+		ShopSpu       []*ArgCanUseCouponShop `json:"shop_spu" form:"shop_spu"`
 	}
 	ArgCanUseCouponShop struct {
-		ShopId    int64                 `json:"shop_id" form:"shop_id"` //店铺ID
-		Amount    string                `json:"amount" form:"amount"`   //商品总金额
-		SpuCoupon []*ArgCanUseCouponSpu `json:"spu_coupon" form:"spu_coupon"`
+		ShopId        int64                 `json:"shop_id" form:"shop_id"` //店铺ID
+		Amount        string                `json:"amount" form:"amount"`   //商品总金额
+		AmountDecimal decimal.Decimal       `json:"-" form:"-"`             //特殊用途,计算金额过渡变量
+		SpuCoupon     []*ArgCanUseCouponSpu `json:"spu_coupon" form:"spu_coupon"`
 	}
 	ArgCanUseCouponSpu struct {
-		SpuId  string `json:"spu_id" form:"spu_id"` //商品ID
-		Amount string `json:"amount" form:"amount"` //商品金额
+		SpuId         string          `json:"spu_id" form:"spu_id"` //商品ID
+		Amount        string          `json:"amount" form:"amount"` //商品金额
+		AmountDecimal decimal.Decimal `json:"-" form:"-"`           //特殊用途,计算金额过渡变量
 	}
 
 	ResultGetCanUseCoupon struct {
