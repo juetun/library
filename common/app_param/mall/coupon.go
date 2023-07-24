@@ -46,6 +46,9 @@ type (
 		DecrAmount         string                       `json:"decr_amount,omitempty"`     //总扣减金额
 		ShopDiscountAmount string                       `json:"shop_discount_amount"`      // 店铺优惠金额
 		PlatDiscountAmount string                       `json:"plat_discount_amount"`      // 平台优惠金额
+
+		ShopDiscountAmountDecimal decimal.Decimal `json:"-"`
+		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
 	}
 
 	CanUsePlatCoupon struct {
@@ -54,6 +57,9 @@ type (
 		DecrAmount         string        `json:"decr_amount,omitempty"` // 总扣减金额
 		ShopDiscountAmount string        `json:"shop_discount_amount"`  // 店铺优惠金额
 		PlatDiscountAmount string        `json:"plat_discount_amount"`  // 平台优惠金额
+
+		ShopDiscountAmountDecimal decimal.Decimal `json:"-"`
+		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
 	}
 
 	CouponInfo struct {
@@ -84,13 +90,37 @@ type (
 func (r *CanUsePlatCoupon) Default() (err error) {
 	if r.DecrAmount == "" {
 		r.DecrAmount = "0.00"
+
 	}
 	if r.ShopDiscountAmount == "" {
 		r.ShopDiscountAmount = "0.00"
+		r.ShopDiscountAmountDecimal = decimal.NewFromInt(0)
 	}
 	if r.PlatDiscountAmount == "" {
 		r.PlatDiscountAmount = "0.00"
+		r.PlatDiscountAmountDecimal = decimal.NewFromInt(0)
 	}
+	return
+}
+
+func (r CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
+
+	var decrDecimal decimal.Decimal
+	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
+		return
+	}
+	r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(decrDecimal)
+	r.ShopDiscountAmount = r.ShopDiscountAmountDecimal.StringFixed(2)
+	return
+}
+
+func (r CanUsePlatCoupon) AddPlatDecr(decr string) (err error) {
+	var decrDecimal decimal.Decimal
+	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
+		return
+	}
+	r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(decrDecimal)
+	r.PlatDiscountAmount = r.PlatDiscountAmountDecimal.StringFixed(2)
 	return
 }
 
@@ -100,10 +130,33 @@ func (r *ResultGetCanUseCoupon) Default() (err error) {
 	}
 	if r.ShopDiscountAmount == "" {
 		r.ShopDiscountAmount = "0.00"
+		r.ShopDiscountAmountDecimal = decimal.NewFromInt(0)
 	}
 	if r.PlatDiscountAmount == "" {
 		r.PlatDiscountAmount = "0.00"
+		r.PlatDiscountAmountDecimal = decimal.NewFromInt(0)
 	}
+	return
+}
+
+func (r ResultGetCanUseCoupon) AddShopDecr(decr string) (err error) {
+
+	var decrDecimal decimal.Decimal
+	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
+		return
+	}
+	r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(decrDecimal)
+	r.ShopDiscountAmount = r.ShopDiscountAmountDecimal.StringFixed(2)
+	return
+}
+
+func (r ResultGetCanUseCoupon) AddPlatDecr(decr string) (err error) {
+	var decrDecimal decimal.Decimal
+	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
+		return
+	}
+	r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(decrDecimal)
+	r.PlatDiscountAmount = r.PlatDiscountAmountDecimal.StringFixed(2)
 	return
 }
 
