@@ -40,16 +40,20 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon    *CanUsePlatCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
-		MapShopCoupon map[int64]*CanUsePlatCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
-		MapSpuCoupon  map[string]*CanUsePlatCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
-		DecrAmount    string                       `json:"decr_amount,omitempty"`     //总扣减金额
+		PlatCoupon         *CanUsePlatCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
+		MapShopCoupon      map[int64]*CanUsePlatCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
+		MapSpuCoupon       map[string]*CanUsePlatCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
+		DecrAmount         string                       `json:"decr_amount,omitempty"`     //总扣减金额
+		ShopDiscountAmount string                       `json:"shop_discount_amount"`      // 店铺优惠金额
+		PlatDiscountAmount string                       `json:"plat_discount_amount"`      // 平台优惠金额
 	}
 
 	CanUsePlatCoupon struct {
-		CurrentUse *CouponInfo   `json:"current_use,omitempty"` //当前选中的最优秀优惠券
-		CanUse     []*CouponInfo `json:"can_use,omitempty"`     //当前账号可使用的所有优惠券
-		DecrAmount string        `json:"decr_amount,omitempty"` //总扣减金额
+		CurrentUse         *CouponInfo   `json:"current_use,omitempty"` // 当前选中的最优秀优惠券
+		CanUse             []*CouponInfo `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
+		DecrAmount         string        `json:"decr_amount,omitempty"` // 总扣减金额
+		ShopDiscountAmount string        `json:"shop_discount_amount"`  // 店铺优惠金额
+		PlatDiscountAmount string        `json:"plat_discount_amount"`  // 平台优惠金额
 	}
 
 	CouponInfo struct {
@@ -76,6 +80,32 @@ type (
 		CanUse         bool   `json:"can_use"`  //当前是否能够使用（优惠券使用期限未到false ）
 	}
 )
+
+func (r *CanUsePlatCoupon) Default() (err error) {
+	if r.DecrAmount == "" {
+		r.DecrAmount = "0.00"
+	}
+	if r.ShopDiscountAmount == "" {
+		r.ShopDiscountAmount = "0.00"
+	}
+	if r.PlatDiscountAmount == "" {
+		r.PlatDiscountAmount = "0.00"
+	}
+	return
+}
+
+func (r *ResultGetCanUseCoupon) Default() (err error) {
+	if r.DecrAmount == "" {
+		r.DecrAmount = "0.00"
+	}
+	if r.ShopDiscountAmount == "" {
+		r.ShopDiscountAmount = "0.00"
+	}
+	if r.PlatDiscountAmount == "" {
+		r.PlatDiscountAmount = "0.00"
+	}
+	return
+}
 
 func (r *ArgGetCouponBindData) Default(ctx *base.Context) (err error) {
 	return
