@@ -141,6 +141,22 @@ func (r *ResultGetCanUseCoupon) Default() (err error) {
 	return
 }
 
+//总扣减费用计算
+func (r *ResultGetCanUseCoupon) CalTotal() (err error) {
+	r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(r.PlatCoupon.PlatDiscountAmountDecimal)
+	r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(r.PlatCoupon.ShopDiscountAmountDecimal)
+
+	for _, item := range r.MapShopCoupon {
+		r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.ShopDiscountAmountDecimal)
+		r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.PlatDiscountAmountDecimal)
+	}
+	for _, item := range r.MapSpuCoupon {
+		r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.ShopDiscountAmountDecimal)
+		r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.PlatDiscountAmountDecimal)
+	}
+	return
+}
+
 func (r *ResultGetCanUseCoupon) AddShopDecr(decr string) (err error) {
 
 	var decrDecimal decimal.Decimal
