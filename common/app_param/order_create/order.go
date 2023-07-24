@@ -3,6 +3,13 @@ package order_create
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/common"
+	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/app_param/mall"
+	"github.com/juetun/library/common/app_param/mall/freight"
+	"github.com/juetun/library/common/app_param/pay_parameter"
+	"github.com/shopspring/decimal"
+	"time"
 )
 
 const (
@@ -43,7 +50,91 @@ type (
 	ResultGetUserCouponByShopId struct {
 		Data []*ResultGetUserCouponByShopIdItem `json:"data"`
 	}
+	OrderPreview struct {
+		Amount             string                             `json:"amount"`                // 总金额
+		AmountDecimal      decimal.Decimal                    `json:"-"`                     // 总金额 数字格式 值与Amount一致
+		Preferential       string                             `json:"preferential"`          // 优惠金额
+		ShopDiscountAmount string                             `json:"shop_discount_amount"`  // 店铺优惠金额
+		PlatDiscountAmount string                             `json:"plat_discount_amount"`  // 平台优惠金额
+		PayCharge          string                             `json:"pay_charge"`            //支付需要手续费
+		TotalPostage       string                             `json:"total_postage"`         //邮费
+		ProductAmount      string                             `json:"product_amount"`        //商品总额
+		Status             uint8                              `json:"status,omitempty"`      // 订单状态
+		AddressId          string                             `json:"address_id,omitempty"`  // 收货地址
+		Express            string                             `json:"express,omitempty"`     // 快递信息
+		PayTypeOpt         base.ModelItemOptions              `json:"pay_type_opt"`          // 支付信息
+		PayType            string                             `json:"pay_type"`              // 支付类型
+		PayNumber          string                             `json:"pay_number,omitempty"`  // 支付流水号
+		Token              string                             `json:"token,omitempty"`       // 购物车全站唯一的key
+		Count              int64                              `json:"count"`                 // 商品总数
+		HaveError          bool                               `json:"have_error"`            //是否有错误
+		ErrorMessage       string                             `json:"error_message"`         //错误信息
+		OrderId            string                             `json:"order_id"`              //订单号
+		EmsAddress         *freight.ResultGetByAddressIdsItem `json:"ems_address,omitempty"` //收货地址信息
+		PlatCoupon         *mall.CanUsePlatCoupon             `json:"plat_coupon,omitempty"` //平台券信息
+		List               PreviewShopItems                   `json:"list"`                  // SKU
+	}
+	PreviewShopItems []*PreviewShopItem
+	PreviewShopItem  struct {
+		ShopId      int64                  `json:"shop_id"`
+		ShopIcon    string                 `json:"shop_icon"`             // 店铺Icon
+		ShopName    string                 `json:"shop_name"`             // 店铺名称
+		ShopType    string                 `json:"shop_type"`             // 店铺类型
+		Count       int64                  `json:"count"`                 // 商品总数
+		TotalAmount string                 `json:"total_amount"`          // 该订单店铺总的金额
+		Delivery    OrderSkuDelivery       `json:"delivery"`              // 邮费信息
+		Coupon      OrderShopItemCoupon    `json:"coupon"`                // 优惠券信息
+		Mark        string                 `json:"mark"`                  // 用户备注
+		SubOrderId  string                 `json:"sub_order_id"`          // 子单号
+		ShopCoupon  *mall.CanUsePlatCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
+		Products    PreviewSpuItems        `json:"products"`              // 商品列表
 
+		SortCreateTime time.Time `json:"-"`
+		SortWeight     int64     `json:"-"` //排序权重
+	}
+	PreviewSpuItems []*PreviewSpuItem
+	PreviewSkuItems []*PreviewSkuItem
+	PreviewSkuItem  struct {
+		app_param.ArgOrderFromCartItem
+		//Title          string          `json:"title"`
+		SkuName         string          `json:"sku_name"`
+		SkuPropertyName string          `json:"sku_property_name"`
+		SkuId           string          `json:"sku_id"`      //购物车数据ID
+		SkuPic          string          `json:"sku_pic"`     // 图片
+		SkuStatus       int8            `json:"sku_status"`  // 商品状态
+		StatusName      string          `json:"status_name"` // 商品状态名称 (已下架)
+		TotalPrice      string          `json:"total_price"`
+		SaleType        uint8           `json:"sale_type"`
+		SaleTypeName    string          `json:"sale_type_name"`
+		HaveVideo       bool            `json:"have_video"`   //是否有视频
+		Mark            string          `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
+		MarkSystem      string          `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
+		NotCanPay       bool            `json:"not_can_pay"`  //当前数据是否能够支付
+		Invalidation    bool            `json:"invalidation"` //是否失效 true-已失效 false-未失效
+		Checked         bool            `json:"checked"`      //是否选中
+		SortCreateTime  base.TimeNormal `json:"-"`
+		SpecialTags     []*DataItemTag  `json:"special_tags"`
+		SortWeight      int64           `json:"-"`
+		// 单一SKU的总价格
+	}
+	DataItemTag struct {
+		Type      string `json:"type"`                //标签类型，可选值为primary success danger warning	默认	default
+		Label     string `json:"label"`               //类型名称
+		Color     string `json:"color,omitempty"`     //标签颜色
+		TextColor string `json:"textColor,omitempty"` //文本颜色，优先级高于color属性	String	white
+		Plain     bool   `json:"plain"`               //是否为空心样式	Boolean	false
+		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
+		Mark      bool   `json:"mark"`                //是否为标记样式
+	}
+	PreviewSpuItem struct {
+		SpuId        string                 `json:"spu_id"`
+		Skus         PreviewSkuItems        `json:"skus"`                 // SKU信息
+		SpuCoupon    *mall.CanUsePlatCoupon `json:"spu_coupon,omitempty"` // 店铺券信息
+		Count        int64                  `json:"count"`                // 商品总数
+		TotalAmount  string                 `json:"total_amount"`         // 该订单店铺总的金额
+		SaleType     uint8                  `json:"sale_type"`
+		SaleTypeName string                 `json:"sale_type_name"`
+	}
 	ResultGetUserCouponByShopIdItem struct {
 		UseCouponDataItem
 		ShopId int64 `json:"shop_id"`
@@ -156,5 +247,114 @@ func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 			item.Num = 1
 		}
 	}
+	return
+}
+
+//初始化支付方式
+func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo) (err error) {
+	r.PayTypeOpt = pay_parameter.SliceOrderPayType
+
+	switch info.HTerminal {
+	case app_param.TerminalMina: //如果是微信小程序
+		switch info.HChannel {
+		case "weixin": //如果是小程序微信使用
+			r.getWeiXinMinaOpt()
+		}
+
+	}
+	r.PayType = fmt.Sprintf("%v", r.PayTypeOpt[0].Value)
+	return
+}
+
+func (r *OrderPreview) getWeiXinMinaOpt() {
+	mapPay, _ := pay_parameter.SliceOrderPayType.GetMapAsKeyUint8()
+	r.PayTypeOpt = base.ModelItemOptions{
+		{
+			Label: mapPay[pay_parameter.OrderPayTypeWeiXin],
+			Value: pay_parameter.OrderPayTypeWeiXin,
+		},
+	}
+	return
+}
+
+func (r *OrderPreview) Default() {
+	if r.Preferential == "" {
+		r.Preferential = "0.00"
+	}
+	if r.ShopDiscountAmount == "" {
+		r.ShopDiscountAmount = "0.00"
+	}
+	if r.PlatDiscountAmount == "" {
+		r.PlatDiscountAmount = "0.00"
+	}
+	if r.PayCharge == "" {
+		r.PayCharge = "0.00"
+	}
+	if r.PayCharge == "" {
+		r.PayCharge = "0.00"
+	}
+	if r.TotalPostage == "" {
+		r.TotalPostage = "0.00"
+	}
+	if r.Amount == "" {
+		r.Amount = "0.00"
+	}
+	if r.ProductAmount == "" {
+		r.ProductAmount = "0.00"
+	}
+}
+
+func (r *OrderPreview) AmountDecr(decr string) (err error) {
+	var (
+		decimalDec decimal.Decimal
+	)
+	if decimalDec, err = decimal.NewFromString(decr); err != nil {
+		return
+	}
+	r.AmountDecimal = r.AmountDecimal.Sub(decimalDec)
+	r.Amount = r.AmountDecimal.StringFixed(2)
+	return
+}
+
+func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) {
+	r.ShopId = orderShopItem.ShopId
+	r.ShopIcon = orderShopItem.ShopIcon
+	r.ShopName = orderShopItem.ShopName
+	r.ShopType = orderShopItem.ShopType
+	r.Count = orderShopItem.Count
+	r.TotalAmount = orderShopItem.TotalAmount
+	r.SortWeight = orderShopItem.SortWeight
+	r.Delivery = orderShopItem.Delivery
+	r.Coupon = orderShopItem.Coupon
+	r.Mark = orderShopItem.Mark
+
+	r.SubOrderId = orderShopItem.SubOrderId
+
+	return
+}
+
+func (r *PreviewSkuItem) ParseOrderSkuItem(orderSkuItem *OrderSkuItem) {
+	r.SkuId = orderSkuItem.SkuId
+	r.SpuId = orderSkuItem.SpuId
+	r.Category = orderSkuItem.PriceCateStr
+	r.SaleType = orderSkuItem.SaleType
+	r.SaleTypeName = orderSkuItem.SaleTypeName
+	r.SkuPrice = orderSkuItem.Price
+	r.SkuPropertyName = orderSkuItem.SkuPropertyName
+	r.Num = orderSkuItem.Num
+	return
+}
+
+func NewOrderPreview() (res *OrderPreview) {
+	res = &OrderPreview{
+		Amount:     "0.00",
+		List:       []*PreviewShopItem{},
+		PlatCoupon: &mall.CanUsePlatCoupon{},
+	}
+	return
+}
+
+func NewPreviewShopItem() (res *PreviewShopItem) {
+	res = &PreviewShopItem{}
 	return
 }
