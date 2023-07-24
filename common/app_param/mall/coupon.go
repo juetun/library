@@ -160,6 +160,7 @@ func (r *ResultGetCanUseCoupon) CalTotal() (err error) {
 			r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.PlatDiscountAmountDecimal)
 		}
 	}
+	r.DecrAmount = r.PlatDiscountAmountDecimal.Add(r.ShopDiscountAmountDecimal).StringFixed(2)
 	r.PlatDiscountAmount = r.PlatDiscountAmountDecimal.StringFixed(2)
 	r.ShopDiscountAmount = r.ShopDiscountAmountDecimal.StringFixed(2)
 	return
