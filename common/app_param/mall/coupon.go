@@ -103,7 +103,7 @@ func (r *CanUsePlatCoupon) Default() (err error) {
 	return
 }
 
-func (r CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
+func (r *CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
 
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
@@ -114,7 +114,7 @@ func (r CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
 	return
 }
 
-func (r CanUsePlatCoupon) AddPlatDecr(decr string) (err error) {
+func (r *CanUsePlatCoupon) AddPlatDecr(decr string) (err error) {
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
 		return
@@ -139,7 +139,7 @@ func (r *ResultGetCanUseCoupon) Default() (err error) {
 	return
 }
 
-func (r ResultGetCanUseCoupon) AddShopDecr(decr string) (err error) {
+func (r *ResultGetCanUseCoupon) AddShopDecr(decr string) (err error) {
 
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
@@ -150,7 +150,7 @@ func (r ResultGetCanUseCoupon) AddShopDecr(decr string) (err error) {
 	return
 }
 
-func (r ResultGetCanUseCoupon) AddPlatDecr(decr string) (err error) {
+func (r *ResultGetCanUseCoupon) AddPlatDecr(decr string) (err error) {
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
 		return
