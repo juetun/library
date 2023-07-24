@@ -84,6 +84,8 @@ type (
 		EffectTimeDesc string `json:"effect_time_desc"`
 		Disabled       bool   `json:"disabled"` //数据不合法(过期 或已删除等状态)
 		CanUse         bool   `json:"can_use"`  //当前是否能够使用（优惠券使用期限未到false ）
+
+		ShopId int64 `json:"-"` //店铺信息
 	}
 )
 
