@@ -54,22 +54,24 @@ type (
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem
 
 	ResultGetInfoByOrderItem struct {
-		StatusName         string           `json:"status_name"` //订单状态中文描述
-		ShopItems          []*OrderShopItem `json:"shop_items"`  //商品列表（按店铺分组）
-		UserHid            int64            `json:"user_hid"`
-		OrderId            string           `json:"order_id"` //订单ID号
-		ProductNum         int64            `json:"product_num"`
-		Status             uint8            `json:"status"` //订单状态
-		SubStatus          uint8            `json:"sub_status"`
-		AddressId          int64            `json:"address_id"`
-		PayType            uint8            `json:"pay_type"`
-		Amount             string           `json:"amount"` //支付总金额
-		PayAmount          string           `json:"pay_amount"`
-		TotalPostage       string           `json:"total_postage"`
-		ProductAmount      string           `json:"product_amount"`
-		ShopDiscountAmount string           `json:"shop_discount_amount"`
-		PlatDiscountAmount string           `json:"plat_discount_amount"`
-		Mark               string           `json:"mark"`
+		StatusName         string           `json:"status_name"`          //订单状态中文描述
+		ShopItems          []*OrderShopItem `json:"shop_items"`           //商品列表（按店铺分组）
+		UserHid            int64            `json:"user_hid"`             //用户
+		OrderId            string           `json:"order_id"`             //订单ID号
+		ProductNum         int64            `json:"product_num"`          //商品数
+		Status             uint8            `json:"status"`               //订单状态
+		SubStatus          uint8            `json:"sub_status"`           //子单状态
+		AddressId          int64            `json:"address_id"`           //收货地址信息
+		PayType            uint8            `json:"pay_type"`             //支付方式
+		Amount             string           `json:"amount"`               //支付总金额
+		PayAmount          string           `json:"pay_amount"`           //支付金额
+		TotalPostage       string           `json:"total_postage"`        //邮费
+		ProductAmount      string           `json:"product_amount"`       //商品金额
+		Preferential       string           `json:"preferential"`         //优惠金额
+		ShopDiscountAmount string           `json:"shop_discount_amount"` //店铺优惠金额
+		PlatDiscountAmount string           `json:"plat_discount_amount"` //平台优惠金额
+		PayCharge          string           `json:"pay_charge"`           //支付需要手续费
+		Mark               string           `json:"mark"`                 //备注
 	}
 
 	OrderShopItem struct {
@@ -133,8 +135,7 @@ type (
 	}
 )
 
-
-func (r *ArgGetUserCouponByShopId) Default(ctx *base.Context) (err error)  {
+func (r *ArgGetUserCouponByShopId) Default(ctx *base.Context) (err error) {
 	if r.UserHid == 0 {
 		err = fmt.Errorf("请选择查看优惠券的用户")
 		return
