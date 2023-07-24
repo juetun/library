@@ -198,6 +198,19 @@ func (r *ArgGetCanUseCoupon) Default(ctx *base.Context) (err error) {
 	return
 }
 
+func (r *ArgCanUseCouponSpu) AddAmount(skuAmount string) (err error) {
+	if skuAmount == "" {
+		return
+	}
+	var skuAmountDecimal decimal.Decimal
+	if skuAmountDecimal, err = decimal.NewFromString(skuAmount); err != nil {
+		return
+	}
+	r.AmountDecimal = r.AmountDecimal.Add(skuAmountDecimal)
+	r.Amount = r.AmountDecimal.StringFixed(2)
+	return
+}
+
 //根据参数获取可使用的优惠券
 func GetCouponInfo(ctx *base.Context, argStruct *ArgGetCanUseCoupon) (res *ResultGetCanUseCoupon, err error) {
 	res = &ResultGetCanUseCoupon{}
