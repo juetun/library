@@ -102,6 +102,18 @@ func NewCanUseCoupon() (res *CanUseCoupon, err error) {
 	return
 }
 
+func (r *CanUseCouponItem) InitSelected() {
+	if r.CurrentUse.ID <= 0 {
+		return
+	}
+	for k, item := range r.CanUse {
+		if item.ID == r.CurrentUse.ID {
+			r.CanUse[k].Selected = true
+		}
+	}
+	return
+}
+
 func NewCanUseCouponItem() (res *CanUseCouponItem) {
 	res = &CanUseCouponItem{
 		CurrentUse:            CouponInfo{},
