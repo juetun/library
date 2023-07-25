@@ -76,18 +76,18 @@ type (
 	}
 	PreviewShopItems []*PreviewShopItem
 	PreviewShopItem  struct {
-		ShopId      int64               `json:"shop_id"`
-		ShopIcon    string              `json:"shop_icon"`             // 店铺Icon
-		ShopName    string              `json:"shop_name"`             // 店铺名称
-		ShopType    string              `json:"shop_type"`             // 店铺类型
-		Count       int64               `json:"count"`                 // 商品总数
-		TotalAmount string              `json:"total_amount"`          // 该订单店铺总的金额
-		Delivery    OrderSkuDelivery    `json:"delivery"`              // 邮费信息
-		Coupon      OrderShopItemCoupon `json:"coupon"`                // 优惠券信息
-		Mark        string              `json:"mark"`                  // 用户备注
-		SubOrderId  string              `json:"sub_order_id"`          // 子单号
-		ShopCoupon  *mall.CanUseCoupon  `json:"shop_coupon,omitempty"` // 店铺券信息
-		Products    PreviewSpuItems     `json:"products"`              // 商品列表
+		ShopId      int64            `json:"shop_id"`
+		ShopIcon    string           `json:"shop_icon"`    // 店铺Icon
+		ShopName    string           `json:"shop_name"`    // 店铺名称
+		ShopType    string           `json:"shop_type"`    // 店铺类型
+		Count       int64            `json:"count"`        // 商品总数
+		TotalAmount string           `json:"total_amount"` // 该订单店铺总的金额
+		Delivery    OrderSkuDelivery `json:"delivery"`     // 邮费信息
+		//Coupon      OrderShopItemCoupon `json:"coupon"`                // 优惠券信息
+		Mark       string             `json:"mark"`                  // 用户备注
+		SubOrderId string             `json:"sub_order_id"`          // 子单号
+		ShopCoupon *mall.CanUseCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
+		Products   PreviewSpuItems    `json:"products"`              // 商品列表
 
 		SortCreateTime time.Time `json:"-"`
 		SortWeight     int64     `json:"-"` //排序权重
@@ -166,19 +166,19 @@ type (
 	}
 
 	OrderShopItem struct {
-		ShopId      int64               `json:"shop_id"`
-		ShopIcon    string              `json:"shop_icon"`    // 店铺Icon
-		ShopName    string              `json:"shop_name"`    // 店铺名称
-		ShopType    string              `json:"shop_type"`    // 店铺类型
-		Count       int64               `json:"count"`        // 商品总数
-		ShopChecked bool                `json:"shop_checked"` // 店铺选择
-		TotalAmount string              `json:"total_amount"` // 该订单店铺总的金额
-		Products    []*OrderSkuItem     `json:"products"`     // 商品列表
-		Delivery    OrderSkuDelivery    `json:"delivery"`     // 邮费信息
-		Coupon      OrderShopItemCoupon `json:"coupon"`       // 优惠券信息
-		SubOrderId  string              `json:"sub_order_id"` // 子单号
-		Mark        string              `json:"mark"`         // 备注
-		SortWeight  int64               `json:"-"`            // 排序权重
+		ShopId      int64            `json:"shop_id"`
+		ShopIcon    string           `json:"shop_icon"`    // 店铺Icon
+		ShopName    string           `json:"shop_name"`    // 店铺名称
+		ShopType    string           `json:"shop_type"`    // 店铺类型
+		Count       int64            `json:"count"`        // 商品总数
+		ShopChecked bool             `json:"shop_checked"` // 店铺选择
+		TotalAmount string           `json:"total_amount"` // 该订单店铺总的金额
+		Products    []*OrderSkuItem  `json:"products"`     // 商品列表
+		Delivery    OrderSkuDelivery `json:"delivery"`     // 邮费信息
+		//Coupon      OrderShopItemCoupon `json:"coupon"`       // 优惠券信息
+		SubOrderId string `json:"sub_order_id"` // 子单号
+		Mark       string `json:"mark"`         // 备注
+		SortWeight int64  `json:"-"`            // 排序权重
 	}
 	OrderShopItemCoupon struct {
 		Mark     string `json:"mark"`
@@ -325,7 +325,7 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	r.TotalAmount = orderShopItem.TotalAmount
 	r.SortWeight = orderShopItem.SortWeight
 	r.Delivery = orderShopItem.Delivery
-	r.Coupon = orderShopItem.Coupon
+	//r.Coupon = orderShopItem.Coupon
 	r.Mark = orderShopItem.Mark
 
 	r.SubOrderId = orderShopItem.SubOrderId
