@@ -90,10 +90,30 @@ type (
 	}
 )
 
+func NewCanUseCoupon() (res *CanUseCoupon, err error) {
+	res = &CanUseCoupon{
+		Plat: NewCanUseCouponItem(),
+		Shop: NewCanUseCouponItem(),
+	}
+	if err = res.Default(); err != nil {
+		return
+	}
+	return
+}
+
+func NewCanUseCouponItem() (res *CanUseCouponItem) {
+	res = &CanUseCouponItem{
+		CurrentUse:            &CouponInfo{},
+		CanUse:                make([]*CouponInfo, 0, 30),
+		DiscountAmount:        "0.00",
+		DiscountAmountDecimal: decimal.NewFromInt(0),
+	}
+	return
+}
+
 func (r *CanUseCoupon) Default() (err error) {
 	if r.DecrAmount == "" {
 		r.DecrAmount = "0.00"
-
 	}
 	if r.Plat != nil {
 		if err = r.Plat.Default(); err != nil {
