@@ -12,6 +12,34 @@ import (
 	"net/url"
 )
 
+const (
+	UserCouponStatusCanUse uint8 = iota + 1
+	UserCouponStatusNotUse
+	UserCouponStatusExpire
+	UserCouponStatusNotUsing //使用中
+)
+
+var (
+	SliceUserCouponStatus = base.ModelItemOptions{
+		{
+			Label: "已使用",
+			Value: UserCouponStatusNotUse,
+		},
+		{
+			Label: "可用",
+			Value: UserCouponStatusCanUse,
+		},
+		{
+			Label: "使用中",
+			Value: UserCouponStatusNotUsing,
+		},
+		{
+			Label: "已过期",
+			Value: UserCouponStatusExpire,
+		},
+	}
+)
+
 type (
 	ArgGetCouponBindData struct {
 		CouponId string   `json:"coupon_id" form:"coupon_id"`
