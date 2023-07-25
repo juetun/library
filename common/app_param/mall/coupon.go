@@ -58,8 +58,8 @@ type (
 		DecrAmount string            `json:"decr_amount,omitempty"` // 总扣减金额
 	}
 	CanUseCouponItem struct {
-		CurrentUse            *CouponInfo     `json:"current_use,omitempty"` // 当前选中的最合适优惠券
-		CanUse                []*CouponInfo   `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
+		CurrentUse            CouponInfo      `json:"current_use,omitempty"` // 当前选中的最合适优惠券
+		CanUse                []CouponInfo    `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
 		DiscountAmount        string          `json:"discount_amount"`       // 店铺优惠金额
 		DiscountAmountDecimal decimal.Decimal `json:"-"`                     // 店铺优惠金额（便于计算的格式,过渡格式）
 	}
@@ -103,8 +103,8 @@ func NewCanUseCoupon() (res *CanUseCoupon, err error) {
 
 func NewCanUseCouponItem() (res *CanUseCouponItem) {
 	res = &CanUseCouponItem{
-		CurrentUse:            &CouponInfo{},
-		CanUse:                make([]*CouponInfo, 0, 30),
+		CurrentUse:            CouponInfo{},
+		CanUse:                make([]CouponInfo, 0, 30),
 		DiscountAmount:        "0.00",
 		DiscountAmountDecimal: decimal.NewFromInt(0),
 	}
