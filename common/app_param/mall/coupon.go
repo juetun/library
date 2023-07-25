@@ -42,28 +42,27 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon         *CanUseCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
-		MapShopCoupon      map[int64]*CanUseCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
-		MapSpuCoupon       map[string]*CanUseCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
-		DecrAmount         string                   `json:"decr_amount,omitempty"`     //总扣减金额
-		ShopDiscountAmount string                   `json:"shop_discount_amount"`      // 店铺优惠金额
-		PlatDiscountAmount string                   `json:"plat_discount_amount"`      // 平台优惠金额
+		PlatCoupon    *CanUseCouponItem        `json:"plat_coupon,omitempty"`     //平台券信息
+		MapShopCoupon map[int64]*CanUseCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
+		MapSpuCoupon  map[string]*CanUseCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
 
+		DecrAmount                string          `json:"decr_amount,omitempty"` // 总优惠金额
+		ShopDiscountAmount        string          `json:"shop_discount_amount"`  // 总店铺优惠金额
+		PlatDiscountAmount        string          `json:"plat_discount_amount"`  // 总平台优惠金额
 		ShopDiscountAmountDecimal decimal.Decimal `json:"-"`
 		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
 	}
-
 	CanUseCoupon struct {
-		CurrentUse         *CouponInfo   `json:"current_use,omitempty"` // 当前选中的最合适优惠券
-		CanUse             []*CouponInfo `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
-		DecrAmount         string        `json:"decr_amount,omitempty"` // 总扣减金额
-		ShopDiscountAmount string        `json:"shop_discount_amount"`  // 店铺优惠金额
-		PlatDiscountAmount string        `json:"plat_discount_amount"`  // 平台优惠金额
-
-		ShopDiscountAmountDecimal decimal.Decimal `json:"-"`
-		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
+		Plat       *CanUseCouponItem `json:"plat"`
+		Shop       *CanUseCouponItem `json:"shop"`
+		DecrAmount string            `json:"decr_amount,omitempty"` // 总扣减金额
 	}
-
+	CanUseCouponItem struct {
+		CurrentUse            *CouponInfo     `json:"current_use,omitempty"` // 当前选中的最合适优惠券
+		CanUse                []*CouponInfo   `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
+		DiscountAmount        string          `json:"discount_amount"`       // 店铺优惠金额
+		DiscountAmountDecimal decimal.Decimal `json:"-"`                     // 店铺优惠金额（便于计算的格式,过渡格式）
+	}
 	CouponInfo struct {
 		ID             int64  `json:"id"`    //用户优惠券编号(用户ID 和优惠券ID组合的唯一号)
 		Title          string `json:"title"` //优惠券名称
@@ -96,35 +95,37 @@ func (r *CanUseCoupon) Default() (err error) {
 		r.DecrAmount = "0.00"
 
 	}
-	if r.ShopDiscountAmount == "" {
-		r.ShopDiscountAmount = "0.00"
-		r.ShopDiscountAmountDecimal = decimal.NewFromInt(0)
+	if r.Plat != nil {
+		if err = r.Plat.Default(); err != nil {
+			return
+		}
 	}
-	if r.PlatDiscountAmount == "" {
-		r.PlatDiscountAmount = "0.00"
-		r.PlatDiscountAmountDecimal = decimal.NewFromInt(0)
+	if r.Shop != nil {
+		if err = r.Shop.Default(); err != nil {
+			return
+		}
 	}
+
 	return
 }
 
-func (r *CanUseCoupon) AddShopDecr(decr string) (err error) {
+func (r *CanUseCouponItem) Default() (err error) {
+	if r.DiscountAmount == "" {
+		r.DiscountAmount = "0.00"
+		r.DiscountAmountDecimal = decimal.NewFromInt(0)
+	}
+
+	return
+}
+
+func (r *CanUseCouponItem) AddDecr(decr string) (err error) {
 
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
 		return
 	}
-	r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(decrDecimal)
-	r.ShopDiscountAmount = r.ShopDiscountAmountDecimal.StringFixed(2)
-	return
-}
-
-func (r *CanUseCoupon) AddPlatDecr(decr string) (err error) {
-	var decrDecimal decimal.Decimal
-	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
-		return
-	}
-	r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(decrDecimal)
-	r.PlatDiscountAmount = r.PlatDiscountAmountDecimal.StringFixed(2)
+	r.DiscountAmountDecimal = r.DiscountAmountDecimal.Add(decrDecimal)
+	r.DiscountAmount = r.DiscountAmountDecimal.StringFixed(2)
 	return
 }
 
@@ -146,20 +147,28 @@ func (r *ResultGetCanUseCoupon) Default() (err error) {
 //总扣减费用计算
 func (r *ResultGetCanUseCoupon) CalTotal() (err error) {
 	if r.PlatCoupon != nil {
-		r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(r.PlatCoupon.PlatDiscountAmountDecimal) //计算平台优惠信息
-		r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(r.PlatCoupon.ShopDiscountAmountDecimal) //计算店铺优惠信息
+		r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(r.PlatCoupon.DiscountAmountDecimal) //计算平台优惠信息
 	}
 
 	for _, item := range r.MapShopCoupon {
 		if item != nil {
-			r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.ShopDiscountAmountDecimal)
-			r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.PlatDiscountAmountDecimal)
+			if item.Shop != nil {
+				r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.Shop.DiscountAmountDecimal)
+			}
+			if item.Plat != nil {
+				r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.Plat.DiscountAmountDecimal)
+			}
 		}
 	}
 	for _, item := range r.MapSpuCoupon {
 		if item != nil {
-			r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.ShopDiscountAmountDecimal)
-			r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.PlatDiscountAmountDecimal)
+			if item.Shop != nil {
+				r.ShopDiscountAmountDecimal = r.ShopDiscountAmountDecimal.Add(item.Shop.DiscountAmountDecimal)
+
+			}
+			if item.Plat != nil {
+				r.PlatDiscountAmountDecimal = r.PlatDiscountAmountDecimal.Add(item.Plat.DiscountAmountDecimal)
+			}
 		}
 	}
 	r.DecrAmount = r.PlatDiscountAmountDecimal.Add(r.ShopDiscountAmountDecimal).StringFixed(2)
