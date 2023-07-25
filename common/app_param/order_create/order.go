@@ -71,7 +71,7 @@ type (
 		ErrorMessage       string                             `json:"error_message"`         //错误信息
 		OrderId            string                             `json:"order_id"`              //订单号
 		EmsAddress         *freight.ResultGetByAddressIdsItem `json:"ems_address,omitempty"` //收货地址信息
-		PlatCoupon         *mall.CanUseCoupon                 `json:"plat_coupon,omitempty"` //平台券信息
+		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息
 		List               PreviewShopItems                   `json:"list"`                  // SKU
 	}
 	PreviewShopItems []*PreviewShopItem
