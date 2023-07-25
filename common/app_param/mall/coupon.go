@@ -21,6 +21,7 @@ type (
 	ResGetCouponBindData map[string]bool
 
 	ArgGetCanUseCoupon struct {
+		OrderId       string                 `json:"order_id" form:"order_id"` //如果时支付中的订单，继续支付
 		TimeNow       base.TimeNormal        `json:"time_now" form:"time_now"`
 		UserHid       int64                  `json:"user_hid" form:"user_hid"`
 		Amount        string                 `json:"amount" form:"amount"` //商品总金额
