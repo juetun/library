@@ -349,7 +349,7 @@ func NewOrderPreview() (res *OrderPreview) {
 	res = &OrderPreview{
 		Amount:     "0.00",
 		List:       []*PreviewShopItem{},
-		PlatCoupon: &mall.CanUseCoupon{},
+		PlatCoupon: &mall.CanUseCouponItem{},
 	}
 	return
 }
