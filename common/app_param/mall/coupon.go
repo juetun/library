@@ -22,6 +22,7 @@ type (
 
 	ArgGetCanUseCoupon struct {
 		OrderId       string                 `json:"order_id" form:"order_id"` //如果时支付中的订单，继续支付
+		Status        uint8                  `json:"status" form:"status"`     //获取优惠券的状态
 		TimeNow       base.TimeNormal        `json:"time_now" form:"time_now"`
 		UserHid       int64                  `json:"user_hid" form:"user_hid"`
 		Amount        string                 `json:"amount" form:"amount"` //商品总金额
@@ -41,19 +42,19 @@ type (
 	}
 
 	ResultGetCanUseCoupon struct {
-		PlatCoupon         *CanUsePlatCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
-		MapShopCoupon      map[int64]*CanUsePlatCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
-		MapSpuCoupon       map[string]*CanUsePlatCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
-		DecrAmount         string                       `json:"decr_amount,omitempty"`     //总扣减金额
-		ShopDiscountAmount string                       `json:"shop_discount_amount"`      // 店铺优惠金额
-		PlatDiscountAmount string                       `json:"plat_discount_amount"`      // 平台优惠金额
+		PlatCoupon         *CanUseCoupon            `json:"plat_coupon,omitempty"`     //平台券信息
+		MapShopCoupon      map[int64]*CanUseCoupon  `json:"map_shop_coupon,omitempty"` //店铺优惠券信息
+		MapSpuCoupon       map[string]*CanUseCoupon `json:"map_spu_coupon,omitempty"`  //商品优惠券信息
+		DecrAmount         string                   `json:"decr_amount,omitempty"`     //总扣减金额
+		ShopDiscountAmount string                   `json:"shop_discount_amount"`      // 店铺优惠金额
+		PlatDiscountAmount string                   `json:"plat_discount_amount"`      // 平台优惠金额
 
 		ShopDiscountAmountDecimal decimal.Decimal `json:"-"`
 		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
 	}
 
-	CanUsePlatCoupon struct {
-		CurrentUse         *CouponInfo   `json:"current_use,omitempty"` // 当前选中的最优秀优惠券
+	CanUseCoupon struct {
+		CurrentUse         *CouponInfo   `json:"current_use,omitempty"` // 当前选中的最合适优惠券
 		CanUse             []*CouponInfo `json:"can_use,omitempty"`     // 当前账号可使用的所有优惠券
 		DecrAmount         string        `json:"decr_amount,omitempty"` // 总扣减金额
 		ShopDiscountAmount string        `json:"shop_discount_amount"`  // 店铺优惠金额
@@ -90,7 +91,7 @@ type (
 	}
 )
 
-func (r *CanUsePlatCoupon) Default() (err error) {
+func (r *CanUseCoupon) Default() (err error) {
 	if r.DecrAmount == "" {
 		r.DecrAmount = "0.00"
 
@@ -106,7 +107,7 @@ func (r *CanUsePlatCoupon) Default() (err error) {
 	return
 }
 
-func (r *CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
+func (r *CanUseCoupon) AddShopDecr(decr string) (err error) {
 
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
@@ -117,7 +118,7 @@ func (r *CanUsePlatCoupon) AddShopDecr(decr string) (err error) {
 	return
 }
 
-func (r *CanUsePlatCoupon) AddPlatDecr(decr string) (err error) {
+func (r *CanUseCoupon) AddPlatDecr(decr string) (err error) {
 	var decrDecimal decimal.Decimal
 	if decrDecimal, err = decimal.NewFromString(decr); err != nil {
 		return
