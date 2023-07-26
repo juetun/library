@@ -41,6 +41,12 @@ var (
 )
 
 type (
+	ArgSetCouponUse struct {
+		OrderId     string  `json:"order_id"`
+		UseHid      int64   `json:"use_hid"`
+		UseCouponId []int64 `json:"use_coupon_id"`
+		Status      uint8   `json:"status"`
+	}
 	ArgGetCouponBindData struct {
 		CouponId string   `json:"coupon_id" form:"coupon_id"`
 		SpuIds   []string `json:"spu_ids" form:"spu_ids"`
