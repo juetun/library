@@ -42,10 +42,10 @@ var (
 
 type (
 	ArgSetCouponUse struct {
-		OrderId     string  `json:"order_id"`
-		UseHid      int64   `json:"use_hid"`
-		UseCouponId []int64 `json:"use_coupon_id"`
-		Status      uint8   `json:"status"`
+		OrderId     string  `json:"order_id" form:"order_id"`
+		UseHid      int64   `json:"use_hid" form:"use_hid"`
+		UseCouponId []int64 `json:"use_coupon_id" form:"use_coupon_id"`
+		Status      uint8   `json:"status" form:"status"`
 	}
 	ArgGetCouponBindData struct {
 		CouponId string   `json:"coupon_id" form:"coupon_id"`
@@ -134,6 +134,10 @@ func NewCanUseCoupon() (res *CanUseCoupon, err error) {
 	if err = res.Default(); err != nil {
 		return
 	}
+	return
+}
+
+func (r *ArgSetCouponUse) Default(ctx *base.Context) (err error) {
 	return
 }
 
