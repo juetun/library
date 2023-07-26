@@ -42,11 +42,16 @@ var (
 
 type (
 	ArgSetCouponUse struct {
-		OrderId     string   `json:"order_id" form:"order_id"`
-		UseHid      int64    `json:"use_hid" form:"use_hid"`
-		UseCouponId []int64  `json:"use_coupon_id" form:"use_coupon_id"`
-		CouponId    []string `json:"coupon_id" form:"coupon_id"`
-		Status      uint8    `json:"status" form:"status"`
+		TimeNow   base.TimeNormal        `json:"time_now" form:"time_now"`
+		UseHid    int64                  `json:"use_hid" form:"use_hid"`
+		UseCoupon []*ArgSetCouponUseItem `json:"use_coupon" form:"use_coupon"`
+		Status    uint8                  `json:"status" form:"status"`
+	}
+	ArgSetCouponUseItem struct {
+		OrderId     string `json:"order_id" form:"order_id"`
+		CouponId    string `json:"coupon_id" form:"coupon_id"`
+		SubOrderId  string `json:"sub_order_id" form:"sub_order_id"`
+		UseCouponId int64  `json:"use_coupon_id" form:"use_coupon_id"`
 	}
 	ArgGetCouponBindData struct {
 		CouponId string   `json:"coupon_id" form:"coupon_id"`
@@ -138,7 +143,26 @@ func NewCanUseCoupon() (res *CanUseCoupon, err error) {
 	return
 }
 
+func (r *ArgSetCouponUse) GetCouponIds(ctx *base.Context) (couponIds []string) {
+	var (
+		l           = len(r.UseCoupon)
+		mapCouponId = make(map[string]bool, l)
+	)
+	couponIds = make([]string, 0, l)
+
+	for _, item := range r.UseCoupon {
+		if _, ok := mapCouponId[item.CouponId]; !ok {
+			mapCouponId[item.CouponId] = true
+			couponIds = append(couponIds, item.CouponId)
+		}
+	}
+	return
+}
+
 func (r *ArgSetCouponUse) Default(ctx *base.Context) (err error) {
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
 	return
 }
 
