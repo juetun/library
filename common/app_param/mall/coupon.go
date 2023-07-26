@@ -49,6 +49,7 @@ type (
 	ResGetCouponBindData map[string]bool
 
 	ArgGetCanUseCoupon struct {
+		OrderInit     bool                   `json:"order_init"`               //订单是否初始化 false-初始化 true-非初始化
 		OrderId       string                 `json:"order_id" form:"order_id"` //如果时支付中的订单，继续支付
 		Status        uint8                  `json:"status" form:"status"`     //获取优惠券的状态
 		TimeNow       base.TimeNormal        `json:"time_now" form:"time_now"`
