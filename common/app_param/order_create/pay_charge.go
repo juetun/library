@@ -2,8 +2,28 @@ package order_create
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/shopspring/decimal"
 )
+
+
+const (
+	OrderPayTypeAliPay uint8 = iota + 1 // 支付宝支付
+	OrderPayTypeWeiXin                  // 微信支付
+)
+var (
+	SliceOrderPayType = base.ModelItemOptions{
+		{
+			Label: "支付宝",
+			Value: OrderPayTypeAliPay,
+		},
+		{
+			Label: "微信支付",
+			Value: OrderPayTypeWeiXin,
+		},
+	}
+)
+
 
 //计算支付平台手续费
 // Param rebat 费率小数()
