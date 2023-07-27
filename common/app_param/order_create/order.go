@@ -480,7 +480,37 @@ func NewOrderPreview() (res *OrderPreview) {
 	return
 }
 
+func (r *PreviewShopItem) Default() (err error) {
+	if r.PayCharge == "" {
+		r.PayCharge = "0.00"
+	}
+	if r.DeductionAmount == "" {
+		r.DeductionAmount = "0.00"
+	}
+	if r.ProductAmount == "" {
+		r.ProductAmount = "0.00"
+	}
+	if r.TotalAmount == "" {
+		r.TotalAmount = "0.00"
+	}
+	if r.Delivery.Cost == "" {
+		r.Delivery.Cost = "0.00"
+	}
+	if r.ShopDiscountAmount == "" {
+		r.ShopDiscountAmount = "0.00"
+	}
+	if r.PlatDiscountAmount == "" {
+		r.PlatDiscountAmount = "0.00"
+	}
+	return
+}
+
 func NewPreviewShopItem() (res *PreviewShopItem) {
-	res = &PreviewShopItem{}
+	res = &PreviewShopItem{
+		ShopCoupon: &mall.CanUseCoupon{},
+		Products:   PreviewSpuItems{},
+	}
+	_ = res.Default()
+	_ = res.ShopCoupon.Default()
 	return
 }
