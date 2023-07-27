@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/freight"
-	"github.com/juetun/library/common/app_param/order_create"
 	"github.com/juetun/library/common/app_param/pay_parameter"
 	"github.com/shopspring/decimal"
 	"strconv"
@@ -349,7 +348,7 @@ func (r *OrderPreview) InitPayCharge(decr string) (err error) {
 	if payTypeNum, err = strconv.ParseUint(r.PayType, 10, 8); err != nil {
 		return
 	}
-	if r.PayCharge, r.Amount, err = order_create.GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
+	if r.PayCharge, r.Amount, err = GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
 		return
 	}
 	return
