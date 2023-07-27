@@ -343,7 +343,7 @@ func (r *OrderPreview) AmountDecr(decr string) (err error) {
 }
 
 //初始化支付手续费金额
-func (r *OrderPreview) InitPayCharge(decr string) (err error) {
+func (r *OrderPreview) InitPayCharge() (err error) {
 	var payTypeNum uint64
 	if payTypeNum, err = strconv.ParseUint(r.PayType, 10, 8); err != nil {
 		return
