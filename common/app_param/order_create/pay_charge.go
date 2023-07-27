@@ -6,11 +6,11 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-
 const (
 	OrderPayTypeAliPay uint8 = iota + 1 // 支付宝支付
 	OrderPayTypeWeiXin                  // 微信支付
 )
+
 var (
 	SliceOrderPayType = base.ModelItemOptions{
 		{
@@ -24,6 +24,29 @@ var (
 	}
 )
 
+//根据支付类型和金额计算支付手续费
+func GetByPayTypeAndAmount(payType uint8, amount string) (payCharge, totalAmount string, err error) {
+	var rabat string
+	if rabat, err = GetPayChargeRabat(payType); err != nil {
+		return
+	}
+	payCharge, totalAmount, err = CalPayCharge(rabat, amount)
+	return
+}
+
+//计算支付手续费
+func GetPayChargeRabat(payType uint8) (rabat string, err error) {
+	switch payType {
+	case OrderPayTypeAliPay: //支付宝支付
+		rabat = ConfigPay.Pay.AliPay.FlatRabat
+	case OrderPayTypeWeiXin: // 微信支付
+		rabat = ConfigPay.Pay.WeiXinPay.FlatRabat
+	default:
+		err = fmt.Errorf("当前只支持微信及支付宝支付")
+		return
+	}
+	return
+}
 
 //计算支付平台手续费
 // Param rebat 费率小数()
@@ -51,4 +74,3 @@ func CalPayCharge(rabat, amount string) (payCharge, totalAmount string, err erro
 	payCharge = totalDecimal.Sub(amountDecimal).StringFixed(2)
 	return
 }
-
