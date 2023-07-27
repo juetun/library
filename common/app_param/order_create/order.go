@@ -326,6 +326,7 @@ func (r *OrderPreview) Default() (err error) {
 	if r.ProductAmount == "" {
 		r.ProductAmount = "0.00"
 	}
+	return
 }
 
 func (r *OrderPreview) AmountDecr(decr string) (err error) {
