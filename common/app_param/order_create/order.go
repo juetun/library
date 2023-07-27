@@ -76,13 +76,16 @@ type (
 	}
 	PreviewShopItems []*PreviewShopItem
 	PreviewShopItem  struct {
-		ShopId      int64            `json:"shop_id"`
-		ShopIcon    string           `json:"shop_icon"`    // 店铺Icon
-		ShopName    string           `json:"shop_name"`    // 店铺名称
-		ShopType    string           `json:"shop_type"`    // 店铺类型
-		Count       int64            `json:"count"`        // 商品总数
-		TotalAmount string           `json:"total_amount"` // 该订单店铺总的金额
-		Delivery    OrderSkuDelivery `json:"delivery"`     // 邮费信息
+		ShopId          int64            `json:"shop_id"`
+		ShopIcon        string           `json:"shop_icon"`        // 店铺Icon
+		ShopName        string           `json:"shop_name"`        // 店铺名称
+		ShopType        string           `json:"shop_type"`        // 店铺类型
+		Count           int64            `json:"count"`            // 商品总数
+		PayCharge       string           `json:"pay_charge"`       // 支付手续费
+		DeductionAmount string           `json:"deduction_amount"` // 现金抵扣券
+		ProductAmount   string           `json:"product_amount"`   // 商品金额
+		TotalAmount     string           `json:"total_amount"`     // 该订单店铺总的金额
+		Delivery        OrderSkuDelivery `json:"delivery"`         // 邮费信息
 		//Coupon      OrderShopItemCoupon `json:"coupon"`                // 优惠券信息
 		Mark       string             `json:"mark"`                  // 用户备注
 		SubOrderId string             `json:"sub_order_id"`          // 子单号
@@ -173,6 +176,7 @@ type (
 		Count       int64            `json:"count"`        // 商品总数
 		ShopChecked bool             `json:"shop_checked"` // 店铺选择
 		TotalAmount string           `json:"total_amount"` // 该订单店铺总的金额
+		PayCharge   string           `json:"pay_charge"`   // 支付手续费
 		Products    []*OrderSkuItem  `json:"products"`     // 商品列表
 		Delivery    OrderSkuDelivery `json:"delivery"`     // 邮费信息
 		//Coupon      OrderShopItemCoupon `json:"coupon"`       // 优惠券信息
@@ -316,6 +320,121 @@ func (r *OrderPreview) AmountDecr(decr string) (err error) {
 	return
 }
 
+//计算店铺实际优惠金额
+func (r *PreviewShopItem) CalTotalWithCoupon() (err error) {
+	type (
+		CostValueHandler func() (value decimal.Decimal, err error)
+	)
+	var (
+		mapValueHandler = map[string]CostValueHandler{
+			"ProductAmount": r.getProductAmount, //商品金额
+			"SpuDecr":       r.getSpuDecr,       //spu扣减金额 优惠券+抵扣券（代金券）
+			"ShopDecr":      r.getShopDecr,      //店铺抵扣金额 优惠券+抵扣券（代金券）
+			"PayCharge":     r.getPayCharge,     //支付手续费
+			"DeliveryCost":  r.getDeliveryCost,  //邮费金额
+		}
+		mapValue = make(map[string]decimal.Decimal, len(mapValueHandler))
+	)
+	for key, handler := range mapValueHandler {
+		if mapValue[key], err = handler(); err != nil {
+			return
+		}
+	}
+	//商品价格+邮费+支付渠道手续费-平台券抵扣-店铺券抵扣-代金券抵扣
+	r.TotalAmount = mapValue["ProductAmount"].Add(mapValue["DeliveryCost"]).Add(mapValue["PayCharge"]).Sub(mapValue["SpuDecr"]).Sub(mapValue["ShopDecr"]).StringFixed(2)
+	return
+}
+
+func (r *PreviewShopItem) getSpuDecr() (res decimal.Decimal, err error) {
+	res = decimal.NewFromInt(0)
+
+	var (
+		shopDecr, platDecr, deductionAmount decimal.Decimal
+	)
+	for _, spuInfo := range r.Products {
+		if spuInfo.SpuCoupon == nil {
+			continue
+		}
+		shopDecr = decimal.NewFromInt(0)
+		platDecr = decimal.NewFromInt(0)
+		deductionAmount = decimal.NewFromInt(0)
+
+		if spuInfo.SpuCoupon.DeductionAmount != "" {
+			if deductionAmount, err = decimal.NewFromString(spuInfo.SpuCoupon.DeductionAmount); err != nil {
+				return
+			}
+		}
+		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 {
+			if platDecr, err = decimal.NewFromString(spuInfo.SpuCoupon.Plat.CurrentUse.Decr); err != nil {
+				return
+			}
+		}
+		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 {
+			if shopDecr, err = decimal.NewFromString(spuInfo.SpuCoupon.Shop.CurrentUse.Decr); err != nil {
+				return
+			}
+		}
+		res = res.Add(shopDecr).Add(platDecr).Add(deductionAmount)
+	}
+	return
+}
+
+func (r *PreviewShopItem) getShopDecr() (res decimal.Decimal, err error) {
+	res = decimal.NewFromInt(0)
+	var (
+		shopDecr, platDecr, deductionAmount decimal.Decimal
+	)
+
+	shopDecr = decimal.NewFromInt(0)
+	if r.ShopCoupon != nil && r.ShopCoupon.Shop != nil && r.ShopCoupon.Shop.CurrentUse.ID > 0 && r.ShopCoupon.Shop.CurrentUse.Decr != "" {
+		shopDecr, err = decimal.NewFromString(r.ShopCoupon.Shop.CurrentUse.Decr)
+	}
+
+	platDecr = decimal.NewFromInt(0)
+	if r.ShopCoupon != nil && r.ShopCoupon.Plat != nil && r.ShopCoupon.Plat.CurrentUse.ID > 0 && r.ShopCoupon.Plat.CurrentUse.Decr != "" {
+		platDecr, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr)
+	}
+
+	deductionAmount = decimal.NewFromInt(0)
+	if r.ShopCoupon != nil && r.ShopCoupon.Plat != nil && r.ShopCoupon.Plat.CurrentUse.ID > 0 && r.ShopCoupon.Plat.CurrentUse.Decr != "" {
+		deductionAmount, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr)
+	}
+	res = res.Add(shopDecr).Add(platDecr).Add(deductionAmount)
+	return
+}
+
+func (r *PreviewShopItem) getDeductionAmount() (productAmount decimal.Decimal, err error) {
+	productAmount = decimal.NewFromInt(0)
+	if r.DeductionAmount != "" {
+		productAmount, err = decimal.NewFromString(r.DeductionAmount)
+	}
+	return
+}
+
+func (r *PreviewShopItem) getPayCharge() (productAmount decimal.Decimal, err error) {
+	productAmount = decimal.NewFromInt(0)
+	if r.PayCharge != "" {
+		productAmount, err = decimal.NewFromString(r.PayCharge)
+	}
+	return
+}
+
+func (r *PreviewShopItem) getDeliveryCost() (productAmount decimal.Decimal, err error) {
+	productAmount = decimal.NewFromInt(0)
+	if r.Delivery.Cost != "" {
+		productAmount, err = decimal.NewFromString(r.Delivery.Cost)
+	}
+	return
+}
+
+func (r *PreviewShopItem) getProductAmount() (productAmount decimal.Decimal, err error) {
+	productAmount = decimal.NewFromInt(0)
+	if r.ProductAmount != "" {
+		productAmount, err = decimal.NewFromString(r.ProductAmount)
+	}
+	return
+}
+
 func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) {
 	r.ShopId = orderShopItem.ShopId
 	r.ShopIcon = orderShopItem.ShopIcon
@@ -327,7 +446,7 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	r.Delivery = orderShopItem.Delivery
 	//r.Coupon = orderShopItem.Coupon
 	r.Mark = orderShopItem.Mark
-
+	r.PayCharge = orderShopItem.PayCharge
 	r.SubOrderId = orderShopItem.SubOrderId
 
 	return

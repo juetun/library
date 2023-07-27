@@ -94,10 +94,11 @@ type (
 		PlatDiscountAmountDecimal decimal.Decimal `json:"-"`
 	}
 	CanUseCoupon struct {
-		Plat       *CanUseCouponItem `json:"plat"`
-		Shop       *CanUseCouponItem `json:"shop"`
-		DecrAmount string            `json:"decr_amount,omitempty"` // 总扣减金额
-		ShopId     int64             `json:"-"`
+		Plat            *CanUseCouponItem `json:"plat"`
+		Shop            *CanUseCouponItem `json:"shop"`
+		DeductionAmount string            `json:"deduction_amount"`      //现金券或代金券抵扣金额
+		DecrAmount      string            `json:"decr_amount,omitempty"` // 总扣减金额
+		ShopId          int64             `json:"-"`
 	}
 	CanUseCouponItem struct {
 		CurrentUse            CouponInfo      `json:"current_use,omitempty"` // 当前选中的最合适优惠券
