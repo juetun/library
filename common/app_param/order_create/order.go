@@ -172,27 +172,24 @@ type (
 	}
 
 	OrderShopItem struct {
-		ShopId      int64            `json:"shop_id"`
-		ShopIcon    string           `json:"shop_icon"`    // 店铺Icon
-		ShopName    string           `json:"shop_name"`    // 店铺名称
-		ShopType    string           `json:"shop_type"`    // 店铺类型
-		Count       int64            `json:"count"`        // 商品总数
-		ShopChecked bool             `json:"shop_checked"` // 店铺选择
-		TotalAmount string           `json:"total_amount"` // 该订单店铺总的金额
-		PayCharge   string           `json:"pay_charge"`   // 支付手续费
-		Products    []*OrderSkuItem  `json:"products"`     // 商品列表
-		Delivery    OrderSkuDelivery `json:"delivery"`     // 邮费信息
-		//Coupon      OrderShopItemCoupon `json:"coupon"`       // 优惠券信息
-		SubOrderId string `json:"sub_order_id"` // 子单号
-		Mark       string `json:"mark"`         // 备注
-		SortWeight int64  `json:"-"`            // 排序权重
+		ShopId             int64            `json:"shop_id"`              // 店铺ID
+		ShopIcon           string           `json:"shop_icon"`            // 店铺Icon
+		ShopName           string           `json:"shop_name"`            // 店铺名称
+		ShopType           string           `json:"shop_type"`            // 店铺类型
+		Count              int64            `json:"count"`                // 商品总数
+		ShopChecked        bool             `json:"shop_checked"`         // 店铺选择
+		TotalAmount        string           `json:"total_amount"`         // 该订单店铺总的金额
+		PayCharge          string           `json:"pay_charge"`           // 支付手续费
+		Products           []*OrderSkuItem  `json:"products"`             // 商品列表
+		Delivery           OrderSkuDelivery `json:"delivery"`             // 邮费信息
+		ShopDiscountAmount string           `json:"shop_discount_amount"` // 店铺优惠总金额 (店铺维度优惠+SPU维度优惠)
+		PlatDiscountAmount string           `json:"plat_discount_amount"` // 平台优惠总金额 (店铺维度优惠+SPU维度优惠)
+		SubOrderId         string           `json:"sub_order_id"`         // 子单号
+		Mark               string           `json:"mark"`                 // 备注
+		SortWeight         int64            `json:"-"`                    // 排序权重
 	}
-	OrderShopItemCoupon struct {
-		Mark     string `json:"mark"`
-		CouponId string `json:"coupon_id"`
-	}
+
 	OrderSkuItem struct {
-		//Title           string              `json:"title"`
 		SkuName         string              `json:"sku_name"`
 		SpuId           string              `json:"spu_id"`
 		SkuId           string              `json:"sku_id"`      //购物车数据ID
@@ -242,6 +239,26 @@ func (r *ArgGetUserCouponByShopId) Default(ctx *base.Context) (err error) {
 	return
 }
 
+func (r *OrderShopItem) Default() (err error) {
+
+	if r.TotalAmount == "" {
+		r.TotalAmount = "0.00"
+	}
+	if r.PayCharge == "" {
+		r.PayCharge = "0.00"
+	}
+	if r.Delivery.Cost == "" {
+		r.Delivery.Cost = "0.00"
+	}
+	if r.ShopDiscountAmount == "" {
+		r.ShopDiscountAmount = "0.00"
+	}
+	if r.PlatDiscountAmount == "" {
+		r.PlatDiscountAmount = "0.00"
+	}
+	return
+}
+
 func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 	if r.UserHid == 0 {
 		err = fmt.Errorf("请选择使用优惠券的用户")
@@ -284,7 +301,7 @@ func (r *OrderPreview) getWeiXinMinaOpt() {
 	return
 }
 
-func (r *OrderPreview) Default() {
+func (r *OrderPreview) Default() (err error) {
 	if r.Preferential == "" {
 		r.Preferential = "0.00"
 	}
@@ -450,6 +467,8 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	if orderShopItem.Delivery.Cost == "" {
 		orderShopItem.Delivery.Cost = "0.00"
 	}
+	r.PlatDiscountAmount = orderShopItem.PlatDiscountAmount
+	r.ShopDiscountAmount = orderShopItem.ShopDiscountAmount
 	r.Delivery = orderShopItem.Delivery
 	//r.Coupon = orderShopItem.Coupon
 	r.Mark = orderShopItem.Mark
@@ -468,15 +487,6 @@ func (r *PreviewSkuItem) ParseOrderSkuItem(orderSkuItem *OrderSkuItem) {
 	r.SkuPrice = orderSkuItem.Price
 	r.SkuPropertyName = orderSkuItem.SkuPropertyName
 	r.Num = orderSkuItem.Num
-	return
-}
-
-func NewOrderPreview() (res *OrderPreview) {
-	res = &OrderPreview{
-		Amount:     "0.00",
-		List:       []*PreviewShopItem{},
-		PlatCoupon: &mall.CanUseCouponItem{},
-	}
 	return
 }
 
@@ -502,6 +512,16 @@ func (r *PreviewShopItem) Default() (err error) {
 	if r.PlatDiscountAmount == "" {
 		r.PlatDiscountAmount = "0.00"
 	}
+	return
+}
+
+func NewOrderPreview() (res *OrderPreview) {
+	res = &OrderPreview{
+		Amount:     "0.00",
+		List:       []*PreviewShopItem{},
+		PlatCoupon: &mall.CanUseCouponItem{},
+	}
+	_ = res.Default()
 	return
 }
 
