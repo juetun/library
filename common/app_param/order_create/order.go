@@ -72,6 +72,7 @@ type (
 		EmsAddress         *freight.ResultGetByAddressIdsItem `json:"ems_address,omitempty"` //收货地址信息
 		ShopDiscountAmount string                             `json:"shop_discount_amount"`  // 店铺优惠总金额 (店铺维度优惠+SPU维度优惠)
 		PlatDiscountAmount string                             `json:"plat_discount_amount"`  // 平台优惠金额 (店铺维度优惠+SPU维度优惠)
+		DeductionAmount    string                             `json:"deduction_amount"`      //代金券抵扣金额
 		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息 （店铺维度优惠）
 		List               PreviewShopItems                   `json:"list"`                  // SKU
 	}
@@ -528,6 +529,9 @@ func (r *PreviewShopItem) Default() (err error) {
 	}
 	if r.PlatDiscountAmount == "" {
 		r.PlatDiscountAmount = "0.00"
+	}
+	if r.DeductionAmount == "" {
+		r.DeductionAmount = "0.00"
 	}
 	return
 }
