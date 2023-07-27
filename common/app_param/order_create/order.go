@@ -54,8 +54,6 @@ type (
 		Amount             string                             `json:"amount"`                // 总金额
 		AmountDecimal      decimal.Decimal                    `json:"-"`                     // 总金额 数字格式 值与Amount一致
 		Preferential       string                             `json:"preferential"`          // 优惠金额
-		ShopDiscountAmount string                             `json:"shop_discount_amount"`  // 店铺优惠金额
-		PlatDiscountAmount string                             `json:"plat_discount_amount"`  // 平台优惠金额
 		PayCharge          string                             `json:"pay_charge"`            //支付需要手续费
 		TotalPostage       string                             `json:"total_postage"`         //邮费
 		ProductAmount      string                             `json:"product_amount"`        //商品总额
@@ -71,26 +69,29 @@ type (
 		ErrorMessage       string                             `json:"error_message"`         //错误信息
 		OrderId            string                             `json:"order_id"`              //订单号
 		EmsAddress         *freight.ResultGetByAddressIdsItem `json:"ems_address,omitempty"` //收货地址信息
-		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息
+		ShopDiscountAmount string                             `json:"shop_discount_amount"`  // 店铺优惠总金额 (店铺维度优惠+SPU维度优惠)
+		PlatDiscountAmount string                             `json:"plat_discount_amount"`  // 平台优惠金额 (店铺维度优惠+SPU维度优惠)
+		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息 （店铺维度优惠）
 		List               PreviewShopItems                   `json:"list"`                  // SKU
 	}
 	PreviewShopItems []*PreviewShopItem
 	PreviewShopItem  struct {
-		ShopId          int64            `json:"shop_id"`
-		ShopIcon        string           `json:"shop_icon"`        // 店铺Icon
-		ShopName        string           `json:"shop_name"`        // 店铺名称
-		ShopType        string           `json:"shop_type"`        // 店铺类型
-		Count           int64            `json:"count"`            // 商品总数
-		PayCharge       string           `json:"pay_charge"`       // 支付手续费
-		DeductionAmount string           `json:"deduction_amount"` // 现金抵扣券
-		ProductAmount   string           `json:"product_amount"`   // 商品金额
-		TotalAmount     string           `json:"total_amount"`     // 该订单店铺总的金额
-		Delivery        OrderSkuDelivery `json:"delivery"`         // 邮费信息
-		//Coupon      OrderShopItemCoupon `json:"coupon"`                // 优惠券信息
-		Mark       string             `json:"mark"`                  // 用户备注
-		SubOrderId string             `json:"sub_order_id"`          // 子单号
-		ShopCoupon *mall.CanUseCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
-		Products   PreviewSpuItems    `json:"products"`              // 商品列表
+		ShopId             int64              `json:"shop_id"`
+		ShopIcon           string             `json:"shop_icon"`             // 店铺Icon
+		ShopName           string             `json:"shop_name"`             // 店铺名称
+		ShopType           string             `json:"shop_type"`             // 店铺类型
+		Count              int64              `json:"count"`                 // 商品总数
+		PayCharge          string             `json:"pay_charge"`            // 支付手续费
+		DeductionAmount    string             `json:"deduction_amount"`      // 现金抵扣券
+		ProductAmount      string             `json:"product_amount"`        // 商品金额
+		TotalAmount        string             `json:"total_amount"`          // 该订单店铺总的金额
+		Delivery           OrderSkuDelivery   `json:"delivery"`              // 邮费信息
+		Mark               string             `json:"mark"`                  // 用户备注
+		SubOrderId         string             `json:"sub_order_id"`          // 子单号
+		ShopDiscountAmount string             `json:"shop_discount_amount"`  // 店铺优惠总金额 (店铺维度优惠+SPU维度优惠)
+		PlatDiscountAmount string             `json:"plat_discount_amount"`  // 平台优惠金额 (店铺维度优惠+SPU维度优惠)
+		ShopCoupon         *mall.CanUseCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
+		Products           PreviewSpuItems    `json:"products"`              // 商品列表
 
 		SortCreateTime time.Time `json:"-"`
 		SortWeight     int64     `json:"-"` //排序权重
@@ -100,24 +101,26 @@ type (
 	PreviewSkuItem  struct {
 		app_param.ArgOrderFromCartItem
 		//Title          string          `json:"title"`
-		SkuName         string          `json:"sku_name"`
-		SkuPropertyName string          `json:"sku_property_name"`
-		SkuId           string          `json:"sku_id"`      //购物车数据ID
-		SkuPic          string          `json:"sku_pic"`     // 图片
-		SkuStatus       int8            `json:"sku_status"`  // 商品状态
-		StatusName      string          `json:"status_name"` // 商品状态名称 (已下架)
-		TotalPrice      string          `json:"total_price"`
-		SaleType        uint8           `json:"sale_type"`
-		SaleTypeName    string          `json:"sale_type_name"`
-		HaveVideo       bool            `json:"have_video"`   //是否有视频
-		Mark            string          `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
-		MarkSystem      string          `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
-		NotCanPay       bool            `json:"not_can_pay"`  //当前数据是否能够支付
-		Invalidation    bool            `json:"invalidation"` //是否失效 true-已失效 false-未失效
-		Checked         bool            `json:"checked"`      //是否选中
-		SortCreateTime  base.TimeNormal `json:"-"`
-		SpecialTags     []*DataItemTag  `json:"special_tags"`
-		SortWeight      int64           `json:"-"`
+		SkuName         string `json:"sku_name"`
+		SkuPropertyName string `json:"sku_property_name"`
+		SkuId           string `json:"sku_id"`      //购物车数据ID
+		SkuPic          string `json:"sku_pic"`     // 图片
+		SkuStatus       int8   `json:"sku_status"`  // 商品状态
+		StatusName      string `json:"status_name"` // 商品状态名称 (已下架)
+		TotalPrice      string `json:"total_price"`
+		SaleType        uint8  `json:"sale_type"`
+		SaleTypeName    string `json:"sale_type_name"`
+		HaveVideo       bool   `json:"have_video"`   //是否有视频
+		Mark            string `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
+		MarkSystem      string `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
+		NotCanPay       bool   `json:"not_can_pay"`  //当前数据是否能够支付
+		Invalidation    bool   `json:"invalidation"` //是否失效 true-已失效 false-未失效
+		Checked         bool   `json:"checked"`      //是否选中
+
+		SpecialTags []*DataItemTag `json:"special_tags"`
+
+		SortCreateTime base.TimeNormal `json:"-"`
+		SortWeight     int64           `json:"-"`
 		// 单一SKU的总价格
 	}
 	DataItemTag struct {
@@ -444,6 +447,9 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	r.TotalAmount = orderShopItem.TotalAmount
 	r.ProductAmount = orderShopItem.TotalAmount
 	r.SortWeight = orderShopItem.SortWeight
+	if orderShopItem.Delivery.Cost == "" {
+		orderShopItem.Delivery.Cost = "0.00"
+	}
 	r.Delivery = orderShopItem.Delivery
 	//r.Coupon = orderShopItem.Coupon
 	r.Mark = orderShopItem.Mark
