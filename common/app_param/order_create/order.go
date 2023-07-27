@@ -456,6 +456,9 @@ func (r *PreviewShopItem) getProductAmount() (productAmount decimal.Decimal, err
 }
 
 func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) {
+	if err = orderShopItem.Default(); err != nil {
+		return
+	}
 	r.ShopId = orderShopItem.ShopId
 	r.ShopIcon = orderShopItem.ShopIcon
 	r.ShopName = orderShopItem.ShopName
