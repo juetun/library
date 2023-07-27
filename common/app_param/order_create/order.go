@@ -442,6 +442,7 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	r.ShopType = orderShopItem.ShopType
 	r.Count = orderShopItem.Count
 	r.TotalAmount = orderShopItem.TotalAmount
+	r.ProductAmount = orderShopItem.TotalAmount
 	r.SortWeight = orderShopItem.SortWeight
 	r.Delivery = orderShopItem.Delivery
 	//r.Coupon = orderShopItem.Coupon
