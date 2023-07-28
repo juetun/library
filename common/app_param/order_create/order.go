@@ -93,6 +93,7 @@ type (
 		SubOrderId         string             `json:"sub_order_id"`          // 子单号
 		ShopDiscountAmount string             `json:"shop_discount_amount"`  // 店铺优惠总金额 (店铺维度优惠+SPU维度优惠)
 		PlatDiscountAmount string             `json:"plat_discount_amount"`  // 平台优惠金额 (店铺维度优惠+SPU维度优惠)
+		SettlementAmount   string             `json:"settlement_amount"`     //结算金额
 		ShopCoupon         *mall.CanUseCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
 		Products           PreviewSpuItems    `json:"products"`              // 商品列表
 
@@ -368,6 +369,21 @@ func (r *OrderPreview) InitPayCharge() (err error) {
 	if r.PayCharge, r.Amount, err = GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
 		return
 	}
+	return
+}
+
+//计算店铺结算金额
+func (r *PreviewShopItem) CalSettlementAmount() (err error) {
+	var (
+		totalAmount, payCharge decimal.Decimal
+	)
+	if totalAmount, err = decimal.NewFromString(r.TotalAmount); err != nil {
+		return
+	}
+	if payCharge, err = decimal.NewFromString(r.PayCharge); err != nil {
+		return
+	}
+	r.SettlementAmount = totalAmount.Sub(payCharge).StringFixed(2)
 	return
 }
 
