@@ -323,6 +323,17 @@ func (r *OrderPreview) getWeiXinMinaOpt() {
 	return
 }
 
+func (r *ResultGetInfoByOrderItem) DataOrderUpdatePayType(payTypeString string) (err error) {
+	if payTypeString != "" {
+		var payType uint64
+		if payType, err = strconv.ParseUint(payTypeString, 10, 8); err != nil {
+			return
+		}
+		r.PayType = uint8(payType)
+	}
+	return
+}
+
 func (r *OrderPreview) Default() (err error) {
 	if r.Preferential == "" {
 		r.Preferential = "0.00"
