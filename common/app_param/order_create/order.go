@@ -345,6 +345,9 @@ func (r *OrderPreview) Default() (err error) {
 	if r.ProductAmount == "" {
 		r.ProductAmount = "0.00"
 	}
+	if r.DeductionAmount == "" {
+		r.DeductionAmount = "0.00"
+	}
 	return
 }
 
@@ -654,6 +657,9 @@ func (r *PreviewShopItem) Default() (err error) {
 	}
 	if r.DeductionAmount == "" {
 		r.DeductionAmount = "0.00"
+	}
+	if r.SettlementAmount == "" {
+		r.SettlementAmount = "0.00"
 	}
 	return
 }
