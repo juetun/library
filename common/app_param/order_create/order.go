@@ -262,6 +262,21 @@ func (r *OrderShopItem) Default() (err error) {
 	return
 }
 
+func (r *OrderShopItem) GetProductAmount() (res string, err error) {
+	var productAmount = decimal.NewFromInt(0)
+	var pAmount decimal.Decimal
+	for _, skuItem := range r.Products {
+		if skuItem.TotalPrice != "" {
+			if pAmount, err = decimal.NewFromString(skuItem.TotalPrice); err != nil {
+				return
+			}
+			productAmount = productAmount.Add(pAmount)
+		}
+	}
+	res = productAmount.StringFixed(2)
+	return
+}
+
 func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 	if r.UserHid == 0 {
 		err = fmt.Errorf("请选择使用优惠券的用户")
@@ -380,7 +395,7 @@ func (r *PreviewShopItem) CalCouponAndPayCharge() (err error) {
 	if spuShopDecr, spuPlatDecr, err = r.getSpuDecrValue(); err != nil {
 		return
 	}
-	
+
 	shopDecimal = shopDecimal.Add(spuShopDecr)
 	platDecimal = platDecimal.Add(spuPlatDecr)
 
@@ -569,7 +584,9 @@ func (r *PreviewShopItem) SetShopItem(orderShopItem *OrderShopItem) (err error) 
 	r.ShopType = orderShopItem.ShopType
 	r.Count = orderShopItem.Count
 	r.TotalAmount = orderShopItem.TotalAmount
-	r.ProductAmount = orderShopItem.TotalAmount
+	if r.ProductAmount, err = orderShopItem.GetProductAmount(); err != nil {
+		return
+	}
 	r.SortWeight = orderShopItem.SortWeight
 	if orderShopItem.Delivery.Cost == "" {
 		orderShopItem.Delivery.Cost = "0.00"
