@@ -380,8 +380,12 @@ func (r *PreviewShopItem) CalCouponAndPayCharge() (err error) {
 	if spuShopDecr, spuPlatDecr, err = r.getSpuDecrValue(); err != nil {
 		return
 	}
-	r.ShopDiscountAmount = shopDecimal.Add(spuShopDecr).StringFixed(2)
-	r.PlatDiscountAmount = platDecimal.Add(spuPlatDecr).StringFixed(2)
+	
+	shopDecimal = shopDecimal.Add(spuShopDecr)
+	platDecimal = platDecimal.Add(spuPlatDecr)
+
+	r.ShopDiscountAmount = shopDecimal.StringFixed(2)
+	r.PlatDiscountAmount = platDecimal.StringFixed(2)
 
 	//计算平台该收商家的手续费
 	if err = r.calPayCharge(shopDecimal); err != nil {
