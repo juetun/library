@@ -83,6 +83,7 @@ type (
 		ShopName           string             `json:"shop_name"`             // 店铺名称
 		ShopType           string             `json:"shop_type"`             // 店铺类型
 		Count              int64              `json:"count"`                 // 商品总数
+		PayType            uint8              `json:"pay_type"`              //支付方式（支付渠道）
 		PayCharge          string             `json:"pay_charge"`            // 支付手续费
 		DeductionAmount    string             `json:"deduction_amount"`      // 现金抵扣券
 		ProductAmount      string             `json:"product_amount"`        // 商品金额
@@ -355,6 +356,85 @@ func (r *OrderPreview) InitPayCharge() (err error) {
 	return
 }
 
+//计算优惠券
+func (r *PreviewShopItem) CalCouponAndPayCharge() (err error) {
+	var (
+		platDecimal = decimal.NewFromInt(0)
+		shopDecimal = decimal.NewFromInt(0) //店铺优惠券优惠的金额
+
+	)
+
+	if r.ShopCoupon != nil && r.ShopCoupon.Shop != nil && r.ShopCoupon.Shop.CurrentUse.ID > 0 && r.ShopCoupon.Shop.CurrentUse.Decr != "" {
+		var spDecr decimal.Decimal
+		spDecr, err = decimal.NewFromString(r.ShopCoupon.Shop.CurrentUse.Decr)
+		shopDecimal = shopDecimal.Add(spDecr)
+	}
+
+	if r.ShopCoupon != nil && r.ShopCoupon.Plat != nil && r.ShopCoupon.Plat.CurrentUse.ID > 0 && r.ShopCoupon.Plat.CurrentUse.Decr != "" {
+		var ptDecr decimal.Decimal
+		ptDecr, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr)
+		platDecimal = platDecimal.Add(ptDecr)
+	}
+
+	var spuShopDecr, spuPlatDecr decimal.Decimal
+	if spuShopDecr, spuPlatDecr, err = r.getSpuDecrValue(); err != nil {
+		return
+	}
+	r.ShopDiscountAmount = shopDecimal.Add(spuShopDecr).StringFixed(2)
+	r.PlatDiscountAmount = platDecimal.Add(spuPlatDecr).StringFixed(2)
+
+	//计算平台该收商家的手续费
+	if err = r.calPayCharge(shopDecimal); err != nil {
+		return
+	}
+	return
+}
+
+func (r *PreviewShopItem) calPayCharge(shopDecimal decimal.Decimal) (err error) {
+	var (
+		product, deductionAmount decimal.Decimal
+		shopValue                string
+	)
+	if product, err = r.getProductAmount(); err != nil {
+		return
+	}
+	if deductionAmount, err = r.getDeductionAmount(); err != nil {
+		return
+	}
+	shopValue = product.Sub(deductionAmount).Sub(shopDecimal).StringFixed(2)
+	if r.PayCharge, _, err = GetByPayTypeAndAmount(r.PayType, shopValue); err != nil {
+		return
+	}
+	return
+}
+
+func (r *PreviewShopItem) getSpuDecrValue() (shopDecr, platDecr decimal.Decimal, err error) {
+	shopDecr = decimal.NewFromInt(0)
+	platDecr = decimal.NewFromInt(0)
+	var (
+		shopDecrVal, platDecrVal decimal.Decimal
+	)
+	for _, spuInfo := range r.Products {
+		if spuInfo.SpuCoupon == nil {
+			continue
+		}
+
+		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 {
+			if platDecrVal, err = decimal.NewFromString(spuInfo.SpuCoupon.Plat.CurrentUse.Decr); err != nil {
+				return
+			}
+			platDecr = platDecr.Add(platDecrVal)
+		}
+		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 {
+			if shopDecrVal, err = decimal.NewFromString(spuInfo.SpuCoupon.Shop.CurrentUse.Decr); err != nil {
+				return
+			}
+			shopDecr = shopDecr.Add(shopDecrVal)
+		}
+	}
+	return
+}
+
 //计算店铺实际优惠金额
 func (r *PreviewShopItem) CalTotalWithCoupon() (err error) {
 	type (
@@ -363,8 +443,8 @@ func (r *PreviewShopItem) CalTotalWithCoupon() (err error) {
 	var (
 		mapValueHandler = map[string]CostValueHandler{
 			"ProductAmount": r.getProductAmount, //商品金额
-			"SpuDecr":       r.getSpuDecr,       //spu扣减金额 优惠券+抵扣券（代金券）
-			"ShopDecr":      r.getShopDecr,      //店铺抵扣金额 优惠券+抵扣券（代金券）
+			"SpuDecr":       r.getSpuDecr,       //spu优惠券扣减金额 优惠券+抵扣券（代金券）
+			"ShopDecr":      r.getShopDecr,      //店铺优惠券抵扣金额 优惠券+抵扣券（代金券）
 			"PayCharge":     r.getPayCharge,     //支付手续费
 			"DeliveryCost":  r.getDeliveryCost,  //邮费金额
 		}
@@ -417,22 +497,27 @@ func (r *PreviewShopItem) getSpuDecr() (res decimal.Decimal, err error) {
 func (r *PreviewShopItem) getShopDecr() (res decimal.Decimal, err error) {
 	res = decimal.NewFromInt(0)
 	var (
-		shopDecr, platDecr, deductionAmount decimal.Decimal
+		shopDecr        = decimal.NewFromInt(0)
+		platDecr        = decimal.NewFromInt(0)
+		deductionAmount = decimal.NewFromInt(0)
 	)
 
-	shopDecr = decimal.NewFromInt(0)
 	if r.ShopCoupon != nil && r.ShopCoupon.Shop != nil && r.ShopCoupon.Shop.CurrentUse.ID > 0 && r.ShopCoupon.Shop.CurrentUse.Decr != "" {
-		shopDecr, err = decimal.NewFromString(r.ShopCoupon.Shop.CurrentUse.Decr)
+		if shopDecr, err = decimal.NewFromString(r.ShopCoupon.Shop.CurrentUse.Decr); err != nil {
+			return
+		}
 	}
 
-	platDecr = decimal.NewFromInt(0)
 	if r.ShopCoupon != nil && r.ShopCoupon.Plat != nil && r.ShopCoupon.Plat.CurrentUse.ID > 0 && r.ShopCoupon.Plat.CurrentUse.Decr != "" {
-		platDecr, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr)
+		if platDecr, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr); err != nil {
+			return
+		}
 	}
 
-	deductionAmount = decimal.NewFromInt(0)
-	if r.ShopCoupon != nil && r.ShopCoupon.Plat != nil && r.ShopCoupon.Plat.CurrentUse.ID > 0 && r.ShopCoupon.Plat.CurrentUse.Decr != "" {
-		deductionAmount, err = decimal.NewFromString(r.ShopCoupon.Plat.CurrentUse.Decr)
+	if r.DeductionAmount != "" {
+		if deductionAmount, err = decimal.NewFromString(r.DeductionAmount); err != nil {
+			return
+		}
 	}
 	res = res.Add(shopDecr).Add(platDecr).Add(deductionAmount)
 	return
