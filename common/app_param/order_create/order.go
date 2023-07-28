@@ -294,7 +294,7 @@ func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 }
 
 //初始化支付方式
-func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo) (err error) {
+func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...string) (err error) {
 	r.PayTypeOpt = pay_parameter.SliceOrderPayType
 
 	switch info.HTerminal {
@@ -303,7 +303,10 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo) (err error) {
 		case "weixin": //如果是小程序微信使用
 			r.getWeiXinMinaOpt()
 		}
-
+	}
+	if len(payTypes) > 0 && payTypes[0] != "" && payTypes[0] != "0" {
+		r.PayType = payTypes[0]
+		return
 	}
 	r.PayType = fmt.Sprintf("%v", r.PayTypeOpt[0].Value)
 	return
