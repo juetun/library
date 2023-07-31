@@ -50,7 +50,7 @@ var (
 		},
 		{
 			Value: OrderStatusPayingFinish,
-			Label: "已付款",
+			Label: "付款完成",
 		},
 		{
 			Value: OrderStatusCancel,
