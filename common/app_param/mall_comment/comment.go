@@ -1,6 +1,9 @@
 package mall_comment
 
-import "github.com/juetun/library/common/app_param/upload_operate/ext_up"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
+)
 
 type (
 	UInfo struct {
@@ -40,4 +43,21 @@ type (
 		Comment     []*CommentItem `json:"Comment"`       //评论列表
 		Number      int64          `json:"number"`        //评论数量
 	}
+
+	ArgAddComment struct {
+		TimeNow base.TimeNormal   `json:"time_now" form:"time_now"`
+		List    []*AddCommentItem `json:"list" form:"list"`
+	}
+	AddCommentItem struct {
+		OrderId    string `json:"order_id" form:"order_id"`
+		SubOrderId string `json:"sub_order_id" form:"sub_order_id"`
+		ShopId     string `json:"shop_id" form:"shop_id"`
+		SpuId      string `json:"spu_id" form:"spu_id"`
+		SkuId      string `json:"sku_id" form:"sku_id"`
+	}
 )
+
+func (r *ArgAddComment) Default(ctx *base.Context) (err error) {
+
+	return
+}
