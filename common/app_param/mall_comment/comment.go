@@ -51,7 +51,7 @@ type (
 	AddCommentItem struct {
 		OrderId    string `json:"order_id" form:"order_id"`
 		SubOrderId string `json:"sub_order_id" form:"sub_order_id"`
-		ShopId     string `json:"shop_id" form:"shop_id"`
+		ShopId     int64  `json:"shop_id" form:"shop_id"`
 		SpuId      string `json:"spu_id" form:"spu_id"`
 		SkuId      string `json:"sku_id" form:"sku_id"`
 	}
