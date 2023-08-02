@@ -58,6 +58,8 @@ type (
 )
 
 func (r *ArgAddComment) Default(ctx *base.Context) (err error) {
-
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
 	return
 }
