@@ -54,12 +54,15 @@ func NewCommentForEdit() (res *CommentForEdit) {
 		SendLevel:     5,
 		DeliveryLevel: 5,
 		PackingLevel:  5,
+		SkuList:       make([]*CommentSkuItem, 0),
 	}
 	return
 }
 
-func (r *CommentForEdit) Default() {
-
+func (r *CommentForEdit) Default() (err error) {
+	if r.SkuList == nil {
+		r.SkuList = make([]*CommentSkuItem, 0)
+	}
 	return
 }
 
