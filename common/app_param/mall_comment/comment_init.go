@@ -1,9 +1,29 @@
 package mall_comment
 
-import "github.com/juetun/library/common/app_param/upload_operate"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/upload_operate"
+)
 
 const (
 	CommentCanImageCount = 9 //总能够上传的图片数
+)
+const (
+	CommentForEditAnonymousYes = iota + 1 //是匿名评论
+	CommentForEditAnonymousNo             //不是匿名评论
+)
+
+var (
+	SliceCommentForEditAnonymous = base.ModelItemOptions{
+		{
+			Label: "是",
+			Value: CommentForEditAnonymousYes,
+		},
+		{
+			Label: "否",
+			Value: CommentForEditAnonymousNo,
+		},
+	}
 )
 
 type (
@@ -16,6 +36,7 @@ type (
 		SubOrderId    string            `json:"sub_order_id"`   //子订单号
 		HaveComment   bool              `json:"have_comment"`   //是否已评论
 		ShopId        int64             `json:"shop_id"`        //店铺ID
+		Anonymous     uint8             `json:"anonymous"`      //是否匿名评论
 		SkuList       []*CommentSkuItem `json:"sku_list"`       //商品信息
 	}
 	CommentSkuItem struct {
@@ -55,6 +76,7 @@ func NewCommentForEdit() (res *CommentForEdit) {
 		DeliveryLevel: 5,
 		PackingLevel:  5,
 		SkuList:       make([]*CommentSkuItem, 0),
+		Anonymous:     CommentForEditAnonymousYes,
 	}
 	return
 }
