@@ -271,7 +271,11 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	}()
 	//获取用户信息
 	if r.UUserHid == 0 {
-		jwtUser, _ := common.TokenValidate(ctx, true)
+		jwtUser, exit := common.TokenValidate(ctx, true)
+		if exit {
+			err = base.NewErrorRuntime(fmt.Errorf("请登录账号"), base.ErrorNotLogin)
+			return
+		}
 		r.UUserHid = jwtUser.UserId
 	}
 	var uidString string
