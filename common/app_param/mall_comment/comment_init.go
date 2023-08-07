@@ -34,6 +34,8 @@ type (
 		CreatedAt     string            `json:"created_at"`     //订单生成时间
 		OrderId       string            `json:"order_id"`       //订单号
 		SubOrderId    string            `json:"sub_order_id"`   //子订单号
+		Status        uint8             `json:"status"`         //订单状态
+		SubStatus     uint8             `json:"sub_status"`     //子单状态
 		HaveComment   bool              `json:"have_comment"`   //是否已评论
 		ShopId        int64             `json:"shop_id"`        //店铺ID
 		Anonymous     uint8             `json:"anonymous"`      //是否匿名评论
@@ -62,6 +64,8 @@ type (
 		SkuNum       int64         `json:"sku_num"`
 		SpuId        string        `json:"spu_id"`
 		ShopId       int64         `json:"shop_id"`
+		Status       uint8         `json:"status"`     //订单状态
+		SubStatus    uint8         `json:"sub_status"` //子单状态
 		Price        string        `json:"price"`
 		SaleType     uint8         `json:"sale_type"`
 		SaleTypeName string        `json:"sale_type_name"`
