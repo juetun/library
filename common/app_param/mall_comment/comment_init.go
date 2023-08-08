@@ -98,6 +98,7 @@ func (r *CommentForEdit) Default() (err error) {
 	var count = 0
 	var allHasComment = true
 	for _, item := range r.SkuList {
+
 		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
 			item.ShowSkuComment = true
 		}
@@ -121,7 +122,7 @@ func (r *CommentForEdit) Default() (err error) {
 		}
 	}
 	r.HaveComment = allHasComment
-	r.HideCommonBtn = !allHasComment
+	r.HideCommonBtn = allHasComment
 	if count > 0 { //如果有一条能评论的数据
 		r.HideCommonBtn = false
 	}
