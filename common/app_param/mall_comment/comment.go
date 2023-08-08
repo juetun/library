@@ -45,8 +45,9 @@ type (
 	}
 
 	ArgAddComment struct {
-		TimeNow base.TimeNormal   `json:"time_now" form:"time_now"`
-		List    []*AddCommentItem `json:"list" form:"list"`
+		TimeNow          base.TimeNormal   `json:"time_now" form:"time_now"`
+		ActComprehensive bool              `json:"act_comprehensive"` //是否提交综合评价
+		List             []*AddCommentItem `json:"list" form:"list"`
 	}
 	AddCommentItem struct {
 		OrderId    string `json:"order_id" form:"order_id"`
