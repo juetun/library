@@ -36,26 +36,28 @@ type (
 		SubOrderId       string            `json:"sub_order_id"`      //子订单号
 		Status           uint8             `json:"status"`            //订单状态
 		SubStatus        uint8             `json:"sub_status"`        //子单状态
-		HaveComment      bool              `json:"have_comment"`      //是否已评论
+		HaveComment      bool              `json:"-"`                 //是否已评论
 		ShopId           int64             `json:"shop_id"`           //店铺ID
 		Anonymous        uint8             `json:"anonymous"`         //是否匿名评论
 		ActComprehensive bool              `json:"act_comprehensive"` //是否提交综合评价
+		HideCommonBtn    bool              `json:"hide_common_btn"`   //是否隐藏评论提交按钮
 		SkuList          []*CommentSkuItem `json:"sku_list"`          //商品信息
 	}
 	CommentSkuItem struct {
-		SkuInfo       CommentSku          `json:"sku_info"`
-		Mark          string              `json:"mark"`
-		Videos        []*CommentVideoItem `json:"videos"`          //视频
-		Images        []*CommentImageItem `json:"images"`          //图片
-		CommentScore  float32             `json:"comment_score"`   //商品评论等级
-		ImageCount    int                 `json:"image_count"`     //图片数
-		CanImageCount int                 `json:"can_image_count"` //总能上传数
-		CommentAt     string              `json:"comment_at"`      //评论时间
-		AddComment    string              `json:"add_comment"`     //追平内容
-		CanComment    bool                `json:"can_comment"`     //是否能够评论
-		HasComment    bool                `json:"has_comment"`     //是否已评论
-		HasAddComment string              `json:"has_add_comment"` //是否已追评
-		AddImages     []*CommentImageItem `json:"add_images"`      //追平图片
+		SkuInfo        CommentSku          `json:"sku_info"`
+		Mark           string              `json:"mark"`
+		Videos         []*CommentVideoItem `json:"videos"`           //视频
+		Images         []*CommentImageItem `json:"images"`           //图片
+		CommentScore   float32             `json:"comment_score"`    //商品评论等级
+		ImageCount     int                 `json:"image_count"`      //图片数
+		CanImageCount  int                 `json:"can_image_count"`  //总能上传数
+		CommentAt      string              `json:"comment_at"`       //评论时间
+		AddComment     string              `json:"add_comment"`      //追平内容
+		ShowSkuComment bool                `json:"show_sku_comment"` //是否显示评论
+		CanComment     bool                `json:"-"`                //是否能够评论
+		HasComment     bool                `json:"has_comment"`      //是否已评论
+		HasAddComment  string              `json:"has_add_comment"`  //是否已追评
+		AddImages      []*CommentImageItem `json:"add_images"`       //追平图片
 	}
 
 	CommentSku struct {
@@ -92,6 +94,12 @@ func (r *CommentForEdit) Default() (err error) {
 	if r.SkuList == nil {
 		r.SkuList = make([]*CommentSkuItem, 0)
 	}
+	for _, item := range r.SkuList {
+		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
+			item.ShowSkuComment = true
+		}
+	}
+	r.HideCommonBtn = !r.HaveComment
 	return
 }
 
