@@ -91,48 +91,94 @@ func NewCommentForEdit() (res *CommentForEdit) {
 	return
 }
 
+//判断所有已收货的商品是否已评论
+// haveNotReceipt 是否有未确认收货的商品 true-有 false-没有
+func (r *CommentForEdit) flagAllHasComment() (allHasComment, haveNotReceipt bool) {
+
+	allHasComment = true
+	for _, item := range r.SkuList {
+		switch item.SkuInfo.SubStatus {
+		case parameters.OrderStatusGoodSendFinished: //已收货
+			if !item.HasComment {
+				allHasComment = false
+			}
+		case parameters.OrderStatusGoodSending: //已发货，未收货
+			haveNotReceipt = true
+		}
+
+	}
+	return
+}
+
+func (r *CommentForEdit) allReceiptAndComment() {
+	r.ActComprehensive = true
+	r.HaveComment = true
+	for _, item := range r.SkuList {
+		item.ShowSkuComment = true
+	}
+	r.HideCommonBtn = true //订单都已评论，直接展示 ，无法再操作
+	return
+}
+
+//所有已收货，部分未评论
+func (r *CommentForEdit) allReceiptAndNotAllComment() {
+	r.ActComprehensive = true
+	r.HaveComment = false
+	for _, item := range r.SkuList {
+		if item.HasComment { //已评论的隐藏
+			continue
+		}
+		//未评论的显示
+		item.ShowSkuComment = true
+	}
+	r.HideCommonBtn = false
+	return
+}
+
+//如果有未收货的商品
+func (r *CommentForEdit) haveNotReceipt() {
+	r.ActComprehensive = false
+	r.HaveComment = false
+	r.HideCommonBtn = true
+	for _, item := range r.SkuList {
+		switch item.SkuInfo.SubStatus {
+		case parameters.OrderStatusGoodSending: //已发货未收货
+			continue
+		case parameters.OrderStatusGoodSendFinished: //已收货
+			item.ShowSkuComment = true
+			r.HideCommonBtn = false
+		case parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: // 已评价 自动评价
+			item.ShowSkuComment = false
+		}
+	}
+	return
+}
+
 func (r *CommentForEdit) Default() (err error) {
 	if r.SkuList == nil {
 		r.SkuList = make([]*CommentSkuItem, 0)
 	}
-	var hasCommentCount = 0    //当前有多少条已评论的商品数据
-	var allHasComment = true   //是否所有的商品已评论
-	var hasNotCommentCount = 0 // 没有评论的数据
-	for _, item := range r.SkuList {
-
-		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
-			item.ShowSkuComment = true
-		}
-		if !item.ShowSkuComment { //如果不展示
-			continue
-		}
-		if !item.HasComment { //如果有一个未评论
-			allHasComment = false
-		}
-		switch item.SkuInfo.SubStatus {
-		case parameters.OrderStatusGoodSendFinished: //已收货
-			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-			if item.HasComment { //如果商品已评论
-				hasCommentCount++
-			} else {
-				hasNotCommentCount++
-			}
-		case parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: // 已评价 自动评价
-			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-			if item.HasComment { //如果商品已评论
-				hasCommentCount++
-			}
-		}
-	}
-	r.HaveComment = allHasComment
-	r.HideCommonBtn = allHasComment
-	if hasNotCommentCount > 0 { //如果有未评论数据
-		r.HideCommonBtn = false
-	}
-
 	if r.Anonymous == 0 {
 		r.Anonymous = CommentForEditAnonymousYes
 	}
+	var (
+		allHasComment  bool //所有已评论的商品
+		haveNotReceipt bool
+	)
+	allHasComment, haveNotReceipt = r.flagAllHasComment()
+
+	if !haveNotReceipt { //没有未收货的商品
+		if allHasComment { //如果所有的商品已评论,且没有未发货的商品
+			r.allReceiptAndComment()
+			return
+		}
+		//已收货，部分未评论
+		r.allReceiptAndNotAllComment()
+		return
+	}
+	//如果有未收货的商品
+	r.haveNotReceipt()
+
 	return
 }
 
