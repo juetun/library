@@ -151,7 +151,7 @@ func (r *CommentForEdit) haveNotReceipt() {
 			item.ShowSkuComment = false
 		}
 	}
-	if !r.HideCommonBtn {
+	if r.HideCommonBtn {
 		for _, item := range r.SkuList {
 			switch item.SkuInfo.SubStatus {
 			case parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: // 已评价 自动评价
