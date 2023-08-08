@@ -96,23 +96,32 @@ func (r *CommentForEdit) Default() (err error) {
 		r.SkuList = make([]*CommentSkuItem, 0)
 	}
 	var count = 0
+	var allHasComment = true
 	for _, item := range r.SkuList {
 		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
 			item.ShowSkuComment = true
 		}
-		if item.ShowSkuComment {
-
-			switch item.SkuInfo.SubStatus {
-			case parameters.OrderStatusGoodSendFinished, parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: //已收货 已评价 自动评价
-				//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-				if !item.HasComment { //如果商品已评论
-					count++
-				}
+		if !item.HasComment { //如果有一个未评论
+			allHasComment = false
+		}
+		if !item.ShowSkuComment { //如果不展示
+			continue
+		}
+		switch item.SkuInfo.SubStatus {
+		case parameters.OrderStatusGoodSendFinished: //已收货
+			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
+			if !item.HasComment { //如果商品已评论
+				count++
 			}
-
+		case parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: // 已评价 自动评价
+			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
+			if !item.HasComment { //如果商品已评论
+				count++
+			}
 		}
 	}
-	r.HideCommonBtn = !r.HaveComment
+	r.HaveComment = allHasComment
+	r.HideCommonBtn = !allHasComment
 	if count > 0 { //如果有一条能评论的数据
 		r.HideCommonBtn = false
 	}
