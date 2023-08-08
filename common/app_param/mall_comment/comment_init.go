@@ -56,7 +56,7 @@ type (
 		ShowSkuComment bool                `json:"show_sku_comment"` //是否显示评论
 		CanComment     bool                `json:"-"`                //是否能够评论
 		HasComment     bool                `json:"has_comment"`      //是否已评论
-		HasAddComment  string              `json:"has_add_comment"`  //是否已追评
+		HasAddComment  bool                `json:"has_add_comment"`  //是否已追评
 		AddImages      []*CommentImageItem `json:"add_images"`       //追平图片
 	}
 
@@ -94,12 +94,25 @@ func (r *CommentForEdit) Default() (err error) {
 	if r.SkuList == nil {
 		r.SkuList = make([]*CommentSkuItem, 0)
 	}
+	var count = 0
 	for _, item := range r.SkuList {
 		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
 			item.ShowSkuComment = true
 		}
+		if item.ShowSkuComment {
+			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
+			if !item.HasComment { //如果商品已评论且已追平
+				count++
+			}
+		}
 	}
 	r.HideCommonBtn = !r.HaveComment
+	if count > 0 {
+		r.HideCommonBtn = true
+	}
+	if r.Anonymous == 0 {
+		r.Anonymous = CommentForEditAnonymousYes
+	}
 	return
 }
 
