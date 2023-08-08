@@ -103,11 +103,11 @@ func (r *CommentForEdit) Default() (err error) {
 		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
 			item.ShowSkuComment = true
 		}
-		if !item.HasComment { //如果有一个未评论
-			allHasComment = false
-		}
 		if !item.ShowSkuComment { //如果不展示
 			continue
+		}
+		if !item.HasComment { //如果有一个未评论
+			allHasComment = false
 		}
 		switch item.SkuInfo.SubStatus {
 		case parameters.OrderStatusGoodSendFinished: //已收货
