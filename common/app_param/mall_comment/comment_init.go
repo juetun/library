@@ -2,6 +2,7 @@ package mall_comment
 
 import (
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/order_create/parameters"
 	"github.com/juetun/library/common/app_param/upload_operate"
 )
 
@@ -100,10 +101,15 @@ func (r *CommentForEdit) Default() (err error) {
 			item.ShowSkuComment = true
 		}
 		if item.ShowSkuComment {
-			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-			if !item.HasComment { //如果商品已评论且已追平
-				count++
+
+			switch item.SkuInfo.SubStatus {
+			case parameters.OrderStatusGoodSendFinished, parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: //已收货 已评价 自动评价
+				//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
+				if !item.HasComment { //如果商品已评论
+					count++
+				}
 			}
+
 		}
 	}
 	r.HideCommonBtn = !r.HaveComment
