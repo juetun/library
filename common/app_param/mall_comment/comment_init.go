@@ -95,8 +95,9 @@ func (r *CommentForEdit) Default() (err error) {
 	if r.SkuList == nil {
 		r.SkuList = make([]*CommentSkuItem, 0)
 	}
-	var count = 0
-	var allHasComment = true
+	var hasCommentCount = 0    //当前有多少条已评论的商品数据
+	var allHasComment = true   //是否所有的商品已评论
+	var hasNotCommentCount = 0 // 没有评论的数据
 	for _, item := range r.SkuList {
 
 		if item.CanComment && !item.HasComment || (!r.ActComprehensive && item.CanComment && item.HasComment) {
@@ -111,21 +112,24 @@ func (r *CommentForEdit) Default() (err error) {
 		switch item.SkuInfo.SubStatus {
 		case parameters.OrderStatusGoodSendFinished: //已收货
 			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-			if !item.HasComment { //如果商品已评论
-				count++
+			if item.HasComment { //如果商品已评论
+				hasCommentCount++
+			} else {
+				hasNotCommentCount++
 			}
 		case parameters.OrderStatusHasComment, parameters.OrderStatusHasCommentAuto: // 已评价 自动评价
 			//if !(item.HasComment && item.HasAddComment) { //如果商品已评论且已追平
-			if !item.HasComment { //如果商品已评论
-				count++
+			if item.HasComment { //如果商品已评论
+				hasCommentCount++
 			}
 		}
 	}
 	r.HaveComment = allHasComment
 	r.HideCommonBtn = allHasComment
-	if count > 0 { //如果有一条能评论的数据
+	if hasNotCommentCount > 0 { //如果有未评论数据
 		r.HideCommonBtn = false
 	}
+
 	if r.Anonymous == 0 {
 		r.Anonymous = CommentForEditAnonymousYes
 	}
