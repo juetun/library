@@ -113,8 +113,8 @@ func (r *CommentForEdit) Default() (err error) {
 		}
 	}
 	r.HideCommonBtn = !r.HaveComment
-	if count > 0 {
-		r.HideCommonBtn = true
+	if count > 0 { //如果有一条能评论的数据
+		r.HideCommonBtn = false
 	}
 	if r.Anonymous == 0 {
 		r.Anonymous = CommentForEditAnonymousYes
