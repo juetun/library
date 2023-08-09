@@ -171,7 +171,8 @@ func getSkuPlatCoupon(skuSetPrice string, payAmount decimal.Decimal, couponAmoun
 	return
 }
 
-func (r *OrderPreview) GetMapRefundSkuData(mapRefundSkuData map[string]string, err error) {
+func (r *OrderPreview) GetMapRefundSkuData() (mapRefundSkuData map[string]string, err error) {
+	mapRefundSkuData = make(map[string]string, len(r.List)*20)
 	var (
 		skuRefund      *SkuRefund
 		mapPlatSpuSku  map[string]decimal.Decimal
