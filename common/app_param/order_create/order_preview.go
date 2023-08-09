@@ -16,6 +16,7 @@ import (
 type (
 	SkuRefund struct {
 		*OrderSkuPk
+		Pk       string          `json:"pk"`
 		SkuPrice decimal.Decimal `json:"sku_price"` //商品单价
 		SpuPlat  decimal.Decimal `json:"spu_plat"`  //商品维度每个Sku平台优惠
 		SpuShop  decimal.Decimal `json:"spu_shop"`  //商品维度每个Sku店铺优惠
@@ -202,17 +203,17 @@ func (r *OrderPreview) GetMapRefundSkuData() (mapRefundSkuData map[string]string
 
 			for _, sku := range spuInfo.Skus {
 				skuRefund = newSkuRefund()
-				if skuRefund.SkuPrice, err = decimal.NewFromString(sku.SkuPrice); err != nil {
+				skuRefund.SubOrderId = previewShopItems.SubOrderId
+				skuRefund.SpuId = sku.SpuId
+				skuRefund.SkuId = sku.SkuId
+				skuRefund.InitPk()
+				if skuRefund.SkuPrice, err = decimal.NewFromString(sku.SkuSetPrice); err != nil {
 					return
 				}
 				skuRefund.SetPlatCommonCoupon(mapPlatCommon)
 				skuRefund.SetWithShopCoupon(mapPlatShopSku, mapShopShopSku)
-				skuRefund.SubOrderId = previewShopItems.SubOrderId
-				skuRefund.SpuId = sku.SpuId
-				skuRefund.SkuId = sku.SkuId
 				skuRefund.SetWithSpuCoupon(mapPlatSpuSku, mapShopSpuSku)
-				pk = skuRefund.OrderSkuPk.GetPk()
-				mapRefundSkuData[pk] = skuRefund.calRefund()
+				mapRefundSkuData[skuRefund.Pk] = skuRefund.calRefund()
 
 			}
 		}
@@ -357,7 +358,7 @@ func (r *SkuRefund) SetPlatCommonCoupon(mapPlatCommon map[string]decimal.Decimal
 		tmp decimal.Decimal
 		ok  bool
 	)
-	if tmp, ok = mapPlatCommon[r.OrderSkuPk.GetPk()]; ok {
+	if tmp, ok = mapPlatCommon[r.Pk]; ok {
 		r.Plat = tmp
 	}
 
@@ -369,11 +370,10 @@ func (r *SkuRefund) SetWithShopCoupon(mapPlatShopSku map[string]decimal.Decimal,
 		tmp decimal.Decimal
 		ok  bool
 	)
-	pk := r.OrderSkuPk.GetPk()
-	if tmp, ok = mapPlatShopSku[pk]; ok {
+	if tmp, ok = mapPlatShopSku[r.Pk]; ok {
 		r.ShopPlat = tmp
 	}
-	if tmp, ok = mapShopShopSku[pk]; ok {
+	if tmp, ok = mapShopShopSku[r.Pk]; ok {
 		r.ShopShop = tmp
 	}
 	return
@@ -384,13 +384,20 @@ func (r *SkuRefund) SetWithSpuCoupon(mapPlatSpuSku map[string]decimal.Decimal, m
 		tmp decimal.Decimal
 		ok  bool
 	)
-	pk := r.OrderSkuPk.GetPk()
-	if tmp, ok = mapPlatSpuSku[pk]; ok {
+	if tmp, ok = mapPlatSpuSku[r.Pk]; ok {
 		r.SpuPlat = tmp
 	}
-	if tmp, ok = mapShopSpuSku[pk]; ok {
+	if tmp, ok = mapShopSpuSku[r.Pk]; ok {
 		r.SpuShop = tmp
 	}
+	return
+}
+
+func (r *SkuRefund) InitPk() {
+	if r.OrderSkuPk == nil {
+		r.OrderSkuPk = &OrderSkuPk{}
+	}
+	r.Pk = r.OrderSkuPk.GetPk()
 }
 
 func (r *OrderSkuPk) GetPk() (res string) {
