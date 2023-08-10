@@ -180,7 +180,6 @@ func (r *OrderPreview) GetMapRefundSkuData() (mapRefundSkuData map[string]string
 		mapShopSpuSku  map[string]decimal.Decimal
 		mapPlatShopSku map[string]decimal.Decimal
 		mapShopShopSku map[string]decimal.Decimal
-		pk             string
 		mapPlatCommon  map[string]decimal.Decimal
 	)
 	if mapPlatCommon, err = r.GetMapRefundCommonSkuData(); err != nil {
