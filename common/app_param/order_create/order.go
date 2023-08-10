@@ -107,13 +107,14 @@ type (
 	OrderSkuItem struct {
 		SkuName         string              `json:"sku_name"`
 		SpuId           string              `json:"spu_id"`
-		SkuId           string              `json:"sku_id"`      //购物车数据ID
-		SkuPic          string              `json:"sku_pic"`     // 图片
-		SkuStatus       int8                `json:"sku_status"`  // 商品状态
-		StatusName      string              `json:"status_name"` // 商品状态名称 (已下架)
-		Price           string              `json:"price"`       //单价
-		Num             int64               `json:"num"`         //商品数量
-		PriceCate       uint8               `json:"price_cate"`  //定金类型当前商品类型为定金预售时1-首付款 2-尾款
+		SkuId           string              `json:"sku_id"`        //购物车数据ID
+		SkuPic          string              `json:"sku_pic"`       // 图片
+		SkuStatus       int8                `json:"sku_status"`    // 商品状态
+		StatusName      string              `json:"status_name"`   // 商品状态名称 (已下架)
+		SkuSetPrice     string              `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
+		Price           string              `json:"price"`         //单价
+		Num             int64               `json:"num"`           //商品数量
+		PriceCate       uint8               `json:"price_cate"`    //定金类型当前商品类型为定金预售时1-首付款 2-尾款
 		PriceCateStr    string              `json:"price_cate_str"`
 		PriceCateName   string              `json:"price_cate_name"`
 		TotalPrice      string              `json:"total_price"`
@@ -204,7 +205,6 @@ func (r *ArgUseCouponData) Default(ctx *base.Context) (err error) {
 	return
 }
 
-
 func (r *ResultGetInfoByOrderItem) DataOrderUpdatePayType(payTypeString string) (err error) {
 	if payTypeString != "" {
 		var payType uint64
@@ -215,4 +215,3 @@ func (r *ResultGetInfoByOrderItem) DataOrderUpdatePayType(payTypeString string) 
 	}
 	return
 }
-
