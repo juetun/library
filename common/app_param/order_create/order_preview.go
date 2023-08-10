@@ -78,13 +78,14 @@ type (
 	PreviewSpuItems []*PreviewSpuItem
 	PreviewSkuItems []*PreviewSkuItem
 	PreviewSpuItem  struct {
-		SpuId        string             `json:"spu_id"`
-		Skus         PreviewSkuItems    `json:"skus"`                 // SKU信息
-		SpuCoupon    *mall.CanUseCoupon `json:"spu_coupon,omitempty"` // 店铺券信息
-		Count        int64              `json:"count"`                // 商品总数
-		TotalAmount  string             `json:"total_amount"`         // 该订单店铺总的金额
-		SaleType     uint8              `json:"sale_type"`
-		SaleTypeName string             `json:"sale_type_name"`
+		SpuId          string             `json:"spu_id"`
+		Skus           PreviewSkuItems    `json:"skus"`                 // SKU信息
+		SpuCoupon      *mall.CanUseCoupon `json:"spu_coupon,omitempty"` // 店铺券信息
+		Count          int64              `json:"count"`                // 商品总数
+		SpuTotalAmount string             `json:"spu_total_amount"`     // 商品总额
+		TotalAmount    string             `json:"total_amount"`         // 该订单店铺总的金额
+		SaleType       uint8              `json:"sale_type"`
+		SaleTypeName   string             `json:"sale_type_name"`
 	}
 	PreviewSkuItem struct {
 		app_param.ArgOrderFromCartItem
@@ -273,7 +274,15 @@ func (r *PreviewSpuItem) GetMapRefundSkuData(subOrderId string) (mapPlatSpuSku, 
 		pk                                                     string
 		totalAmountDecimal, platCouponAmount, shopCouponAmount decimal.Decimal
 	)
-	if totalAmountDecimal, err = decimal.NewFromString(r.TotalAmount); err != nil {
+
+	if r.SpuTotalAmount == "" {
+		r.SpuTotalAmount = "0.00"
+	}
+
+	if r.SpuTotalAmount == "0.00" {
+		r.SpuTotalAmount = r.TotalAmount
+	}
+	if totalAmountDecimal, err = decimal.NewFromString(r.SpuTotalAmount); err != nil {
 		return
 	}
 	if platCouponAmount, shopCouponAmount, err = r.getCouponAmount(); err != nil {
@@ -301,7 +310,7 @@ func (r *PreviewShopItem) GetMapRefundSkuData() (mapPlatShopSku map[string]decim
 		pk                                                     string
 		totalAmountDecimal, platCouponAmount, shopCouponAmount decimal.Decimal
 	)
-	if totalAmountDecimal, err = decimal.NewFromString(r.TotalAmount); err != nil {
+	if totalAmountDecimal, err = decimal.NewFromString(r.ProductAmount); err != nil {
 		return
 	}
 	if platCouponAmount, shopCouponAmount, err = r.getCouponAmount(); err != nil {
@@ -334,10 +343,15 @@ func (r *OrderPreview) GetMapRefundCommonSkuData() (mapPlatCommon map[string]dec
 	}
 
 	var (
-		couponAmount decimal.Decimal
-		pk           string
+		couponAmount  decimal.Decimal
+		productAmount decimal.Decimal
+		pk            string
 	)
 	if couponAmount, err = decimal.NewFromString(r.PlatCoupon.CurrentUse.Decr); err != nil {
+		return
+	}
+
+	if productAmount, err = decimal.NewFromString(r.ProductAmount); err != nil {
 		return
 	}
 	for _, previewShopItems := range r.List {
@@ -345,7 +359,7 @@ func (r *OrderPreview) GetMapRefundCommonSkuData() (mapPlatCommon map[string]dec
 			for _, sku := range spuInfo.Skus {
 				pk = (&OrderSkuPk{SubOrderId: previewShopItems.SubOrderId, SpuId: sku.SpuId, SkuId: sku.SkuId}).GetPk()
 
-				if mapPlatCommon[pk], err = getSkuPlatCoupon(sku.SkuSetPrice, r.AmountDecimal, couponAmount); err != nil {
+				if mapPlatCommon[pk], err = getSkuPlatCoupon(sku.SkuSetPrice, productAmount, couponAmount); err != nil {
 					return
 				}
 			}
