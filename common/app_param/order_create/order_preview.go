@@ -7,6 +7,7 @@ import (
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/freight"
+	"github.com/juetun/library/common/app_param/mall/models"
 	"github.com/juetun/library/common/app_param/pay_parameter"
 	"github.com/shopspring/decimal"
 	"strconv"
@@ -753,7 +754,14 @@ func (r *PreviewSkuItem) ParseOrderSkuItem(orderSkuItem *OrderSkuItem) {
 	r.Category = orderSkuItem.PriceCateStr
 	r.SaleType = orderSkuItem.SaleType
 	r.SaleTypeName = orderSkuItem.SaleTypeName
-	r.SkuPrice = orderSkuItem.Price
+
+	switch orderSkuItem.SaleType {
+	case models.SaleTypeDown: //如果时定金预售
+		r.SkuPrice = orderSkuItem.DownPayment
+	default:
+		r.SkuPrice = orderSkuItem.Price
+	}
+	r.SkuSetPrice = orderSkuItem.Price
 	r.SkuPropertyName = orderSkuItem.SkuPropertyName
 	r.Num = orderSkuItem.Num
 	return
