@@ -206,8 +206,10 @@ func (r *OrderPreview) GetMapRefundSkuData() (mapRefundSkuData map[string]string
 				skuRefund.SpuId = sku.SpuId
 				skuRefund.SkuId = sku.SkuId
 				skuRefund.InitPk()
-				if skuRefund.SkuPrice, err = decimal.NewFromString(sku.SkuSetPrice); err != nil {
-					return
+				if sku.SkuSetPrice != "" {
+					if skuRefund.SkuPrice, err = decimal.NewFromString(sku.SkuSetPrice); err != nil {
+						return
+					}
 				}
 				skuRefund.SetPlatCommonCoupon(mapPlatCommon)
 				skuRefund.SetWithShopCoupon(mapPlatShopSku, mapShopShopSku)
