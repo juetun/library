@@ -22,7 +22,7 @@ const (
 	OrderStatusHasCommentAuto uint8 = 56 // 自动评价
 
 	OrderStatusReturnMoney             uint8 = 60  // 申请退款
-	OrderStatusReturnMoneyApproving    uint8 = 65  // 退款审批中
+	OrderStatusReturnMoneyApproving    uint8 = 65  // 退款确认中
 	OrderStatusReturnMoneyClientSure   uint8 = 70  // 申请退款平台客服确认
 	OrderStatusReturnMoneyShopSure     uint8 = 80  // 申请退款商家确认
 	OrderStatusReturnMoneyGoodSending  uint8 = 90  // 申请退款货物退还发货中
@@ -90,7 +90,7 @@ var (
 		},
 		{
 			Value: OrderStatusReturnMoneyApproving,
-			Label: "退款审批中",
+			Label: "退款确认中",
 		},
 		{
 			Value: OrderStatusReturnMoneyClientSure,
