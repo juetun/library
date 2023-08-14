@@ -11,7 +11,7 @@ const (
 	OrderStatusPaying       uint8 = 20 // 付款中
 	OrderStatusCancel       uint8 = 24 // 已取消
 	OrderStatusPayFailure   uint8 = 25 // 付款失败
-	OrderStatusPayExpire       uint8 = 26 // 下单超时
+	OrderStatusPayExpire    uint8 = 26 // 下单超时
 	OrderStatusPayingFinish uint8 = 30 // 付款完成(待发货)
 
 	OrderStatusGoodWaiting      uint8 = 35 // 待发货
@@ -26,7 +26,7 @@ const (
 	OrderStatusReturnMoneyClientSure   uint8 = 70  // 申请退款平台客服确认
 	OrderStatusReturnMoneyShopSure     uint8 = 80  // 申请退款商家确认
 	OrderStatusReturnMoneyGoodSending  uint8 = 90  // 申请退款货物退还发货中
-	OrderStatusReturnMoneyGoodFinished uint8 = 100 // 退款货物签收
+	OrderStatusReturnMoneyGoodFinished uint8 = 95 // 退款货物签收
 	OrderStatusReturnMoneyPaying       uint8 = 11  // 申请退款中
 	OrderStatusReturnMoneyFinished     uint8 = 12  // 退款完成
 
@@ -94,11 +94,11 @@ var (
 		},
 		{
 			Value: OrderStatusReturnMoneyClientSure,
-			Label: "退款平台确认",
+			Label: "平台已确认退款",
 		},
 		{
 			Value: OrderStatusReturnMoneyShopSure,
-			Label: "商家已确认",
+			Label: "已确认退款单",
 		},
 		{
 			Value: OrderStatusReturnMoneyGoodSending,
