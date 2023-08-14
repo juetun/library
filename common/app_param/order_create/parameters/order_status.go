@@ -26,7 +26,7 @@ const (
 	OrderStatusReturnMoneyClientSure   uint8 = 70  // 申请退款平台客服确认
 	OrderStatusReturnMoneyShopSure     uint8 = 80  // 申请退款商家确认
 	OrderStatusReturnMoneyGoodSending  uint8 = 90  // 申请退款货物退还发货中
-	OrderStatusReturnMoneyGoodFinished uint8 = 100 // 退款货物收到
+	OrderStatusReturnMoneyGoodFinished uint8 = 100 // 退款货物签收
 	OrderStatusReturnMoneyPaying       uint8 = 11  // 申请退款中
 	OrderStatusReturnMoneyFinished     uint8 = 12  // 退款完成
 
@@ -98,7 +98,7 @@ var (
 		},
 		{
 			Value: OrderStatusReturnMoneyShopSure,
-			Label: "退款商家确认",
+			Label: "商家已确认",
 		},
 		{
 			Value: OrderStatusReturnMoneyGoodSending,
@@ -110,7 +110,7 @@ var (
 		},
 		{
 			Value: OrderStatusReturnMoneyGoodFinished,
-			Label: "退款收货完成",
+			Label: "退货签收",
 		},
 		{
 			Value: OrderStatusReturnMoneyFinished,
@@ -159,7 +159,7 @@ var StatusRelation = map[uint8]StatusNext{
 	OrderStatusReturnMoneyGoodSending: { // 申请退款发货中
 		OrderStatusReturnMoneyGoodFinished,
 	},
-	OrderStatusReturnMoneyGoodFinished: { // 退款货物收到
+	OrderStatusReturnMoneyGoodFinished: { // 退款货物签收
 		OrderStatusFinished,
 	},
 	OrderStatusReturnMoneyPaying: { // 申请退款中
