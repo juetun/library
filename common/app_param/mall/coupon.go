@@ -13,16 +13,21 @@ import (
 )
 
 const (
-	UserCouponStatusCanUse uint8 = iota + 1
-	UserCouponStatusNotUse
-	UserCouponStatusExpire
-	UserCouponStatusNotUsing //使用中
+	UserCouponStatusCanUse   uint8 = iota + 1 //能使用
+	UserCouponStatusNotUse                    //未使用
+	UserCouponStatusExpire                    //已过期
+	UserCouponStatusNotUsing                  //使用中
+	UserCouponStatusHasUse                    //已使用
 )
 
 var (
 	SliceUserCouponStatus = base.ModelItemOptions{
 		{
 			Label: "已使用",
+			Value: UserCouponStatusHasUse,
+		},
+		{
+			Label: "未使用",
 			Value: UserCouponStatusNotUse,
 		},
 		{
