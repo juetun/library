@@ -110,7 +110,7 @@ var (
 		},
 		{
 			Value: OrderStatusReturnMoneyGoodFinished,
-			Label: "退货签收",
+			Label: "退货已签收",
 		},
 		{
 			Value: OrderStatusReturnMoneyFinished,
