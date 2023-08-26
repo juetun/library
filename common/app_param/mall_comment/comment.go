@@ -59,6 +59,11 @@ type (
 	}
 )
 
+func NewOrderComment() (res *OrderComment) {
+	res = &OrderComment{ShopGoodBit: true, GoodBit: "100%", Comment: []*CommentItem{}}
+	return
+}
+
 func (r *ArgAddComment) Default(ctx *base.Context) (err error) {
 	if r.TimeNow.IsZero() {
 		r.TimeNow = base.GetNowTimeNormal()
