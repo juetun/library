@@ -7,11 +7,7 @@ type (
 		SpuIds            []string               `json:"spu_ids" form:"spu_ids"`
 		GetDataTypeCommon base.GetDataTypeCommon `json:"common"  form:"common"`
 	}
-	ResultSpuComment struct {
-		Code int                      `json:"code"`
-		Data map[string]*OrderComment `json:"data"`
-		Msg  string                   `json:"message"`
-	}
+	ResultSpuComment map[string]*OrderComment
 )
 
 func (r *ArgSpuComment) Default(ctx *base.Context) (err error) {
