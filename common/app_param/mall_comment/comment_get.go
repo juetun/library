@@ -14,7 +14,7 @@ type (
 	}
 )
 
-func (r *ArgSpuComment) Default(ctx *base.Context) {
+func (r *ArgSpuComment) Default(ctx *base.Context) (err error) {
 
 	return
 }
