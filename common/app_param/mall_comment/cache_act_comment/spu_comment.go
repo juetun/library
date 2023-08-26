@@ -145,7 +145,7 @@ func (r *CacheSpuCommentAction) getByIdsFromCache(ids ...string) (res map[string
 				return
 			}
 			noCacheIds = append(noCacheIds, id)
-			res[id] = &mall_comment.OrderComment{}
+			res[id] = mall_comment.NewOrderComment()
 		}
 	}
 	return
