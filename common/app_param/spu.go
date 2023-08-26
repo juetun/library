@@ -12,8 +12,8 @@ const (
 	SpuDataTypeSKusStock       = "spu_sku_stock"    // sku库存
 	SpuDataTypeSKusRelate      = "spu_sku_relate"   // sku关联属性
 	SpuDataTypeSKusProperty    = "spu_sku_property" // sku属性
-	SpuDataTypeFreightTemplate = "spu_freight"      //运费模板
-
+	SpuDataTypeFreightTemplate = "spu_freight"      // 运费模板
+	SpuDataTypeComment         = "comment"          // 评论信息（推荐或最近评论的信息）
 	/*****************************上传信息获取**********************************/
 	//SpuUploadAll          = "spu_img"         // 商品图片获取所有图片 (包括SpuImg前缀的属性如:SpuUploadImgThumbnail,SpuUploadImgPic,SpuSkuImg,SpuUploadDescription）
 	SpuUploadImgThumbnail = "spu_img_thumb"   // 商品缩略图
