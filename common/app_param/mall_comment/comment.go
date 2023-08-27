@@ -7,20 +7,21 @@ import (
 
 type (
 	UInfo struct {
-		Id         int64  `json:"id"`
-		Content    string `json:"content"`      //评论内容
-		NickName   string `json:"nickname"`     //用户昵称
-		Score      int    `json:"score"`        //评分
-		Avatar     string `json:"avatar"`       //用户头图
-		Time       string `json:"time"`         //评论时间
-		Size       string `json:"size"`         //购买商品属性详情
-		Replay     int64  `json:"replay"`       //评论回复数
-		Like       int64  `json:"like"`         //商品评论点赞赞数
-		SpuId      string `json:"spu_id"`       //商品SPU_ID
-		SkuId      string `json:"sku_id"`       //商品Sku_ID
-		OrderId    string `json:"order_id"`     //订单号
-		SubOrderId string `json:"sub_order_id"` //子单号
-		Num        int64  `json:"num"`          //商品数量
+		Id             int64  `json:"id"`
+		Content        string `json:"content"`          //评论内容
+		NickName       string `json:"nickname"`         //用户昵称
+		Score          int    `json:"score"`            //评分
+		Avatar         string `json:"avatar"`           //用户头图
+		Time           string `json:"time"`             //评论时间
+		Size           string `json:"size"`             //购买商品属性详情
+		Replay         int64  `json:"replay"`           //评论回复数
+		Like           int64  `json:"like"`             //商品评论点赞赞数
+		SpuId          string `json:"spu_id"`           //商品SPU_ID
+		SkuId          string `json:"sku_id"`           //商品Sku_ID
+		HaveExtComment bool   `json:"have_ext_comment"` //是否有追评
+		OrderId        string `json:"order_id"`         //订单号
+		SubOrderId     string `json:"sub_order_id"`     //子单号
+		Num            int64  `json:"num"`              //商品数量
 	}
 	CommentVideoItem struct {
 		Src             string `json:"src"` //视频源地址
