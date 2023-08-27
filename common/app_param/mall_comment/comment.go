@@ -8,23 +8,23 @@ import (
 type (
 	UInfo struct {
 		Content  string `json:"content"`
-		NickName string `json:"nickname"`
-		Score    int    `json:"score"`
-		Avatar   string `json:"avatar"`
-		Time     string `json:"time"`
+		NickName string `json:"nickname"` //用户昵称
+		Score    int    `json:"score"`    //评分
+		Avatar   string `json:"avatar"`   //用户头图
+		Time     string `json:"time"`     //评论时间
 		Size     string `json:"size"`
 		Replay   int64  `json:"replay"`
 		Like     int64  `json:"like"`
 	}
 	CommentVideoItem struct {
-		Src             string `json:"src"`
-		ext_up.ShowData        //视频地址
+		Src             string `json:"src"` //视频源地址
+		ext_up.ShowData                     //视频地址
 	}
 	CommentImageItem struct {
-		Src         string `json:"src"`
-		SmallImgUrl string `json:"smallImgUrl"`
-		BigImgUrl   string `json:"bigImgUrl"`
-		ImgUrl      string `json:"imgUrl"`
+		Src         string `json:"src"`         //原图
+		SmallImgUrl string `json:"smallImgUrl"` //小图
+		BigImgUrl   string `json:"bigImgUrl"`   //大图
+		ImgUrl      string `json:"imgUrl"`      //正常图片
 	}
 	CommentFollow struct {
 		Days    int      `json:"days"`
@@ -34,8 +34,8 @@ type (
 	CommentItem struct {
 		Videos   []*CommentVideoItem `json:"videos"` //视频
 		Images   []*CommentImageItem `json:"images"` //图片
-		Follow   CommentFollow       `json:"follow"`
-		UserInfo UInfo               `json:"info"` //用户信息
+		Follow   CommentFollow       `json:"follow"` //回复数据信息
+		UserInfo UInfo               `json:"info"`   //用户信息
 	}
 	OrderComment struct {
 		ShopGoodBit bool           `json:"shop_good_bit"` //是否展示好评度

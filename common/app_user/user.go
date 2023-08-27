@@ -13,8 +13,15 @@ import (
 
 //根据用户ID获取用户信息
 func GetUserByUIds(ctx *base.Context, userId []int64, dataTypes ...string) (res map[int64]*app_param.User, err error) {
+	var (
+		l = len(userId)
+	)
+	res = make(map[int64]*app_param.User, l)
+	if l == 0 {
+		return
+	}
 	var value = url.Values{}
-	var userHID = make([]string, 0, len(userId))
+	var userHID = make([]string, 0, l)
 	for _, value := range userId {
 		userHID = append(userHID, fmt.Sprintf("%d", value))
 	}
