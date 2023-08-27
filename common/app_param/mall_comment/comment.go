@@ -33,14 +33,15 @@ type (
 		ImgUrl      string `json:"imgUrl"`      //正常图片
 	}
 	CommentFollow struct {
-		Days    int      `json:"days"`    //追平和评论时间间隔
-		Content string   `json:"content"` //评论内容
-		Images  []string `json:"images"`  //评论图片
+		Days     int      `json:"days"`      //追平和评论时间间隔
+		Content  string   `json:"content"`   //评论内容
+		Images   []string `json:"images"`    //评论图片
+		ImageNum int64    `json:"image_num"` //追评图片数
 	}
 	CommentItem struct {
 		Videos   []*CommentVideoItem `json:"videos"` //视频
 		Images   []*CommentImageItem `json:"images"` //图片
-		Follow   CommentFollow       `json:"follow"` //回复数据信息
+		Follow   *CommentFollow      `json:"follow"` //回复数据信息
 		UserInfo UInfo               `json:"info"`   //用户信息
 	}
 	OrderComment struct {

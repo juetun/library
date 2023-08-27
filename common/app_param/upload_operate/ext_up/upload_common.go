@@ -21,8 +21,8 @@ type (
 	}
 
 	ShowData struct {
-		DefaultKey  string      `json:"default_key"`
-		PlayAddress PlayAddress `json:"address"`
+		DefaultKey  string      `json:"default_key"` //默认播放地址
+		PlayAddress PlayAddress `json:"address"`     //播放地址列表 （高清、普清、源地址等）
 	}
 	PlayAddress map[string]string
 )
