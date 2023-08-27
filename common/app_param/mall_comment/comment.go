@@ -7,7 +7,8 @@ import (
 
 type (
 	UInfo struct {
-		Content    string `json:"content"`
+		Id         int64  `json:"id"`
+		Content    string `json:"content"`      //评论内容
 		NickName   string `json:"nickname"`     //用户昵称
 		Score      int    `json:"score"`        //评分
 		Avatar     string `json:"avatar"`       //用户头图
