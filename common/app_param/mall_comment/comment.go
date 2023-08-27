@@ -12,9 +12,12 @@ type (
 		Score    int    `json:"score"`    //评分
 		Avatar   string `json:"avatar"`   //用户头图
 		Time     string `json:"time"`     //评论时间
-		Size     string `json:"size"`
-		Replay   int64  `json:"replay"`
-		Like     int64  `json:"like"`
+		Size     string `json:"size"`     //购买商品属性详情
+		Replay   int64  `json:"replay"`   //评论回复数
+		Like     int64  `json:"like"`     //商品评论点赞赞数
+		SpuId    string `json:"spu_id"`   //商品SPU_ID
+		SkuId    string `json:"sku_id"`   //商品Sku_ID
+		Num      int64  `json:"num"`      //商品数量
 	}
 	CommentVideoItem struct {
 		Src             string `json:"src"` //视频源地址
@@ -27,9 +30,9 @@ type (
 		ImgUrl      string `json:"imgUrl"`      //正常图片
 	}
 	CommentFollow struct {
-		Days    int      `json:"days"`
-		Content string   `json:"content"`
-		Images  []string `json:"images"`
+		Days    int      `json:"days"`    //追平和评论时间间隔
+		Content string   `json:"content"` //评论内容
+		Images  []string `json:"images"`  //评论图片
 	}
 	CommentItem struct {
 		Videos   []*CommentVideoItem `json:"videos"` //视频
