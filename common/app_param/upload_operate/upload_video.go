@@ -9,16 +9,26 @@ import (
 	"strings"
 )
 
+const (
+	VideoShowTypeSrc = "src" //源
+	VideoShowTypeHd  = "hd"  //高清
+	VideoShowTypeSd  = "sd"  //普清
+	VideoShowTypeLd  = "ld"  //低清
+)
+
 type (
 	UploadVideo struct {
 		ext_up.UploadCommon
-		ParseCodeStatus uint8  `json:"parse_code_status"` //转码状态
-		Src             string `json:"src"`               //源站地址
-		HD              string `json:"hd,omitempty"`      //高清
-		SD              string `json:"sd,omitempty"`      //标清
-		LD              string `json:"ld,omitempty"`      //普清
-		DefaultType     string `json:"default_type"`      //hd,sd,ld,src
-		Cover           string `json:"cover"`             //封面图
+		ParseCodeStatus uint8 `json:"parse_code_status"` //转码状态
+		VideoInfo
+	}
+	VideoInfo struct {
+		Src         string `json:"src"`          //源站地址
+		HD          string `json:"hd,omitempty"` //高清
+		SD          string `json:"sd,omitempty"` //标清
+		LD          string `json:"ld,omitempty"` //普清
+		DefaultType string `json:"default_type"` //hd,sd,ld,src
+		Cover       string `json:"cover"`        //封面图
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
 )
@@ -44,7 +54,7 @@ func (r *UploadVideo) InitDefaultType() {
 	}
 
 	if r.HD != "" {
-		r.DefaultType = "hd"
+		r.DefaultType = VideoShowTypeHd
 		return
 	}
 	r.DefaultType = "src"
@@ -53,13 +63,13 @@ func (r *UploadVideo) InitDefaultType() {
 func (r *UploadVideo) getSrc() (src string, err error) {
 	src = r.Src
 	switch r.DefaultType {
-	case "src", "":
+	case VideoShowTypeSrc, "":
 		src = r.Src
-	case "hd":
+	case VideoShowTypeHd:
 		src = r.HD
-	case "sd":
+	case VideoShowTypeSd:
 		src = r.SD
-	case "ld":
+	case VideoShowTypeLd:
 		src = r.LD
 	default:
 		err = fmt.Errorf("当前不支持你选择的商品转码类型(%s)", r.DefaultType)
@@ -116,27 +126,28 @@ func (r *UploadVideo) GetShowUrl() (res ext_up.ShowData) {
 	res = ext_up.ShowData{
 		PlayAddress: make(map[string]string, 7),
 	}
-	res.PlayAddress["src"] = r.Src
+
+	res.PlayAddress[VideoShowTypeSrc] = r.Src
 
 	if r.HD != "" {
-		res.PlayAddress["hd"] = r.HD
+		res.PlayAddress[VideoShowTypeHd] = r.HD
 	}
 	if r.SD != "" {
-		res.PlayAddress["sd"] = r.SD
+		res.PlayAddress[VideoShowTypeSd] = r.SD
 	}
 	if r.LD != "" {
-		res.PlayAddress["ld"] = r.LD
+		res.PlayAddress[VideoShowTypeLd] = r.LD
 	}
 	if r.Cover != "" {
 		res.PlayAddress["cover"] = r.Cover
 	}
 	if r.DefaultType != "" {
-		res.PlayAddress["default_type"] = r.DefaultType
-		if tmp, ok = res.PlayAddress[r.DefaultType]; ok {
+		res.DefaultKey = r.DefaultType
+		if tmp, ok = res.PlayAddress[res.DefaultKey]; ok {
 			res.PlayAddress["play_src"] = tmp
 		}
 		if tmp == "" {
-			res.PlayAddress["play_src"] = res.PlayAddress["src"]
+			res.PlayAddress["play_src"] = res.PlayAddress[VideoShowTypeSrc]
 		}
 	}
 	return
