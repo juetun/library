@@ -38,6 +38,7 @@ type (
 		Children      []*DataItem                `json:"children,omitempty"`    //子列表
 		ShowTime      string                     `json:"show_time,omitempty"`
 		OtherData     interface{}                `json:"other_data,omitempty"` //其他数据
+		Pk            string                     `json:"pk"`                   //数据的唯一KEy
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
