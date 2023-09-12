@@ -138,9 +138,8 @@ func (r *UploadVideo) GetShowUrl() (res ext_up.ShowData) {
 	if r.LD != "" {
 		res.PlayAddress[VideoShowTypeLd] = r.LD
 	}
-	if r.Cover != "" {
-		res.PlayAddress["cover"] = r.Cover
-	}
+	res.PlayAddress["cover"] = r.Cover
+	res.PlayAddress["type"] = "video/mp4"
 	if r.DefaultType != "" {
 		res.DefaultKey = r.DefaultType
 		if tmp, ok = res.PlayAddress[res.DefaultKey]; ok {
@@ -150,6 +149,15 @@ func (r *UploadVideo) GetShowUrl() (res ext_up.ShowData) {
 			res.PlayAddress["play_src"] = res.PlayAddress[VideoShowTypeSrc]
 		}
 	}
+	if playSrc, ok := res.PlayAddress["play_src"]; ok {
+		res.PlayAddress["type"] = r.getType(playSrc)
+	}
+	return
+}
+
+//TODO 待开发
+func (r *UploadVideo) getType(filePth string) (res string) {
+	res = "video/mp4"
 	return
 }
 
