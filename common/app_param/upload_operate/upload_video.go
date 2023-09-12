@@ -6,6 +6,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -158,6 +159,19 @@ func (r *UploadVideo) GetShowUrl() (res ext_up.ShowData) {
 //TODO 待开发
 func (r *UploadVideo) getType(filePth string) (res string) {
 	res = "video/mp4"
+	var extName string
+	if filePth != "" {
+		suffix := filepath.Ext(filePth)
+		if suffix != "" {
+			extName = strings.ToLower(suffix[1:])
+		}
+	}
+	switch strings.ToLower(extName) {
+	case "mp4":
+		res = "video/mp4"
+	case "webm":
+		res = "video/webm"
+	}
 	return
 }
 
