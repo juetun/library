@@ -7,6 +7,7 @@ import (
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/freight"
+	"github.com/juetun/library/common/app_param/mall/models"
 	"github.com/juetun/library/common/app_param/pay_parameter"
 	"github.com/shopspring/decimal"
 	"strconv"
@@ -89,22 +90,23 @@ type (
 	PreviewSkuItem struct {
 		app_param.ArgOrderFromCartItem
 		//Title          string          `json:"title"`
-		SkuName         string         `json:"sku_name"`
-		SkuPropertyName string         `json:"sku_property_name"`
-		SkuId           string         `json:"sku_id"`      //购物车数据ID
-		SkuPic          string         `json:"sku_pic"`     // 图片
-		SkuStatus       int8           `json:"sku_status"`  // 商品状态
-		StatusName      string         `json:"status_name"` // 商品状态名称 (已下架)
-		TotalPrice      string         `json:"total_price"`
-		SaleType        uint8          `json:"sale_type"`
-		SaleTypeName    string         `json:"sale_type_name"`
-		HaveVideo       bool           `json:"have_video"`   //是否有视频
-		Mark            string         `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
-		MarkSystem      string         `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
-		NotCanPay       bool           `json:"not_can_pay"`  //当前数据是否能够支付
-		Invalidation    bool           `json:"invalidation"` //是否失效 true-已失效 false-未失效
-		Checked         bool           `json:"checked"`      //是否选中
-		SpecialTags     []*DataItemTag `json:"special_tags"`
+		SkuName         string            `json:"sku_name"`
+		SkuPropertyName string            `json:"sku_property_name"`
+		SkuId           string            `json:"sku_id"`      //购物车数据ID
+		SkuPic          string            `json:"sku_pic"`     // 图片
+		SkuStatus       int8              `json:"sku_status"`  // 商品状态
+		StatusName      string            `json:"status_name"` // 商品状态名称 (已下架)
+		TotalPrice      string            `json:"total_price"`
+		SaleType        uint8             `json:"sale_type"`
+		SaleTypeName    string            `json:"sale_type_name"`
+		HaveVideo       bool              `json:"have_video"`   //是否有视频
+		Mark            string            `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
+		MarkSystem      string            `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
+		NotCanPay       bool              `json:"not_can_pay"`  //当前数据是否能够支付
+		Invalidation    bool              `json:"invalidation"` //是否失效 true-已失效 false-未失效
+		Checked         bool              `json:"checked"`      //是否选中
+		SpecialTags     []*DataItemTag    `json:"special_tags"`
+		TitleTags       []*models.PageTag `json:"title_tags"`
 
 		SortCreateTime base.TimeNormal `json:"-"`
 		SortWeight     int64           `json:"-"`
