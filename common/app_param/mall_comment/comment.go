@@ -1,6 +1,7 @@
 package mall_comment
 
 import (
+	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/upload_operate/ext_up"
 )
@@ -69,6 +70,21 @@ type (
 
 func NewOrderComment() (res *OrderComment) {
 	res = &OrderComment{ShopGoodBit: true, GoodBit: "100%", Comment: []*CommentItem{}}
+	return
+}
+
+func (r *OrderComment) UnmarshalBinary(data []byte) (err error) {
+	err = json.Unmarshal(data, r)
+	return
+}
+
+//实现 序列化方法 encoding.BinaryMarshaler
+func (r *OrderComment) MarshalBinary() (data []byte, err error) {
+	if r == nil {
+		data = []byte("{}")
+		return
+	}
+	data, err = json.Marshal(r)
 	return
 }
 
