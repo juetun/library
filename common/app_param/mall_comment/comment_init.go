@@ -62,21 +62,23 @@ type (
 	}
 
 	CommentSku struct {
-		SkuName      string        `json:"sku_name"`
-		SkuProperty  string        `json:"sku_property"`
-		ThumbnailURL string        `json:"thumbnail_url"`
-		SkuId        string        `json:"sku_id"`
-		SkuNum       int64         `json:"sku_num"`
-		SpuId        string        `json:"spu_id"`
-		ShopId       int64         `json:"shop_id"`
-		Status       uint8         `json:"status"`     //订单状态
-		SubStatus    uint8         `json:"sub_status"` //子单状态
-		Price        string        `json:"price"`
-		SaleType     uint8         `json:"sale_type"`
-		SaleTypeName string        `json:"sale_type_name"`
-		HaveGift     uint8         `json:"have_gift"`
-		Gifts        []*CommentSku `json:"gifts,omitempty"` //赠品
-		Href         interface{}   `json:"href"`
+		SkuName       string        `json:"sku_name"`
+		SkuProperty   string        `json:"sku_property"`
+		ThumbnailURL  string        `json:"thumbnail_url"`
+		SkuId         string        `json:"sku_id"`
+		SkuNum        int64         `json:"sku_num"`
+		SpuId         string        `json:"spu_id"`
+		ShopId        int64         `json:"shop_id"`
+		Status        uint8         `json:"status"` //订单状态
+		StatusName    string        `json:"status_name"`
+		SubStatus     uint8         `json:"sub_status"` //子单状态
+		SubStatusName string        `json:"sub_status_name"`
+		Price         string        `json:"price"`
+		SaleType      uint8         `json:"sale_type"`
+		SaleTypeName  string        `json:"sale_type_name"`
+		HaveGift      uint8         `json:"have_gift"`
+		Gifts         []*CommentSku `json:"gifts,omitempty"` //赠品
+		Href          interface{}   `json:"href"`
 	}
 )
 
