@@ -55,7 +55,7 @@ type (
 		CommentAt      string              `json:"comment_at"`       //评论时间
 		AddComment     string              `json:"add_comment"`      //追平内容
 		ShowSkuComment bool                `json:"show_sku_comment"` //是否显示评论
-		CanComment     bool                `json:"-"`                //是否能够评论
+		CanComment     bool                `json:"can_comment"`      //是否能够评论
 		HasComment     bool                `json:"has_comment"`      //是否已评论
 		HasAddComment  bool                `json:"has_add_comment"`  //是否已追评
 		AddImages      []*CommentImageItem `json:"add_images"`       //追平图片
