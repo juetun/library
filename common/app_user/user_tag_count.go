@@ -9,16 +9,22 @@ import (
 )
 
 const (
-	UseTagUnReadMsgCount = "unread_msg"         //未读消息
-	UseTagCartNumCount   = "cart_num_msg"       //购物车数量
-	UseTagAttendedCount  = "attended_num"       //粉丝数
-	UseTagMyAttendCount  = "my_attend"          //我关注数量
-	UseTagLoveCount      = "my_love"            //我的点赞数
-	UseTagSeeCount       = "my_see"             //我的喜欢(浏览)
-	UseCollectCount      = "my_collect"         //我的收藏
-	UseCanUseCouponCount = "can_use_coupon_num" //可用优惠券数量
-	UseTagScoreCount     = "score_num"          //积分数
-	UseTagExportCount    = "export_num"         //导出数据未下载的数量
+	UserTagUnReadMsgCount = "unread_msg"     //未读消息
+	UserTagCartNumCount   = "cart_num"       //购物车数量
+	UserTagAttendedCount  = "att_num"        //粉丝数
+	UserTagMyAttendCount  = "att"            //我关注数量
+	UserTagLoveCount      = "love"           //我的点赞数
+	UserTagSeeCount       = "see"            //我的喜欢(浏览)
+	UserCollectCount      = "collect"        //我的收藏
+	UserCanUseCouponCount = "can_use_coupon" //可用优惠券数量
+	UserTagScoreCount     = "score"          //积分数
+	UserTagExportCount    = "export"         //导出数据未下载的数量
+	UserTagHomeFlag       = "uhome"          //用户主页是否点显示 0-不显示 1-显示
+
+	UserTagOrderNotPay          = "not_pay"      //未付款订单数
+	UserTagOrderWaitingSendGood = "wait_send"    //待发货订单数
+	UserTagOrderWaitingComment  = "wait_comment" //待评价
+	UserTagOrderRefund          = "not_over_rf"  //未完成退款单
 )
 
 const (
@@ -34,7 +40,7 @@ type (
 )
 
 func getUserTagKeyByUid(userHid int64) (res string) {
-	res = fmt.Sprintf("u:tag:%v", userHid)
+	res = fmt.Sprintf("usr:tag:%v", userHid)
 	return
 }
 
@@ -53,18 +59,25 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 	if len(data) == 0 {
 		return
 	}
-	var ctxt context.Context
-	if len(ctxs) == 0 {
-		ctxt = context.TODO()
-	} else {
-		ctxt = ctxs[0]
-	}
+	var ctxt = getCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
+	var l = len(data)
+	var dataListMap = make(map[int64][]interface{}, l)
 	for _, item := range data {
-		if err = cacheClient.HSet(ctxt, getUserTagKeyByUid(item.UserHid), item.TagKey, item.Count).Err(); err != nil {
-			return
+		if _, ok := dataListMap[item.UserHid]; !ok {
+			dataListMap[item.UserHid] = make([]interface{}, 0, l*2)
 		}
+		dataListMap[item.UserHid] = append(dataListMap[item.UserHid], item.Count)
 	}
+
+	//批量将数据写入redis
+	for userHid, items := range dataListMap {
+		if len(items) == 0 {
+			continue
+		}
+		_ = cacheClient.HMSet(ctxt, getUserTagKeyByUid(userHid), items...).Err()
+	}
+
 	return
 }
 
@@ -84,12 +97,7 @@ func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...cont
 		}, "GetUseTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt context.Context
-	if len(ctxs) == 0 {
-		ctxt = context.TODO()
-	} else {
-		ctxt = ctxs[0]
-	}
+	var ctxt = getCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var e error
 	if count, e = cacheClient.
@@ -98,5 +106,46 @@ func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...cont
 		err = e
 		return
 	}
+	return
+}
+
+//获取多个店铺的多个标签
+func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ctxs ...context.Context) (resUserIdValue map[int64]map[string]float64, err error) {
+	lUserHId := len(userHIds)
+	resUserIdValue = make(map[int64]map[string]float64, lUserHId)
+	if lUserHId == 0 || len(tagKeys) == 0 {
+		return
+	}
+	defer func() {
+		if err == nil || ctx == nil {
+			return
+		}
+		ctx.Error(map[string]interface{}{
+			"userHIds": userHIds,
+			"tagKeys":  tagKeys,
+			"err":      err.Error(),
+		}, "GetUsersTagsCount")
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
+	}()
+	var ctxt = getCtxWithMany(ctxs...)
+
+	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
+
+	for _, userHId := range userHIds {
+		var e error
+		var result []interface{}
+		if result, e = cacheClient.
+			HMGet(ctxt, getUserTagKeyByUid(userHId), tagKeys...).Result(); e != nil && e != redis.Nil {
+			err = e
+			return
+		}
+		resUserIdValue[userHId] = getUserTagKeysValue(result, tagKeys)
+	}
+
+	return
+}
+
+func getUserTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
+
 	return
 }
