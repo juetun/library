@@ -60,13 +60,14 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		}
 		dataListMap[item.ShopId] = append(dataListMap[item.ShopId], item.Count)
 	}
-
+	var cacheKey string
 	//批量将数据写入redis
 	for shopId, items := range dataListMap {
 		if len(items) == 0 {
 			continue
 		}
-		_ = cacheClient.HMSet(ctxt, getShopTagKeyByUid(shopId), items...).Err()
+		cacheKey = getShopTagKeyByUid(shopId)
+		_ = cacheClient.HMSet(ctxt, cacheKey, items...).Err()
 	}
 	return
 }
@@ -139,13 +140,22 @@ func GetShopsTagsCount(ctx *base.Context, shopIds []int64, tagKeys []string, ctx
 			err = e
 			return
 		}
-		resShopIdValue[shopId] = getTagKeysValue(result, tagKeys)
+		resShopIdValue[shopId] = getShopTagKeysValue(result, tagKeys)
 	}
 
 	return
 }
 
-func getTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
-
+func getShopTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
+	for k, item := range result {
+		if item != nil {
+			switch item.(type) {
+			case int64:
+				res[tagKeys[k]] = float64(item.(int64))
+			case float64:
+				res[tagKeys[k]] = item.(float64)
+			}
+		}
+	}
 	return
 }

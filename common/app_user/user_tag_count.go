@@ -69,13 +69,14 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 		}
 		dataListMap[item.UserHid] = append(dataListMap[item.UserHid], item.Count)
 	}
-
+	var cacheKey string
 	//批量将数据写入redis
 	for userHid, items := range dataListMap {
 		if len(items) == 0 {
 			continue
 		}
-		_ = cacheClient.HMSet(ctxt, getUserTagKeyByUid(userHid), items...).Err()
+		cacheKey = getUserTagKeyByUid(userHid)
+		_ = cacheClient.HMSet(ctxt, cacheKey, items...).Err()
 	}
 
 	return
@@ -100,8 +101,9 @@ func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...cont
 	var ctxt = getCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var e error
+	var cacheKey = getUserTagKeyByUid(useHid)
 	if count, e = cacheClient.
-		HGet(ctxt, getUserTagKeyByUid(useHid), tagKey).
+		HGet(ctxt, cacheKey, tagKey).
 		Float64(); e != nil && e != redis.Nil {
 		err = e
 		return
@@ -130,12 +132,13 @@ func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ct
 	var ctxt = getCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
-
+	var cacheKey string
 	for _, userHId := range userHIds {
 		var e error
 		var result []interface{}
+		cacheKey = getUserTagKeyByUid(userHId)
 		if result, e = cacheClient.
-			HMGet(ctxt, getUserTagKeyByUid(userHId), tagKeys...).Result(); e != nil && e != redis.Nil {
+			HMGet(ctxt, cacheKey, tagKeys...).Result(); e != nil && e != redis.Nil {
 			err = e
 			return
 		}
@@ -146,6 +149,15 @@ func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ct
 }
 
 func getUserTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
-
+	for k, item := range result {
+		if item != nil {
+			switch item.(type) {
+			case int64:
+				res[tagKeys[k]] = float64(item.(int64))
+			case float64:
+				res[tagKeys[k]] = item.(float64)
+			}
+		}
+	}
 	return
 }
