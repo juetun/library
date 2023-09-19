@@ -36,16 +36,25 @@ func getShopTagKeyByUid(userHid int64) (res string) {
 
 //设置用户的tag标签值
 func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Context) (err error) {
+	otherData := make(map[string]interface{})
 	defer func() {
+		ctx.Info(map[string]interface{}{
+			"data":      data,
+			"otherData": otherData,
+			"err":       err.Error(),
+		}, "SetShopTagCount")
 		if err == nil || ctx == nil {
 			return
 		}
 		ctx.Error(map[string]interface{}{
-			"data": data,
-			"err":  err.Error(),
+			"data":      data,
+			"otherData": otherData,
+			"err":       err.Error(),
 		}, "SetShopTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
+
+	err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	if len(data) == 0 {
 		return
 	}
@@ -61,13 +70,16 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		dataListMap[item.ShopId] = append(dataListMap[item.ShopId], item.Count)
 	}
 	var cacheKey string
+	var e error
 	//批量将数据写入redis
 	for shopId, items := range dataListMap {
 		if len(items) == 0 {
 			continue
 		}
 		cacheKey = getShopTagKeyByUid(shopId)
-		_ = cacheClient.HMSet(ctxt, cacheKey, items...).Err()
+		if e = cacheClient.HMSet(ctxt, cacheKey, items...).Err(); e != nil {
+			otherData[fmt.Sprintf("%v", shopId)] = e.Error()
+		}
 	}
 	return
 }
