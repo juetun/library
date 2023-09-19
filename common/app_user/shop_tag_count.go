@@ -6,6 +6,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"strconv"
 )
 
 const (
@@ -51,7 +52,7 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 
- 	if len(data) == 0 {
+	if len(data) == 0 {
 		return
 	}
 	var ctxt = getCtxWithMany(ctxs...)
@@ -162,6 +163,8 @@ func getShopTagKeysValue(result []interface{}, tagKeys []string) (res map[string
 				res[tagKeys[k]] = float64(item.(int64))
 			case float64:
 				res[tagKeys[k]] = item.(float64)
+			case string:
+				res[tagKeys[k]], _ = strconv.ParseFloat(item.(string), 64)
 			}
 		}
 	}

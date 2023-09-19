@@ -6,6 +6,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"strconv"
 )
 
 const (
@@ -158,6 +159,8 @@ func getUserTagKeysValue(result []interface{}, tagKeys []string) (res map[string
 				res[tagKeys[k]] = float64(item.(int64))
 			case float64:
 				res[tagKeys[k]] = item.(float64)
+			case string:
+				res[tagKeys[k]], _ = strconv.ParseFloat(item.(string), 64)
 			}
 		}
 	}
