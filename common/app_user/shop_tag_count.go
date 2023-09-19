@@ -38,18 +38,17 @@ func getShopTagKeyByUid(userHid int64) (res string) {
 func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Context) (err error) {
 	otherData := make(map[string]interface{})
 	defer func() {
-		ctx.Info(map[string]interface{}{
-			"data":      data,
-			"otherData": otherData,
-		}, "SetShopTagCount")
+
 		if err == nil || ctx == nil {
 			return
+		} else if err != nil {
+			ctx.Error(map[string]interface{}{
+				"data":      data,
+				"otherData": otherData,
+				"err":       err.Error(),
+			}, "SetShopTagCount")
 		}
-		ctx.Error(map[string]interface{}{
-			"data":      data,
-			"otherData": otherData,
-			"err":       err.Error(),
-		}, "SetShopTagCount")
+
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 

@@ -49,11 +49,13 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 	defer func() {
 		if err == nil || ctx == nil {
 			return
+		} else if err != nil {
+			ctx.Error(map[string]interface{}{
+				"data": data,
+				"err":  err.Error(),
+			}, "SetUseTagCount")
 		}
-		ctx.Error(map[string]interface{}{
-			"data": data,
-			"err":  err.Error(),
-		}, "SetUseTagCount")
+
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 	if len(data) == 0 {
