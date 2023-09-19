@@ -156,6 +156,7 @@ func GetShopsTagsCount(ctx *base.Context, shopIds []int64, tagKeys []string, ctx
 }
 
 func getShopTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
+	res = make(map[string]float64, len(result))
 	for k, item := range result {
 		if item != nil {
 			switch item.(type) {

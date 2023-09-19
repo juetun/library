@@ -152,6 +152,7 @@ func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ct
 }
 
 func getUserTagKeysValue(result []interface{}, tagKeys []string) (res map[string]float64) {
+	res = make(map[string]float64, len(result))
 	for k, item := range result {
 		if item != nil {
 			switch item.(type) {
