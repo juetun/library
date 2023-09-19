@@ -48,12 +48,10 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 				"err":       err.Error(),
 			}, "SetShopTagCount")
 		}
-
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
 
-	err = base.NewErrorRuntime(err, base.ErrorRedisCode)
-	if len(data) == 0 {
+ 	if len(data) == 0 {
 		return
 	}
 	var ctxt = getCtxWithMany(ctxs...)
