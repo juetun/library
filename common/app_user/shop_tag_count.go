@@ -41,7 +41,6 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		ctx.Info(map[string]interface{}{
 			"data":      data,
 			"otherData": otherData,
-			"err":       err.Error(),
 		}, "SetShopTagCount")
 		if err == nil || ctx == nil {
 			return
@@ -67,7 +66,7 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		if _, ok := dataListMap[item.ShopId]; !ok {
 			dataListMap[item.ShopId] = make([]interface{}, 0, l*2)
 		}
-		dataListMap[item.ShopId] = append(dataListMap[item.ShopId], item.Count)
+		dataListMap[item.ShopId] = append(dataListMap[item.ShopId], item.TagKey, item.Count)
 	}
 	var cacheKey string
 	var e error

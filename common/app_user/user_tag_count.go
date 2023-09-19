@@ -67,7 +67,7 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 		if _, ok := dataListMap[item.UserHid]; !ok {
 			dataListMap[item.UserHid] = make([]interface{}, 0, l*2)
 		}
-		dataListMap[item.UserHid] = append(dataListMap[item.UserHid], item.Count)
+		dataListMap[item.UserHid] = append(dataListMap[item.UserHid], item.TagKey, item.Count)
 	}
 	var cacheKey string
 	//批量将数据写入redis
