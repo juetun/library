@@ -29,6 +29,7 @@ const (
 	OrderStatusReturnMoneyGoodFinished uint8 = 95 // 退款货物签收
 	OrderStatusReturnMoneyPaying       uint8 = 11  // 申请退款中
 	OrderStatusReturnMoneyFinished     uint8 = 12  // 退款完成
+	OrderStatusReturnMoneyCancel     uint8 = 13  // 退款取消
 
 	OrderStatusFinished uint8 = 100 // 订单结束
 	OrderStatusError    uint8 = 110 // 订单支付数据异常
@@ -107,6 +108,10 @@ var (
 		{
 			Value: OrderStatusReturnMoneyPaying,
 			Label: "申请退款中",
+		},
+		{
+			Value: OrderStatusReturnMoneyCancel,
+			Label: "取消退款",
 		},
 		{
 			Value: OrderStatusReturnMoneyGoodFinished,
