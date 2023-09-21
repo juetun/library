@@ -123,7 +123,7 @@ var (
 		},
 		{
 			Value: OrderStatusFinished,
-			Label: "订单结束",
+			Label: "订单完成",
 		},
 		{
 			Value: OrderStatusError,
