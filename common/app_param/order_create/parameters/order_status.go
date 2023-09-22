@@ -178,6 +178,12 @@ var StatusRelation = map[uint8]StatusNext{
 	OrderStatusGoodWaiting: { //待发货
 		OrderStatusGoodSending,
 	},
+	OrderStatusGoodSendAutoFinished: { //自动收货
+		OrderStatusHasComment,     //手工评论
+		OrderStatusHasCommentAuto, //自动评论
+		OrderStatusFinished,
+		OrderStatusReturnMoney,
+	},
 	OrderStatusGoodSendFinished: { //已收货
 		OrderStatusHasComment,     //手工评论
 		OrderStatusHasCommentAuto, //自动评论
