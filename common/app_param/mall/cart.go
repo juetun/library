@@ -18,8 +18,7 @@ type (
 		SkuId              string          `json:"sku_id" form:"sku_id"`
 		Num                int64           `json:"num" form:"num"`
 		Price              string          `json:"price" form:"price"`
-		FinalPrice         string          `json:"final_price" form:"final_price"`
-		Gifts              string          `json:"gifts" form:"gifts"`
+		SkuSetPrice        string          `json:"sku_set_price" form:"sku_set_price"`
 		Status             uint8           `json:"status" form:"status"`
 		SaleOnlineTime     base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
 		SaleOverTime       base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
