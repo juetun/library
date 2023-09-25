@@ -22,6 +22,9 @@ type (
 		SaleOnlineTime base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
 		SaleOverTime   base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
 	}
+	ResultPreInfoInit struct {
+		Result bool `json:"result"`
+	}
 )
 
 func (r *ArgPreInfoInit) Default(ctx *base.Context) (err error) {
