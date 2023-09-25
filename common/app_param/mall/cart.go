@@ -9,20 +9,20 @@ type (
 		SKus    []PreInfoInitSku `json:"skus" form:"skus"`
 	}
 	PreInfoInitSku struct {
-		FirstOrderId    string          `json:"first_order_id" form:"first_order_id"`
-		FirstSubOrderId string          `json:"first_sub_order_id" form:"first_sub_order_id"`
-		FinalOrderId    string          `json:"final_order_id" form:"final_order_id"`
-		FinalSubOrderId string          `json:"final_sub_order_id" form:"final_sub_order_id"`
-		ShopId          string          `json:"shop_id" form:"shop_id"`
-		SpuId           string          `json:"product_id" form:"product_id"`
-		SkuId           string          `json:"sku_id" form:"sku_id"`
-		Num             int64           `json:"num" form:"num"`
-		Price           string          `json:"price" form:"price"`
-		FinalPrice      string          `json:"final_price" form:"final_price"`
-		Gifts           string          `json:"gifts" form:"gifts"`
-		Status          uint8           `json:"status" form:"status"`
-		SaleOnlineTime  base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
-		SaleOverTime    base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
+		SrcFirstOrderId    string          `json:"src_first_order_id" form:"src_first_order_id"`
+		SrcFirstSubOrderId string          `json:"src_first_sub_order_id" form:"src_first_sub_order_id"`
+		FinalOrderId       string          `json:"final_order_id" form:"final_order_id"`
+		FinalSubOrderId    string          `json:"final_sub_order_id" form:"final_sub_order_id"`
+		ShopId             string          `json:"shop_id" form:"shop_id"`
+		SpuId              string          `json:"product_id" form:"product_id"`
+		SkuId              string          `json:"sku_id" form:"sku_id"`
+		Num                int64           `json:"num" form:"num"`
+		Price              string          `json:"price" form:"price"`
+		FinalPrice         string          `json:"final_price" form:"final_price"`
+		Gifts              string          `json:"gifts" form:"gifts"`
+		Status             uint8           `json:"status" form:"status"`
+		SaleOnlineTime     base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
+		SaleOverTime       base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
 	}
 	ResultPreInfoInit struct {
 		Result bool `json:"result"`
