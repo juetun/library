@@ -15,6 +15,7 @@ type (
 		FinalSubOrderId    string          `json:"final_sub_order_id" form:"final_sub_order_id"`
 		ShopId             string          `json:"shop_id" form:"shop_id"`
 		SpuId              string          `json:"product_id" form:"product_id"`
+		Gifts              string          `json:"gifts" form:"gifts"` //赠品信息
 		SkuId              string          `json:"sku_id" form:"sku_id"`
 		Num                int64           `json:"num" form:"num"`
 		Price              string          `json:"price" form:"price"`
