@@ -4,9 +4,9 @@ import "github.com/juetun/base-wrapper/lib/base"
 
 type (
 	ArgPreInfoInit struct {
-		UserHid int64            `json:"user_hid" form:"user_hid"`
-		TimeNow base.TimeNormal  `json:"time_now" form:"time_now"`
-		SKus    []PreInfoInitSku `json:"skus" form:"skus"`
+		UserHid int64             `json:"user_hid" form:"user_hid"`
+		TimeNow base.TimeNormal   `json:"time_now" form:"time_now"`
+		SKus    []*PreInfoInitSku `json:"skus" form:"skus"`
 	}
 	PreInfoInitSku struct {
 		SrcFirstOrderId    string          `json:"src_first_order_id" form:"src_first_order_id"`
