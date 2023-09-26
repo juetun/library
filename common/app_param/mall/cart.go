@@ -2,6 +2,38 @@ package mall
 
 import "github.com/juetun/base-wrapper/lib/base"
 
+
+
+const (
+	CartPrSaleStatusInit      = iota + 1 //初始化
+	CartPrSaleStatusPayFirst             //已付定金
+	CartPrSaleStatusPayFinal             //已付尾款
+	CartPrSaleStatusPayExpire            //支付尾款超时
+)
+
+var (
+	//预售状态
+	SlicePrSaleCartStatus = base.ModelItemOptions{
+		{
+			Label: "初始化",
+			Value: CartPrSaleStatusInit,
+		},
+		{
+			Label: "已付定金",
+			Value: CartPrSaleStatusPayFirst,
+		},
+		{
+			Label: "已付尾款",
+			Value: CartPrSaleStatusPayFinal,
+		},
+		{
+			Label: "尾款支付超时",
+			Value: CartPrSaleStatusPayExpire,
+		},
+	}
+)
+
+
 type (
 	ArgPreInfoInit struct {
 		UserHid int64             `json:"user_hid" form:"user_hid"`
