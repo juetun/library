@@ -102,6 +102,7 @@ type (
 		SaleTypeName    string            `json:"sale_type_name"`
 		HaveVideo       bool              `json:"have_video"`   //是否有视频
 		Mark            string            `json:"mark"`         //商品说明（如 比着加入有无车时降价多少）
+		TimeMark        string            `json:"time_mark"`    //时间备注
 		MarkSystem      string            `json:"mark_system"`  //数据不合法 系统说明(系统使用，记录更详细不合法原因)
 		NotCanPay       bool              `json:"not_can_pay"`  //当前数据是否能够支付
 		Invalidation    bool              `json:"invalidation"` //是否失效 true-已失效 false-未失效
