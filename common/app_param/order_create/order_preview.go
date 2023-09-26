@@ -50,6 +50,7 @@ type (
 		DeductionAmount    string                             `json:"deduction_amount"`      //代金券抵扣金额
 		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息 （店铺维度优惠）
 		List               PreviewShopItems                   `json:"list"`                  // SKU
+		DisabledPay        bool                               `json:"disabled_pay"`          //是否能够支付 true-不能支付 false-能支付
 	}
 	PreviewShopItems []*PreviewShopItem
 	PreviewShopItem  struct {
