@@ -50,6 +50,7 @@ type (
 		DeductionAmount    string                             `json:"deduction_amount"`      //代金券抵扣金额
 		PlatCoupon         *mall.CanUseCouponItem             `json:"plat_coupon,omitempty"` //平台券信息 （店铺维度优惠）
 		List               PreviewShopItems                   `json:"list"`                  // SKU
+		ActType            uint8                              `json:"act_type"`              //1-首款（默认） 2-尾款（定金预售）
 		DisabledPay        bool                               `json:"disabled_pay"`          //是否能够支付 true-不能支付 false-能支付
 	}
 	PreviewShopItems []*PreviewShopItem
@@ -72,9 +73,9 @@ type (
 		SettlementAmount   string             `json:"settlement_amount"`     //结算金额
 		ShopCoupon         *mall.CanUseCoupon `json:"shop_coupon,omitempty"` // 店铺券信息
 		Products           PreviewSpuItems    `json:"products"`              // 商品列表
-
-		SortCreateTime time.Time `json:"-"`
-		SortWeight     int64     `json:"-"` //排序权重
+		ActType            uint8              `json:"act_type"`              //1-首款（默认） 2-尾款（定金预售）
+		SortCreateTime     time.Time          `json:"-"`
+		SortWeight         int64              `json:"-"` //排序权重
 	}
 	PreviewSpuItems []*PreviewSpuItem
 	PreviewSkuItems []*PreviewSkuItem

@@ -2,8 +2,6 @@ package mall
 
 import "github.com/juetun/base-wrapper/lib/base"
 
-
-
 const (
 	CartPrSaleStatusInit      = iota + 1 //初始化
 	CartPrSaleStatusPayFirst             //已付定金
@@ -11,7 +9,23 @@ const (
 	CartPrSaleStatusPayExpire            //支付尾款超时
 )
 
+const (
+	OrderActTypeFirst uint8 = iota + 1 //首款
+	OrderActTypeFinal                  //尾款
+)
+
 var (
+	SliceOrderActType = base.ModelItemOptions{
+		{
+			Label: "首付款",
+			Value: OrderActTypeFirst,
+		},
+		{
+
+			Label: "尾款",
+			Value: OrderActTypeFinal,
+		},
+	}
 	//预售状态
 	SlicePrSaleCartStatus = base.ModelItemOptions{
 		{
@@ -32,7 +46,6 @@ var (
 		},
 	}
 )
-
 
 type (
 	ArgPreInfoInit struct {
