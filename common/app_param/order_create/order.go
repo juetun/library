@@ -84,6 +84,7 @@ type (
 		PlatDiscountAmount string           `json:"plat_discount_amount"` //平台优惠金额
 		PayCharge          string           `json:"pay_charge"`           //支付需要手续费
 		Mark               string           `json:"mark"`                 //备注
+		ActType            uint8            `json:"act_type"`             //1-首付款 或2-尾款
 	}
 
 	OrderShopItem struct {
@@ -101,6 +102,7 @@ type (
 		PlatDiscountAmount string           `json:"plat_discount_amount"` // 平台优惠总金额 (店铺维度优惠+SPU维度优惠)
 		SubOrderId         string           `json:"sub_order_id"`         // 子单号
 		Mark               string           `json:"mark"`                 // 备注
+		ActType            uint8            `json:"act_type"`             //1-首付款 或2-尾款
 		SortWeight         int64            `json:"-"`                    // 排序权重
 	}
 
