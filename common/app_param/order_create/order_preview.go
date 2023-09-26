@@ -110,9 +110,10 @@ type (
 		Checked         bool              `json:"checked"`      //是否选中
 		SpecialTags     []*DataItemTag    `json:"special_tags"`
 		TitleTags       []*models.PageTag `json:"title_tags"`
+		ActType         uint8             `json:"act_type"`
 
-		SortCreateTime base.TimeNormal `json:"-"`
-		SortWeight     int64           `json:"-"`
+		SortCreateTime  base.TimeNormal   `json:"-"`
+		SortWeight      int64             `json:"-"`
 		// 单一SKU的总价格
 	}
 	OrderSkuPk struct {
