@@ -125,6 +125,7 @@ type (
 		Mark            string              `json:"mark"`              //商品说明（如 比着加入有无车时降价多少）
 		MarkSystem      string              `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
 		Checked         bool                `json:"checked"`           //是否选中
+		ActType         uint8               `json:"act_type"`          //
 		SortCreateTime  base.TimeNormal     `json:"-"`
 		SpecialTags     []*OrderDataItemTag `json:"special_tags"`
 		SortWeight      int64               `json:"-"`
