@@ -1,5 +1,7 @@
 package app_param
 
+import "github.com/juetun/base-wrapper/lib/base"
+
 const (
 	SpuDataBase                = "spu_data"         //商品信息
 	SpuDataShop                = "spu_shop"         // 店铺信息
@@ -25,3 +27,4 @@ const (
 	SpuShopLogo           = "spu_shop_logo"   // 店铺LOGO
 	SpuShopNoticeImg      = "spu_notice_img"  // 店铺公告图片
 )
+

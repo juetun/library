@@ -2,6 +2,7 @@ package recommend
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/base"
 )
 
 const (
@@ -11,6 +12,25 @@ const (
 	DataItemShowTypeCardDouble = "card_double" //双列
 )
 
+//是否在推荐列表中展示
+const (
+	ShowInListYes uint8 = iota + 1 //展示
+	ShowInListNo                   //不展示
+)
+
+var (
+	SliceShowInList = base.ModelItemOptions{
+		{
+			Label: "展示",
+			Value: ShowInListYes,
+		},
+		{
+
+			Label: "不展示",
+			Value: ShowInListNo,
+		},
+	}
+)
 type (
 	DataItem struct {
 		Title         string                     `json:"title,omitempty"`      //标题
