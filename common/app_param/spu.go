@@ -1,7 +1,5 @@
 package app_param
 
-import "github.com/juetun/base-wrapper/lib/base"
-
 const (
 	SpuDataBase                = "spu_data"         //商品信息
 	SpuDataShop                = "spu_shop"         // 店铺信息
