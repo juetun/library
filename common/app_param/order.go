@@ -46,6 +46,7 @@ type (
 		CategoryId      int64       `json:"-" form:"-"`                                       // 商品类目
 		SpuId           string      `json:"spu_id,omitempty" form:"spu_id"`                   // 商品ID
 		SkuId           string      `json:"sku_id,omitempty" form:"sku_id"`                   // sku地址
+		CartId          string      `json:"cart_id" form:"cart_id"`                           //购物车（或定金预售）数据ID
 		SkuImg          string      `json:"sku_img,omitempty" form:"sku_img"`                 //商品图片
 		Num             int64       `json:"num,omitempty" form:"num"`                         // 商品数量
 		SaleType        uint8       `json:"sale_type,omitempty" form:"sale_type"`             // 销售类型
