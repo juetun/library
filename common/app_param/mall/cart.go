@@ -1,6 +1,8 @@
 package mall
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+)
 
 const (
 	CartPrSaleStatusInit      = iota + 1 //初始化
@@ -56,13 +58,14 @@ type (
 		TimeNow   base.TimeNormal          `json:"time_now" form:"time_now"`
 	}
 	ArgRemoveCartDataItem struct {
-		ActType         uint8  `json:"act_type" form:"act_type"`
-		FinalOrderId    string `json:"final_order_id" form:"final_order_id"`
-		FinalSubOrderId string `json:"final_sub_order_id" form:"final_sub_order_id"`
-		FirstOrderId    string `json:"first_order_id" form:"first_order_id"`
-		FirstSubOrderId string `json:"first_sub_order_id" form:"first_sub_order_id"`
-		SkuId           string `json:"sku_id" form:"sku_id"`
-		SpuId           string `json:"spu_id" form:"spu_id"`
+		ActType         uint8       `json:"act_type" form:"act_type"`
+		FinalOrderId    string      `json:"final_order_id" form:"final_order_id"`
+		FinalSubOrderId string      `json:"final_sub_order_id" form:"final_sub_order_id"`
+		FirstOrderId    string      `json:"first_order_id" form:"first_order_id"`
+		FirstSubOrderId string      `json:"first_sub_order_id" form:"first_sub_order_id"`
+		SkuId           string      `json:"sku_id" form:"sku_id"`
+		SpuId           string      `json:"spu_id" form:"spu_id"`
+		CartId          interface{} `json:"cart_id" form:"cart_id"`
 	}
 	ResultRemoveCartDataItem struct {
 		Result bool `json:"result"`
@@ -100,6 +103,34 @@ func (r *ArgPreInfoInit) Default(ctx *base.Context) (err error) {
 func (r *ArgRemoveCart) Default(ctx *base.Context) (err error) {
 	if r.TimeNow.IsZero() {
 		r.TimeNow = base.GetNowTimeNormal()
+	}
+	return
+}
+
+func (r *ArgRemoveCartDataItem) GetCartIdInt() (res int64, err error) {
+	switch r.CartId.(type) {
+	case int64:
+		res = r.CartId.(int64)
+	default:
+	}
+
+	return
+}
+
+func (r *ArgRemoveCartDataItem) GetCartIdString() (res string, err error) {
+	switch r.CartId.(type) {
+	case string:
+		res = r.CartId.(string)
+	default:
+	}
+	return
+}
+
+func (r *ArgRemoveCartDataItem) GetCartIdFloat64() (res float64, err error) {
+	switch r.CartId.(type) {
+	case float64:
+		res = r.CartId.(float64)
+	default:
 	}
 	return
 }
