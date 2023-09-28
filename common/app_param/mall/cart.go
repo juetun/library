@@ -53,6 +53,7 @@ type (
 		UserHid   int64                    `json:"user_hid" form:"user_hid"`
 		UserToken string                   `json:"user_token" form:"user_token"`
 		SkuItems  []*ArgRemoveCartDataItem `json:"sku_items" form:"sku_items"`
+		TimeNow   base.TimeNormal          `json:"time_now" form:"time_now"`
 	}
 	ArgRemoveCartDataItem struct {
 		ActType         uint8  `json:"act_type" form:"act_type"`
@@ -97,5 +98,8 @@ func (r *ArgPreInfoInit) Default(ctx *base.Context) (err error) {
 }
 
 func (r *ArgRemoveCart) Default(ctx *base.Context) (err error) {
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
 	return
 }
