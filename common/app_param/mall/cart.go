@@ -48,6 +48,22 @@ var (
 )
 
 type (
+	//移除购物车数据参数
+	ArgRemoveCart struct {
+		SkuItems []*ArgRemoveCartDataItem `json:"sku_items" form:"sku_items"`
+	}
+	ArgRemoveCartDataItem struct {
+		ActType         uint8  `json:"act_type" form:"act_type"`
+		FinalOrderId    string `json:"final_order_id" form:"final_order_id"`
+		FinalSubOrderId string `json:"final_sub_order_id" form:"final_sub_order_id"`
+		FirstOrderId    string `json:"first_order_id" form:"first_order_id"`
+		FirstSubOrderId string `json:"first_sub_order_id" form:"first_sub_order_id"`
+		SkuId           string `json:"sku_id" form:"sku_id"`
+		SpuId           string `json:"spu_id" form:"spu_id"`
+	}
+	ResultRemoveCartDataItem struct {
+		Result bool `json:"result"`
+	}
 	ArgPreInfoInit struct {
 		UserHid int64             `json:"user_hid" form:"user_hid"`
 		TimeNow base.TimeNormal   `json:"time_now" form:"time_now"`
@@ -75,5 +91,9 @@ type (
 )
 
 func (r *ArgPreInfoInit) Default(ctx *base.Context) (err error) {
+	return
+}
+
+func (r *ArgRemoveCart) Default(ctx *base.Context) (err error) {
 	return
 }
