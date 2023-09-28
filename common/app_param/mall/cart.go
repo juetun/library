@@ -50,7 +50,9 @@ var (
 type (
 	//移除购物车数据参数
 	ArgRemoveCart struct {
-		SkuItems []*ArgRemoveCartDataItem `json:"sku_items" form:"sku_items"`
+		UserHid   int64                    `json:"user_hid" form:"user_hid"`
+		UserToken string                   `json:"user_token" form:"user_token"`
+		SkuItems  []*ArgRemoveCartDataItem `json:"sku_items" form:"sku_items"`
 	}
 	ArgRemoveCartDataItem struct {
 		ActType         uint8  `json:"act_type" form:"act_type"`
