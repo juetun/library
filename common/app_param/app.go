@@ -24,6 +24,7 @@ const (
 )
 
 const (
+	TerminalWeb     = "web" //web站
 	TerminalMina    = "mina"
 	TerminalH5      = "h5"
 	TerminalAndroid = "android"
@@ -32,6 +33,7 @@ const (
 
 var (
 	SliceTerminal = base.ModelItemOptions{
+		{Label: "网站", Value: TerminalWeb},
 		{Label: "小程序", Value: TerminalMina},
 		{Label: "h5", Value: TerminalH5},
 		{Label: "安卓", Value: TerminalAndroid},
