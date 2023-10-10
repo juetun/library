@@ -3,6 +3,7 @@ package recommend
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"net/url"
 )
 
 const (
@@ -103,6 +104,14 @@ func (r *DataItem) Default() {
 		r.ShowType = DataItemShowTypeImgList
 	}
 
+	return
+}
+
+func (r *DataItem) GetUrlValue() (res url.Values) {
+	if r.DataId != "" {
+		u, _ := url.Parse(r.DataId) //将string解析成*URL格式
+		res, _ = url.ParseQuery(u.RawQuery)
+	}
 	return
 }
 
