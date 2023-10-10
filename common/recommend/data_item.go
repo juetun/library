@@ -31,6 +31,7 @@ var (
 		},
 	}
 )
+
 type (
 	DataItem struct {
 		Title         string                     `json:"title,omitempty"`      //标题
@@ -59,6 +60,9 @@ type (
 		ShowTime      string                     `json:"show_time,omitempty"`
 		OtherData     interface{}                `json:"other_data,omitempty"` //其他数据
 		Pk            string                     `json:"pk"`                   //数据的唯一KEy
+
+		PageName     string `json:"-"` //页面名称 内部使用参数不对前端展示
+		PageConfigId string `json:"-"`
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
