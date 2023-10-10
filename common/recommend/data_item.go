@@ -109,8 +109,17 @@ func (r *DataItem) Default() {
 
 func (r *DataItem) GetUrlValue() (res url.Values) {
 	if r.DataId != "" {
-		u, _ := url.Parse(r.DataId) //将string解析成*URL格式
-		res, _ = url.ParseQuery(u.RawQuery)
+		res = ParseHttp(r.DataId)
+	}
+	return
+}
+
+func ParseHttp(clientUrl string) (values url.Values) {
+	u, _ := url.Parse(clientUrl) //将string解析成*URL格式
+	if u.RawQuery == "" && u.Path != "" {
+		values, _ = url.ParseQuery(u.Path) //返回Values类型的字典
+	} else if u.RawQuery != "" {
+		values, _ = url.ParseQuery(u.RawQuery) //返回Values类型的字典
 	}
 	return
 }
