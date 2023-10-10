@@ -62,7 +62,7 @@ type (
 		Pk            string                     `json:"pk"`                   //数据的唯一KEy
 
 		PageName     string `json:"-"` //页面名称 内部使用参数不对前端展示
-		PageConfigId string `json:"-"`
+		PageConfigId int64  `json:"-"`
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
