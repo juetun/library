@@ -10,12 +10,23 @@ const (
 	ConstChatTokenToShop                  //用户-店铺
 	ConstChatTokenToRoom                  //用户-房间
 )
+const (
+	ConstChatTokenNeedAttendNo        uint8 = iota //不关注
+	ConstChatTokenNeedAttendUser                   //关注to_user_hid用户
+	ConstChatTokenNeedAttendEachOther              //彼此关注
+)
 
 var (
 	SliceChatTokenTo = base.ModelItemOptions{
 		{Label: "用户", Value: ConstChatTokenToUser},
 		{Label: "店铺", Value: ConstChatTokenToShop},
 		{Label: "房间", Value: ConstChatTokenToRoom},
+	}
+
+	SliceConstChatTokenNeedAttend = base.ModelItemOptions{
+		{Label: "不关注", Value: ConstChatTokenNeedAttendNo},
+		{Label: "关注用户", Value: ConstChatTokenNeedAttendUser},
+		{Label: "彼此关注", Value: ConstChatTokenNeedAttendEachOther},
 	}
 )
 
