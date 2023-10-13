@@ -1,6 +1,23 @@
 package chat
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"encoding/json"
+	"github.com/juetun/base-wrapper/lib/base"
+)
+
+const (
+	ConstChatTokenToUser uint8 = iota + 1 //用户聊天
+	ConstChatTokenToShop                  //用户-店铺
+	ConstChatTokenToRoom                  //用户-房间
+)
+
+var (
+	SliceChatTokenTo = base.ModelItemOptions{
+		{Label: "用户", Value: ConstChatTokenToUser},
+		{Label: "店铺", Value: ConstChatTokenToShop},
+		{Label: "房间", Value: ConstChatTokenToRoom},
+	}
+)
 
 type (
 	ArgGetChatTokenOther struct {
@@ -14,5 +31,10 @@ type (
 
 func (r *ArgGetChatTokenOther) Default(c *base.Context) (err error) {
 
+	return
+}
+
+func (r *ArgGetChatTokenOther) ToString() (res []byte, err error) {
+	res, err = json.Marshal(r)
 	return
 }
