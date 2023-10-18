@@ -320,12 +320,15 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UHaveDashboard = userInfo.HaveDashboard
 }
 
-func GetResultUserByUid(userId string, ctx *base.Context) (res *ResultUser, err error) {
+func GetResultUserByUid(userId string, ctx *base.Context, dataTypes ...string) (res *ResultUser, err error) {
 	res = &ResultUser{List: make(map[int64]ResultUserItem, )}
 	var value = url.Values{}
 
 	value.Set("user_hid", userId)
-	value.Set("data_type", strings.Join([]string{UserDataTypeMain, UserDataTypeInfo}, ","))
+	if len(dataTypes) == 0 {
+		dataTypes = []string{UserDataTypeMain, UserDataTypeInfo}
+	}
+	value.Set("data_type", strings.Join(dataTypes, ","))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     AppNameUser,
