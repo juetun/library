@@ -203,6 +203,24 @@ type (
 	}
 )
 
+//根据token 获取当前登录用户信息
+func GetUserInfoByXAuthToken(xAuthToken string, ctx *base.Context) (requestUser *RequestUser, err error) {
+	requestUser = &RequestUser{}
+	var (
+		jwtUser = base.JwtUser{}
+		user    *ResultUser
+	)
+	if err = base.ParseJwtKey(xAuthToken, ctx, &jwtUser); err != nil { // 如果解析token失败
+		err = fmt.Errorf("用户信息异常")
+		return
+	}
+	if user, err = GetResultUserByUid(fmt.Sprintf("%d", jwtUser.UserId), ctx); err != nil {
+		return
+	}
+	requestUser.SetResultUser(user)
+	return
+}
+
 // GetRealName 获取用户的真实姓名
 func (r *ResultUserItem) GetRealName(nilDefaultValue ...string) (res string) {
 	if r.RealName != "" {
