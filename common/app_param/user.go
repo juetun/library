@@ -214,10 +214,13 @@ func GetUserInfoByXAuthToken(xAuthToken string, ctx *base.Context) (requestUser 
 		err = fmt.Errorf("用户信息异常")
 		return
 	}
-	if user, err = GetResultUserByUid(fmt.Sprintf("%d", jwtUser.UserId), ctx); err != nil {
-		return
+	if jwtUser.UserId > 0 {
+		requestUser.UUserHid = jwtUser.UserId
+		if user, err = GetResultUserByUid(fmt.Sprintf("%d", jwtUser.UserId), ctx); err != nil {
+			return
+		}
+		requestUser.SetResultUser(user)
 	}
-	requestUser.SetResultUser(user)
 	return
 }
 
