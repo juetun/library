@@ -43,6 +43,21 @@ type (
 	}
 )
 
+func (r *ArgGetChatTokenOther) GetIsCustomer() (isCustomer bool) {
+	switch r.FromType {
+	case ConstChatTokenToShop: //店铺
+		isCustomer = true
+		return
+	}
+	switch r.ToType {
+	case ConstChatTokenToShop: //房间
+		isCustomer = true
+		return
+	}
+
+	return
+}
+
 func (r *ArgGetChatTokenOther) Default(c *base.Context) (err error) {
 
 	if r.TimeNow.IsZero() {
