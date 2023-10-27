@@ -84,26 +84,35 @@ func (r *ArgOrderFromCartItem) GetPrice() (res decimal.Decimal, err error) {
 	return
 }
 
-func (r *ArgOrderFromCartItem) SetCategoryWith(actType uint8) (err error) {
+func SetOrderCategoryWith(actType uint8) (category string, err error) {
 	var mapCategory = make(map[uint8]string, len(MapOrderCategoryActType))
 	for key, value := range MapOrderCategoryActType {
 		mapCategory[value] = key
 	}
 	if tmp, ok := mapCategory[actType]; ok {
-		r.Category = tmp
+		category = tmp
 		return
 	}
 	err = fmt.Errorf("操作类型系统暂不支持")
 	return
 }
 
-func (r *ArgOrderFromCartItem) ParseActTypeWithCategory(category string) (actType uint8, err error) {
-	if tmp, ok := MapOrderCategoryActType[r.Category]; ok {
+func (r *ArgOrderFromCartItem) SetOrderCategoryWith(actType uint8) (err error) {
+	r.Category, err = SetOrderCategoryWith(actType)
+	return
+}
+
+func ParseOrderActTypeWithCategory(category string) (actType uint8, err error) {
+	if tmp, ok := MapOrderCategoryActType[category]; ok {
 		actType = tmp
 		return
 	}
 	err = fmt.Errorf("操作类型系统暂不支持")
 	return
+}
+
+func (r *ArgOrderFromCartItem) ParseOrderActTypeWithCategory() (actType uint8, err error) {
+	return ParseOrderActTypeWithCategory(r.Category)
 }
 
 func (r *ArgOrderFromCartItem) ValidateCategory() (err error) {
