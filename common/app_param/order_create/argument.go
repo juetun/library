@@ -9,8 +9,23 @@ import (
 	"github.com/juetun/library/common/app_param/mall/freight"
 )
 
+//付款确认动作是否更新收货地址
 const (
-	ArgCreateOrderFromCartActTypeUpdateAddress = "update_address" //更新收货地址
+	PreviewOrderActTypeUpdateAddress = "update_address" //更新收货地址
+	PreviewOrderActTypeUpdateDefault = ""               //默认操作
+)
+
+var (
+	SlicePreviewOrderActType = base.ModelItemOptions{
+		{
+			Label: "更新收货地址",
+			Value: PreviewOrderActTypeUpdateAddress,
+		},
+		{
+			Label: "订单确认",
+			Value: PreviewOrderActTypeUpdateDefault,
+		},
+	}
 )
 
 type (
@@ -86,7 +101,13 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 		r.TimeNow = base.GetNowTimeNormal()
 	}
 	switch r.ActType {
-	case ArgCreateOrderFromCartActTypeUpdateAddress: //如果是更新收货地址
+	case PreviewOrderActTypeUpdateAddress: //如果是更新收货地址
+		if err = r.validateSku(); err != nil {
+			return
+		}
+		if err = r.validateType(); err != nil {
+			return
+		}
 	default:
 		if err = r.validateSku(); err != nil {
 			return
