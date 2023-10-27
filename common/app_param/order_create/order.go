@@ -124,6 +124,7 @@ type (
 		ShopDiscountAmount string           `json:"shop_discount_amount"` //店铺优惠金额
 		PlatDiscountAmount string           `json:"plat_discount_amount"` //平台优惠金额
 		PayCharge          string           `json:"pay_charge"`           //支付需要手续费
+		SelectType         uint8            `json:"select_type"`          //订单来源
 		Mark               string           `json:"mark"`                 //备注
 		ActType            uint8            `json:"act_type"`             //1-首付款 或2-尾款
 	}
@@ -145,6 +146,7 @@ type (
 		Mark               string           `json:"mark"`                 // 备注
 		ActType            uint8            `json:"act_type"`             //1-首付款 或2-尾款
 		SortWeight         int64            `json:"-"`                    // 排序权重
+		SelectType         uint8            `json:"select_type"`          //订单来源
 	}
 
 	OrderSkuItem struct {
@@ -170,6 +172,7 @@ type (
 		MarkSystem      string              `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
 		Checked         bool                `json:"checked"`           //是否选中
 		ActType         uint8               `json:"act_type"`          //
+		SelectType      uint8               `json:"select_type"`       //订单来源
 		SortCreateTime  base.TimeNormal     `json:"-"`
 		SpecialTags     []*OrderDataItemTag `json:"special_tags"`
 		SortWeight      int64               `json:"-"`
