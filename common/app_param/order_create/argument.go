@@ -9,6 +9,10 @@ import (
 	"github.com/juetun/library/common/app_param/mall/freight"
 )
 
+const (
+	ArgCreateOrderFromCartActTypeUpdateAddress = "update_address" //更新收货地址
+)
+
 type (
 	ArgCreateOrderFromCart struct {
 		RequestUser app_param.RequestUser `json:"-" form:"-"`
@@ -25,9 +29,9 @@ type (
 		PriceFreightResult *freight.PriceFreightResult       `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
 		SkuItems           []*app_param.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`   //商品详情
 		GetDataTypeCommon  base.GetDataTypeCommon            `json:"dt_common" form:"dt_common"`
-		Coupons            UseCouponDataList                 `json:"coupons"` //优惠券信息
-
-		TimeNow base.TimeNormal `json:"-" form:"-"`
+		Coupons            UseCouponDataList                 `json:"coupons"`                  //优惠券信息
+		ActType            string                            `json:"act_type" form:"act_type"` //请求操作类型  update_address:更新收货地址
+		TimeNow            base.TimeNormal                   `json:"time_now" form:"time_now"`
 	}
 
 	ArgGetInfoByOrderId struct {
@@ -78,15 +82,18 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 	if err = r.RequestUser.InitRequestUser(c); err != nil {
 		return
 	}
-
-	r.TimeNow = base.GetNowTimeNormal()
-
-	if err = r.validateSku(); err != nil {
-		return
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
 	}
-
-	if err = r.validateType(); err != nil {
-		return
+	switch r.ActType {
+	case ArgCreateOrderFromCartActTypeUpdateAddress: //如果是更新收货地址
+	default:
+		if err = r.validateSku(); err != nil {
+			return
+		}
+		if err = r.validateType(); err != nil {
+			return
+		}
 	}
 
 	return
