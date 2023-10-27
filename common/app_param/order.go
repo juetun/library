@@ -18,6 +18,10 @@ const (
 )
 
 var (
+	MapOrderCategoryActType = map[string]uint8{
+		OrderPageCategoryFirst:  OrderShopDetailPriceCateFirst,
+		OrderPageCategorySecond: OrderShopDetailPriceCateSecond,
+	}
 	SliceOrderShopDetailPriceCate = base.ModelItemOptions{
 		{
 			Label: "普通商品付款或定金付款",
@@ -77,6 +81,28 @@ func (r *ArgOrderFromCartItem) GetPrice() (res decimal.Decimal, err error) {
 	if res, err = decimal.NewFromString(r.SkuPrice); err != nil {
 		return
 	}
+	return
+}
+
+func (r *ArgOrderFromCartItem) SetCategoryWith(actType uint8) (err error) {
+	var mapCategory = make(map[uint8]string, len(MapOrderCategoryActType))
+	for key, value := range MapOrderCategoryActType {
+		mapCategory[value] = key
+	}
+	if tmp, ok := mapCategory[actType]; ok {
+		r.Category = tmp
+		return
+	}
+	err = fmt.Errorf("操作类型系统暂不支持")
+	return
+}
+
+func (r *ArgOrderFromCartItem) ParseActTypeWithCategory(category string) (actType uint8, err error) {
+	if tmp, ok := MapOrderCategoryActType[r.Category]; ok {
+		actType = tmp
+		return
+	}
+	err = fmt.Errorf("操作类型系统暂不支持")
 	return
 }
 
