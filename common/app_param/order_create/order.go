@@ -12,7 +12,48 @@ const (
 	OrderFromTypeDirect = "detail" //直接购买
 )
 
+const (
+	OrderSelectTypeCart uint8 = iota + 1
+	OrderSelectTypeDirect
+)
+
+func ParseOrderSelectTypeNumberToString(selectType uint8) (fromType string, err error) {
+	if tmp, ok := OrderFromTypeMap[selectType]; ok {
+		fromType = tmp
+		return
+	}
+	err = fmt.Errorf("参数未配置")
+	return
+}
+
+func ParseOrderSelectTypeStringToNumber(fromType string) (selectType uint8, err error) {
+	mapNumber := make(map[string]uint8, len(OrderFromTypeMap))
+	for key, value := range OrderFromTypeMap {
+		mapNumber[value] = key
+	}
+	if tmp, ok := mapNumber[fromType]; ok {
+		selectType = tmp
+		return
+	}
+	err = fmt.Errorf("参数未配置")
+	return
+}
+
 var (
+	OrderFromTypeMap = map[uint8]string{
+		OrderSelectTypeCart:   OrderFromTypeCart,
+		OrderSelectTypeDirect: OrderFromTypeDirect,
+	}
+	SliceOrderSelectType = base.ModelItemOptions{
+		{
+			Label: "购物车",
+			Value: OrderSelectTypeCart,
+		},
+		{
+			Label: "直接购买",
+			Value: OrderSelectTypeDirect,
+		},
+	}
 	SliceOrderFromType = base.ModelItemOptions{
 		{
 			Label: "购物车",

@@ -46,6 +46,7 @@ type (
 		GetDataTypeCommon  base.GetDataTypeCommon            `json:"dt_common" form:"dt_common"`
 		Coupons            UseCouponDataList                 `json:"coupons"`                  //优惠券信息
 		ActType            string                            `json:"act_type" form:"act_type"` //请求操作类型  update_address:更新收货地址
+		SelectType         uint8                             `json:"select_type" form:"select_type"`
 		TimeNow            base.TimeNormal                   `json:"time_now" form:"time_now"`
 	}
 
