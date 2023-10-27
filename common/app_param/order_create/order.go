@@ -107,6 +107,7 @@ type (
 	}
 
 	OrderSkuItem struct {
+		CardId          string              `json:"card_id"` //购物车唯一数据ID
 		SkuName         string              `json:"sku_name"`
 		SpuId           string              `json:"spu_id"`
 		SkuId           string              `json:"sku_id"`        //购物车数据ID
