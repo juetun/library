@@ -247,6 +247,10 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.Status = item.UserMain.Status
 		r.Score = item.UserMain.Score
 		r.IsV = item.UserMain.IsV
+		r.Mobile = item.UserMain.Mobile
+		r.MobileVerifiedAt = item.UserMain.MobileVerifiedAt
+		r.Email = item.UserMain.Email
+		r.EmailVerifiedAt = item.UserMain.EmailVerifiedAt
 		r.HaveDashboard = item.UserMain.HaveDashboard
 		r.ShopId = item.UserMain.CurrentShopId
 	}
