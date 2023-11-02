@@ -123,8 +123,14 @@ func (r *ArgCreateOrderFromCart) Default(c *base.Context) (err error) {
 
 func (r *ArgCreateOrderFromCart) GetSkuIdMap() (res map[string]string) {
 	res = make(map[string]string, len(r.SkuItems))
+	var pk string
 	for _, sku := range r.SkuItems {
-		res[sku.SkuId] = sku.SkuId
+		pk = (&app_param.SkuAndSpuIdCompose{
+			ShopId: sku.ShopId,
+			SpuId:  sku.SpuId,
+			SkuId:  sku.SkuId,
+		}).GetPk()
+		res[pk] = sku.SkuId
 	}
 	return
 }
