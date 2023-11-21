@@ -39,7 +39,7 @@ type (
 		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`   //前缀标签
 		DataType      string                     `json:"data_type"`            //数据类型
 		DataId        string                     `json:"data_id"`              //数据ID
-		Link          interface{}                `json:"link"`                 //链接地址 小程序对象DataItemLinkMina
+		Link          interface{}                `json:"link,omitempty"`       //链接地址 小程序对象DataItemLinkMina
 		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
 		ImgData       string                     `json:"-"`
 		Img           string                     `json:"img,omitempty"`         //头图
@@ -67,7 +67,7 @@ type (
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
-		Query    map[string]interface{} `json:"query"`
+		Query    map[string]interface{} `json:"query,omitempty"`
 	}
 	DataItemTag struct {
 		Type      string `json:"type"`                //标签类型，可选值为primary success danger warning	默认	default
