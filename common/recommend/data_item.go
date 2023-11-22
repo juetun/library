@@ -126,7 +126,7 @@ func (r *DataItem) Default() {
 	if len(r.Children) > 0 {
 		r.ShowType = DataItemShowTypeImgList
 	}
-	if r.BadgeType == BadgeTypeNum {
+	if r.BadgeType == fmt.Sprintf("%v", BadgeTypeNum) {
 		if r.BadgeString == "" {
 			r.BadgeString = "0"
 		}
