@@ -20,9 +20,9 @@ const (
 )
 
 const (
-	BadgeTypeNum  = "num"
-	BadgeTypeDot  = "dot"
-	BadgeTypeNull = ""
+	BadgeTypeNull uint8 = iota //空 默认
+	BadgeTypeNum               //数字
+	BadgeTypeDot               //点
 )
 
 var (
@@ -36,7 +36,7 @@ var (
 			Value: BadgeTypeDot,
 		},
 		{
-			Label: "默认",
+			Label: "默认(空)",
 			Value: BadgeTypeNull,
 		},
 	}
@@ -63,27 +63,27 @@ type (
 		Link          interface{}                `json:"link,omitempty"`       //链接地址 小程序对象DataItemLinkMina
 		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
 		ImgData       string                     `json:"-"`
-		Img           string                     `json:"img,omitempty"`         //头图
-		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`  //详情
-		CanBuy        bool                       `json:"can_buy"`               //是否能够购买
-		ShowError     bool                       `json:"show_error"`            //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
-		ShopManager   bool                       `json:"shop_manager"`          //当前用户是否为店铺管理员
-		Mark          string                     `json:"mark"`                  //备注
-		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"` //后缀标签
-		ShowShop      bool                       `json:"show_shop"`             //是否显示店铺名
-		ShopName      string                     `json:"shop_name,omitempty"`   //店铺名称
-		CurrentAccUId int64                      `json:"current_acc_uid"`       //获取数据的用户ID
-		ShopId        int64                      `json:"shop_id,omitempty"`     //店铺ID
-		ShopLink      interface{}                `json:"shop_link,omitempty"`   //链接地址 小程序对象DataItemLinkMina
-		ShopIcon      string                     `json:"shop_icon,omitempty"`   //店铺Icon
-		ExtraMsg      string                     `json:"extra_msg"`             //携带的其他信息
-		ShowType      string                     `json:"show_type"`             //展示样式 默认card
-		Children      []*DataItem                `json:"children,omitempty"`    //子列表
-		ShowTime      string                     `json:"show_time,omitempty"`   //展示时间
-		OtherData     interface{}                `json:"other_data,omitempty"`  //其他数据
-		Pk            string                     `json:"pk"`                    //数据的唯一KEy
-		BadgeType     string                     `json:"badge_type"`            //徽标类型 num-数字 dot-点 空不填
-		BadgeString   string                     `json:"badge_string"`          //徽标值    "100" "10"
+		Img           string                     `json:"img,omitempty"`          //头图
+		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`   //详情
+		CanBuy        bool                       `json:"can_buy"`                //是否能够购买
+		ShowError     bool                       `json:"show_error"`             //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
+		ShopManager   bool                       `json:"shop_manager"`           //当前用户是否为店铺管理员
+		Mark          string                     `json:"mark"`                   //备注
+		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"`  //后缀标签
+		ShowShop      bool                       `json:"show_shop"`              //是否显示店铺名
+		ShopName      string                     `json:"shop_name,omitempty"`    //店铺名称
+		CurrentAccUId int64                      `json:"current_acc_uid"`        //获取数据的用户ID
+		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID
+		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina
+		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon
+		ExtraMsg      string                     `json:"extra_msg"`              //携带的其他信息
+		ShowType      string                     `json:"show_type"`              //展示样式 默认card
+		Children      []*DataItem                `json:"children,omitempty"`     //子列表
+		ShowTime      string                     `json:"show_time,omitempty"`    //展示时间
+		OtherData     interface{}                `json:"other_data,omitempty"`   //其他数据
+		Pk            string                     `json:"pk"`                     //数据的唯一KEy
+		BadgeType     string                     `json:"badge_type,omitempty"`   //徽标类型 num-数字 dot-点 空不填
+		BadgeString   string                     `json:"badge_string,omitempty"` //徽标值    "100" "10"
 
 		PageName     string `json:"-"` //页面名称 内部使用参数不对前端展示
 		PageConfigId int64  `json:"-"`
@@ -126,7 +126,11 @@ func (r *DataItem) Default() {
 	if len(r.Children) > 0 {
 		r.ShowType = DataItemShowTypeImgList
 	}
-
+	if r.BadgeType == BadgeTypeNum {
+		if r.BadgeString == "" {
+			r.BadgeString = "0"
+		}
+	}
 	return
 }
 
