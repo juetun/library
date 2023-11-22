@@ -66,17 +66,17 @@ type (
 		Img           string                     `json:"img,omitempty"`          //头图
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`   //详情
 		CanBuy        bool                       `json:"can_buy"`                //是否能够购买
-		ShowError     bool                       `json:"show_error"`             //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
-		ShopManager   bool                       `json:"shop_manager"`           //当前用户是否为店铺管理员
-		Mark          string                     `json:"mark"`                   //备注
+		ShowError     bool                       `json:"show_error,omitempty"`   //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
+		ShopManager   bool                       `json:"shop_manager,omitempty"` //当前用户是否为店铺管理员
+		Mark          string                     `json:"mark,omitempty"`         //备注
 		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"`  //后缀标签
-		ShowShop      bool                       `json:"show_shop"`              //是否显示店铺名
+		ShowShop      bool                       `json:"show_shop,omitempty"`    //是否显示店铺名
 		ShopName      string                     `json:"shop_name,omitempty"`    //店铺名称
 		CurrentAccUId int64                      `json:"current_acc_uid"`        //获取数据的用户ID
 		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID
 		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina
 		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon
-		ExtraMsg      string                     `json:"extra_msg"`              //携带的其他信息
+		ExtraMsg      string                     `json:"extra_msg,omitempty"`    //携带的其他信息
 		ShowType      string                     `json:"show_type"`              //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`     //子列表
 		ShowTime      string                     `json:"show_time,omitempty"`    //展示时间
