@@ -19,7 +19,28 @@ const (
 	ShowInListNo                   //不展示
 )
 
+const (
+	BadgeTypeNum  = "num"
+	BadgeTypeDot  = "dot"
+	BadgeTypeNull = ""
+)
+
 var (
+	SliceBadgeType = base.ModelItemOptions{
+		{
+			Label: "数字",
+			Value: BadgeTypeNum,
+		},
+		{
+			Label: "点",
+			Value: BadgeTypeDot,
+		},
+		{
+			Label: "默认",
+			Value: BadgeTypeNull,
+		},
+	}
+
 	SliceShowInList = base.ModelItemOptions{
 		{
 			Label: "展示",
@@ -58,9 +79,11 @@ type (
 		ExtraMsg      string                     `json:"extra_msg"`             //携带的其他信息
 		ShowType      string                     `json:"show_type"`             //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`    //子列表
-		ShowTime      string                     `json:"show_time,omitempty"`
-		OtherData     interface{}                `json:"other_data,omitempty"` //其他数据
-		Pk            string                     `json:"pk"`                   //数据的唯一KEy
+		ShowTime      string                     `json:"show_time,omitempty"`   //展示时间
+		OtherData     interface{}                `json:"other_data,omitempty"`  //其他数据
+		Pk            string                     `json:"pk"`                    //数据的唯一KEy
+		BadgeType     string                     `json:"badge_type"`            //徽标类型 num-数字 dot-点 空不填
+		BadgeString   string                     `json:"badge_string"`          //徽标值    "100" "10"
 
 		PageName     string `json:"-"` //页面名称 内部使用参数不对前端展示
 		PageConfigId int64  `json:"-"`
