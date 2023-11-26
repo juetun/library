@@ -205,15 +205,53 @@ func getDefault(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType st
 	return
 }
 
+//小程序参数生成
+func getPageLinkApp(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res DataItemLinkMina, err error) {
+	var (
+		pageName string
+		ok       bool
+	)
+
+	if pageName, ok = MapDataTypeBiz[dataType]; !ok {
+		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", dataType)
+		return
+	}
+
+	if len(pageNames) > 0 {
+		pageName = pageNames[0]
+	}
+	res.PageName = pageName
+	res.Query = make(map[string]interface{}, 10)
+	if headerInfo.HApp != "" {
+		res.Query["h_app"] = headerInfo.HApp
+	}
+	if headerInfo.HTerminal != "" {
+		res.Query["h_terminal"] = headerInfo.HTerminal
+	}
+	if headerInfo.HChannel != "" {
+		res.Query["h_channel"] = headerInfo.HChannel
+	}
+	if headerInfo.HVersion != "" {
+		res.Query["h_version"] = headerInfo.HVersion
+	}
+	if urlValue != nil {
+		for key := range *urlValue {
+			res.Query[key] = urlValue.Get(key)
+		}
+	}
+
+	return
+}
+
 //获取页面链接
 func GetPageLink(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res interface{}, err error) {
 	switch headerInfo.HTerminal {
 	case app_param.TerminalMina: //小程序
 		res, err = getPageLinkMina(urlValue, dataType, pageNames...)
 	case app_param.TerminalAndroid: //安卓
-		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
+		res, err = getPageLinkApp(headerInfo, urlValue, dataType, pageNames...)
 	case app_param.TerminalIos: //IOS
-		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
+		res, err = getPageLinkApp(headerInfo, urlValue, dataType, pageNames...)
 	default:
 		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
 	}
