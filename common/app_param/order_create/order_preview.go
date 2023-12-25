@@ -58,6 +58,7 @@ type (
 		ShopId             int64              `json:"shop_id"`
 		ShopIcon           string             `json:"shop_icon"`             // 店铺Icon
 		ShopName           string             `json:"shop_name"`             // 店铺名称
+		ShopHref           interface{}        `json:"shop_href"`             // 店铺链接地址
 		ShopType           string             `json:"shop_type"`             // 店铺类型
 		Count              int64              `json:"count"`                 // 商品总数
 		PayType            uint8              `json:"pay_type"`              //支付方式（支付渠道）
@@ -112,8 +113,8 @@ type (
 		TitleTags       []*models.PageTag `json:"title_tags"`
 		ActType         uint8             `json:"act_type"`
 
-		SortCreateTime  base.TimeNormal   `json:"-"`
-		SortWeight      int64             `json:"-"`
+		SortCreateTime base.TimeNormal `json:"-"`
+		SortWeight     int64           `json:"-"`
 		// 单一SKU的总价格
 	}
 	OrderSkuPk struct {
