@@ -118,9 +118,11 @@ type (
 		Status         uint8  `json:"status"`
 		StatusName     string `json:"status_name"`
 		CouponTypeName string `json:"coupon_type_name"`
-		CouponID       string `json:"coupon_id"`  //用户优惠券编号(优惠券ID)
-		StartTime      string `json:"start_time"` //有效期开始时间
-		OverTime       string `json:"over_time"`  //有效期结束时间
+		CouponType     uint8  `json:"coupon_type"`
+		CouponDesc     string `json:"coupon_desc"` //
+		CouponID       string `json:"coupon_id"`   //用户优惠券编号(优惠券ID)
+		StartTime      string `json:"start_time"`  //有效期开始时间
+		OverTime       string `json:"over_time"`   //有效期结束时间
 		CreateTime     string `json:"create_time"`
 		UserMark       string `json:"user_mark"` //使用说明
 		UseAreaMark    string `json:"use_area_mark"`
