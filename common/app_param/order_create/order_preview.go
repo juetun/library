@@ -604,13 +604,13 @@ func (r *PreviewShopItem) getSpuDecrValue() (shopDecr, platDecr decimal.Decimal,
 			continue
 		}
 
-		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 {
+		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 && spuInfo.SpuCoupon.Plat.CurrentUse.Decr != "" {
 			if platDecrVal, err = decimal.NewFromString(spuInfo.SpuCoupon.Plat.CurrentUse.Decr); err != nil {
 				return
 			}
 			platDecr = platDecr.Add(platDecrVal)
 		}
-		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 {
+		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 && spuInfo.SpuCoupon.Shop.CurrentUse.Decr != "" {
 			if shopDecrVal, err = decimal.NewFromString(spuInfo.SpuCoupon.Shop.CurrentUse.Decr); err != nil {
 				return
 			}
