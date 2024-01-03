@@ -664,12 +664,12 @@ func (r *PreviewShopItem) getSpuDecr() (res decimal.Decimal, err error) {
 				return
 			}
 		}
-		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 {
+		if spuInfo.SpuCoupon.Plat != nil && spuInfo.SpuCoupon.Plat.CurrentUse.ID > 0 && spuInfo.SpuCoupon.Plat.CurrentUse.Decr != "" {
 			if platDecr, err = decimal.NewFromString(spuInfo.SpuCoupon.Plat.CurrentUse.Decr); err != nil {
 				return
 			}
 		}
-		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 {
+		if spuInfo.SpuCoupon.Shop != nil && spuInfo.SpuCoupon.Shop.CurrentUse.ID > 0 && spuInfo.SpuCoupon.Shop.CurrentUse.Decr != "" {
 			if shopDecr, err = decimal.NewFromString(spuInfo.SpuCoupon.Shop.CurrentUse.Decr); err != nil {
 				return
 			}
