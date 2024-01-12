@@ -9,23 +9,27 @@ import (
 	"strconv"
 )
 
+//
+//
+//user_main
 const (
-	UserTagUnReadMsgCount = "unread_msg"     //未读消息
-	UserTagCartNumCount   = "cart_num"       //购物车数量
-	UserTagAttendedCount  = "att_num"        //粉丝数
-	UserTagMyAttendCount  = "att"            //我关注数量
-	UserTagLoveCount      = "love"           //我的点赞数
-	UserTagSeeCount       = "see"            //我的喜欢(浏览)
-	UserCollectCount      = "collect"        //我的收藏
-	UserCanUseCouponCount = "can_use_coupon" //可用优惠券数量
-	UserTagScoreCount     = "score"          //积分数
-	UserTagExportCount    = "export"         //导出数据未下载的数量
-	UserTagHomeFlag       = "uhome"          //用户主页是否点显示 0-不显示 1-显示
+	UserTagUnReadMsgCount = "user_message"    //未读消息
+	UserTagCartNumCount   = "user_cart_num"   //购物车数量
+	UserTagAttendedCount  = "user_attend_me"  //粉丝数
+	UserTagMyAttendCount  = "user_my_attend"  //我关注数量
+	UserTagLoveCount      = "user_love"       //我的点赞数
+	UserTagSeeCount       = "user_browser"    //我的喜欢(浏览)
+	UserCollectCount      = "user_collect"    //我的收藏
+	UserCanUseCouponCount = "user_coupon_num" //可用优惠券数量
+	UserTagScoreCount     = "user_score"      //积分数
+	UserTagExportCount    = "user_export"     //导出数据未下载的数量
+	UserTagHomeFlag       = "user_home"       //用户主页（我的）是否点显示 0-不显示 1-显示
+	UserTagMainFlag       = "user_main"       //首页(打开APP第一个页面)是否点显示 0-不显示 1-显示
 
-	UserTagOrderNotPay          = "not_pay"      //未付款订单数
-	UserTagOrderWaitingSendGood = "wait_send"    //待发货订单数
-	UserTagOrderWaitingComment  = "wait_comment" //待评价
-	UserTagOrderRefund          = "not_over_rf"  //未完成退款单
+	UserTagOrderNotPay          = "user_waiting_pay"        //未付款订单数
+	UserTagOrderWaitingSendGood = "user_receive_send_goods" //待发货订单数
+	UserTagOrderWaitingComment  = "user_order_comment"      //待评价
+	UserTagOrderRefund          = "user_not_over_refund"    //未完成退款单
 )
 
 const (
