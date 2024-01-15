@@ -29,7 +29,7 @@ const (
 	UserTagOrderNotPay          = "user_waiting_pay"        //未付款订单数
 	UserTagOrderWaitingSendGood = "user_receive_send_goods" //待发货订单数
 	UserTagOrderWaitingComment  = "user_order_comment"      //待评价
-	UserTagOrderRefund          = "user_not_over_refund"    //未完成退款单
+	UserTagOrderNotOverRefund   = "user_not_over_refund"    //未完成退款单
 )
 
 const (
