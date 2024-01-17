@@ -51,6 +51,30 @@ func getUserTagKeyByUid(userHid int64) (res string) {
 	return
 }
 
+//设置用户的tag标签值自增
+func UpdateUseTagAddCount(ctx *base.Context, userHid int64, key string, value float64, ctxs ...context.Context) (err error) {
+	defer func() {
+		if err == nil || ctx == nil {
+			return
+		} else if err != nil {
+			ctx.Error(map[string]interface{}{
+				"key":   key,
+				"value": value,
+				"err":   err.Error(),
+			}, "AddUseTagCount")
+		}
+
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
+	}()
+	if value == 0 {
+		return
+	}
+	var ctxt = getCtxWithMany(ctxs...)
+	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
+	err = cacheClient.HIncrByFloat(ctxt, getUserTagKeyByUid(userHid), key, value).Err()
+	return
+}
+
 //设置用户的tag标签值
 func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Context) (err error) {
 	defer func() {
