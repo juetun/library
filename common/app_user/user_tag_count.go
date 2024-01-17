@@ -13,18 +13,20 @@ import (
 //
 //user_main
 const (
-	UserTagUnReadMsgCount = "user_message"    //未读消息
-	UserTagCartNumCount   = "user_cart_num"   //购物车数量
-	UserTagAttendedCount  = "user_attend_me"  //粉丝数
-	UserTagMyAttendCount  = "user_my_attend"  //我关注数量
-	UserTagLoveCount      = "user_love"       //我的点赞数
-	UserTagSeeCount       = "user_browser"    //我的喜欢(浏览)
-	UserCollectCount      = "user_collect"    //我的收藏
-	UserCanUseCouponCount = "user_coupon_num" //可用优惠券数量
-	UserTagScoreCount     = "user_score"      //积分数
-	UserTagExportCount    = "user_export"     //导出数据未下载的数量
-	UserTagHomeFlag       = "user_home"       //用户主页（我的）是否点显示 0-不显示 1-显示
-	UserTagMainFlag       = "user_main"       //首页(打开APP第一个页面)是否点显示 0-不显示 1-显示
+	UserTagUnReadMsgCount    = "user_message"    //未读消息(当前包括聊天未读信息和通知信息)
+	UserTagUnReadChatCount   = "user_chat_msg"   //未读聊天消息
+	UserTagUnReadNoticeCount = "user_notice_msg" //未读通知信息
+	UserTagCartNumCount      = "user_cart_num"   //购物车数量
+	UserTagAttendedCount     = "user_attend_me"  //粉丝数
+	UserTagMyAttendCount     = "user_my_attend"  //我关注数量
+	UserTagLoveCount         = "user_love"       //我的点赞数
+	UserTagSeeCount          = "user_browser"    //我的喜欢(浏览)
+	UserCollectCount         = "user_collect"    //我的收藏
+	UserCanUseCouponCount    = "user_coupon_num" //可用优惠券数量
+	UserTagScoreCount        = "user_score"      //积分数
+	UserTagExportCount       = "user_export"     //导出数据未下载的数量
+	UserTagHomeFlag          = "user_home"       //用户主页（我的）是否点显示 0-不显示 1-显示
+	UserTagMainFlag          = "user_main"       //首页(打开APP第一个页面)是否点显示 0-不显示 1-显示
 
 	UserTagOrderNotPay          = "user_waiting_pay"        //未付款订单数
 	UserTagOrderWaitingSendGood = "user_receive_send_goods" //待发货订单数
