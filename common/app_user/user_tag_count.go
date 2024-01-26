@@ -164,7 +164,7 @@ func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ct
 	}()
 	var ctxt = getCtxWithMany(ctxs...)
 
-	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
+	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var cacheKey string
 	for _, userHId := range userHIds {
 		var e error

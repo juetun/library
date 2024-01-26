@@ -146,7 +146,7 @@ func GetDataTagsCount(ctx *base.Context, dataIds []string, tagKeys []string, ctx
 	}()
 	var ctxt = getCtxWithMany(ctxs...)
 
-	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
+	cacheClient, _ := app_obj.GetRedisClient(DataTagCountCacheNameSpace)
 	var cacheKey string
 	for _, dataId := range dataIds {
 		var e error
