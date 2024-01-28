@@ -3,6 +3,7 @@ package recommend
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/upload_operate"
 	"net/url"
 )
 
@@ -62,8 +63,10 @@ type (
 		DataId        string                     `json:"data_id"`              //数据ID
 		Link          interface{}                `json:"link,omitempty"`       //链接地址 小程序对象DataItemLinkMina
 		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
+		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"` //视频信息
 		ImgData       string                     `json:"-"`
 		Img           string                     `json:"img,omitempty"`          //头图
+		Imgs          []string                   `json:"imgs,omitempty"`         //多条图片
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`   //详情
 		CanBuy        bool                       `json:"can_buy"`                //是否能够购买
 		ShowError     bool                       `json:"show_error,omitempty"`   //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
@@ -84,9 +87,8 @@ type (
 		Pk            string                     `json:"pk"`                     //数据的唯一KEy
 		BadgeType     string                     `json:"badge_type,omitempty"`   //徽标类型 num-数字 dot-点 空不填
 		BadgeString   string                     `json:"badge_string,omitempty"` //徽标值    "100" "10"
-
-		PageName     string `json:"-"` //页面名称 内部使用参数不对前端展示
-		PageConfigId int64  `json:"-"`
+		PageName      string                     `json:"-"`                      //页面名称 内部使用参数不对前端展示
+		PageConfigId  int64                      `json:"-"`
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
