@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
-	"strconv"
 	"strings"
 )
 
@@ -116,7 +115,7 @@ type (
 	ResultGetNumberByKeys map[string]*ResultGetNumberItem
 	ResultGetNumberItem   struct {
 		ActType    string `json:"act_type" form:"act_type"`
-		DataType   int32  `json:"data_type" form:"data_type"`
+		DataType   string `json:"data_type" form:"data_type"`
 		DataId     string `json:"data_id" form:"data_id"`
 		Num        int64  `json:"num" form:"num"`                 //数量
 		HasOperate bool   `json:"has_operate" form:"has_operate"` //当前用户是否已经操作过
@@ -126,7 +125,7 @@ type (
 		ShopId   int64           `json:"shop_id" form:"shop_id"`
 		UserHid  int64           `json:"user_hid" form:"user_hid"`
 		ActType  string          `json:"act_type" form:"act_type"`
-		DataType int32           `json:"data_type" form:"data_type"`
+		DataType string          `json:"data_type" form:"data_type"`
 		DataIds  []*ActDataItem  `json:"data_ids" form:"data_ids"`
 		DoType   string          `json:"do_type" form:"do_type"`
 		TimeNow  base.TimeNormal `json:"time_now" form:"time_now"`
@@ -148,36 +147,28 @@ func (r *ArgGetNumberByKeys) Default(c *base.Context) (err error) {
 	return
 }
 
-func (r *ArgGetNumberByKeys) GetKey(ActType string, DataType int32, DataId string) (res string) {
+func (r *ArgGetNumberByKeys) GetKey(ActType string, DataType string, DataId string) (res string) {
 
 	return fmt.Sprintf("%v_%v_%v", ActType, DataType, DataId)
 }
 
-func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType string, DataType int32, DataId string) {
+func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType string, DataType string, DataId string) {
 	list := strings.Split(key, "_")
 	switch len(list) {
 	case 1:
 		ActType = list[0]
 	case 2:
 		ActType = list[0]
-		DataType = r.toInt32(list[1])
+		DataType = list[1]
 	case 3:
 		ActType = list[0]
-		DataType = r.toInt32(list[1])
-		DataId = list[1]
+		DataType = list[1]
+		DataId = list[2]
 	}
 
 	return
 }
 
-func (r *ArgGetNumberByKeys) toInt32(vStr string) (res int32) {
-	var v int64
-	v, _ = strconv.ParseInt(vStr, 10, 64)
-	if v > 1000000 {
-		return 1000000
-	}
-	return int32(v)
-}
 func (r *ArgActData) Default(c *base.Context) (err error) {
 	if err = r.InitHeaderInfo(c.GinContext); err != nil {
 		return
