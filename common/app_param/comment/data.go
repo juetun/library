@@ -25,6 +25,7 @@ const (
 	ActTypeShare    = "share"     //转发
 	ActTypeMyAttend = "my_attend" //关注
 	ActTypeAttendMe = "attend_me" //粉丝
+	ActTypeComment  = "comment"   //评论
 )
 
 //数据库存储的数据
@@ -35,6 +36,7 @@ const (
 	ActTypeMyAttendValue                  //关注
 	ActTypeAttendMeValue                  //粉丝
 	ActTypeShareValue                     //转发数
+	ActTypeCommentValue                   //评论
 )
 
 var (
@@ -71,6 +73,7 @@ var (
 		ActTypeMyAttend: ActTypeMyAttendValue,
 		ActTypeAttendMe: ActTypeAttendMeValue,
 		ActTypeShare:    ActTypeShareValue,
+		ActTypeComment:  ActTypeCommentValue,
 	}
 	SliceActType = base.ModelItemOptions{
 		{
@@ -96,6 +99,10 @@ var (
 		{
 			Value: ActTypeShare,
 			Label: "转发",
+		},
+		{
+			Value: ActTypeComment,
+			Label: "评论",
 		},
 	}
 )
