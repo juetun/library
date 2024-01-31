@@ -95,8 +95,9 @@ var (
 
 type (
 	ArgGetNumberByKeys struct {
-		CurrentUserHid int64    `json:"current_user_hid" form:"current_user_hid"`
-		Keys           []string `json:"keys" form:"keys"`
+		CurrentUserHid int64           `json:"current_user_hid" form:"current_user_hid"`
+		Keys           []string        `json:"keys" form:"keys"`
+		TimeNow        base.TimeNormal `json:"-" form:"-"`
 	}
 	ResultGetNumberByKeys map[string]*ResultGetNumberItem
 	ResultGetNumberItem   struct {
@@ -124,6 +125,14 @@ type (
 		Result bool `json:"result"`
 	}
 )
+
+func (r *ArgGetNumberByKeys) Default(c *base.Context) (err error) {
+
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
+	return
+}
 
 func (r *ArgGetNumberByKeys) GetKey(ActType string, DataType int32, DataId string) (res string) {
 
