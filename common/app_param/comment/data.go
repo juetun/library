@@ -22,6 +22,7 @@ const (
 	ActTypeLove     = "love"      //点赞
 	ActTypeSee      = "see"       //喜欢
 	ActTypeCollect  = "collect"   //收藏
+	ActTypeShare    = "share"     //转发
 	ActTypeMyAttend = "my_attend" //关注
 	ActTypeAttendMe = "attend_me" //粉丝
 )
@@ -33,6 +34,7 @@ const (
 	ActTypeCollectValue                   //收藏
 	ActTypeMyAttendValue                  //关注
 	ActTypeAttendMeValue                  //粉丝
+	ActTypeShareValue                     //转发数
 )
 
 var (
@@ -68,6 +70,7 @@ var (
 		ActTypeCollect:  ActTypeCollectValue,
 		ActTypeMyAttend: ActTypeMyAttendValue,
 		ActTypeAttendMe: ActTypeAttendMeValue,
+		ActTypeShare:    ActTypeShareValue,
 	}
 	SliceActType = base.ModelItemOptions{
 		{
@@ -89,6 +92,10 @@ var (
 		{
 			Value: ActTypeAttendMe,
 			Label: "粉丝",
+		},
+		{
+			Value: ActTypeShare,
+			Label: "转发",
 		},
 	}
 )
