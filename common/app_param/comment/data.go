@@ -13,9 +13,11 @@ const (
 )
 
 const (
-	AttendDataTypeUser = "usr"  // 用户
-	AttendDataTypeSpu  = "spu"  // 商品
-	AttendDataTypeShop = "shop" // 店铺
+	AttendDataTypeUser         = "usr"           // 用户
+	AttendDataTypeSpu          = "spu"           // 商品
+	AttendDataTypeShop         = "shop"          // 店铺
+	AttendDataTypeFishingSpots = "fishing_spots" // 钓点
+	AttendDataTypeSns          = "sns"           // 社交帖子
 )
 const (
 	ActTypeLove     = "love"      //点赞
@@ -51,6 +53,14 @@ var (
 		{
 			Value: AttendDataTypeShop,
 			Label: "店铺",
+		},
+		{
+			Value: AttendDataTypeFishingSpots,
+			Label: "钓点",
+		},
+		{
+			Value: AttendDataTypeSns,
+			Label: "帖子",
 		},
 	}
 
