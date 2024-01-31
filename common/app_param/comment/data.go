@@ -12,6 +12,11 @@ const (
 )
 
 const (
+	AttendDataTypeUser = "usr"  // 用户
+	AttendDataTypeSpu  = "spu"  // 商品
+	AttendDataTypeShop = "shop" // 店铺
+)
+const (
 	ActTypeLove     = "love"      //点赞
 	ActTypeSee      = "see"       //喜欢
 	ActTypeCollect  = "collect"   //收藏
@@ -29,6 +34,21 @@ const (
 )
 
 var (
+	SliceAttendDataType = base.ModelItemOptions{
+		{
+			Value: AttendDataTypeUser,
+			Label: "用户",
+		},
+		{
+			Value: AttendDataTypeSpu,
+			Label: "商品",
+		},
+		{
+			Value: AttendDataTypeShop,
+			Label: "店铺",
+		},
+	}
+
 	SliceCommonActType = base.ModelItemOptions{
 		{
 			Label: "添加",
