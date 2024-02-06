@@ -21,18 +21,21 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "1"   //商品信息
-	AdDataDataTypeSku                      = "5"   //sku信息
-	AdDataDataTypeSpuCategory              = "7"   //商品类目
-	AdDataDataTypeUser                     = "6"   //用户信息
-	AdDataDataTypeSocialIntercourse        = "2"   //广告社交动态信息
-	AdDataStatusUserSet                    = "3"   //用户手工设置
-	AdDataDataTypeUserShop                 = "4"   //店铺后台
-	AdDataDataTypeFishingSport             = "8"   //钓点信息
+	AdDataDataTypeSpu               string = "1" //商品信息
+	AdDataDataTypeSku                      = "5" //sku信息
+	AdDataDataTypeSpuCategory              = "7" //商品类目
+	AdDataDataTypeUser                     = "6" //用户信息
+	AdDataDataTypeSocialIntercourse        = "2" //广告社交动态信息
+	AdDataStatusUserSet                    = "3" //用户手工设置
+	AdDataDataTypeUserShop                 = "4" //店铺后台
+	AdDataDataTypeFishingSport             = "8" //钓点信息
 
-	AdDataDataTypeOther                    = "200" //其他数据
-	AdDataDataTypeAllSpu                   = "-1"  //所有的商品
+	AdDataDataTypeOther  = "200" //其他数据
+	AdDataDataTypeAllSpu = "-1"  //所有的商品
+
 )
+
+const AdDataDataTypeGetSnsData = "-2" //获取社交数据使用
 
 const (
 	AdDataStatusCanUse  uint8 = iota + 1 //广告可用
