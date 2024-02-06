@@ -49,12 +49,12 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 			}, //配置获取电商数据映射
 			AdDataDataTypeSocialIntercourse: {
 				AppName: app_param.AppNameSocialIntercourse,
-				URI:     "/data/get_data_by_ids",
+				URI:     "/data/get_article_by_ids",
 				Method:  http.MethodGet, Parameters: url.Values{},
 			},
 			AdDataDataTypeFishingSport: {
 				AppName: app_param.AppNameSocialIntercourse,
-				URI:     "/data/get_data_by_ids",
+				URI:     "/data/get_fishing_spots_by_ids",
 				Method:  http.MethodGet, Parameters: url.Values{},
 			},
 			AdDataDataTypeGetSnsData: { //获取社交和钓点数据可使用此参数集中获取
