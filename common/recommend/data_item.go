@@ -5,6 +5,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/upload_operate"
 	"net/url"
+	"strings"
 )
 
 const (
@@ -120,6 +121,11 @@ func (r *DataItem) GetUniqueKey() (res string) {
 	return GetUniqueKey(r.DataType, r.DataId)
 }
 
+//解析广告唯一Id字符串
+func (r *DataItem) ParseUniqueKey() (DataType, DataId string) {
+	return ParseUniqueKey(r.Pk)
+}
+
 //参数默认值
 func (r *DataItem) Default() {
 	if r.ShowType == "" {
@@ -166,4 +172,23 @@ func (r *DataItemTag) Default() {
 //获取广告唯一Id字符串
 func GetUniqueKey(DataType string, DataId string) (res string) {
 	return fmt.Sprintf("%s-%s", DataType, DataId)
+}
+
+//获取广告唯一Id字符串
+func ParseUniqueKey(pk string) (DataType, DataId string) {
+	if pk == "" {
+		return
+	}
+	dataSlice := strings.Split(pk, "-")
+	l := len(dataSlice)
+	switch l {
+	case 0:
+		return
+	case 1:
+		DataType = dataSlice[0]
+	default:
+		DataType = dataSlice[0]
+		DataId = dataSlice[2]
+	}
+	return
 }
