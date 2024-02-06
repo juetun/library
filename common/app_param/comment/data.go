@@ -17,7 +17,7 @@ const (
 	AttendDataTypeSpu          = "spu"           // 商品
 	AttendDataTypeShop         = "shop"          // 店铺
 	AttendDataTypeFishingSpots = "fishing_spots" // 钓点
-	AttendDataTypeSns          = "sns"           // 社交帖子
+	AttendDataTypeSns          = "article"       // 社交帖子
 )
 const (
 	ActTypeLove     = "love"      //点赞
