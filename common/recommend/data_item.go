@@ -188,7 +188,7 @@ func ParseUniqueKey(pk string) (DataType, DataId string) {
 		DataType = dataSlice[0]
 	default:
 		DataType = dataSlice[0]
-		DataId = dataSlice[2]
+		DataId = dataSlice[1]
 	}
 	return
 }
