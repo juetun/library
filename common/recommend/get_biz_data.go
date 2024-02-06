@@ -97,7 +97,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 			defer lock.Unlock()
 			for _, value := range resData {
 				value.Default()
-				res[GetUniqueKey(bizCode, value.DataId)] = value
+				res[GetUniqueKey(value.DataType, value.DataId)] = value
 			}
 		}(key, ids, handler)
 	}
