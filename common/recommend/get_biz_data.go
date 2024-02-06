@@ -59,7 +59,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 			},
 			AdDataDataTypeGetSnsData: { //获取社交和钓点数据可使用此参数集中获取
 				AppName: app_param.AppNameSocialIntercourse,
-				URI:     "/data/get_data_by_ids",
+				URI:     "/data/base_data_by_ids",
 				Method:  http.MethodGet, Parameters: url.Values{},
 			},
 		}
