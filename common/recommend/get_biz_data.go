@@ -50,17 +50,17 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 			AdDataDataTypeSocialIntercourse: {
 				AppName: app_param.AppNameSocialIntercourse,
 				URI:     "/data/get_article_by_ids",
-				Method:  http.MethodGet, Parameters: url.Values{},
+				Method:  http.MethodPost, Parameters: url.Values{},
 			},
 			AdDataDataTypeFishingSport: {
 				AppName: app_param.AppNameSocialIntercourse,
 				URI:     "/data/get_fishing_spots_by_ids",
-				Method:  http.MethodGet, Parameters: url.Values{},
+				Method:  http.MethodPost, Parameters: url.Values{},
 			},
 			AdDataDataTypeGetSnsData: { //获取社交和钓点数据可使用此参数集中获取
 				AppName: app_param.AppNameSocialIntercourse,
 				URI:     "/data/base_data_by_ids",
-				Method:  http.MethodGet, Parameters: url.Values{},
+				Method:  http.MethodPost, Parameters: url.Values{},
 			},
 		}
 		dataMul sync.WaitGroup

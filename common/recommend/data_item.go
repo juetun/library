@@ -69,7 +69,7 @@ type (
 		Img           string                     `json:"img,omitempty"`          //头图
 		Imgs          []string                   `json:"imgs,omitempty"`         //多条图片
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`   //详情
-		CanBuy        bool                       `json:"can_buy"`                //是否能够购买
+		CanBuy        bool                       `json:"can_buy,omitempty"`      //是否能够购买
 		ShowError     bool                       `json:"show_error,omitempty"`   //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
 		ShopManager   bool                       `json:"shop_manager,omitempty"` //当前用户是否为店铺管理员
 		Mark          string                     `json:"mark,omitempty"`         //备注
