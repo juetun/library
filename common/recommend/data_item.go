@@ -63,6 +63,7 @@ type (
 		Title         string                     `json:"title,omitempty"`      //标题
 		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`   //前缀标签
 		DataType      string                     `json:"data_type"`            //数据类型
+		DataTypeStr   string                     `json:"data_type_str"`        //数据类型字符串 点赞 收藏使用的类型
 		DataId        string                     `json:"data_id"`              //数据ID
 		Link          interface{}                `json:"link,omitempty"`       //链接地址 小程序对象DataItemLinkMina
 		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
