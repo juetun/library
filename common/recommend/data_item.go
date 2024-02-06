@@ -10,6 +10,8 @@ import (
 
 const (
 	DataItemShowTypeCard       = "card"        //普通card类型
+	DataItemShowTypeCardShop   = "card_shop"   //普通店铺类型
+	DataItemShowTypeSns        = "sns"         //社交类型(钓点和圈子动态使用)
 	DataItemShowTypeImgList    = "img_list"    //图片列表类型
 	DataItemShowTypeCardRight  = "card_right"  //card图片展示在右边
 	DataItemShowTypeCardDouble = "card_double" //双列
