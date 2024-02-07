@@ -127,6 +127,7 @@ type (
 		ActType    string `json:"act_type" form:"act_type"`
 		DataType   string `json:"data_type" form:"data_type"`
 		DataId     string `json:"data_id" form:"data_id"`
+		Key        string `json:"key" form:"key"`
 		Num        int64  `json:"num" form:"num"`                 //数量
 		HasOperate bool   `json:"has_operate" form:"has_operate"` //当前用户是否已经操作过
 	}
