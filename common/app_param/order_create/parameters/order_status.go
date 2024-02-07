@@ -32,8 +32,9 @@ const (
 	OrderStatusReturnMoneyFinished     uint8 = 12 // 退款完成
 	OrderStatusReturnMoneyCancel       uint8 = 13 // 退款取消
 
-	OrderStatusFinished uint8 = 100 // 订单结束
-	OrderStatusError    uint8 = 110 // 订单支付数据异常
+	OrderStatusWaitingPayFinal uint8 = 99  // 待付尾款 （此时无法结算）
+	OrderStatusFinished        uint8 = 100 // 订单结束
+	OrderStatusError           uint8 = 110 // 订单支付数据异常
 )
 
 const (
@@ -125,6 +126,10 @@ var (
 		{
 			Value: OrderStatusReturnMoneyFinished,
 			Label: "退款完成",
+		},
+		{
+			Value: OrderStatusWaitingPayFinal,
+			Label: "待付尾款",
 		},
 		{
 			Value: OrderStatusFinished,
