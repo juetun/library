@@ -777,11 +777,24 @@ func (r *Product) GetHaveVideo() (res bool) {
 }
 
 //定金预售尾款可支付时间有一个缓冲时间 当前暂定为5分钟
-func (r *Product) DownPayCanPayFinal(timeNow base.TimeNormal) (res bool) {
-	//如果定金预售的开始时间在当前时间之前 且定金预售的结束时间(定金预售)在当前时间之后，则可用支付
-	if r.FinalStartTime.Before(timeNow.Time) && r.FinalOverTime.Add(DownPayDelayPayLimit).After(timeNow.Time) {
-		res = true
+func (r *Product) DownPayCanPayFinal(timeNow base.TimeNormal, isDelays ...bool) (res bool) {
+	isDelay := false
+	if len(isDelays) > 0 {
+		isDelay = isDelays[0]
 	}
+
+	//如果支持延迟验证
+	if isDelay {
+		//如果定金预售的开始时间在当前时间之前 且定金预售的结束时间(定金预售)在当前时间之后，则可用支付
+		if r.FinalStartTime.Before(timeNow.Time) && r.FinalOverTime.Add(DownPayDelayPayLimit).After(timeNow.Time) {
+			res = true
+		}
+	} else {
+		if r.FinalStartTime.Before(timeNow.Time) && r.FinalOverTime.After(timeNow.Time) {
+			res = true
+		}
+	}
+
 	return
 }
 
