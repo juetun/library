@@ -59,6 +59,9 @@ const (
 	FreightTypeElectronic                       //电子凭证
 )
 
+//定金预售最多可延迟支付时间的范围
+const DownPayDelayPayLimit = 5 * time.Hour
+
 var (
 	SliceFreightType = base.ModelItemOptions{
 		{
@@ -377,7 +380,6 @@ func (r *Product) GetPageTags() (res []*PageTag) {
 	}
 	return
 }
-
 
 func GetPageTagsTester(FlagTester uint8) (dt *PageTag) {
 	switch FlagTester {
@@ -774,7 +776,14 @@ func (r *Product) GetHaveVideo() (res bool) {
 	return
 }
 
-
+//定金预售尾款可支付时间有一个缓冲时间 当前暂定为5分钟
+func (r *Product) DownPayCanPayFinal(timeNow base.TimeNormal) (res bool) {
+	//如果定金预售的开始时间在当前时间之前 且定金预售的结束时间(定金预售)在当前时间之后，则可用支付
+	if r.FinalStartTime.Before(timeNow.Time) && r.FinalOverTime.Add(DownPayDelayPayLimit).After(timeNow.Time) {
+		res = true
+	}
+	return
+}
 
 func NewPageTag() (res *PageTag) {
 	res = &PageTag{}
