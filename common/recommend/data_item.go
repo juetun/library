@@ -3,6 +3,7 @@ package recommend
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/comment"
 	"github.com/juetun/library/common/app_param/upload_operate"
 	"net/url"
 	"strings"
@@ -149,6 +150,30 @@ func (r *DataItem) GetUrlValue() (res url.Values) {
 	if r.DataId != "" {
 		res = ParseHttp(r.DataId)
 	}
+	return
+}
+
+
+func (r *DataItem) GetShareKey() (res string) {
+	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeShare, r.DataType, r.DataId)
+	return
+
+}
+
+func (r *DataItem) GetCollectKey() (res string) {
+	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeCollect, r.DataType, r.DataId)
+
+	return
+}
+
+func (r *DataItem) GetLoveKey() (res string) {
+	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeLove, r.DataType, r.DataId)
+
+	return
+}
+
+func (r *DataItem) GetCommentKey() (res string) {
+	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeComment, r.DataType, r.DataId)
 	return
 }
 
