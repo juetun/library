@@ -96,7 +96,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 				resData map[string]*DataItem
 			)
 
-			handlerOp.Parameters.Set("ids", strings.Join(ids, ","))
+			handlerOp.Parameters.Set("ids", strings.Join(idString, ","))
 			//发送请求获取数据
 			if resData, err = r.GetFromApplication(handlerOp.Parameters, handlerOp.AppName, handlerOp.URI, handlerOp.Method); err != nil {
 				return
