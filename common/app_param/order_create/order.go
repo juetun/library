@@ -127,6 +127,7 @@ type (
 		SelectType         uint8            `json:"select_type"`          //订单来源
 		Mark               string           `json:"mark"`                 //备注
 		ActType            uint8            `json:"act_type"`             //1-首付款 或2-尾款
+		IsDownPayOrder     bool             `json:"is_down_pay_order"`    //首付为定金预售单子
 	}
 
 	OrderShopItem struct {
