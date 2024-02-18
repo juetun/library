@@ -60,7 +60,7 @@ const (
 )
 
 //定金预售最多可延迟支付时间的范围
-const DownPayDelayPayLimit = 5 * time.Hour
+const DownPayDelayPayLimit = 5 * time.Minute
 
 var (
 	SliceFreightType = base.ModelItemOptions{

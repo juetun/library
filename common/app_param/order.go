@@ -46,31 +46,35 @@ var (
 
 type (
 	ArgOrderFromCartItem struct {
-		ShopId          int64       `json:"shop_id,omitempty" form:"shop_id"`                 // 店铺ID
-		CategoryId      int64       `json:"-" form:"-"`                                       // 商品类目
-		SpuId           string      `json:"spu_id,omitempty" form:"spu_id"`                   // 商品ID
-		SkuId           string      `json:"sku_id,omitempty" form:"sku_id"`                   // sku地址
-		CartId          string      `json:"cart_id" form:"cart_id"`                           //购物车（或定金预售）数据ID
-		SkuImg          string      `json:"sku_img,omitempty" form:"sku_img"`                 //商品图片
-		Num             int64       `json:"num,omitempty" form:"num"`                         // 商品数量
-		SaleType        uint8       `json:"sale_type,omitempty" form:"sale_type"`             // 销售类型
-		SkuPrice        string      `json:"sku_price,omitempty" form:"sku_price"`             // SPU项目本次要支付的单价(定金预售定金金额或尾款金额 sku_price)
-		SkuSetPrice     string      `json:"sku_set_price,omitempty" form:"sku_set_price"`     // SPU项目本的单价
-		FreightTplId    int64       `json:"freight_tpl_id,omitempty" form:"freight_tpl_id"`   // 运费模板
-		SubOrderId      string      `json:"sub_order_id,omitempty" form:"sub_order_id"`       //子订单号
-		Category        string      `json:"category,omitempty" form:"category"`               //数据类型 first-首款 -或 second-尾款
-		Checked         bool        `json:"checked" form:"checked"`                           //是否选中
-		Pk              string      `json:"pk" form:"pk"`                                     //数据唯一性标记参数
-		SpuFlagTester   uint8       `json:"spu_flag_tester,omitempty" form:"spu_flag_tester"` //spu是否为测试数据
-		SkuFlagTester   uint8       `json:"sku_flag_tester,omitempty" form:"sku_flag_tester"` //sku是否为测试数据
-		FreightAmount   string      `json:"freight_amount,omitempty" form:"freight_amount"`   // 邮费
-		ShopSaleCode    string      `json:"shop_sale_code,omitempty" form:"shop_sale_code"`
-		SkuPropertyName string      `json:"sku_property_name,omitempty" form:"sku_property_name"`
-		ProvideChannel  int64       `json:"provide_channel,omitempty" form:"provide_channel"`
-		ProvideSaleCode string      `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
-		OrderSrcChannel string      `json:"order_src_channel" form:"order_src_channel"` //订单来源渠道
-		OrderSrcLoc     string      `json:"order_src_loc" form:"order_src_loc"`         //订单来源展示坑位
-		Link            interface{} `json:"link"`                                       //商品链接
+		ShopId          int64           `json:"shop_id,omitempty" form:"shop_id"`                 // 店铺ID
+		CategoryId      int64           `json:"-" form:"-"`                                       // 商品类目
+		SpuId           string          `json:"spu_id,omitempty" form:"spu_id"`                   // 商品ID
+		SkuId           string          `json:"sku_id,omitempty" form:"sku_id"`                   // sku地址
+		CartId          string          `json:"cart_id" form:"cart_id"`                           //购物车（或定金预售）数据ID
+		SkuImg          string          `json:"sku_img,omitempty" form:"sku_img"`                 //商品图片
+		Num             int64           `json:"num,omitempty" form:"num"`                         // 商品数量
+		SaleType        uint8           `json:"sale_type,omitempty" form:"sale_type"`             // 销售类型
+		SkuPrice        string          `json:"sku_price,omitempty" form:"sku_price"`             // SPU项目本次要支付的单价(定金预售定金金额或尾款金额 sku_price)
+		SkuSetPrice     string          `json:"sku_set_price,omitempty" form:"sku_set_price"`     // SPU项目本的单价
+		FreightTplId    int64           `json:"freight_tpl_id,omitempty" form:"freight_tpl_id"`   // 运费模板
+		SubOrderId      string          `json:"sub_order_id,omitempty" form:"sub_order_id"`       //子订单号
+		Category        string          `json:"category,omitempty" form:"category"`               //数据类型 first-首款 -或 second-尾款
+		Checked         bool            `json:"checked" form:"checked"`                           //是否选中
+		Pk              string          `json:"pk" form:"pk"`                                     //数据唯一性标记参数
+		SpuFlagTester   uint8           `json:"spu_flag_tester,omitempty" form:"spu_flag_tester"` //spu是否为测试数据
+		SkuFlagTester   uint8           `json:"sku_flag_tester,omitempty" form:"sku_flag_tester"` //sku是否为测试数据
+		FreightAmount   string          `json:"freight_amount,omitempty" form:"freight_amount"`   // 邮费
+		ShopSaleCode    string          `json:"shop_sale_code,omitempty" form:"shop_sale_code"`
+		SkuPropertyName string          `json:"sku_property_name,omitempty" form:"sku_property_name"`
+		ProvideChannel  int64           `json:"provide_channel,omitempty" form:"provide_channel"`
+		ProvideSaleCode string          `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
+		OrderSrcChannel string          `json:"order_src_channel" form:"order_src_channel"` //订单来源渠道
+		OrderSrcLoc     string          `json:"order_src_loc" form:"order_src_loc"`         //订单来源展示坑位
+		Link            interface{}     `json:"link"`                                       //商品链接
+		SaleOnlineTime  base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
+		SaleOverTime    base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
+		FinalStartTime  base.TimeNormal `json:"final_start_time" form:"final_start_time"`
+		FinalOverTime   base.TimeNormal `json:"final_over_time" form:"final_over_time"`
 	}
 )
 
