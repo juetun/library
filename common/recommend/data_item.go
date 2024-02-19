@@ -81,7 +81,7 @@ type (
 		ShowShop      bool                       `json:"show_shop,omitempty"`    //是否显示店铺名
 		ShopName      string                     `json:"shop_name,omitempty"`    //店铺名称
 		CurrentAccUId int64                      `json:"current_acc_uid"`        //获取数据的用户ID
-		CreateUid     int64                      `json:"create_uid"`             //信息发布者
+		CreateUid     int64                      `json:"create_uid,omitempty"`   //信息发布者
 		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID
 		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina
 		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon
