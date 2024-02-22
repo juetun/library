@@ -9,6 +9,13 @@ import (
 	"strconv"
 )
 
+const (
+	ShopTagUnReadChatCount       = "shop_chat_msg"    //未读聊天信息
+	ShopTagOrderWaitingSend      = "waiting_send"     //待发货订单数
+	ShopTagOrderWaitingSure      = "refund_sure"      //退款确认
+	ShopTagOrderWaitingComplaint = "refund_complaint" //订单申诉
+)
+
 //
 //
 //user_main
