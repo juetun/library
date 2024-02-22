@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	ShopTagRefundAndSaleAfterCount = "refund_sale_after" //退款和售后
-	ShopTagOrderListCount          = "order_list"        //订单列表
+	ShopTagRefundAndSaleAfterCount = "shop_refund_sale_after" //退款和售后
+	ShopTagOrderListCount          = "shop_order_list"        //订单列表
 
-	ShopTagUnReadChatCount       = "shop_chat_msg"    //未读聊天信息
-	ShopTagOrderWaitingSend      = "send_goods"       //待发货订单数
-	ShopTagOrderWaitingSure      = "refund_sure"      //退款确认
-	ShopTagOrderWaitingComplaint = "refund_complaint" //订单申诉
+	ShopTagUnReadChatCount       = "shop_chat_msg"         //未读聊天信息
+	ShopTagOrderWaitingSend      = "shop_send_goods"       //待发货订单数
+	ShopTagOrderWaitingSure      = "shop_refund_sure"      //退款确认
+	ShopTagOrderWaitingComplaint = "shop_refund_complaint" //订单申诉
 )
 
 //
