@@ -10,6 +10,8 @@ import (
 )
 
 const (
+	ShopTagRefundAndSaleAfterCount = "refund_sale_after" //退款和售后
+
 	ShopTagUnReadChatCount       = "shop_chat_msg"    //未读聊天信息
 	ShopTagOrderWaitingSend      = "waiting_send"     //待发货订单数
 	ShopTagOrderWaitingSure      = "refund_sure"      //退款确认
