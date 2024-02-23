@@ -44,7 +44,10 @@ var (
 		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
 		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
 	}
-	MapPageSNsName  = map[string]string{PageNameSns: "/#/pages/sns/detail/index",}
+	MapPageSNsName = map[string]string{
+		PageNameSns:                "/#/pages/sns/detail/index",
+		AdDataDataTypeFishingSport: "/#/pages/fishingsport/detail/index",
+	}
 	MapPageUserShop = map[string]string{
 		UserShopInfo: "/shop/info",
 		UserShopHome: "/",
@@ -82,6 +85,19 @@ func getPageUserShopPathByPageName(pageNames ...string) (res string) {
 }
 
 func getPageSNSPathByPageName(pageNames ...string) (res string) {
+	var pageName = PageNameSns
+	if len(pageNames) > 0 {
+		pageName = pageNames[0]
+	}
+
+	if tmp, ok := MapPageSNsName[pageName]; ok {
+		res = tmp
+		return
+	}
+	return
+}
+
+func getPageFishingSpotsPathByPageName(pageNames ...string) (res string) {
 	var pageName = PageNameSns
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
@@ -140,6 +156,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
 			AdDataDataTypeUser:              getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
 			AdDataDataTypeOther:             getPageSpuPathByPageName,
 		}
 
