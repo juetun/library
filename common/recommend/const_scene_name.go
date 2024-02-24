@@ -21,14 +21,20 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "1" //商品信息
-	AdDataDataTypeSku                      = "5" //sku信息
-	AdDataDataTypeSpuCategory              = "7" //商品类目
-	AdDataDataTypeUser                     = "6" //用户信息
-	AdDataDataTypeSocialIntercourse        = "2" //广告社交动态信息
-	AdDataStatusUserSet                    = "3" //用户手工设置
-	AdDataDataTypeUserShop                 = "4" //店铺后台
-	AdDataDataTypeFishingSport             = "8" //钓点信息
+	AdDataDataTypeSpu               string = "1"  //商品信息
+	AdDataDataTypeSku                      = "5"  //sku信息
+	AdDataDataTypeSpuCategory              = "7"  //商品类目
+	AdDataDataTypeSocialIntercourse        = "2"  //广告社交动态信息
+	AdDataStatusUserSet                    = "3"  //用户手工设置
+	AdDataDataTypeUserShop                 = "4"  //店铺后台
+	AdDataDataTypeFishingSport             = "8"  //钓点信息
+	AdDataDataTypeShopNotice               = "9"  //店铺公告（上传图片时使用）
+	AdDataDataTypeShopLogo                 = "10" //店铺LOGO（上传图片时使用）
+	AdDataDataTypeShopBgImg                = "11" //店铺背景图（上传图片时使用）
+	AdDataDataTypeShopBrandQuality         = "12" //店铺品牌资质（上传图片或文件时使用）
+	AdDataDataTypeUser                     = "6"  //用户信息
+	AdDataDataTypeIdCard                   = "13" //用户身份证
+	AdDataDataTypeUserAvatar               = "14" //用户头像
 
 	AdDataDataTypeOther  = "200" //其他数据
 	AdDataDataTypeAllSpu = "-1"  //所有的商品
