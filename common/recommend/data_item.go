@@ -16,6 +16,7 @@ const (
 	DataItemShowTypeImgList    = "img_list"    //图片列表类型
 	DataItemShowTypeCardRight  = "card_right"  //card图片展示在右边
 	DataItemShowTypeCardDouble = "card_double" //双列
+	DataItemShowTypeUser       = "card_user"   //用户信息
 )
 
 //是否在推荐列表中展示
