@@ -15,6 +15,7 @@ type (
 		app_param.RequestUser
 		common.HeaderInfo
 		base.GetDataTypeCommon
+		SelectTab        string          `json:"select_tab" form:"select_tab"`
 		TypeString       string          `json:"type" form:"type"`
 		Types            []string        `json:"-" form:"-"`
 		TimeNow          base.TimeNormal `json:"time_now" form:"time_now"`
@@ -41,7 +42,7 @@ func (r *ArgPageSearch) ResetTypes() {
 }
 
 func (r *ArgPageSearch) Default(c *base.Context) (err error) {
- 
+
 	if err = r.InitHeaderInfo(c.GinContext); err != nil {
 		return
 	}
