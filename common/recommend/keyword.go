@@ -23,7 +23,7 @@ type (
 		KeyWord          string          `json:"key_word" form:"key_word"`
 	}
 	ResultPageSearch struct {
-		response.Pager
+		Pager response.Pager `json:"pager"`
 	}
 	ArgKeywordSave struct {
 		common.HeaderInfo
