@@ -35,6 +35,7 @@ const (
 	AdDataDataTypeUser                     = "6"  //用户信息
 	AdDataDataTypeIdCard                   = "13" //用户身份证
 	AdDataDataTypeUserAvatar               = "14" //用户头像
+	AdDataDataTypeSuggestion               = "15" //投诉建议
 
 	AdDataDataTypeOther  = "200" //其他数据
 	AdDataDataTypeAllSpu = "-1"  //所有的商品
