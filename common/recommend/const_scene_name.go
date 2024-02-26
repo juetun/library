@@ -36,6 +36,7 @@ const (
 	AdDataDataTypeIdCard                   = "13" //用户身份证
 	AdDataDataTypeUserAvatar               = "14" //用户头像
 	AdDataDataTypeSuggestion               = "15" //投诉建议
+	AdDataDataTypeOrderComment             = "16" //订单评论
 
 	AdDataDataTypeOther  = "200" //其他数据
 	AdDataDataTypeAllSpu = "-1"  //所有的商品
@@ -59,6 +60,10 @@ var (
 		{
 			Label: "社交",
 			Value: AdDataDataTypeSocialIntercourse,
+		},
+		{
+			Label: "钓点信息",
+			Value: AdDataDataTypeFishingSport,
 		},
 	}
 	SliceAdDataType = base.ModelItemOptions{ //
