@@ -37,6 +37,7 @@ const (
 	AdDataDataTypeUserAvatar               = "14" //用户头像
 	AdDataDataTypeSuggestion               = "15" //投诉建议
 	AdDataDataTypeOrderComment             = "16" //订单评论
+	AdDataDataTypeOrderCompany             = "17" //公司资质
 
 	AdDataDataTypeOther  = "200" //其他数据
 	AdDataDataTypeAllSpu = "-1"  //所有的商品
