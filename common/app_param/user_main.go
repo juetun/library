@@ -11,6 +11,7 @@ import (
 const (
 	UserMainStatusInit    = const_apply.ApplyStatusInit     // 用户注册初始化(待审核)
 	UserMainStatusOk      = const_apply.ApplyStatusOk       // 用户审核通过
+	UserMainStatusInvalid = const_apply.ApplyStatusInvalid  // 已失效
 	UserMainStatusFailure = const_apply.ApplyStatusFailure  // 用户审核失败
 	UserMainStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 
@@ -19,6 +20,7 @@ const (
 
 	UserMainPortraitStatusInit    = const_apply.ApplyStatusInit     // 头像初始化
 	UserMainPortraitStatusOk      = const_apply.ApplyStatusOk       // 审核通过
+	UserMainPortraitStatusInvalid = const_apply.ApplyStatusInvalid  // 已失效
 	UserMainPortraitStatusFailure = const_apply.ApplyStatusFailure  // 审核失败
 	UserMainPortraitStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 )
@@ -36,12 +38,14 @@ var (
 	SliceUserMainStatus = base.ModelItemOptions{
 		{Label: "未认证", Value: UserMainStatusInit},
 		{Label: "已认证", Value: UserMainStatusOk},
+		{Label: "已失效", Value: UserMainStatusInvalid},
 		{Label: "审核失败", Value: UserMainStatusFailure},
 		{Label: "待审核", Value: UserMainStatusWaiting},
 	}
 	SliceUserMainPortraitStatus = base.ModelItemOptions{
 		{Label: "未审核", Value: UserMainPortraitStatusInit},
 		{Label: "审核通过", Value: UserMainPortraitStatusOk},
+		{Label: "已失效", Value: UserMainPortraitStatusInvalid},
 		{Label: "审核失败", Value: UserMainPortraitStatusFailure},
 		{Label: "待审核", Value: UserMainPortraitStatusWaiting},
 	}
