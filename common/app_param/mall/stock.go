@@ -21,7 +21,7 @@ type (
 	}
 )
 
-func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) {
+func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) (err error) {
 
 	return
 }
