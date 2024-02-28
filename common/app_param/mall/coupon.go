@@ -46,6 +46,16 @@ var (
 )
 
 type (
+	ArgUpdateUserCouponStatus struct {
+		UserHid       int64           `json:"user_hid" form:"user_hid"`               //用户
+		PlatCouponIds []string        `json:"plat_coupon_ids" form:"plat_coupon_ids"` //平台优惠券
+		ShopCouponIds []string        `json:"shop_coupon_ids" form:"shop_coupon_ids"` //店铺优惠券
+		Status        uint8           `json:"status" form:"status"`                   //设置优惠券状态
+		TimeNow       base.TimeNormal `json:"time_now" form:"time_now"`
+	}
+	ResultUpdateUserCouponStatus struct {
+		Result bool `json:"result"`
+	}
 	ArgSetCouponUse struct {
 		TimeNow   base.TimeNormal        `json:"time_now" form:"time_now"`
 		UseHid    int64                  `json:"use_hid" form:"use_hid"`
@@ -169,6 +179,14 @@ func (r *ArgSetCouponUse) GetCouponIds(ctx *base.Context) (couponIds []string) {
 }
 
 func (r *ArgSetCouponUse) Default(ctx *base.Context) (err error) {
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
+	return
+}
+
+func (r *ArgUpdateUserCouponStatus) Default(ctx *base.Context) (err error) {
+
 	if r.TimeNow.IsZero() {
 		r.TimeNow = base.GetNowTimeNormal()
 	}
