@@ -1,6 +1,8 @@
 package mall
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"github.com/juetun/base-wrapper/lib/base"
+)
 
 type (
 	StockOperateItem struct {
@@ -37,4 +39,12 @@ type (
 func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) (err error) {
 
 	return
+}
+
+func (r *StockOperateResultItem) SetStockOperateItem(data *StockOperateItem) {
+	r.SkuId = data.SkuId
+	r.Num = data.Num
+	r.ActualityNum = data.ActualityNum
+	r.NotForce = data.NotForce
+	r.ActType = data.ActType
 }
