@@ -1,7 +1,9 @@
 package mall
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"strings"
 )
 
 type (
@@ -47,4 +49,19 @@ func (r *StockOperateResultItem) SetStockOperateItem(data *StockOperateItem) {
 	r.ActualityNum = data.ActualityNum
 	r.NotForce = data.NotForce
 	r.ActType = data.ActType
+}
+
+func (r ResultStockOperateItems) Error() (err error) {
+	var msg = make([]string, len(r))
+	for _, item := range r {
+		if !item.HaveError {
+			continue
+		}
+		msg = append(msg, item.ErrorMessage)
+	}
+	if len(msg) == 0 {
+		return
+	}
+	err = fmt.Errorf(strings.Join(msg, ","))
+	return
 }
