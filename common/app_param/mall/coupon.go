@@ -393,3 +393,7 @@ func GetCouponInfo(ctx *base.Context, argStruct *ArgGetCanUseCoupon) (res *Resul
 	res = resResult.Data
 	return
 }
+
+func (r *CouponInfo) GetIdString() (res string) {
+	return fmt.Sprintf("%v", r.ID)
+}
