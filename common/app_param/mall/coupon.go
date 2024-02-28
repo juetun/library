@@ -66,7 +66,7 @@ type (
 		OrderId     string `json:"order_id" form:"order_id"`
 		CouponId    string `json:"coupon_id" form:"coupon_id"`
 		SubOrderId  string `json:"sub_order_id" form:"sub_order_id"`
-		UseCouponId int64  `json:"use_coupon_id" form:"use_coupon_id"`
+		UseCouponId string `json:"use_coupon_id" form:"use_coupon_id"`
 	}
 	ArgGetCouponBindData struct {
 		CouponId string   `json:"coupon_id" form:"coupon_id"`
