@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	PlatTagCountCacheNameSpace = "plat_tag" //用户标签计数器缓存的namespace
+	PlatTagCountCacheNameSpace = "data_tag" //用户标签计数器缓存的namespace
 )
 
 type (
