@@ -39,6 +39,7 @@ const (
 	AdDataDataTypeOrderComment             = "16" //订单评论
 	AdDataDataTypeOrderCompany             = "17" //公司资质
 	AdDataDataTypePlatNotice               = "18" //平台公告
+	AdDataDataTypeChat                     = "19" //聊天信息
 
 	AdDataDataTypeOther  = "200" //其他数据
 	AdDataDataTypeAllSpu = "-1"  //所有的商品

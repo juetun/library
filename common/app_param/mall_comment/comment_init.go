@@ -4,6 +4,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/order_create/parameters"
 	"github.com/juetun/library/common/app_param/upload_operate"
+	"github.com/juetun/library/common/recommend"
 )
 
 const (
@@ -42,6 +43,7 @@ type (
 		Anonymous        uint8             `json:"anonymous"`         //是否匿名评论
 		ActComprehensive bool              `json:"act_comprehensive"` //是否提交综合评价
 		HideCommonBtn    bool              `json:"hide_common_btn"`   //是否隐藏评论提交按钮
+		UploadDataType   string            `json:"upload_data_type"`  //上传类型
 		SkuList          []*CommentSkuItem `json:"sku_list"`          //商品信息
 	}
 	CommentSkuItem struct {
@@ -84,11 +86,12 @@ type (
 
 func NewCommentForEdit() (res *CommentForEdit) {
 	res = &CommentForEdit{
-		SendLevel:     5,
-		DeliveryLevel: 5,
-		PackingLevel:  5,
-		SkuList:       make([]*CommentSkuItem, 0),
-		Anonymous:     CommentForEditAnonymousYes,
+		SendLevel:      5,
+		DeliveryLevel:  5,
+		PackingLevel:   5,
+		SkuList:        make([]*CommentSkuItem, 0),
+		Anonymous:      CommentForEditAnonymousYes,
+		UploadDataType: recommend.AdDataDataTypeOrderComment,
 	}
 	return
 }
