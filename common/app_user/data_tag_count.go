@@ -29,7 +29,7 @@ type (
 )
 
 func getDataTagKeyByUid(dataId string) (res string) {
-	res = fmt.Sprintf("data:tag:%v", dataId)
+	res = fmt.Sprintf("tag:data:%v", dataId)
 	return
 }
 

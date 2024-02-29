@@ -31,7 +31,7 @@ type (
 )
 
 func getShopTagKeyByUid(userHid int64) (res string) {
-	res = fmt.Sprintf("shop:tag:%v", userHid)
+	res = fmt.Sprintf("tag:shop:%v", userHid)
 	return
 }
 
