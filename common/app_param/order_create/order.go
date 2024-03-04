@@ -160,8 +160,9 @@ type (
 		StatusName      string              `json:"status_name"`   // 商品状态名称 (已下架)
 		SkuSetPrice     string              `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
 		Price           string              `json:"price"`         //单价
-		Num             int64               `json:"num"`           //商品数量
-		PriceCate       uint8               `json:"price_cate"`    //定金类型当前商品类型为定金预售时1-首付款 2-尾款
+		PriceLabel      string              `json:"price_label"`
+		Num             int64               `json:"num"`        //商品数量
+		PriceCate       uint8               `json:"price_cate"` //定金类型当前商品类型为定金预售时1-首付款 2-尾款
 		PriceCateStr    string              `json:"price_cate_str"`
 		PriceCateName   string              `json:"price_cate_name"`
 		TotalPrice      string              `json:"total_price"`
