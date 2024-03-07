@@ -178,6 +178,26 @@ func (r *DataItem) GetCommentKey() (res string) {
 	return
 }
 
+//添加pre_tags
+func (r *DataItem) AddPreTags(tags ...*DataItemTag) {
+	if r.PreTags == nil {
+		r.PreTags = make([]*DataItemTag, 0, 5)
+	}
+	r.PreTags = append(r.PreTags, tags...)
+	return
+}
+
+//添加DataValue
+func (r *DataItem) AddDataValue(dataItemDetails map[string]*DataItemDetail) {
+	if r.DataValue == nil {
+		r.DataValue = make(map[string]*DataItemDetail, 5+len(dataItemDetails))
+	}
+	for key, value := range dataItemDetails {
+		r.DataValue[key] = value
+	}
+	return
+}
+
 func ParseHttp(clientUrl string) (values url.Values) {
 	u, _ := url.Parse(clientUrl) //将string解析成*URL格式
 	if u.RawQuery == "" && u.Path != "" {
