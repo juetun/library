@@ -10,6 +10,24 @@ import (
 )
 
 const (
+	PlatMallManager  = "plat_mall_manager"  //电商管理
+	PlatBadgeURefund = "plat_badge_urefund" //电商管理-退款单
+	PlatOrderBadge   = "plat_order_badge"   //电商管理-订单管理
+	PlatBadgeUOrder  = "plat_badge_uorder"  //电商管理-订单管理-用户订单
+	
+	PlatUserBadge     = "plat_user_badge"     //用户信息
+	PlatWaitingReview = "plat_waiting_review" //用户信息 -用户管理 - 资料审核
+
+	PlatMarketing  = "plat_marketing"   //营销管理
+	PlatSuggestion = "plat_suggestion"  //营销管理-投诉与建议
+	PlatDataStatic = "plat_data_static" //营销管理-统计
+
+	PlatSNSApprove        = "plat_sns_approve"         //社交与钓点
+	PlatArticleApprove    = "plat_article_approve"     //社交与钓点- 圈子动态
+	PlatArticleFishSports = "plat_article_fish_sports" //社交与钓点- 钓点信息
+)
+
+const (
 	ShopTagRefundAndSaleAfterCount = "shop_refund_sale_after" //退款和售后
 	ShopTagOrderListCount          = "shop_order_list"        //订单列表
 
