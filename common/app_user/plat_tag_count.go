@@ -49,9 +49,8 @@ func SetPlatTagCount(ctx *base.Context, data []*PlatTagCount, ctxs ...context.Co
 	cacheClient, _ := app_obj.GetRedisClient(PlatTagCountCacheNameSpace)
 
 	var l = len(data)
-	var items = make([]interface{}, l)
+	var items = make([]interface{}, 0, l)
 	for _, item := range data {
-
 		items = append(items, item.TagKey, item.Count)
 	}
 	var cacheKey string
