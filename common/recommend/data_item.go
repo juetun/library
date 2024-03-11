@@ -147,7 +147,7 @@ func (r *ArgDeleteDataList) ToJson() (res string) {
 	return string(bt)
 }
 
-func (r *ArgDeleteDataList) Default(ctx *base.Context) (res string) {
+func (r *ArgDeleteDataList) Default(ctx *base.Context) (err error) {
 	return
 }
 
