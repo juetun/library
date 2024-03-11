@@ -116,9 +116,9 @@ type (
 		Label     string `json:"label"`               //类型名称
 		Color     string `json:"color,omitempty"`     //标签颜色
 		TextColor string `json:"textColor,omitempty"` //文本颜色，优先级高于color属性	String	white
-		Plain     bool   `json:"plain"`               //是否为空心样式	Boolean	false
-		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
-		Mark      bool   `json:"mark"`                //是否为标记样式
+		Plain     bool   `json:"plain,omitempty"`     //是否为空心样式	Boolean	false
+		Round     bool   `json:"round,omitempty"`     //是否为圆角样式	Boolean	false
+		Mark      bool   `json:"mark,omitempty"`      //是否为标记样式
 	}
 )
 
