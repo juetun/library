@@ -1,6 +1,7 @@
 package recommend
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/library/common/app_param/comment"
@@ -61,7 +62,13 @@ var (
 )
 
 type (
-	DataItem struct {
+	ArgDeleteData struct {
+		UserHid  int64  `json:"user_hid" form:"user_hid"`
+		DataType string `json:"data_type" form:"data_type"`
+		DataId   string `json:"data_id" form:"data_id"`
+	}
+	ArgDeleteDataList []*ArgDeleteData
+	DataItem          struct {
 		Title         string                     `json:"title,omitempty"`      //标题
 		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`   //前缀标签
 		DataType      string                     `json:"data_type"`            //数据类型
@@ -125,6 +132,40 @@ type (
 //获取广告唯一Id字符串
 func (r *DataItem) GetUniqueKey() (res string) {
 	return GetUniqueKey(r.DataType, r.DataId)
+}
+
+func (r *ArgDeleteData) Default(ctx *base.Context) (err error) {
+
+	return
+}
+
+func (r *ArgDeleteDataList) ToJson() (res string) {
+	if r == nil {
+		return
+	}
+	bt, _ := json.Marshal(r)
+	return string(bt)
+}
+
+func (r *ArgDeleteDataList) Default(ctx *base.Context) (res string) {
+	return
+}
+
+func (r *ArgDeleteDataList) GroupDataType() (res map[string][]*ArgDeleteData) {
+
+	var (
+		l    = len(*r)
+		ok   bool
+		item *ArgDeleteData
+	)
+	for _, item = range *r {
+		if _, ok = res[item.DataType]; !ok {
+			res[item.DataType] = make([]*ArgDeleteData, 0, l)
+		}
+		res[item.DataType] = append(res[item.DataType], item)
+	}
+
+	return
 }
 
 //解析广告唯一Id字符串
