@@ -138,7 +138,15 @@ func (r *ArgDeleteData) Default(ctx *base.Context) (err error) {
 
 	return
 }
+func (r *ArgDeleteData) GetPk(ctx *base.Context) (res string) {
+	res = GetUniqueKey(r.DataType, r.DataId)
+	return
+}
 
+func (r *ArgDeleteData) ParsePk(pk string) (dataType, dataId string) {
+	dataType, dataId = ParseUniqueKey(pk)
+	return
+}
 func (r *ArgDeleteDataList) ToJson() (res string) {
 	if r == nil {
 		return
@@ -158,6 +166,7 @@ func (r *ArgDeleteDataList) GroupDataType() (res map[string][]*ArgDeleteData) {
 		ok   bool
 		item *ArgDeleteData
 	)
+	res = make(map[string][]*ArgDeleteData, l)
 	for _, item = range *r {
 		if _, ok = res[item.DataType]; !ok {
 			res[item.DataType] = make([]*ArgDeleteData, 0, l)
