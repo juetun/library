@@ -10,10 +10,11 @@ import (
 )
 
 const (
-	PlatMallManager  = "plat_mall_manager"  //电商管理
-	PlatBadgeURefund = "plat_badge_urefund" //电商管理-退款单
-	PlatOrderBadge   = "plat_order_badge"   //电商管理-订单管理
-	PlatBadgeUOrder  = "plat_badge_uorder"  //电商管理-订单管理-用户订单
+	PlatMallManager            = "plat_mall_manager"  //电商管理
+	PlatBadgeURefund           = "plat_badge_urefund" //电商管理-退款单
+	PlatOrderBadge             = "plat_order_badge"   //电商管理-订单管理
+	PlatBadgeUOrder            = "plat_badge_uorder"  //电商管理-订单管理-用户订单
+	PlatBadgeSettlement = "plat_badge_settle"  //电商管理-订单管理-结算单
 
 	PlatUserBadge        = "plat_user_badge"     //用户信息
 	PlatUserManagerBadge = "plat_umanager_badge" //用户信息 -用户管理
