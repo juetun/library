@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	OrderPayTypeAliPay uint8 = iota + 1 // 支付宝支付
-	OrderPayTypeWeiXin                  // 微信支付
+	OrderPayTypeAliPay  uint8 = iota + 1 // 支付宝支付
+	OrderPayTypeWeiXin                   // 微信支付
+	OrderPayTypeOffLine                  // 线下打款
 )
 
 var (
@@ -20,6 +21,10 @@ var (
 		{
 			Label: "微信支付",
 			Value: OrderPayTypeWeiXin,
+		},
+		{
+			Label: "线下付款",
+			Value: OrderPayTypeOffLine,
 		},
 	}
 )
