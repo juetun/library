@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	PlatMallManager            = "plat_mall_manager"  //电商管理
-	PlatBadgeURefund           = "plat_badge_urefund" //电商管理-退款单
-	PlatOrderBadge             = "plat_order_badge"   //电商管理-订单管理
-	PlatBadgeUOrder            = "plat_badge_uorder"  //电商管理-订单管理-用户订单
+	PlatMallManager     = "plat_mall_manager"  //电商管理
+	PlatBadgeURefund    = "plat_badge_urefund" //电商管理-退款单
+	PlatOrderBadge      = "plat_order_badge"   //电商管理-订单管理
+	PlatBadgeUOrder     = "plat_badge_uorder"  //电商管理-订单管理-用户订单
 	PlatBadgeSettlement = "plat_badge_settle"  //电商管理-订单管理-结算单
 
 	PlatUserBadge        = "plat_user_badge"     //用户信息
@@ -32,6 +32,8 @@ const (
 const (
 	ShopTagRefundAndSaleAfterCount = "shop_refund_sale_after" //退款和售后
 	ShopTagOrderListCount          = "shop_order_list"        //订单列表
+	ShopTagSettle                  = "shop_settlement"        //结算单
+	ShopTagSettleApproveFailure    = "shop_settle_fail"       //结算失败
 
 	ShopTagUnReadChatCount       = "shop_chat_msg"         //未读聊天信息
 	ShopTagOrderWaitingSend      = "shop_send_goods"       //待发货订单数
