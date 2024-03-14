@@ -42,9 +42,15 @@ type (
 		Video          string          `json:"video,omitempty"`      //视频信息
 		UserShow       uint8           `json:"user_show"`            //用户是否可见 1-可见 2-不可见
 		AttendUserShow uint8           `json:"attend_user_show"`     //关注用户是否可见 1-可件 2-不可见
-		Title          string          `json:"title,omitempty"`      //动态标题
-		Desc           string          `json:"desc,omitempty"`       //动态内容
-		Time           base.TimeNormal `json:"time"`                 //时间
+		ProvinceId     int             `json:"province_id"`
+		CityId         int             `json:"city_id"`
+		AreaId         int             `json:"area_id"`
+		StreetId       int             `json:"street_id"`
+		Lat            string          `json:"lat"`
+		Lng            string          `json:"lng"`
+		Title          string          `json:"title,omitempty"` //动态标题
+		Desc           string          `json:"desc,omitempty"`  //动态内容
+		Time           base.TimeNormal `json:"time"`            //时间
 	}
 	TrendContents struct {
 		Data []*TrendContent `json:"data"`
