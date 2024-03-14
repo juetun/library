@@ -123,7 +123,6 @@ func (r *TrendContents) GetUserHidAndMap() (userHIds []int64, dataMap map[string
 		if _, ok := dataMap[kv]; !ok {
 			dataMap[kv] = make([]*TrendContent, 0, l)
 			userHIds = append(userHIds, item.UserHid)
-			continue
 		}
 		dataMap[kv] = append(dataMap[kv], item)
 	}
