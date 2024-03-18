@@ -338,7 +338,12 @@ func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res i
 	var vals = &url.Values{}
 	vals.Set("id", r.ProductId)
 	vals.Set("sku_id", r.SkuId)
-	res, err = recommend.GetPageLink(headerInfo, vals, recommend.AdDataDataTypeSpu, recommend.PageNameSpu)
+	res, err = recommend.GetPageLink(&recommend.LinkArgument{
+			HeaderInfo: headerInfo,
+			UrlValue:   vals,
+			DataType:   recommend.AdDataDataTypeSpu,
+			PageName:   recommend.PageNameSpu,
+		})
 	return
 }
 
