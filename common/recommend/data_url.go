@@ -98,7 +98,7 @@ func getPageSNSPathByPageName(pageNames ...string) (res string) {
 }
 
 func getPageFishingSpotsPathByPageName(pageNames ...string) (res string) {
-	var pageName = PageNameSns
+	var pageName = PageNameFishingSport
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
@@ -176,100 +176,114 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 }
 
 //小程序参数生成
-func getPageLinkMina(urlValue *url.Values, dataType string, pageNames ...string) (res DataItemLinkMina, err error) {
+func getPageLinkMina(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	var (
 		pageName string
 		ok       bool
 	)
 
-	if pageName, ok = MapDataTypeBiz[dataType]; !ok {
-		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", dataType)
+	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
 		return
 	}
 
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
+	if argument.PageName != "" {
+		pageName = argument.PageName
 	}
 	res.PageName = pageName
 	res.Query = make(map[string]interface{}, 10)
-	if urlValue != nil {
-		for key := range *urlValue {
-			res.Query[key] = urlValue.Get(key)
+	if argument.UrlValue != nil {
+		for key := range * argument.UrlValue {
+			res.Query[key] = argument.UrlValue.Get(key)
 		}
 	}
 
 	return
 }
 
-func getDefault(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res interface{}, err error) {
-	if urlValue == nil {
-		urlValue = &url.Values{}
+func getDefault(argument *LinkArgument) (res interface{}, err error) {
+	if argument.NeedHeaderInfo {
+		if argument.UrlValue == nil {
+			argument.UrlValue = &url.Values{}
+		}
+		if argument.HeaderInfo.HApp != "" {
+			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
+		}
+		if argument.HeaderInfo.HTerminal != "" {
+			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
+		}
+		if argument.HeaderInfo.HChannel != "" {
+			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
+		}
+		if argument.HeaderInfo.HVersion != "" {
+			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
+		}
 	}
-	if headerInfo.HApp != "" {
-		urlValue.Set("h_app", headerInfo.HApp)
-	}
-	if headerInfo.HTerminal != "" {
-		urlValue.Set("h_terminal", headerInfo.HTerminal)
-	}
-	if headerInfo.HChannel != "" {
-		urlValue.Set("h_channel", headerInfo.HChannel)
-	}
-	if headerInfo.HVersion != "" {
-		urlValue.Set("h_version", headerInfo.HVersion)
-	}
-	res, err = getPageLinkDefault(urlValue, dataType, pageNames...)
+
+	res, err = getPageLinkDefault(argument.UrlValue, argument.DataType, argument.PageName)
 	return
 }
 
 //小程序参数生成
-func getPageLinkApp(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res DataItemLinkMina, err error) {
+func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	var (
 		pageName string
 		ok       bool
 	)
 
-	if pageName, ok = MapDataTypeBiz[dataType]; !ok {
-		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", dataType)
+	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
 		return
 	}
 
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
+	if len(argument.PageName) > 0 {
+		pageName = argument.PageName
 	}
 	res.PageName = pageName
 	res.Query = make(map[string]interface{}, 10)
-	if headerInfo.HApp != "" {
-		res.Query["h_app"] = headerInfo.HApp
-	}
-	if headerInfo.HTerminal != "" {
-		res.Query["h_terminal"] = headerInfo.HTerminal
-	}
-	if headerInfo.HChannel != "" {
-		res.Query["h_channel"] = headerInfo.HChannel
-	}
-	if headerInfo.HVersion != "" {
-		res.Query["h_version"] = headerInfo.HVersion
-	}
-	if urlValue != nil {
-		for key := range *urlValue {
-			res.Query[key] = urlValue.Get(key)
+	if argument.NeedHeaderInfo {
+		if argument.HeaderInfo.HApp != "" {
+			res.Query["h_app"] = argument.HeaderInfo.HApp
+		}
+		if argument.HeaderInfo.HTerminal != "" {
+			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+		}
+		if argument.HeaderInfo.HChannel != "" {
+			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+		}
+		if argument.HeaderInfo.HVersion != "" {
+			res.Query["h_version"] = argument.HeaderInfo.HVersion
+		}
+		if argument.UrlValue != nil {
+			for key := range *argument.UrlValue {
+				res.Query[key] = argument.UrlValue.Get(key)
+			}
 		}
 	}
 
 	return
 }
 
+type LinkArgument struct {
+	HeaderInfo     *common.HeaderInfo
+	UrlValue       *url.Values
+	DataType       string
+	PageName       string
+	NeedHeaderInfo bool `json:"need_header_info"` //拼接参数时，带上header_info数据
+}
+
 //获取页面链接
-func GetPageLink(headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string) (res interface{}, err error) {
-	switch headerInfo.HTerminal {
+//headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
+func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
+	switch argument.HeaderInfo.HTerminal {
 	case app_param.TerminalMina: //小程序
-		res, err = getPageLinkMina(urlValue, dataType, pageNames...)
+		res, err = getPageLinkMina(argument)
 	case app_param.TerminalAndroid: //安卓
-		res, err = getPageLinkApp(headerInfo, urlValue, dataType, pageNames...)
+		res, err = getPageLinkApp(argument)
 	case app_param.TerminalIos: //IOS
-		res, err = getPageLinkApp(headerInfo, urlValue, dataType, pageNames...)
+		res, err = getPageLinkApp(argument)
 	default:
-		res, err = getDefault(headerInfo, urlValue, dataType, pageNames...)
+		res, err = getDefault(argument)
 	}
 
 	return
