@@ -30,12 +30,12 @@ var (
 	MapDataTypeBiz = map[string]string{
 		AdDataDataTypeSpu:               PageNameSpu,          //商品信息（spu）
 		AdDataDataTypeSku:               PageNameSpu,          //商品(sku)信息
-		AdDataDataTypeUserShop:          PageNameShop,         //店铺信息
+		AdDataDataTypeUserShop:          PageNameShop,         //店铺信息（后台）
+		AdDataDataTypeUserShopHome:      PageNameShop,         //店铺信息（前台）
 		AdDataDataTypeUser:              PageNameUsr,          //用户信息
 		AdDataDataTypeSocialIntercourse: PageNameSns,          //广告社交动态信息
 		AdDataDataTypeFishingSport:      PageNameFishingSport, //钓点信息
-
-		AdDataDataTypeOther: PageNameOther, //其他信息
+		AdDataDataTypeOther:             PageNameOther,        //其他信息
 	}
 	MapPageMallName = map[string]string{
 		PageNameSpu:                     "/#/pages/mall/detail/index",
@@ -73,6 +73,18 @@ func getPageSpuPathByPageName(pageNames ...string) (res string) {
 
 func getPageUserShopPathByPageName(pageNames ...string) (res string) {
 	var pageName = UserShopInfo
+	if len(pageNames) > 0 {
+		pageName = pageNames[0]
+	}
+
+	if tmp, ok := MapPageUserShop[pageName]; ok {
+		res = tmp
+		return
+	}
+	return
+}
+func getPageShopPathByPageName(pageNames ...string) (res string) {
+	var pageName = UserShopHome
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
@@ -154,6 +166,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
 			AdDataDataTypeSku:               getPageSpuPathByPageName,
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
+			AdDataDataTypeUserShopHome:getPageShopPathByPageName,
 			AdDataDataTypeUser:              getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
 			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
