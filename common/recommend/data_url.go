@@ -45,8 +45,8 @@ var (
 		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
 	}
 	MapPageSNsName = map[string]string{
-		PageNameSns:                "/#/pages/sns/detail/index",
-		AdDataDataTypeFishingSport: "/#/pages/fishingsport/detail/index",
+		PageNameSns:          "/#/pages/sns/detail/index",
+		PageNameFishingSport: "/#/pages/fishingsport/detail/index",
 	}
 	MapPageUserShop = map[string]string{
 		UserShopInfo: "/shop/info",
