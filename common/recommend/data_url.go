@@ -133,10 +133,11 @@ func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, da
 		dataType = tmp
 	}
 	if getPagePathHandler != nil {
+		suffix := getPagePathHandler(pageNames...)
 		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
-			stringValue = fmt.Sprintf("//%s%s", tmp, getPagePathHandler(pageNames...))
+			stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
 		} else {
-			stringValue = fmt.Sprintf("//localhost:3000%s", getPagePathHandler(pageNames...))
+			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
 		}
 	}
 	var (
