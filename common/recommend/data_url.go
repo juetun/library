@@ -166,7 +166,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
 			AdDataDataTypeSku:               getPageSpuPathByPageName,
 			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
-			AdDataDataTypeUserShopHome:getPageShopPathByPageName,
+			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
 			AdDataDataTypeUser:              getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
 			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
@@ -205,6 +205,20 @@ func getPageLinkMina(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	}
 	res.PageName = pageName
 	res.Query = make(map[string]interface{}, 10)
+	if argument.NeedHeaderInfo {
+		if argument.HeaderInfo.HApp != "" {
+			res.Query["h_app"] = argument.HeaderInfo.HApp
+		}
+		if argument.HeaderInfo.HTerminal != "" {
+			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+		}
+		if argument.HeaderInfo.HChannel != "" {
+			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+		}
+		if argument.HeaderInfo.HVersion != "" {
+			res.Query["h_version"] = argument.HeaderInfo.HVersion
+		}
+	}
 	if argument.UrlValue != nil {
 		for key := range * argument.UrlValue {
 			res.Query[key] = argument.UrlValue.Get(key)
@@ -267,13 +281,12 @@ func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 		if argument.HeaderInfo.HVersion != "" {
 			res.Query["h_version"] = argument.HeaderInfo.HVersion
 		}
-		if argument.UrlValue != nil {
-			for key := range *argument.UrlValue {
-				res.Query[key] = argument.UrlValue.Get(key)
-			}
+	}
+	if argument.UrlValue != nil {
+		for key := range *argument.UrlValue {
+			res.Query[key] = argument.UrlValue.Get(key)
 		}
 	}
-
 	return
 }
 
