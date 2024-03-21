@@ -116,6 +116,7 @@ type (
 		SubStatus          uint8            `json:"sub_status"`           //子单状态
 		AddressId          int64            `json:"address_id"`           //收货地址信息
 		PayType            uint8            `json:"pay_type"`             //支付方式
+		Type               string           `json:"type"`                 //数据操作来源
 		Amount             string           `json:"amount"`               //支付总金额
 		PayAmount          string           `json:"pay_amount"`           //支付金额
 		TotalPostage       string           `json:"total_postage"`        //邮费
