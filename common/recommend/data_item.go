@@ -129,15 +129,11 @@ type (
 	}
 )
 
-//获取广告唯一Id字符串
-func (r *DataItem) GetUniqueKey() (res string) {
-	return GetUniqueKey(r.DataType, r.DataId)
-}
-
 func (r *ArgDeleteData) Default(ctx *base.Context) (err error) {
 
 	return
 }
+
 func (r *ArgDeleteData) GetPk(ctx *base.Context) (res string) {
 	res = GetUniqueKey(r.DataType, r.DataId)
 	return
@@ -174,6 +170,29 @@ func (r *ArgDeleteDataList) GroupDataType() (res map[string][]*ArgDeleteData) {
 		res[item.DataType] = append(res[item.DataType], item)
 	}
 
+	return
+}
+
+//获取广告唯一Id字符串
+func (r *DataItem) GetUniqueKey() (res string) {
+	return GetUniqueKey(r.DataType, r.DataId)
+}
+
+//解析广告唯一Id字符串
+func (r *DataItem) InitAttendDataValue() {
+	if r.ShopId > 0 {
+		r.AddDataValue(map[string]*DataItemDetail{
+			"show_attend":      {Value: "1"},
+			"attend_data_id":   {Value: fmt.Sprintf("%v", r.ShopId)},
+			"attend_data_type": {Value: comment.AttendDataTypeShop},
+		})
+		return
+	}
+	r.AddDataValue(map[string]*DataItemDetail{
+		"show_attend":      {Value: "1"},
+		"attend_data_id":   {Value: fmt.Sprintf("%v", r.CreateUid)},
+		"attend_data_type": {Value: comment.AttendDataTypeUser},
+	})
 	return
 }
 
@@ -238,9 +257,15 @@ func (r *DataItem) AddPreTags(tags ...*DataItemTag) {
 }
 
 //添加DataValue
-func (r *DataItem) AddDataValue(dataItemDetails map[string]*DataItemDetail) {
+func (r *DataItem) AddDataValue(dataItemDetails map[string]*DataItemDetail, initLengths ...int) {
+	var initLength int
+	if len(initLengths) > 0 {
+		initLength = initLengths[0]
+	} else {
+		initLength = 5 + len(dataItemDetails)
+	}
 	if r.DataValue == nil {
-		r.DataValue = make(map[string]*DataItemDetail, 5+len(dataItemDetails))
+		r.DataValue = make(map[string]*DataItemDetail, initLength)
 	}
 	for key, value := range dataItemDetails {
 		r.DataValue[key] = value
