@@ -90,9 +90,10 @@ type (
 		ShopName      string                     `json:"shop_name,omitempty"`    //店铺名称
 		CurrentAccUId int64                      `json:"current_acc_uid"`        //获取数据的用户ID
 		CreateUid     int64                      `json:"create_uid,omitempty"`   //信息发布者
-		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID
-		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina
-		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon
+		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID（此处值可能为店铺信息或用户信息）
+		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina（此处值可能为店铺信息或用户信息）
+		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon（此处值可能为店铺信息或用户信息）
+		HasAttend     bool                       `json:"has_attend,omitempty"`   //是否关注店铺（此处值可能为店铺信息或用户信息）
 		ExtraMsg      string                     `json:"extra_msg,omitempty"`    //携带的其他信息
 		ShowType      string                     `json:"show_type"`              //展示样式 默认card
 		Children      []*DataItem                `json:"children,omitempty"`     //子列表
