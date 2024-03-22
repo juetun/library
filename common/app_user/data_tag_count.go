@@ -13,7 +13,9 @@ import (
 //
 //商品（或其他数据的访问记录数）
 const (
-	BrowserSpuCount = "spu_bro" //商品浏览数
+	BrowserSpuCount          = "spu_bro"     //商品浏览数
+	BrowserArticleCount      = "article_bro" //圈子动态浏览数
+	BrowserFishingCountCount = "spots_bro"   //钓点浏览数
 )
 
 const (
