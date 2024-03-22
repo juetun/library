@@ -315,3 +315,16 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 
 	return
 }
+
+
+func GetUserHref(info *common.HeaderInfo, urlV url.Values) (link interface{}, err error) {
+	//urlV := url.Values{}
+	//urlV.Set("uid", fmt.Sprintf("%v", r.ToUserHid))
+	link, err = GetPageLink(&LinkArgument{
+		HeaderInfo: info,
+		UrlValue:   &urlV,
+		DataType:   AdDataDataTypeUser,
+		PageName:   PageNameUsr,
+	})
+	return
+}
