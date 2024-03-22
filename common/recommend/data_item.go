@@ -120,7 +120,7 @@ type (
 	DataItemDetail struct {
 		Type      string `json:"type,omitempty"`      //标签类型，可选值为primary success danger warning	默认	default
 		Value     string `json:"value"`               //值
-		Label     string `json:"label"`               //类型名称
+		Label     string `json:"label,omitempty"`     //类型名称
 		Color     string `json:"color,omitempty"`     //标签颜色
 		TextColor string `json:"textColor,omitempty"` //文本颜色，优先级高于color属性	String	white
 		Plain     bool   `json:"plain,omitempty"`     //是否为空心样式	Boolean	false
