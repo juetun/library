@@ -15,9 +15,10 @@ import (
 
 type (
 	GetBizData struct {
-		Context          *base.Context
-		DataTypes        string `json:"data_types"`
-		HeaderInfoString string `json:"header_info_string"`
+		Context           *base.Context
+		GetDataTypeCommon base.GetDataTypeCommon `json:"common"`
+		DataTypes         string                 `json:"data_types"`
+		HeaderInfoString  string                 `json:"header_info_string"`
 	}
 	DataStructArguments struct {
 		AppName    string     `json:"app_name"`
