@@ -82,6 +82,10 @@ var (
 			Value: AdDataDataTypeSocialIntercourse,
 		},
 		{
+			Label: "钓点",
+			Value: AdDataDataTypeFishingSport,
+		},
+		{
 			Label: "电商_SKU",
 			Value: AdDataDataTypeSku,
 		},
