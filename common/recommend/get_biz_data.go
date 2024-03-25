@@ -20,12 +20,17 @@ type (
 		DataTypes         string                 `json:"data_types"`
 		HeaderInfoString  string                 `json:"header_info_string"`
 	}
-	DataStructArguments struct {
-		AppName    string     `json:"app_name"`
-		URI        string     `json:"uri"`
-		Method     string     `json:"method"`
-		Parameters url.Values `json:"parameters"`
+	ArgumentGetBizDataItem struct {
+		DataTypes string   `json:"data_types"`
+		DataIds   []string `json:"data_ids"`
 	}
+	DataStructArguments struct {
+		AppName   string `json:"app_name"`
+		URI       string `json:"uri"`
+		Method    string `json:"method"`
+		OrgParams OrgGetDataParamsHandler
+	}
+	OrgGetDataParamsHandler func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte)
 )
 
 //获取业务数据的参数配置
@@ -38,37 +43,61 @@ func GetMapDataGetHandler(dataTypes ...string) (res map[string]DataStructArgumen
 		AdDataDataTypeUserShop: {
 			AppName: app_param.AppNameMall,
 			URI:     "/shop/get_for_recomm",
-			Method:  http.MethodPost, Parameters: url.Values{},
+			Method:  http.MethodPost, OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
 		}, //配置获取电商数据映射
 		AdDataDataTypeSpu: {
 			AppName: app_param.AppNameMall,
 			URI:     "/product/get_spu_by_ids",
 			Method:  http.MethodPost,
-			Parameters: func() (urlValue url.Values) {
+			OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
 				urlValue = url.Values{}
 				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
 				return
-			}(),
+			},
 		}, //配置获取电商数据映射
 		AdDataDataTypeSocialIntercourse: {
 			AppName: app_param.AppNameSocialIntercourse,
 			URI:     "/data/get_article_by_ids",
-			Method:  http.MethodPost, Parameters: url.Values{},
+			Method:  http.MethodPost,
+			OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
 		},
 		AdDataDataTypeFishingSport: {
 			AppName: app_param.AppNameSocialIntercourse,
 			URI:     "/data/get_fishing_spots_by_ids",
-			Method:  http.MethodPost, Parameters: url.Values{},
+			Method:  http.MethodPost,
+			OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
 		},
 		AdDataDataTypeGetSnsData: { //获取社交和钓点数据可使用此参数集中获取
 			AppName: app_param.AppNameSocialIntercourse,
 			URI:     "/data/base_data_by_ids",
-			Method:  http.MethodPost, Parameters: url.Values{},
+			Method:  http.MethodPost,
+			OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
 		},
 	}
 }
 
-func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res map[string]*DataItem, err error) {
+func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataItem, l int) (res map[string]*DataItem, err error) {
 	res = make(map[string]*DataItem, l)
 
 	var (
@@ -79,7 +108,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 		MapDataGetHandler = GetMapDataGetHandler(r.DataTypes)
 	)
 
-	for key, ids := range groupMapDataId {
+	for key, argumentItem := range groupMapDataId {
 		if handler, ok = MapDataGetHandler[key]; !ok {
 			err = fmt.Errorf("当前不支持您选择的商品数据类型(%s)", key)
 			return
@@ -88,18 +117,16 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 		dataMul.Add(1)
 
 		//并行获取商品数据详情
-		go func(bizCode string, idString []string, handlerOp DataStructArguments) {
+		go func(bizCode string, argumentIt *ArgumentGetBizDataItem, handlerOp DataStructArguments) {
 
 			defer dataMul.Done()
-
 			var (
-				err     error
+				e       error
 				resData map[string]*DataItem
 			)
 
-			handlerOp.Parameters.Set("ids", strings.Join(idString, ","))
 			//发送请求获取数据
-			if resData, err = r.GetFromApplication(handlerOp.Parameters, handlerOp.AppName, handlerOp.URI, handlerOp.Method); err != nil {
+			if resData, e = r.GetFromApplication(handlerOp, argumentIt); e != nil {
 				return
 			}
 
@@ -112,31 +139,37 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string][]string, l int) (res
 				value.Default()
 				res[GetUniqueKey(value.DataType, value.DataId)] = value
 			}
-		}(key, ids, handler)
+		}(key, argumentItem, handler)
 	}
 	dataMul.Wait()
 	return
 }
 
-func (r *GetBizData) GetFromApplication(args url.Values, appName, URI string, method string) (res map[string]*DataItem, err error) {
+func (r *GetBizData) GetFromApplication(handlerOp DataStructArguments, argumentIt *ArgumentGetBizDataItem) (res map[string]*DataItem, err error) {
+	//args url.Values, appName, URI string, method string
+	//.OrgParams(), handlerOp.AppName, handlerOp.URI, handlerOp.Method
 	res = map[string]*DataItem{}
-	if args == nil {
-		return
-	}
-	if appName == "" {
+
+	if handlerOp.AppName == "" {
 		err = fmt.Errorf("请选择查询数据的应用")
 		return
 	}
-
+	var (
+		urlValue    url.Values
+		requestBody []byte
+	)
+	urlValue, requestBody = handlerOp.OrgParams(argumentIt)
 	params := rpc.RequestOptions{
 		Context:     r.Context,
-		Method:      method,
-		AppName:     appName,
-		URI:         URI,
-		Value:       args,
+		Method:      handlerOp.Method,
+		AppName:     handlerOp.AppName,
+		URI:         handlerOp.URI,
+		Value:       urlValue,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 		Header:      http.Header{},
+		BodyJson:    requestBody,
 	}
+
 	params.Header.Set(app_obj.HttpHeaderInfo, r.HeaderInfoString)
 	httpRpc := rpc.NewHttpRpc(&params)
 	req := httpRpc.Send()
