@@ -23,7 +23,7 @@ type (
 		Type string `json:"type" form:"type"`
 		Id   string `json:"id" form:"id"`
 	}
-	ResultHasAttendStatus map[int64]bool
+	ResultHasAttendStatus map[string]map[int64]bool
 )
 
 func (r *ArgHasAttendStatus) Default(ctx *base.Context) (err error) {
