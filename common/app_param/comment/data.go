@@ -165,7 +165,19 @@ func (r *ArgGetNumberByKeys) GetKey(ActType string, DataType string, DataId stri
 	return strings.Join([]string{ActType, DataType, DataId}, DivIdString)
 }
 
-func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType string, DataType string, DataId string) {
+func (r *ResultGetNumberItem) GetDataPk() (res string) {
+
+	var sliceData []string
+	if r.CommentId != "" {
+		sliceData = []string{r.DataType, r.DataId, r.CommentId}
+	} else {
+		sliceData = []string{r.DataType, r.DataId}
+	}
+	res = strings.Join(sliceData, DivIdString)
+	return
+}
+
+func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType, DataType, DataId, commentId string) {
 	list := strings.Split(key, DivIdString)
 	switch len(list) {
 	case 1:
@@ -177,6 +189,11 @@ func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType string, DataType st
 		ActType = list[0]
 		DataType = list[1]
 		DataId = list[2]
+	case 4:
+		ActType = list[0]
+		DataType = list[1]
+		DataId = list[2]
+		DataId = list[4]
 	}
 
 	return
