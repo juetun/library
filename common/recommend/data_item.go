@@ -226,25 +226,25 @@ func (r *DataItem) GetUrlValue() (res url.Values) {
 }
 
 func (r *DataItem) GetShareKey() (res string) {
-	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeShare, r.DataType, r.DataId)
+	res = strings.Join([]string{comment.ActTypeShare, r.DataType, r.DataId}, comment.DivIdString)
 	return
 
 }
 
 func (r *DataItem) GetCollectKey() (res string) {
-	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeCollect, r.DataType, r.DataId)
+	res = strings.Join([]string{comment.ActTypeCollect, r.DataType, r.DataId}, comment.DivIdString)
 
 	return
 }
 
 func (r *DataItem) GetLoveKey() (res string) {
-	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeLove, r.DataType, r.DataId)
+	res = strings.Join([]string{comment.ActTypeLove, r.DataType, r.DataId}, comment.DivIdString)
 
 	return
 }
 
 func (r *DataItem) GetCommentKey() (res string) {
-	res = fmt.Sprintf("%v_%v_%v", comment.ActTypeComment, r.DataType, r.DataId)
+	res = strings.Join([]string{comment.ActTypeComment, r.DataType, r.DataId}, comment.DivIdString)
 	return
 }
 
