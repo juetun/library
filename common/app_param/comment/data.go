@@ -120,9 +120,10 @@ var (
 
 type (
 	ArgGetNumberByKeys struct {
-		CurrentUserHid int64           `json:"current_user_hid" form:"current_user_hid"`
-		Keys           []string        `json:"keys" form:"keys"`
-		TimeNow        base.TimeNormal `json:"-" form:"-"`
+		CurrentUserHid    int64                  `json:"current_user_hid" form:"current_user_hid"`
+		Keys              []string               `json:"keys" form:"keys"`
+		TimeNow           base.TimeNormal        `json:"-" form:"-"`
+		GetDataTypeCommon base.GetDataTypeCommon `json:"get_data_type_common" form:"get_data_type_common"`
 	}
 	ResultGetNumberByKeys map[string]*ResultGetNumberItem
 	ResultGetNumberItem   struct {
