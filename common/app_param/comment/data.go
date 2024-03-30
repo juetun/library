@@ -11,7 +11,9 @@ const (
 	ActTypeAdd    = "add"
 	ActTypeCancel = "cancel"
 )
-
+const (
+	DivIdString = "^" // 唯一数据key的描述分隔符
+)
 const (
 	AttendDataTypeUser         = "usr"           // 用户
 	AttendDataTypeSpu          = "spu"           // 商品
@@ -160,12 +162,11 @@ func (r *ArgGetNumberByKeys) Default(c *base.Context) (err error) {
 }
 
 func (r *ArgGetNumberByKeys) GetKey(ActType string, DataType string, DataId string) (res string) {
-
-	return fmt.Sprintf("%v_%v_%v", ActType, DataType, DataId)
+	return strings.Join([]string{ActType, DataType, DataId}, DivIdString)
 }
 
 func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType string, DataType string, DataId string) {
-	list := strings.Split(key, "_")
+	list := strings.Split(key, DivIdString)
 	switch len(list) {
 	case 1:
 		ActType = list[0]
