@@ -248,6 +248,11 @@ func (r *DataItem) GetCommentKey() (res string) {
 	return
 }
 
+func (r *DataItem) GetReplyKey() (res string) {
+	res = strings.Join([]string{comment.ActTypeReplay, r.DataType, r.DataId}, comment.DivIdString)
+	return
+}
+
 //添加pre_tags
 func (r *DataItem) AddPreTags(tags ...*DataItemTag) {
 	if r.PreTags == nil {
