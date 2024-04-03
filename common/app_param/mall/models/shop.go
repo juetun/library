@@ -6,6 +6,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/const_apply"
+	"github.com/juetun/library/common/plugins_lib"
 	"github.com/juetun/library/common/recommend"
 	"net/url"
 	"strings"
@@ -200,6 +201,13 @@ type (
 		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 )
+
+func GetShopMain(headerInfo *common.HeaderInfo) (res interface{}, err error) {
+	if tmp, ok := plugins_lib.WebMap["app-shop-home"]; ok {
+		res = fmt.Sprintf("//%v", tmp)
+	}
+	return
+}
 
 func (r *Shop) TableName() string {
 	return fmt.Sprintf("%sshop", TablePrefix)
