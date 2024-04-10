@@ -95,10 +95,47 @@ func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.G
 }
 
 //移除接口
-func (r *DaoUploadImpl) RemoveFile() (res *ResultUploadRemove, err error) {
+func (r *DaoUploadImpl) RemoveFile(arg *ArgUploadRemove) (resData *ResultUploadRemove, err error) {
+	resData = &ResultUploadRemove{}
+	var value = url.Values{}
+	var bodyByte []byte
 
+	//判断参数是否为空
+	if arg == nil || arg.IsNull() {
+		return
+	}
+
+	if bodyByte, err = json.Marshal(arg); err != nil {
+		return
+	}
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameUpload,
+		URI:         "/upload/remove_file",
+		Header:      http.Header{},
+		Value:       value,
+		BodyJson:    bodyByte,
+		Context:     r.Context,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	var data = struct {
+		Code int                 `json:"code"`
+		Data *ResultUploadRemove `json:"data"`
+		Msg  string              `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	if data.Data != nil {
+		resData = data.Data
+	}
 	return
 }
+
 func NewDaoUpload(ctx ...*base.Context) DaoUpload {
 	p := &DaoUploadImpl{}
 	p.SetContext(ctx...)
