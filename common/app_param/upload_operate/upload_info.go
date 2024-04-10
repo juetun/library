@@ -32,12 +32,13 @@ type (
 	//删除上传文件接口
 	ArgUploadRemove struct {
 		//ImgKeys   []string `json:"img_keys"`
-		ExceptVideoKeys []string `json:"except_video_keys"`
-		ExceptMusicKey  []string `json:"except_music_key"`
+		ExceptVideoKeys []string `json:"except_video_keys"` //忽略视频文件
+		ExceptMusicKey  []string `json:"except_music_key"`  //忽略音频文件
 		//Material  []string `json:"material"`
-		ExceptFile     []string `json:"except_file"`
-		UploadDataType string   `json:"upload_data_type"`
-		UploadDataId   string   `json:"upload_data_id"`
+		ExceptFile     []string `json:"except_file"`      //忽略文件
+		FileType       []string `json:"file_type"`        //文件类型
+		UploadDataType string   `json:"upload_data_type"` //数据类型
+		UploadDataId   string   `json:"upload_data_id"`   //数据ID
 	}
 	ResultUploadRemove struct {
 		Result bool `json:"result"`
