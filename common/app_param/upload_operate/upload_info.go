@@ -28,7 +28,45 @@ type (
 		File []string `json:"file"`
 		base.GetDataTypeCommon
 	}
+
+	//删除上传文件接口
+	ArgUploadRemove struct {
+		//ImgKeys   []string `json:"img_keys"`
+		ExceptVideoKeys []string `json:"except_video_keys"`
+		ExceptMusicKey  []string `json:"except_music_key"`
+		//Material  []string `json:"material"`
+		ExceptFile     []string `json:"except_file"`
+		UploadDataType string   `json:"upload_data_type"`
+		UploadDataId   string   `json:"upload_data_id"`
+	}
+	ResultUploadRemove struct {
+		Result bool `json:"result"`
+	}
 )
+
+func NewArgUploadRemove() (res *ArgUploadRemove) {
+	res = &ArgUploadRemove{
+		//ImgKeys:   make([]string, 0, 50),
+		ExceptVideoKeys: make([]string, 0, 50),
+		ExceptMusicKey:  make([]string, 0, 50),
+		//Material:  make([]string, 0, 50),
+		ExceptFile: make([]string, 0, 50),
+	}
+	return
+}
+
+//判断数据是否为空
+func (r *ArgUploadRemove) IsNull() (isNull bool) {
+	if r.UploadDataType == "" && r.UploadDataId == "" {
+		isNull = true
+		return
+	}
+	return
+}
+
+func (r *ArgUploadRemove) Default(c *base.Context) (err error) {
+	return
+}
 
 func (r *UploadInfo) UnmarshalBinary(data []byte) (err error) {
 	if data == nil {

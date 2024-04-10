@@ -94,6 +94,11 @@ func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.G
 	return
 }
 
+//移除接口
+func (r *DaoUploadImpl) RemoveFile() (res *ResultUploadRemove, err error) {
+
+	return
+}
 func NewDaoUpload(ctx ...*base.Context) DaoUpload {
 	p := &DaoUploadImpl{}
 	p.SetContext(ctx...)
