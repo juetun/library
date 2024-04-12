@@ -21,6 +21,9 @@ type (
 	}
 	DaoUpload interface {
 		GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapUploadInfo, err error)
+
+		//删除文件 更具 upload_data_type和upload_data_id
+		RemoveFile(arg *ArgUploadRemove) (resData *ResultUploadRemove, err error)
 	}
 )
 

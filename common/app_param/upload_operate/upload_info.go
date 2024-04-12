@@ -39,6 +39,7 @@ type (
 		FileType       []string `json:"file_type"`        //文件类型
 		UploadDataType string   `json:"upload_data_type"` //数据类型
 		UploadDataId   string   `json:"upload_data_id"`   //数据ID
+		Channel        string   `json:"channel"`          //渠道号
 	}
 	ResultUploadRemove struct {
 		Result bool `json:"result"`
