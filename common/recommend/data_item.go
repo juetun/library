@@ -205,11 +205,18 @@ func (r *DataItem) ParseUniqueKey() (DataType, DataId string) {
 //参数默认值
 func (r *DataItem) Default() {
 	if r.ShowType == "" {
-		r.ShowType = DataItemShowTypeCard
+		if len(r.Children) > 0 {
+			r.ShowType = DataItemShowTypeImgList
+		} else {
+			switch r.DataType {
+			case AdDataDataTypeUserShop: //店铺信息
+				r.ShowType = DataItemShowTypeCardShop
+			default:
+				r.ShowType = DataItemShowTypeCard
+			}
+		}
 	}
-	if len(r.Children) > 0 {
-		r.ShowType = DataItemShowTypeImgList
-	}
+
 	if r.BadgeType == fmt.Sprintf("%v", BadgeTypeNum) {
 		if r.BadgeString == "" {
 			r.BadgeString = "0"
