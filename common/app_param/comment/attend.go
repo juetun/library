@@ -27,13 +27,14 @@ type (
 )
 
 func (r *ArgHasAttendStatus) Default(ctx *base.Context) (err error) {
-	r.TargetUids = make([]int64, 0)
+
 	var (
 		id int64
 		l  = len(r.TargetUid)
 	)
+	r.TargetUids = make([]int64, 0, l)
+	r.TargetShopIds = make([]int64, 0, l)
 	if len(r.TargetUid) > 0 {
-		r.TargetUids = make([]int64, 0, l)
 		for _, item := range r.TargetUid {
 			if id, err = strconv.ParseInt(item.Id, 10, 64); err != nil {
 				err = fmt.Errorf("target_uid参数格式错误")
