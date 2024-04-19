@@ -26,6 +26,10 @@ type (
 	ResultHasAttendStatus map[string]map[int64]bool
 )
 
+func (r *ArgHasAttendStatusTargetItem) GetPk() (res string) {
+	return fmt.Sprintf("%v_%v", r.Type, r.Id)
+}
+
 func (r *ArgHasAttendStatus) Default(ctx *base.Context) (err error) {
 
 	var (
