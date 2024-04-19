@@ -64,7 +64,7 @@ func (r *ArgHasAttendStatus) ToJson() (res []byte) {
 //根据用户ID获取用户信息
 func FetchHasAttendStatus(ctx *base.Context, arg *ArgHasAttendStatus) (res map[string]map[int64]bool, err error) {
 	var (
-		l = len(arg.TargetUids)
+		l = len(arg.TargetUid)
 	)
 	res = make(map[string]map[int64]bool, l)
 	if l == 0 {
