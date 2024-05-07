@@ -19,6 +19,8 @@ const (
 	PlatUserBadge         = "plat_user_badge"          //用户信息
 	PlatUserManagerBadge  = "plat_umanager_badge"      //用户信息 -用户管理
 	PlatWaitingReview     = "plat_waiting_review"      //用户信息 -用户管理 - 资料审核
+	PlatCustomer          = "plat_customer"            //平台客服
+	PlatManagerCustomer   = "plat_manager_customer"    //托管平台客服
 	PlatMarketing         = "plat_marketing"           //营销管理
 	PlatSuggestion        = "plat_suggestion"          //营销管理-投诉与建议
 	PlatDataStatic        = "plat_data_static"         //营销管理-统计
@@ -36,7 +38,6 @@ const (
 	ShopTagOrderListCount          = "shop_order_list"        //订单列表
 	ShopTagSettle                  = "shop_settlement"        //结算单
 	ShopTagSettleApproveFailure    = "shop_settle_fail"       //结算失败
-
 
 	//---------------------从缓存获取Tag----------------------
 	ShopTagUnReadChatCount       = "shop_chat_msg"         //未读聊天信息
