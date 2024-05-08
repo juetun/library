@@ -196,6 +196,7 @@ type (
 		AdminUserHid     int64            `gorm:"column:admin_user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:管理管理员账号" json:"admin_user_hid"`
 		NeedVerifyStatus int8             `gorm:"column:need_verify_status;type:tinyint(2);not null;default:1;comment:当前需要审核状态 1-审核通过 2-待审核 3-审核失败" json:"need_verify_status"`
 		VerifyStatus     string           `gorm:"column:verify_status;type:varchar(20);not null;default:'';comment:审核数据状态" json:"verify_status"`
+		ChatManagerGid   int64            `gorm:"column:chat_manager_gid;default:0;type:bigint(20);not null;comment:在线客服托管组id" json:"chat_manager_gid"`
 		CreatedAt        base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt        base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
