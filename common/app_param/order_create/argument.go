@@ -55,15 +55,14 @@ type (
 		OrderId     string                `json:"order_id" form:"order_id"`
 	}
 	ReceiptUserInfo struct {
-		ProvinceId   string `json:"province_id"`
-		CityId       string `json:"city_id"`
-		AreaId       string `json:"area_id"`
-		Address      string `json:"address"`
-		ZipCode      string `json:"zip_code"`
-		ContactUser  string `json:"contact_user"`
-		ContactPhone string `json:"contact_phone"`
-
-		FullAddress string `json:"full_address"`
+		ProvinceId   string `json:"province_id,omitempty"`
+		CityId       string `json:"city_id,omitempty"`
+		AreaId       string `json:"area_id,omitempty"`
+		Address      string `json:"address,omitempty"`
+		ZipCode      string `json:"zip_code,omitempty"`
+		ContactUser  string `json:"contact_user,omitempty"`
+		ContactPhone string `json:"contact_phone,omitempty"`
+		FullAddress  string `json:"full_address,omitempty"`
 	}
 )
 
