@@ -33,7 +33,7 @@ type (
 		Scene string `json:"scene" form:"scene"`
 	}
 	ResultExcelImportHeaderRelate struct {
-		Headers map[string]ExcelImportHeaderRelateItem `json:"headers"`
+		Headers []*ExcelImportHeaderRelateItem `json:"headers"`
 	}
 	ArgExcelImportValidateAndSync struct {
 		Scene string                `json:"scene" form:"scene"`
@@ -53,7 +53,6 @@ type (
 		ValidateStatus uint8  `gorm:"-" json:"validate_status"` //验证状态是否通过
 		ErrMsg         string `gorm:"-" json:"err_msg"`         //错误信息提示
 	}
-
 )
 
 const (
