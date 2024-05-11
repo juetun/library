@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param"
 )
 
 type (
