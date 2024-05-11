@@ -68,10 +68,11 @@ type (
 )
 
 const (
-	ExcelImportDataValidateStatusInit     = iota + 1 //导入数据初始化
-	ExcelImportDataValidateStatusOk                  //校验成功
-	ExcelImportDataValidateStatusFailure             //校验失败
-	ExcelImportDataValidateStatusImportOk            //导入完成
+	ExcelImportDataValidateStatusInit     uint8 = iota //导入数据初始化
+	ExcelImportDataValidateStatusOk                    //校验成功
+	ExcelImportDataValidateStatusFailure               //校验失败
+	ExcelImportDataValidateStatusWarning               //可忽略
+	ExcelImportDataValidateStatusImportOk              //导入完成
 )
 
 var (
@@ -87,6 +88,10 @@ var (
 		{
 			Value: ExcelImportDataValidateStatusFailure,
 			Label: "校验失败",
+		},
+		{
+			Value: ExcelImportDataValidateStatusWarning,
+			Label: "可忽略",
 		},
 		{
 			Value: ExcelImportDataValidateStatusImportOk,
