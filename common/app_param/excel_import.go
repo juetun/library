@@ -23,7 +23,7 @@ type (
 		ExcelImportHeaderRelate(args *ArgExcelImportHeaderRelate) (res *ResultExcelImportHeaderRelate, err error)
 
 		//excel导入的参数校验
-		ExcelImportValidate(args *ArgExcelImportValidateAndSync) (res []ExcelImportDataItem, err error)
+		ExcelImportValidate(args *ArgExcelImportValidateAndSync) (res []*ExcelImportDataItem, err error)
 
 		//数据同步
 		ExcelImportSyncData(args *ArgExcelImportValidateAndSync) (res []ExcelImportDataItem, err error)
@@ -68,11 +68,12 @@ type (
 )
 
 const (
-	ExcelImportDataValidateStatusInit     uint8 = iota //导入数据初始化
-	ExcelImportDataValidateStatusOk                    //校验成功
-	ExcelImportDataValidateStatusFailure               //校验失败
-	ExcelImportDataValidateStatusWarning               //可忽略
-	ExcelImportDataValidateStatusImportOk              //导入完成
+	ExcelImportDataValidateStatusInit       uint8 = iota //导入数据初始化
+	ExcelImportDataValidateStatusOk                      //校验成功
+	ExcelImportDataValidateStatusFailure                 //校验失败
+	ExcelImportDataValidateStatusWarning                 //可忽略
+	ExcelImportDataValidateStatusImportOk                //导入完成
+	ExcelImportDataValidateStatusValidating              //校验中
 )
 
 var (
@@ -96,6 +97,10 @@ var (
 		{
 			Value: ExcelImportDataValidateStatusImportOk,
 			Label: "导入完成",
+		},
+		{
+			Value: ExcelImportDataValidateStatusValidating,
+			Label: "校验中",
 		},
 	}
 )
@@ -134,12 +139,12 @@ func ExcelImportHeaderRelate(c *gin.Context, srv ServiceExcelImport) (data *Resu
 	return
 }
 
-func ExcelImportValidate(c *gin.Context, srv ServiceExcelImport) (data []ExcelImportDataItem, err error) {
+func ExcelImportValidate(c *gin.Context, srv ServiceExcelImport) (data []*ExcelImportDataItem, err error) {
 
 	var (
 		arg ArgExcelImportValidateAndSync
 	)
-	data = make([]ExcelImportDataItem, 0)
+	data = make([]*ExcelImportDataItem, 0)
 	if err = c.Bind(&arg); err != nil {
 		return
 	}
