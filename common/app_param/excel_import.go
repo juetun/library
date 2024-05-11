@@ -26,7 +26,7 @@ type (
 		ExcelImportValidate(args *ArgExcelImportValidateAndSync) (res []*ExcelImportDataItem, err error)
 
 		//数据同步
-		ExcelImportSyncData(args *ArgExcelImportValidateAndSync) (res []ExcelImportDataItem, err error)
+		ExcelImportSyncData(args *ArgExcelImportValidateAndSync) (res []*ExcelImportDataItem, err error)
 	}
 
 	ArgExcelImportHeaderRelate struct {
@@ -41,8 +41,8 @@ type (
 		Headers    []*ExcelImportHeaderRelateItem `json:"headers"`     //表头信息
 	}
 	ArgExcelImportValidateAndSync struct {
-		Scene string                `json:"scene" form:"scene"`
-		Data  []ExcelImportDataItem `json:"data" form:"data"`
+		Scene string                 `json:"scene" form:"scene"`
+		Data  []*ExcelImportDataItem `json:"data" form:"data"`
 	}
 	ExcelImportHeaderRelateItem struct {
 		Type       string `json:"type,omitempty"`      //列类型，可选值为  index、selection、expand、html
@@ -154,11 +154,11 @@ func ExcelImportValidate(c *gin.Context, srv ServiceExcelImport) (data []*ExcelI
 	return
 }
 
-func ExcelImportSyncData(c *gin.Context, srv ServiceExcelImport) (data []ExcelImportDataItem, err error) {
+func ExcelImportSyncData(c *gin.Context, srv ServiceExcelImport) (data []*ExcelImportDataItem, err error) {
 	var (
 		arg ArgExcelImportValidateAndSync
 	)
-	data = []ExcelImportDataItem{}
+	data = []*ExcelImportDataItem{}
 	if err = c.Bind(&arg); err != nil {
 		return
 	}
