@@ -58,12 +58,17 @@ type (
 	}
 
 	ExcelImportDataItem struct {
-		Id             int64  `gorm:"column:id" json:"id"`
-		Line           int64  `gorm:"column:line" json:"line"`
-		Data           string `gorm:"column:data" json:"data"`
-		SheetName      string `gorm:"column:sheet_name" json:"sheet_name"`
-		ValidateStatus uint8  `gorm:"-" json:"validate_status"` //验证状态是否通过
-		ErrMsg         string `gorm:"-" json:"err_msg"`         //错误信息提示
+		Id             int64  `gorm:"column:id" json:"id,omitempty"`
+		Line           int64  `gorm:"column:line" json:"line,omitempty"`
+		Data           string `gorm:"column:data" json:"data,omitempty"`
+		SheetName      string `gorm:"column:sheet_name" json:"sheet_name,omitempty"`
+		ValidateStatus uint8  `gorm:"-" json:"validate_status,omitempty"` //验证状态是否通过
+		ErrMsg         string `gorm:"-" json:"err_msg,omitempty"`         //错误信息提示
+	}
+	ImportErrMsgInfos []*ImportErrMsgInfo
+	ImportErrMsgInfo  struct {
+		ValidateStatus uint8  `json:"vs,omitempty"`
+		Msg            string `json:"msg,omitempty"`
 	}
 )
 
@@ -104,6 +109,27 @@ var (
 		},
 	}
 )
+
+func (r *ExcelImportDataItem) SetErrMsg(importErrMsgInfos ImportErrMsgInfos) (err error) {
+	if len(importErrMsgInfos) == 0 {
+		r.ErrMsg = ""
+		return
+	}
+	r.ErrMsg, err = importErrMsgInfos.ToString()
+	return
+}
+
+func (r *ImportErrMsgInfos) ToString() (res string, err error) {
+	if r == nil {
+		res = ""
+	}
+	var bt []byte
+	if bt, err = json.Marshal(r); err != nil {
+		return
+	}
+	res = string(bt)
+	return
+}
 
 func (r *SheetHeader) GetSheetHeaderMap() (res map[string]*ExcelImportHeaderRelateItem) {
 	res = make(map[string]*ExcelImportHeaderRelateItem, len(r.Headers))
