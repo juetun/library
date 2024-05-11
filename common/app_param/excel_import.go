@@ -45,11 +45,16 @@ type (
 		Data  []ExcelImportDataItem `json:"data" form:"data"`
 	}
 	ExcelImportHeaderRelateItem struct {
-		Label      string `json:"label,omitempty"`       //列中文标题
-		ColumnName string `json:"column_name,omitempty"` //列英文标题
-		Index      int64  `json:"index,omitempty"`       //列序号 如:第一列：0, 第二列：1
-		MinWidth   string `json:"min_width,omitempty"`
-		Align      string `json:"align"` //显示位置
+		Type       string `json:"type,omitempty"`      //列类型，可选值为  index、selection、expand、html
+		Title      string `json:"title,omitempty"`     //列中文标题
+		ColumnName string `json:"key,omitempty"`       //对应列内容的字段名
+		Index      int64  `json:"index,omitempty"`     //列序号 如:第一列：0, 第二列：1
+		ClassName  string `json:"className,omitempty"` //列的样式名称
+		Width      int    `json:"width,omitempty"`     //列宽
+		MinWidth   int    `json:"minWidth,omitempty"`  //最小列宽
+		MaxWidth   int    `json:"maxWidth,omitempty"`  //最大列宽
+		Align      string `json:"align"`               //显示位置
+		Tooltip    bool   `json:"tooltip"`             //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
 	}
 
 	ExcelImportDataItem struct {
@@ -93,7 +98,7 @@ var (
 func (r *SheetHeader) GetSheetHeaderMap() (res map[string]*ExcelImportHeaderRelateItem) {
 	res = make(map[string]*ExcelImportHeaderRelateItem, len(r.Headers))
 	for _, item := range r.Headers {
-		res[item.Label] = item
+		res[item.Title] = item
 	}
 	return
 }
