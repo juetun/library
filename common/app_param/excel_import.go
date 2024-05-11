@@ -49,6 +49,7 @@ type (
 		ColumnName string `json:"column_name,omitempty"` //列英文标题
 		Index      int64  `json:"index,omitempty"`       //列序号 如:第一列：0, 第二列：1
 		MinWidth   string `json:"min_width,omitempty"`
+		Align      string `json:"align"` //显示位置
 	}
 
 	ExcelImportDataItem struct {
