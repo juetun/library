@@ -45,9 +45,10 @@ type (
 		Data  []ExcelImportDataItem `json:"data" form:"data"`
 	}
 	ExcelImportHeaderRelateItem struct {
-		Label      string `json:"label"`       //列中文标题
-		ColumnName string `json:"column_name"` //列英文标题
-		Index      int64  `json:"index"`       //列序号 如:第一列：0, 第二列：1
+		Label      string `json:"label,omitempty"`       //列中文标题
+		ColumnName string `json:"column_name,omitempty"` //列英文标题
+		Index      int64  `json:"index,omitempty"`       //列序号 如:第一列：0, 第二列：1
+		MinWidth   string `json:"min_width,omitempty"`
 	}
 
 	ExcelImportDataItem struct {
