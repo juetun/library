@@ -33,7 +33,12 @@ type (
 		Scene string `json:"scene" form:"scene"`
 	}
 	ResultExcelImportHeaderRelate struct {
-		Headers []*ExcelImportHeaderRelateItem `json:"headers"`
+		Headers []*SheetHeader `json:"headers"`
+	}
+	SheetHeader struct {
+		SheetIndex int64                          `json:"sheet_index"` //sheet的序号 从0 开始
+		SheetName  string                         `json:"sheet_name"`  //sheetName 名称 默认Sheet1
+		Headers    []*ExcelImportHeaderRelateItem `json:"headers"`     //表头信息
 	}
 	ArgExcelImportValidateAndSync struct {
 		Scene string                `json:"scene" form:"scene"`
@@ -82,6 +87,14 @@ var (
 		},
 	}
 )
+
+func (r *SheetHeader) GetSheetHeaderMap() (res map[string]*ExcelImportHeaderRelateItem) {
+	res = make(map[string]*ExcelImportHeaderRelateItem, len(r.Headers))
+	for _, item := range r.Headers {
+		res[item.Label] = item
+	}
+	return
+}
 
 func (r *ArgExcelImportValidateAndSync) ToJson() (res []byte, err error) {
 	if r == nil {
