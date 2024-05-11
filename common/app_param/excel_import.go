@@ -45,19 +45,19 @@ type (
 		Data  []*ExcelImportDataItem `json:"data" form:"data"`
 	}
 	ExcelImportHeaderRelateItem struct {
-		Type       string `json:"type,omitempty"`      //列类型，可选值为  index、selection、expand、html
-		Title      string `json:"title,omitempty"`     //列中文标题
-		ColumnName string `json:"key,omitempty"`       //对应列内容的字段名
-		Index      int64  `json:"index,omitempty"`     //列序号 如:第一列：0, 第二列：1
-		ClassName  string `json:"className,omitempty"` //列的样式名称
-		Width      int    `json:"width,omitempty"`     //列宽
-		MinWidth   int    `json:"minWidth,omitempty"`  //最小列宽
-		MaxWidth   int    `json:"maxWidth,omitempty"`  //最大列宽
-		Align      string `json:"align,omitempty"`     //显示位置
-		Tooltip    bool   `json:"tooltip,omitempty"`   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
-		ValidateHandler
+		Type            string          `json:"type,omitempty"`      //列类型，可选值为  index、selection、expand、html
+		Title           string          `json:"title,omitempty"`     //列中文标题
+		ColumnName      string          `json:"key,omitempty"`       //对应列内容的字段名
+		Index           int64           `json:"index,omitempty"`     //列序号 如:第一列：0, 第二列：1
+		ClassName       string          `json:"className,omitempty"` //列的样式名称
+		Width           int             `json:"width,omitempty"`     //列宽
+		MinWidth        int             `json:"minWidth,omitempty"`  //最小列宽
+		MaxWidth        int             `json:"maxWidth,omitempty"`  //最大列宽
+		Align           string          `json:"align,omitempty"`     //显示位置
+		Tooltip         bool            `json:"tooltip,omitempty"`   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+		ValidateHandler ValidateHandler `json:"-"`
 	}
-	ValidateHandler     func(dataValue map[string]string) (errorItem *ImportErrMsgInfo)
+	ValidateHandler     func(header ExcelImportHeaderRelateItem, dataValue map[string]string) (errorItem *ImportErrMsgInfo)
 	ExcelImportDataItem struct {
 		Id             int64  `gorm:"column:id" json:"id,omitempty"`
 		Line           int64  `gorm:"column:line" json:"line,omitempty"`
