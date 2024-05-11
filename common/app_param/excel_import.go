@@ -55,8 +55,9 @@ type (
 		MaxWidth   int    `json:"maxWidth,omitempty"`  //最大列宽
 		Align      string `json:"align,omitempty"`     //显示位置
 		Tooltip    bool   `json:"tooltip,omitempty"`   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+		ValidateHandler
 	}
-
+	ValidateHandler     func(dataValue map[string]string) (errorItem *ImportErrMsgInfo)
 	ExcelImportDataItem struct {
 		Id             int64  `gorm:"column:id" json:"id,omitempty"`
 		Line           int64  `gorm:"column:line" json:"line,omitempty"`
