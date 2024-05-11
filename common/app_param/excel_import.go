@@ -57,7 +57,7 @@ type (
 		Tooltip         bool            `json:"tooltip,omitempty"`   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
 		ValidateHandler ValidateHandler `json:"-"`
 	}
-	ValidateHandler     func(header ExcelImportHeaderRelateItem, dataValue map[string]string) (errorItem *ImportErrMsgInfo)
+	ValidateHandler     func(header *ExcelImportHeaderRelateItem, dataValue map[string]string) (errorItem *ImportErrMsgInfo)
 	ExcelImportDataItem struct {
 		Id             int64  `gorm:"column:id" json:"id,omitempty"`
 		Line           int64  `gorm:"column:line" json:"line,omitempty"`
