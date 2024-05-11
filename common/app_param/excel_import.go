@@ -53,8 +53,8 @@ type (
 		Width      int    `json:"width,omitempty"`     //列宽
 		MinWidth   int    `json:"minWidth,omitempty"`  //最小列宽
 		MaxWidth   int    `json:"maxWidth,omitempty"`  //最大列宽
-		Align      string `json:"align"`               //显示位置
-		Tooltip    bool   `json:"tooltip"`             //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
+		Align      string `json:"align,omitempty"`     //显示位置
+		Tooltip    bool   `json:"tooltip,omitempty"`   //开启后，文本将不换行，超出部分显示为省略号，并用 Tooltip 组件显示完整内容
 	}
 
 	ExcelImportDataItem struct {
