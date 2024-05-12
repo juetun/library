@@ -33,7 +33,8 @@ type (
 		Scene string `json:"scene" form:"scene"`
 	}
 	ResultExcelImportHeaderRelate struct {
-		SheetHeadersInfo []*SheetHeader `json:"headers"`
+		Desc             string         `json:"desc"`    //文案说明
+		SheetHeadersInfo []*SheetHeader `json:"headers"` //每个sheet的表头信息
 	}
 	SheetHeader struct {
 		SheetIndex int64                          `json:"sheet_index"` //sheet的序号 从0 开始
