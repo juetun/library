@@ -81,6 +81,7 @@ const (
 	ExcelImportDataValidateStatusWarning                 //可忽略
 	ExcelImportDataValidateStatusImportOk                //导入完成
 	ExcelImportDataValidateStatusValidating              //校验中
+	ExcelImportDataValidateStatusSyncing                 //同步中
 )
 
 var (
@@ -108,6 +109,10 @@ var (
 		{
 			Value: ExcelImportDataValidateStatusValidating,
 			Label: "校验中",
+		},
+		{
+			Value: ExcelImportDataValidateStatusSyncing,
+			Label: "同步中",
 		},
 	}
 )
