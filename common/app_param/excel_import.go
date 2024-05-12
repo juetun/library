@@ -41,8 +41,11 @@ type (
 		Headers    []*ExcelImportHeaderRelateItem `json:"headers"`     //表头信息
 	}
 	ArgExcelImportValidateAndSync struct {
-		Scene string                 `json:"scene" form:"scene"`
-		Data  []*ExcelImportDataItem `json:"data" form:"data"`
+		Scene             string                 `json:"scene" form:"scene"`
+		Data              []*ExcelImportDataItem `json:"data" form:"data"`
+		CurrentUserShopId int64                  `json:"current_user_shop_id" form:"current_user_shop_id"`
+		CurrentUid        int64                  `json:"current_uid" form:"current_uid"`
+		TimeNow           base.TimeNormal        `json:"time_now" form:"time_now"`
 	}
 	ExcelImportHeaderRelateItem struct {
 		Type            string          `json:"type,omitempty"`      //列类型，可选值为  index、selection、expand、html
@@ -150,6 +153,7 @@ func (r *ArgExcelImportValidateAndSync) ToJson() (res []byte, err error) {
 	if r == nil {
 		r = &ArgExcelImportValidateAndSync{}
 	}
+
 	res, err = json.Marshal(r)
 	return
 }
@@ -181,6 +185,9 @@ func ExcelImportValidate(c *gin.Context, srv ServiceExcelImport) (data []*ExcelI
 	if err = c.Bind(&arg); err != nil {
 		return
 	}
+	if arg.TimeNow.IsZero() {
+		arg.TimeNow = base.GetNowTimeNormal()
+	}
 	if data, err = srv.ExcelImportValidate(&arg); err != nil {
 		return
 	}
@@ -194,6 +201,9 @@ func ExcelImportSyncData(c *gin.Context, srv ServiceExcelImport) (data []*ExcelI
 	data = []*ExcelImportDataItem{}
 	if err = c.Bind(&arg); err != nil {
 		return
+	}
+	if arg.TimeNow.IsZero() {
+		arg.TimeNow = base.GetNowTimeNormal()
 	}
 	if data, err = srv.ExcelImportSyncData(&arg); err != nil {
 		return
