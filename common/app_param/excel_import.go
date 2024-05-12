@@ -68,6 +68,7 @@ type (
 	}
 	ImportErrMsgInfos []*ImportErrMsgInfo
 	ImportErrMsgInfo  struct {
+		ColumnKey      string `json:"k,omitempty"`
 		ValidateStatus uint8  `json:"vs,omitempty"`
 		Msg            string `json:"msg,omitempty"`
 	}
