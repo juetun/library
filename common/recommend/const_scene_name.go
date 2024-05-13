@@ -21,32 +21,33 @@ const (
 )
 
 const (
-	AdDataDataTypeSpu               string = "1"  //商品信息
-	AdDataDataTypeSku                      = "5"  //sku信息
-	AdDataDataTypeSpuCategory              = "7"  //商品类目
-	AdDataDataTypeSocialIntercourse        = "2"  //广告社交动态信息
-	AdDataStatusUserSet                    = "3"  //用户手工设置
-	AdDataDataTypeUserShop                 = "4"  //店铺后台
-	AdDataDataTypeFishingSport             = "8"  //钓点信息
-	AdDataDataTypeShopNotice               = "9"  //店铺公告（上传图片时使用）
-	AdDataDataTypeShopLogo                 = "10" //店铺LOGO（上传图片时使用）
-	AdDataDataTypeShopBgImg                = "11" //店铺背景图（上传图片时使用）
-	AdDataDataTypeShopBrandQuality         = "12" //店铺品牌资质（上传图片或文件时使用）
-	AdDataDataTypeUser                     = "6"  //用户信息
-	AdDataDataTypeIdCard                   = "13" //用户身份证
-	AdDataDataTypeUserAvatar               = "14" //用户头像
-	AdDataDataTypeSuggestion               = "15" //投诉建议
-	AdDataDataTypeOrderComment             = "16" //订单评论
-	AdDataDataTypeOrderCompany             = "17" //公司资质
-	AdDataDataTypePlatNotice               = "18" //平台公告
-	AdDataDataTypeChat                     = "19" //聊天信息
-	AdDataDataTypeHelpDocument             = "20" //帮助文档文件
-	AdDataDataTypeRing                     = "21" //圈子
-	AdDataDataTypeUserShopHome             = "22" //店铺主页 （前台）
-	AdDataDataTypeRingComment              = "23" //评论 （圈子动态或钓点信息）
-
-	AdDataDataTypeOther  = "200" //其他数据
-	AdDataDataTypeAllSpu = "-1"  //所有的商品
+	AdDataDataTypeSpu               string = "1"   //商品信息
+	AdDataDataTypeSku                      = "5"   //sku信息
+	AdDataDataTypeSpuCategory              = "7"   //商品类目
+	AdDataDataTypeSocialIntercourse        = "2"   //广告社交动态信息
+	AdDataStatusUserSet                    = "3"   //用户手工设置
+	AdDataDataTypeUserShop                 = "4"   //店铺后台
+	AdDataDataTypeFishingSport             = "8"   //钓点信息
+	AdDataDataTypeShopNotice               = "9"   //店铺公告（上传图片时使用）
+	AdDataDataTypeShopLogo                 = "10"  //店铺LOGO（上传图片时使用）
+	AdDataDataTypeShopBgImg                = "11"  //店铺背景图（上传图片时使用）
+	AdDataDataTypeShopBrandQuality         = "12"  //店铺品牌资质（上传图片或文件时使用）
+	AdDataDataTypeUser                     = "6"   //用户信息
+	AdDataDataTypeIdCard                   = "13"  //用户身份证
+	AdDataDataTypeUserAvatar               = "14"  //用户头像
+	AdDataDataTypeSuggestion               = "15"  //投诉建议
+	AdDataDataTypeOrderComment             = "16"  //订单评论
+	AdDataDataTypeOrderCompany             = "17"  //公司资质
+	AdDataDataTypePlatNotice               = "18"  //平台公告
+	AdDataDataTypeChat                     = "19"  //聊天信息
+	AdDataDataTypeHelpDocument             = "20"  //帮助文档文件
+	AdDataDataTypeRing                     = "21"  //圈子
+	AdDataDataTypeUserShopHome             = "22"  //店铺主页 （前台）
+	AdDataDataTypeRingComment              = "23"  //评论 （圈子动态或钓点信息）
+	AdDataDataTypeExpressLogo              = "24"  //物流公司LOGO
+	
+	AdDataDataTypeOther                    = "200" //其他数据
+	AdDataDataTypeAllSpu                   = "-1"  //所有的商品
 
 )
 
