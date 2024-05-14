@@ -63,12 +63,13 @@ type (
 	}
 	ValidateHandler     func(header *ExcelImportHeaderRelateItem, dataValue map[string]string, data *ExcelImportDataItem) (errorItem *ImportErrMsgInfo)
 	ExcelImportDataItem struct {
-		Id             int64  `gorm:"column:id" json:"id,omitempty"`
-		Line           int64  `gorm:"column:line" json:"line,omitempty"`
-		Data           string `gorm:"column:data" json:"data,omitempty"`
-		SheetName      string `gorm:"column:sheet_name" json:"sheet_name,omitempty"`
-		ValidateStatus uint8  `gorm:"-" json:"validate_status,omitempty"` //验证状态是否通过
-		ErrMsg         string `gorm:"-" json:"err_msg,omitempty"`         //错误信息提示
+		Id             int64             `gorm:"column:id" json:"id,omitempty"`
+		Line           int64             `gorm:"column:line" json:"line,omitempty"`
+		Data           string            `gorm:"column:data" json:"data,omitempty"`
+		SheetName      string            `gorm:"column:sheet_name" json:"sheet_name,omitempty"`
+		ValidateStatus uint8             `gorm:"-" json:"validate_status,omitempty"` //验证状态是否通过
+		ErrMsg         string            `gorm:"-" json:"err_msg,omitempty"`         //错误信息提示
+		DataMap        map[string]string `json:"-" gorm:"-"`
 	}
 	ImportErrMsgInfos []*ImportErrMsgInfo
 	ImportErrMsgInfo  struct {
