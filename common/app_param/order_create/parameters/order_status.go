@@ -35,6 +35,10 @@ const (
 	OrderStatusWaitingPayFinal uint8 = 99  // 待付尾款 （此时无法结算）
 	OrderStatusFinished        uint8 = 100 // 订单结束
 	OrderStatusError           uint8 = 110 // 订单支付数据异常
+
+	OrderReconciliationNotDeal uint8 = 120 //未对账
+	OrderReconciliationHasDeal uint8 = 121 //已对账
+
 )
 
 const (
@@ -138,6 +142,14 @@ var (
 		{
 			Value: OrderStatusError,
 			Label: "支付异常",
+		},
+		{
+			Value: OrderReconciliationNotDeal,
+			Label: "未对账",
+		},
+		{
+			Value: OrderReconciliationHasDeal,
+			Label: "已对账",
 		},
 	}
 )
