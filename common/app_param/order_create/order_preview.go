@@ -439,7 +439,7 @@ func NewPreviewShopItem() (res *PreviewShopItem) {
 
 //初始化支付方式
 func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...string) (err error) {
-	r.PayTypeOpt = SliceOrderPayType
+	r.PayTypeOpt = SliceOrderPayTypeUse
 
 	switch info.HTerminal {
 	case app_param.TerminalMina: //如果是微信小程序
