@@ -8,7 +8,6 @@ import (
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/freight"
 	"github.com/juetun/library/common/app_param/mall/models"
-	"github.com/juetun/library/common/app_param/pay_parameter"
 	"github.com/shopspring/decimal"
 	"strconv"
 	"time"
@@ -440,7 +439,7 @@ func NewPreviewShopItem() (res *PreviewShopItem) {
 
 //初始化支付方式
 func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...string) (err error) {
-	r.PayTypeOpt = pay_parameter.SliceOrderPayType
+	r.PayTypeOpt = SliceOrderPayType
 
 	switch info.HTerminal {
 	case app_param.TerminalMina: //如果是微信小程序
@@ -458,11 +457,11 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...st
 }
 
 func (r *OrderPreview) getWeiXinMinaOpt() {
-	mapPay, _ := pay_parameter.SliceOrderPayType.GetMapAsKeyUint8()
+	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
 	r.PayTypeOpt = base.ModelItemOptions{
 		{
-			Label: mapPay[pay_parameter.OrderPayTypeWeiXin],
-			Value: pay_parameter.OrderPayTypeWeiXin,
+			Label: mapPay[OrderPayTypeWeiXin],
+			Value: OrderPayTypeWeiXin,
 		},
 	}
 	return
@@ -526,7 +525,7 @@ func (r *OrderPreview) InitPayCharge() (err error) {
 
 	if rabat != "" {
 		payTypeNumber, _ := strconv.ParseUint(r.PayType, 10, 8)
-		r.PayChargeDesc = fmt.Sprintf("您当前使用的是%v支付,平台收取手续费为:%v", pay_parameter.ParsePayType(uint8(payTypeNumber)), rabat)
+		r.PayChargeDesc = fmt.Sprintf("您当前使用的是%v支付,平台收取手续费为:%v", ParsePayType(uint8(payTypeNumber)), rabat)
 	}
 	return
 }

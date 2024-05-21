@@ -13,6 +13,16 @@ const (
 )
 
 var (
+	SliceOrderPayTypeUse = base.ModelItemOptions{
+		{
+			Label: "支付宝",
+			Value: OrderPayTypeAliPay,
+		},
+		{
+			Label: "微信支付",
+			Value: OrderPayTypeWeiXin,
+		},
+	}
 	SliceOrderPayType = base.ModelItemOptions{
 		{
 			Label: "支付宝",
@@ -29,9 +39,18 @@ var (
 	}
 )
 
+func ParsePayType(payType uint8) (res string) {
+	MapOrderPayType, _ := SliceOrderPayType.GetMapAsKeyUint8()
+	if _, ok := MapOrderPayType[payType]; ok {
+		res = MapOrderPayType[payType]
+		return
+	}
+	return fmt.Sprintf("未知支付类型(%d)", payType)
+}
+
 //根据支付类型和金额计算支付手续费
-func GetByPayTypeAndAmount(payType uint8, amount string) (payCharge, totalAmount string,rabat string, err error) {
- 	if rabat, err = GetPayChargeRabat(payType); err != nil {
+func GetByPayTypeAndAmount(payType uint8, amount string) (payCharge, totalAmount string, rabat string, err error) {
+	if rabat, err = GetPayChargeRabat(payType); err != nil {
 		return
 	}
 	payCharge, totalAmount, err = CalPayCharge(rabat, amount)
