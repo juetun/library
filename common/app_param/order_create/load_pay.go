@@ -23,13 +23,12 @@ type (
 		WeiXinPay SystemPayConfigWeiXinPay `json:"weixin" yaml:"weixin"`
 	}
 	SystemPayConfigAliPay struct {
-		AppId     string `json:"app_id" yaml:"app_id"`
-		Secret    string `json:"secret" yaml:"secret"`
-		FlatRabat string `json:"flat_rabat" yaml:"flat_rabat"` //支付平台手续费率
+		AppId        string `json:"app_id" yaml:"app_id"`                   //网页/移动应用
+		AliMinaAppId string `json:"ali_mina_app_id" yaml:"ali_mina_app_id"` //支付宝小程序 app_id
+		FlatRabat    string `json:"flat_rabat" yaml:"flat_rabat"`           //支付平台手续费率
 	}
 	SystemPayConfigWeiXinPay struct {
 		AppId     string `json:"app_id" yaml:"app_id"`
-		Secret    string `json:"secret" yaml:"secret"`
 		FlatRabat string `json:"flat_rabat" yaml:"flat_rabat"` //支付平台手续费率
 	}
 )
