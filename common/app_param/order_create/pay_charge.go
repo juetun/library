@@ -30,9 +30,8 @@ var (
 )
 
 //根据支付类型和金额计算支付手续费
-func GetByPayTypeAndAmount(payType uint8, amount string) (payCharge, totalAmount string, err error) {
-	var rabat string
-	if rabat, err = GetPayChargeRabat(payType); err != nil {
+func GetByPayTypeAndAmount(payType uint8, amount string) (payCharge, totalAmount string,rabat string, err error) {
+ 	if rabat, err = GetPayChargeRabat(payType); err != nil {
 		return
 	}
 	payCharge, totalAmount, err = CalPayCharge(rabat, amount)

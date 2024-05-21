@@ -513,12 +513,18 @@ func (r *OrderPreview) AmountDecr(decr string) (err error) {
 
 //初始化支付手续费金额
 func (r *OrderPreview) InitPayCharge() (err error) {
-	var payTypeNum uint64
+	var (
+		payTypeNum uint64
+		rabat      string
+	)
 	if payTypeNum, err = strconv.ParseUint(r.PayType, 10, 8); err != nil {
 		return
 	}
-	if r.PayCharge, r.Amount, err = GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
+	if r.PayCharge, r.Amount, rabat, err = GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
 		return
+	}
+	if rabat != "" {
+		r.PayChargeDesc = fmt.Sprintf("当前支付平台收取手续费(%v)", rabat)
 	}
 	return
 }
@@ -588,7 +594,7 @@ func (r *PreviewShopItem) calPayCharge(shopDecimal decimal.Decimal) (err error) 
 		return
 	}
 	shopValue = product.Sub(deductionAmount).Sub(shopDecimal).StringFixed(2)
-	if r.PayCharge, _, err = GetByPayTypeAndAmount(r.PayType, shopValue); err != nil {
+	if r.PayCharge, _, _, err = GetByPayTypeAndAmount(r.PayType, shopValue); err != nil {
 		return
 	}
 	return
