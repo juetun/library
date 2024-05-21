@@ -38,6 +38,7 @@ type (
 		Express            string                             `json:"express,omitempty"`     // 快递信息
 		PayTypeOpt         base.ModelItemOptions              `json:"pay_type_opt"`          // 支付信息
 		PayType            string                             `json:"pay_type"`              // 支付类型
+		PayChargeDesc      string                             `json:"pay_charge_desc"`       //支付手续费说明
 		PayNumber          string                             `json:"pay_number,omitempty"`  // 支付流水号
 		Token              string                             `json:"token,omitempty"`       // 购物车全站唯一的key
 		Count              int64                              `json:"count"`                 // 商品总数
