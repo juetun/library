@@ -1,6 +1,10 @@
 package pay_parameter
 
-import "github.com/juetun/base-wrapper/lib/base"
+import (
+	"fmt"
+	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/order_create"
+)
 
 const (
 	OrderPayTypeAliPay uint8 = iota + 1 // 支付宝支付
@@ -20,3 +24,11 @@ var (
 	}
 
 )
+func ParsePayType(payType uint8) (res string) {
+	MapOrderPayType, _ := order_create.SliceOrderPayType.GetMapAsKeyUint8()
+	if _, ok := MapOrderPayType[payType]; ok {
+		res = MapOrderPayType[payType]
+		return
+	}
+	return fmt.Sprintf("未知支付类型(%d)", payType)
+}

@@ -523,8 +523,10 @@ func (r *OrderPreview) InitPayCharge() (err error) {
 	if r.PayCharge, r.Amount, rabat, err = GetByPayTypeAndAmount(uint8(payTypeNum), r.Amount); err != nil {
 		return
 	}
+
 	if rabat != "" {
-		r.PayChargeDesc = fmt.Sprintf("当前支付平台收取手续费(%v)", rabat)
+		payTypeNumber, _ := strconv.ParseUint(r.PayType, 10, 8)
+		r.PayChargeDesc = fmt.Sprintf("您当前使用的是%v支付,平台收取手续费为:%v", pay_parameter.ParsePayType(uint8(payTypeNumber)), rabat)
 	}
 	return
 }
