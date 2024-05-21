@@ -24,7 +24,7 @@ type (
 	}
 	SystemPayConfigAliPay struct {
 		AppId        string `json:"app_id" yaml:"app_id"`                   //网页/移动应用
-		AESKey       string `json:"aes_key" yaml:"app_id"`                  //aes_key
+		AESKey       string `json:"aes_key" yaml:"aes_key"`                 //aes_key
 		AliMinaAppId string `json:"ali_mina_app_id" yaml:"ali_mina_app_id"` //支付宝小程序 app_id
 		FlatRabat    string `json:"flat_rabat" yaml:"flat_rabat"`           //支付平台手续费率
 	}
