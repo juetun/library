@@ -25,7 +25,7 @@ func PluginWebMap(arg *app_start.PluginsOperate) (err error) {
 		SystemOutPrintf(fmt.Sprintf("Load webMap config finished \n"))
 
 	var yamlFile []byte
-	var filePath = common.GetCommonConfigFilePath("webmap.yaml")
+	var filePath = common.GetCommonConfigFilePath("webmap.yaml", true)
 	if yamlFile, err = os.ReadFile(filePath); err != nil {
 		io.SystemOutFatalf("yamlFile.Get err #%v \n", err)
 	}
