@@ -55,7 +55,7 @@ var (
 	}
 )
 var (
-	UserMainTableNumber int64 = 2
+	UserMainTableNumber int64 = 16
 )
 
 type (
