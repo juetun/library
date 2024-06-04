@@ -20,7 +20,8 @@ const (
 type (
 	UploadVideo struct {
 		ext_up.UploadCommon
-		ParseCodeStatus uint8 `json:"parse_code_status"` //转码状态
+		ParseCodeStatus uint8  `json:"parse_code_status"` //转码状态
+		Pk              string `json:"pk"`
 		VideoInfo
 	}
 	VideoInfo struct {
@@ -45,6 +46,11 @@ func NewUploadVideo(options ...VideoHandler) (res *UploadVideo) {
 	for _, option := range options {
 		option(res)
 	}
+	return
+}
+func (r *UploadVideo) InitPK() (res *UploadVideo) {
+	res = r
+	r.Pk = r.UploadCommon.GetKey()
 	return
 }
 
