@@ -32,7 +32,7 @@ type (
 		DefaultType string `json:"default_type"` //hd,sd,ld,src
 		Cover       string `json:"cover"`        //封面图
 		VideoTurn   uint8  `json:"video_turn"`   //1-横向 2-纵向
-		width       string `json:"width"`        //视频宽
+		Width       string `json:"width"`        //视频宽
 		Height      string `json:"height"`       //视频高
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
