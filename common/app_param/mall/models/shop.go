@@ -28,6 +28,8 @@ const (
 	ShopStatusFailure  = const_apply.ApplyStatusFailure  //入驻状态审核失败
 	ShopStatusInit     = const_apply.ApplyStatusInit     //入驻状态初始化
 	ShopStatusAuditing = const_apply.ApplyStatusAuditing //审核中
+
+	ShopStatusDelete = 99 //已删除
 )
 
 const (
@@ -145,6 +147,10 @@ var (
 		{
 			Value: ShopStatusAuditing,
 			Label: "审核中",
+		},
+		{
+			Value: ShopStatusDelete,
+			Label: "已停用",
 		},
 	}
 
