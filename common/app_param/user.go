@@ -16,9 +16,10 @@ import (
 const (
 	UserDataTypeIndex = "user_index"
 
-	UserDataTypeMain     = "user_main"
-	UserDataTypePortrait = "user_portrait" //用户头像
-	UserDataTypeInfo     = "user_info"
+	UserDataTypeMain        = "user_main"
+	UserDataTypePortrait    = "user_portrait"     //用户头像
+	UserDataTypePortraitTmp = "user_portrait_tmp" //用户临时头像
+	UserDataTypeInfo        = "user_info"
 
 	UserHidDivString      = "_" // 用户ID字符串切割
 	UpdateColumnDivString = "." // 修改用户数据时传参的分割符
@@ -242,6 +243,9 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.AuthDesc = item.UserMain.AuthDesc
 		r.Portrait = item.UserMain.Portrait
 		r.PortraitUrl = item.UserMain.PortraitUrl
+		if r.PortraitUrl == "" {
+			r.PortraitUrl = item.UserMain.PortraitTmpUrl
+		}
 		r.NickName = item.UserMain.NickName
 		r.Gender = item.UserMain.Gender
 		r.Status = item.UserMain.Status
