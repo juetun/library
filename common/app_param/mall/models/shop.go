@@ -210,7 +210,7 @@ type (
 )
 
 func GetShopMain(headerInfo *common.HeaderInfo) (res interface{}, err error) {
-	if tmp, ok := plugins_lib.WebMap["app-shop-home"]; ok {
+	if tmp, ok := plugins_lib.WebMap["mall"]; ok {
 		res = fmt.Sprintf("//%v", tmp)
 	}
 	return
