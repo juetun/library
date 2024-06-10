@@ -88,8 +88,8 @@ type (
 		RealName          string           `json:"real_name"`           // 真实姓名
 		Gender            uint8            `json:"gender,omitempty"`    //
 		Status            int8             `json:"status,omitempty"`    //
-		AuthStatus        int8             `json:"auth_status,omitempty"`
 		Score             int              `json:"score,omitempty"`     //
+		AuthStatus        uint8            `json:"auth_status,omitempty"`
 		AuthDesc          string           `json:"auth_desc,omitempty"` // 认证描述
 		AuthType          uint8            `json:"auth_type,omitempty"` // 认证类型
 		IsV               int              `json:"is_v,omitempty"`      // 用户头像加V
@@ -117,7 +117,7 @@ type (
 		UUserName          string          `json:"u_user_name" form:"u_user_name"`                       //账号
 		UGender            uint8           `json:"u_gender" form:"u_gender"`                             //性别
 		UStatus            int8            `json:"u_status" form:"u_status"`                             //状态
-		UAuthStatus        int8            `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
+		UAuthStatus        uint8           `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
 		UAuthType          uint8           `json:"u_auth_type" form:"u_auth_type"`                       //认证类型
 		UScore             int             `json:"u_score" form:"u_score"`                               //积分
 		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
@@ -243,6 +243,8 @@ func (r *ResultUserItem) GetRealName(nilDefaultValue ...string) (res string) {
 func (r *ResultUserItem) InitData(item *User) {
 	r.UserHid = item.UserHid
 	if item.UserMain != nil {
+		r.AuthStatus = item.UserMain.AuthStatus
+		r.AuthType = item.UserMain.AuthType
 		r.AuthDesc = item.UserMain.AuthDesc
 		r.Portrait = item.UserMain.Portrait
 		r.PortraitUrl = item.UserMain.PortraitUrl
@@ -343,7 +345,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UUserName = userInfo.UserName
 	r.UGender = userInfo.Gender
 	r.UStatus = userInfo.Status
-	r.UAuthStatus = userInfo.UAuthStatus
+	r.UAuthStatus = userInfo.AuthStatus
 	r.UShopId = userInfo.ShopId
 	r.UHaveDashboard = userInfo.HaveDashboard
 	r.UUserMobileIndex = userInfo.UserMobileIndex
