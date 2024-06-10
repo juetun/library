@@ -80,32 +80,33 @@ type (
 		List map[int64]ResultUserItem `json:"list"`
 	}
 	ResultUserItem struct {
-		UserHid          int64            `json:"user_hid,omitempty"`  // 用户ID
-		Portrait         string           `json:"portrait,omitempty"`  // 头像
-		PortraitUrl      string           `json:"portrait_url"`        //头像链接
-		NickName         string           `json:"nick_name,omitempty"` // 昵称
-		UserName         string           `json:"user_name,omitempty"` // 用户名
-		RealName         string           `json:"real_name"`           // 真实姓名
-		Gender           uint8            `json:"gender,omitempty"`    //
-		Status           int8             `json:"status,omitempty"`    //
-		Score            int              `json:"score,omitempty"`     //
-		AuthDesc         string           `json:"auth_desc,omitempty"` // 认证描述
-		IsV              int              `json:"is_v,omitempty"`      // 用户头像加V
-		Remark           string           `json:"remark" `             // 个性签名
-		Signature        string           `json:"signature,omitempty"`
-		RegisterChannel  string           `json:"register_channel,omitempty"`
-		CountryCode      string           `json:"country_code,omitempty"`
-		Mobile           string           `json:"mobile,omitempty"`
-		MobileVerifiedAt *base.TimeNormal `json:"mobile_verified_at,omitempty"`
-		Email            string           `json:"email,omitempty"`
-		EmailVerifiedAt  *base.TimeNormal `json:"email_verified_at,omitempty"`
-		ShopId           int64            `json:"shop_id"`
-
-		UserMobileIndex   string          `json:"user_mobile_index"`
-		UserEmailIndex    string          `json:"user_email_index"`
-		RememberToken     string          `json:"remember_token"`
-		MsgReadTimeCursor base.TimeNormal `json:"msg_read_time_cursor"`
-		HaveDashboard     uint8           `json:"have_dashboard"`
+		UserHid           int64            `json:"user_hid,omitempty"`  // 用户ID
+		Portrait          string           `json:"portrait,omitempty"`  // 头像
+		PortraitUrl       string           `json:"portrait_url"`        //头像链接
+		NickName          string           `json:"nick_name,omitempty"` // 昵称
+		UserName          string           `json:"user_name,omitempty"` // 用户名
+		RealName          string           `json:"real_name"`           // 真实姓名
+		Gender            uint8            `json:"gender,omitempty"`    //
+		Status            int8             `json:"status,omitempty"`    //
+		AuthStatus        int8             `json:"auth_status,omitempty"`
+		Score             int              `json:"score,omitempty"`     //
+		AuthDesc          string           `json:"auth_desc,omitempty"` // 认证描述
+		AuthType          uint8            `json:"auth_type,omitempty"` // 认证类型
+		IsV               int              `json:"is_v,omitempty"`      // 用户头像加V
+		Remark            string           `json:"remark" `             // 个性签名
+		Signature         string           `json:"signature,omitempty"`
+		RegisterChannel   string           `json:"register_channel,omitempty"`
+		CountryCode       string           `json:"country_code,omitempty"`
+		Mobile            string           `json:"mobile,omitempty"`
+		MobileVerifiedAt  *base.TimeNormal `json:"mobile_verified_at,omitempty"`
+		Email             string           `json:"email,omitempty"`
+		EmailVerifiedAt   *base.TimeNormal `json:"email_verified_at,omitempty"`
+		ShopId            int64            `json:"shop_id"`
+		UserMobileIndex   string           `json:"user_mobile_index"`
+		UserEmailIndex    string           `json:"user_email_index"`
+		RememberToken     string           `json:"remember_token"`
+		MsgReadTimeCursor base.TimeNormal  `json:"msg_read_time_cursor"`
+		HaveDashboard     uint8            `json:"have_dashboard"`
 	}
 	RequestUser struct {
 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
@@ -116,6 +117,8 @@ type (
 		UUserName          string          `json:"u_user_name" form:"u_user_name"`                       //账号
 		UGender            uint8           `json:"u_gender" form:"u_gender"`                             //性别
 		UStatus            int8            `json:"u_status" form:"u_status"`                             //状态
+		UAuthStatus        int8            `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
+		UAuthType          uint8           `json:"u_auth_type" form:"u_auth_type"`                       //认证类型
 		UScore             int             `json:"u_score" form:"u_score"`                               //积分
 		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
 		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
@@ -340,6 +343,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UUserName = userInfo.UserName
 	r.UGender = userInfo.Gender
 	r.UStatus = userInfo.Status
+	r.UAuthStatus = userInfo.UAuthStatus
 	r.UShopId = userInfo.ShopId
 	r.UHaveDashboard = userInfo.HaveDashboard
 	r.UUserMobileIndex = userInfo.UserMobileIndex
