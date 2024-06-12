@@ -26,7 +26,7 @@ const (
 	OrderStatusReturnMoneyApproving    uint8 = 65 // 退款待确认
 	OrderStatusReturnMoneyClientSure   uint8 = 70 // 申请退款平台客服确认
 	OrderStatusReturnMoneyShopSure     uint8 = 80 // 申请退款商家确认
-	OrderStatusReturnMoneyGoodSending  uint8 = 90 // 申请退款货物退还发货中
+	OrderStatusReturnMoneyGoodSending  uint8 = 90 // 申请退款发货中
 	OrderStatusReturnMoneyGoodFinished uint8 = 95 // 退款货物签收
 	OrderStatusReturnMoneyPaying       uint8 = 11 // 申请退款中
 	OrderStatusReturnMoneyFinished     uint8 = 12 // 退款完成
