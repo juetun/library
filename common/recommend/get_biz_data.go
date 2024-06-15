@@ -205,16 +205,19 @@ func GetRecommendDataByScenes(arg *ArgGetDataByScenes, ctx *base.Context) (res R
 	if err = arg.Default(ctx); err != nil {
 		return
 	}
-
+	var header = http.Header{}
+	header.Set(app_obj.HttpHeaderInfo, arg.HeaderInfoString)
+	header.Set(app_obj.HttpUserHid, fmt.Sprintf("%v", arg.UUserHid))
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     app_param.AppNameRecommend,
 		URI:         "/recommend/get_data_by_scenes",
-		Header:      http.Header{},
+		Header:      header,
 		Value:       url.Values{},
 		Context:     ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
+
 	if ro.BodyJson, err = arg.GetJson(); err != nil {
 		return
 	}
