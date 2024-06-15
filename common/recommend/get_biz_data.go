@@ -202,9 +202,7 @@ func (r *GetBizData) GetFromApplication(handlerOp DataStructArguments, argumentI
 
 //根据场景Key获取数据
 func GetRecommendDataByScenes(arg *ArgGetDataByScenes, ctx *base.Context) (res ResultGetDataByScenes, err error) {
-	if err = arg.Default(ctx); err != nil {
-		return
-	}
+	 
 	var header = http.Header{}
 	header.Set(app_obj.HttpHeaderInfo, arg.HeaderInfoString)
 	header.Set(app_obj.HttpUserHid, fmt.Sprintf("%v", arg.UUserHid))
