@@ -53,9 +53,7 @@ func (r *ArgGetDataByScenes) GetSceneKeys() (res []string) {
 }
 
 func (r *ArgGetDataByScenes) Default(ctx *base.Context) (err error) {
-	if err = r.InitHeaderInfo(ctx.GinContext); err != nil {
-		return
-	}
+	_ = r.InitHeaderInfo(ctx.GinContext)
 	_ = r.InitRequestUser(ctx)
 	r.HeaderInfoString = ctx.GinContext.Request.Header.Get(app_obj.HttpHeaderInfo)
 	if r.RequestId == "" {
