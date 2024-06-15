@@ -36,10 +36,18 @@ type (
 	ResultGetDataByScenes map[string]*PagerRecommend
 
 	PagerRecommend struct {
-		List       []*DataItem `json:"list"`
-		TotalCount int64       `json:"total_count,omitempty"`
-		IsNext     bool        `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
+		List          []*DataItem    `json:"list"`
+		TotalCount    int64          `json:"total_count,omitempty"`
+		IsNext        bool           `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
+		SceneProperty *SceneProperty `json:"scene_property"`
 		response.PageQuery
+	}
+	SceneProperty struct {
+		LimitType uint8  `json:"limit_type,omitempty" form:"limit_type"`
+		PicW      string `json:"pic_w,omitempty" form:"pic_w"`
+		PicH      string `json:"pic_h,omitempty" form:"pic_h"`
+		RatioW    string `json:"ratio_w,omitempty" form:"ratio_w"`
+		RatioH    string `json:"ratio_h,omitempty" form:"ratio_h"`
 	}
 )
 
