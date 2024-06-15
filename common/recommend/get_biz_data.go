@@ -199,3 +199,37 @@ func (r *GetBizData) GetFromApplication(handlerOp DataStructArguments, argumentI
 	res = resResult.Data
 	return
 }
+
+//根据场景Key获取数据
+func GetRecommendDataByScenes(arg *ArgGetDataByScenes, ctx *base.Context) (res ResultGetDataByScenes, err error) {
+	if err = arg.Default(ctx); err != nil {
+		return
+	}
+
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameRecommend,
+		URI:         "/recommend/get_data_by_scenes",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                   `json:"code"`
+		Data ResultGetDataByScenes `json:"data"`
+		Msg  string                `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	res = data.Data
+	return
+}

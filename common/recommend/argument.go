@@ -1,6 +1,7 @@
 package recommend
 
 import (
+	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
@@ -62,5 +63,13 @@ func (r *ArgGetDataByScenes) Default(ctx *base.Context) (err error) {
 			r.RequestId = utils.Guid("")
 		}
 	}
+	return
+}
+
+func (r *ArgGetDataByScenes) GetJson() (res []byte, err error) {
+	if r == nil {
+		return
+	}
+	res, err = json.Marshal(r)
 	return
 }
