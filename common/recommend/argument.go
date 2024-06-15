@@ -12,16 +12,16 @@ import (
 
 type (
 	ArgGetDataByScenes struct {
-		NowItemId         string                 `json:"now_id" form:"now_id"`           // 当前数据的ID
-		NowItemType       int8                   `json:"now_type" form:"now_type"`       // 当前数据的类型
-		RequestId         string                 `json:"request_id" form:"request_id"`   // 每次请求的数据的ID
-		DeviceId          string                 `json:"device_id" form:"device_id"`     // 用户设备号
-		ClientType        string                 `json:"client_type" form:"client_type"` // 终端类型 "m ,android,iso,weixin,alipay"
-		Channel           string                 `json:"channel" form:"channel"`         // APP发布的渠道
-		AppVersion        string                 `json:"app_version" form:"app_version"` // APP版本号
-		App               string                 `json:"app" form:"app"`                 // APP名称
-		GetDataTypeCommon base.GetDataTypeCommon `json:"common" form:"common"`
-		Scenes            []*ArgDataBySceneItem  `json:"scenes"`
+		NowItemId         string                 `json:"now_id,omitempty" form:"now_id"`           // 当前数据的ID
+		NowItemType       int8                   `json:"now_type,omitempty" form:"now_type"`       // 当前数据的类型
+		RequestId         string                 `json:"request_id,omitempty" form:"request_id"`   // 每次请求的数据的ID
+		DeviceId          string                 `json:"device_id,omitempty" form:"device_id"`     // 用户设备号
+		ClientType        string                 `json:"client_type,omitempty" form:"client_type"` // 终端类型 "m ,android,iso,weixin,alipay"
+		Channel           string                 `json:"channel,omitempty" form:"channel"`         // APP发布的渠道
+		AppVersion        string                 `json:"app_version,omitempty" form:"app_version"` // APP版本号
+		App               string                 `json:"app,omitempty" form:"app"`                 // APP名称
+		GetDataTypeCommon base.GetDataTypeCommon `json:"common,omitempty" form:"common"`
+		Scenes            []*ArgDataBySceneItem  `json:"scenes,omitempty"`
 
 		HeaderInfoString string          `json:"header_info_str" form:"-"`
 		TimeNow          base.TimeNormal `json:"-" form:"-"`
@@ -29,11 +29,18 @@ type (
 		common.HeaderInfo
 	}
 	ArgDataBySceneItem struct {
-		Scene   string `json:"scene" form:"scene"`
-		SceneId int64  `json:"scene_id" form:"scene_id"`
+		Scene   string `json:"scene,omitempty" form:"scene"`
+		SceneId int64  `json:"scene_id,omitempty" form:"scene_id"`
 		response.PageQuery
 	}
-	ResultGetDataByScenes map[string]*response.Pager
+	ResultGetDataByScenes map[string]*PagerRecommend
+
+	PagerRecommend struct {
+		List       []*DataItem `json:"list"`
+		TotalCount int64       `json:"total_count,omitempty"`
+		IsNext     bool        `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
+		response.PagerParameter
+	}
 )
 
 func (r *ArgGetDataByScenes) GetSceneKeys() (res []string) {
