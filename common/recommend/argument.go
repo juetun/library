@@ -40,6 +40,7 @@ type (
 		TotalCount    int64          `json:"total_count,omitempty"`
 		IsNext        bool           `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
 		SceneProperty *SceneProperty `json:"scene_property"`
+		AdCount       int            `json:"ad_count,omitempty"` //广告推流数量
 		response.PageQuery
 	}
 	SceneProperty struct {
