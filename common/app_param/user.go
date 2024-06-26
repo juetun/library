@@ -54,6 +54,9 @@ const (
 	RegChannelWebSite = "website" // 客服后台注册的账号 h5
 	RegChannelWeiXin  = "wei_xin" // 客服后台注册的账号 微信
 	RegChannelWeiBo   = "wei_bo"  // 客服后台注册的账号 微博
+	RegChannelAliPay  = "alipay"  // 客服后台注册的账号 支付宝
+	RegChannelTikTok  = "tiktok"  // 客服后台注册的账号 抖音
+	RegChannelBaiDu   = "baidu"   // 客服后台注册的账号 百度
 )
 
 const (
@@ -71,6 +74,9 @@ var (
 		RegChannelWebSite: "网站",
 		RegChannelWeiXin:  "微信",
 		RegChannelWeiBo:   "微博",
+		RegChannelAliPay:  "支付宝",
+		RegChannelTikTok:  "抖音",
+		RegChannelBaiDu:   "百度",
 	}
 )
 
