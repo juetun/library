@@ -29,8 +29,11 @@ type (
 		FlatRabat    string `json:"flat_rabat" yaml:"flat_rabat"`           //支付平台手续费率
 	}
 	SystemPayConfigWeiXinPay struct {
-		AppId     string `json:"app_id" yaml:"app_id"`
-		FlatRabat string `json:"flat_rabat" yaml:"flat_rabat"` //支付平台手续费率
+		AppId                      string `json:"app_id" yaml:"app_id"`
+		MchId                      string `json:"mchid"  yaml:"mchid"`
+		MchCertifiCateserialNumber string `json:"mchcertificateserialnumber"  yaml:"mchcertificateserialnumber"`
+		MchAPIv3Key                string `json:"mchapiv3key"  yaml:"mchapiv3key"`
+		FlatRabat                  string `json:"flat_rabat" yaml:"flat_rabat"` //支付平台手续费率
 	}
 )
 
