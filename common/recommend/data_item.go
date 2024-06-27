@@ -69,14 +69,14 @@ type (
 	}
 	ArgDeleteDataList []*ArgDeleteData
 	DataItem          struct {
-		Title         string                     `json:"title,omitempty"`      //标题
-		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`   //前缀标签
-		DataType      string                     `json:"data_type"`            //数据类型
-		DataTypeStr   string                     `json:"data_type_str"`        //数据类型字符串 点赞 收藏使用的类型
-		DataId        string                     `json:"data_id"`              //数据ID
-		Link          interface{}                `json:"link,omitempty"`       //链接地址 小程序对象DataItemLinkMina
-		HaveVideo     bool                       `json:"have_video,omitempty"` //是否有视频
-		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"` //视频信息
+		Title         string                     `json:"title,omitempty"`         //标题
+		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`      //前缀标签
+		DataType      string                     `json:"data_type,omitempty"`     //数据类型
+		DataTypeStr   string                     `json:"data_type_str,omitempty"` //数据类型字符串 点赞 收藏使用的类型
+		DataId        string                     `json:"data_id,omitempty"`       //数据ID
+		Link          interface{}                `json:"link,omitempty"`          //链接地址 小程序对象DataItemLinkMina
+		HaveVideo     bool                       `json:"have_video,omitempty"`    //是否有视频
+		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"`    //视频信息
 		ImgData       string                     `json:"-"`
 		Img           string                     `json:"img,omitempty"`          //头图
 		Imgs          []string                   `json:"imgs,omitempty"`         //多条图片
