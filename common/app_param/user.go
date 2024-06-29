@@ -155,6 +155,11 @@ type (
 		Email         string           `gorm:"column:email;not null;type:varchar(100);default:'';index:idx_email;comment:邮箱" json:"-"`
 		CountryCode   string           `gorm:"column:country_code;type:varchar(15) COLLATE utf8mb4_bin;default:'';index:inx_mobile,priority:2;not null;comment:手机国别默认86" json:"country_code"`
 		Mobile        string           `gorm:"column:mobile;not null;default:'';type:varchar(20) COLLATE utf8mb4_bin;index:inx_mobile,priority:1;comment:手机号" json:"-"`
+		WeiXinToken   string           `gorm:"column:wei_xin_token;not null;default:'';type:varchar(255) COLLATE utf8mb4_bin;comment:微信登录token" json:"wei_xin_token"`
+		AliPayToken   string           `gorm:"column:ali_pay_token;not null;default:'';type:varchar(255) COLLATE utf8mb4_bin;comment:支付宝授权登录token" json:"ali_pay_token"`
+		TikTokToken   string           `gorm:"column:tik_tok_token;not null;default:'';type:varchar(255) COLLATE utf8mb4_bin;comment:抖音小程序授权登录token" json:"tik_tok_token"`
+		BaiduToken    string           `gorm:"column:baidu_token;not null;default:'';type:varchar(255) COLLATE utf8mb4_bin;comment:百度小程序授权登录token" json:"baidu_token"`
+		WeiboToken    string           `gorm:"column:weibo_token;not null;default:'';type:varchar(255) COLLATE utf8mb4_bin;comment:微博授权登录token" json:"weibo_token"`
 		CreatedAt     base.TimeNormal  `json:"created_at" gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;" `
 		UpdatedAt     base.TimeNormal  `json:"updated_at" gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;" `
 		DeletedAt     *base.TimeNormal `json:"-" gorm:"column:deleted_at;"`
