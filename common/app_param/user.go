@@ -141,7 +141,7 @@ type (
 		UserInfo  *UserInfo  `json:"user_info,omitempty"`
 	}
 	UserIndex struct {
-		ID            int64            `gorm:"column:id;primary_key" json:"-"`
+		ID            int64            `gorm:"column:id;primary_key" json:"id"`
 		UserName      string           `gorm:"column:user_name;not null;type:varchar(50) COLLATE utf8mb4_bin;default:'';uniqueIndex;comment:用户名" json:"user_name" `
 		TmpAccount    string           `gorm:"column:tmp_account;not null;type:varchar(200) COLLATE utf8mb4_bin;default:'';comment:注册时临时账号" json:"tmp_account" `
 		IsUse         int              `json:"is_use" gorm:"column:is_use;not null;type:tinyint(1);default:0;comment:是否启用 0-未启用 大于0-已启用"`
