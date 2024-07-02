@@ -17,7 +17,8 @@ const (
 	PageNameSns          = "article"       //社交前台界面
 	PageNameFishingSport = "fishing_spots" //钓点信息
 
-	PageNameOther = "other" //无实际意义拼接数据使用
+	PageNameOther     = "other"      //无实际意义拼接数据使用
+	PageNamePayFinish = "pay_finish" //支付结果界面
 )
 
 const (
@@ -43,6 +44,7 @@ var (
 		PageNameUsr:                     "/#/pages/user/view/index",
 		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
 		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
+		PageNamePayFinish:               "/#/pages/mall/order/pay_finish/index", //支付结果界面
 	}
 	MapPageSNsName = map[string]string{
 		PageNameSns:          "/#/pages/sns/detail/index",
@@ -315,7 +317,6 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 
 	return
 }
-
 
 func GetUserHref(info *common.HeaderInfo, urlV url.Values) (link interface{}, err error) {
 	//urlV := url.Values{}
