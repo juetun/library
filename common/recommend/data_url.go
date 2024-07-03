@@ -231,6 +231,45 @@ func getPageLinkMina(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	return
 }
 
+func getPageH5Mina(argument *LinkArgument) (res DataItemLinkMina, err error) {
+	var (
+		pageName string
+		ok       bool
+	)
+
+	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
+		return
+	}
+
+	if argument.PageName != "" {
+		pageName = argument.PageName
+	}
+	res.PageName = pageName
+	res.Query = make(map[string]interface{}, 10)
+	if argument.NeedHeaderInfo {
+		if argument.HeaderInfo.HApp != "" {
+			res.Query["h_app"] = argument.HeaderInfo.HApp
+		}
+		if argument.HeaderInfo.HTerminal != "" {
+			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+		}
+		if argument.HeaderInfo.HChannel != "" {
+			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+		}
+		if argument.HeaderInfo.HVersion != "" {
+			res.Query["h_version"] = argument.HeaderInfo.HVersion
+		}
+	}
+	if argument.UrlValue != nil {
+		for key := range * argument.UrlValue {
+			res.Query[key] = argument.UrlValue.Get(key)
+		}
+	}
+
+	return
+}
+
 func getDefault(argument *LinkArgument) (res interface{}, err error) {
 	if argument.NeedHeaderInfo {
 		if argument.UrlValue == nil {
@@ -294,27 +333,29 @@ func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 }
 
 type LinkArgument struct {
-	HeaderInfo     *common.HeaderInfo
-	UrlValue       *url.Values
-	DataType       string
-	PageName       string
-	NeedHeaderInfo bool `json:"need_header_info"` //拼接参数时，带上header_info数据
+	HeaderInfo      *common.HeaderInfo
+	UrlValue        *url.Values
+	DataType        string
+	PageName        string
+	NeedHeaderInfo  bool `json:"need_header_info"` //拼接参数时，带上header_info数据
+	LinkTypIsString bool `json:"link_typ_str"`     //返回的链接地址是字符串//
 }
 
 //获取页面链接
 //headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
 func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
-	switch argument.HeaderInfo.HTerminal {
-	case app_param.TerminalMina: //小程序
-		res, err = getPageLinkMina(argument)
-	case app_param.TerminalAndroid: //安卓
-		res, err = getPageLinkApp(argument)
-	case app_param.TerminalIos: //IOS
-		res, err = getPageLinkApp(argument)
-	default:
-		res, err = getDefault(argument)
+	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
+	var getLinkMap = map[string]GetPageLinkHandler{
+		app_param.TerminalMina:    getPageLinkMina, //小程序
+		app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
+		app_param.TerminalAndroid: getPageLinkApp,  //安卓
+		app_param.TerminalIos:     getPageLinkApp,  //IOS
 	}
-
+	if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
+		res, err = handler(argument)
+		return
+	}
+	res, err = getDefault(argument)
 	return
 }
 
