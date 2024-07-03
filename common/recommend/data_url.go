@@ -17,8 +17,9 @@ const (
 	PageNameSns          = "article"       //社交前台界面
 	PageNameFishingSport = "fishing_spots" //钓点信息
 
-	PageNameOther     = "other"      //无实际意义拼接数据使用
-	PageNamePayFinish = "pay_finish" //支付结果界面
+	PageNameOther      = "other"      //无实际意义拼接数据使用
+	PageNamePayFinish  = "pay_finish" //支付结果界面
+	PageNamePayPreview = "pay_view"   //预付款界面
 )
 
 const (
@@ -45,6 +46,7 @@ var (
 		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
 		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
 		PageNamePayFinish:               "/#/pages/mall/order/pay_finish/index", //支付结果界面
+		PageNamePayPreview:              "/#/pages/mall/order/preview/index",    //支付预付界面
 	}
 	MapPageSNsName = map[string]string{
 		PageNameSns:          "/#/pages/sns/detail/index",
