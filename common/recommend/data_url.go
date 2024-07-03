@@ -333,17 +333,22 @@ func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 }
 
 type LinkArgument struct {
-	HeaderInfo      *common.HeaderInfo
-	UrlValue        *url.Values
-	DataType        string
-	PageName        string
-	NeedHeaderInfo  bool `json:"need_header_info"` //拼接参数时，带上header_info数据
-	LinkTypIsString bool `json:"link_typ_str"`     //返回的链接地址是字符串//
+	HeaderInfo     *common.HeaderInfo
+	UrlValue       *url.Values
+	DataType       string
+	PageName       string
+	NeedHeaderInfo bool `json:"need_header_info"` //拼接参数时，带上header_info数据
+	LinkTypIsURL   bool `json:"link_typ_is_url"`  //返回的链接地址是字符串//
 }
 
 //获取页面链接
 //headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
 func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
+	//如果返回的为url连接地址
+	if argument.LinkTypIsURL {
+		res, err = getDefault(argument)
+		return
+	}
 	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
 	var getLinkMap = map[string]GetPageLinkHandler{
 		app_param.TerminalMina:    getPageLinkMina, //小程序
@@ -351,6 +356,7 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 		app_param.TerminalAndroid: getPageLinkApp,  //安卓
 		app_param.TerminalIos:     getPageLinkApp,  //IOS
 	}
+
 	if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
 		res, err = handler(argument)
 		return
