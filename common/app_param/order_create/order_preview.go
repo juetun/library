@@ -2,6 +2,7 @@ package order_create
 
 import (
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param"
@@ -440,19 +441,21 @@ func NewPreviewShopItem() (res *PreviewShopItem) {
 //初始化支付方式
 func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...string) (err error) {
 	r.PayTypeOpt = SliceOrderPayTypeUse
-
-	switch info.HTerminal {
-	case app_param.TerminalMina: //如果是微信小程序
-		switch info.HChannel {
-		case "weixin": //如果是小程序微信使用
-			r.getWeiXinMinaOpt()
-		case "alipay":
-			r.getAliPayMinaOpt() //支付宝小程序
+	switch app_obj.App.AppEnv {
+	case app_obj.EnvProd: //如果是线上环境
+		switch info.HTerminal {
+		case app_param.TerminalMina: //如果是微信小程序
+			switch info.HChannel {
+			case "weixin": //如果是小程序微信使用
+				r.getWeiXinMinaOpt()
+			case "alipay":
+				r.getAliPayMinaOpt() //支付宝小程序
+			}
+		case app_param.TerminalH5:
+			r.getH5Opt()
+		case app_param.TerminalAndroid, app_param.TerminalIos: //手机APP当前只支持
+			r.getAppOpt()
 		}
-	case app_param.TerminalH5:
-		r.getH5Opt()
-	case app_param.TerminalAndroid, app_param.TerminalIos: //手机APP当前只支持
-		r.getAppOpt()
 	}
 
 	if len(payTypes) > 0 && payTypes[0] != "" && payTypes[0] != "0" {
