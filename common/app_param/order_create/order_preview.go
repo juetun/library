@@ -447,12 +447,40 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...st
 		case "weixin": //如果是小程序微信使用
 			r.getWeiXinMinaOpt()
 		}
+	case app_param.TerminalH5:
+		r.getH5Opt()
+	case app_param.TerminalAndroid, app_param.TerminalIos: //手机APP当前只支持
+		r.getAppOpt()
 	}
 	if len(payTypes) > 0 && payTypes[0] != "" && payTypes[0] != "0" {
 		r.PayType = payTypes[0]
 		return
 	}
 	r.PayType = fmt.Sprintf("%v", r.PayTypeOpt[0].Value)
+	return
+}
+
+//手机APP当前只支持支付宝
+func (r *OrderPreview) getAppOpt() {
+	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
+	r.PayTypeOpt = base.ModelItemOptions{
+		{
+			Label: mapPay[OrderPayTypeAliPay],
+			Value: OrderPayTypeAliPay,
+		},
+	}
+	return
+}
+
+//H5当前只支持支付宝
+func (r *OrderPreview) getH5Opt() {
+	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
+	r.PayTypeOpt = base.ModelItemOptions{
+		{
+			Label: mapPay[OrderPayTypeAliPay],
+			Value: OrderPayTypeAliPay,
+		},
+	}
 	return
 }
 
