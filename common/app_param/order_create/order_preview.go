@@ -454,6 +454,7 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...st
 	case app_param.TerminalAndroid, app_param.TerminalIos: //手机APP当前只支持
 		r.getAppOpt()
 	}
+
 	if len(payTypes) > 0 && payTypes[0] != "" && payTypes[0] != "0" {
 		r.PayType = payTypes[0]
 		return
