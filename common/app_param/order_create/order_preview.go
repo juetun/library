@@ -459,7 +459,9 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...st
 		r.PayType = payTypes[0]
 		return
 	}
-	r.PayType = fmt.Sprintf("%v", r.PayTypeOpt[0].Value)
+	if len(r.PayTypeOpt) > 0 {
+		r.PayType = fmt.Sprintf("%v", r.PayTypeOpt[0].Value)
+	}
 	return
 }
 
