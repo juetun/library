@@ -49,7 +49,7 @@ func LoadPay(arg *app_start.PluginsOperate) (err error) {
 	defer io.SystemOutPrintln("Init  pay parameters finished")
 
 	var yamlFile []byte
-	if yamlFile, err = os.ReadFile(common.GetConfigFilePath("pay.yaml")); err != nil {
+	if yamlFile, err = os.ReadFile(common.GetCommonConfigFilePath("pay.yaml", true)); err != nil {
 		io.SetInfoType(base.LogLevelFatal).SystemOutFatalf("yamlFile.Get err   #%v \n", err)
 	}
 	if err = yaml.Unmarshal(yamlFile, &ConfigPay); err != nil {
