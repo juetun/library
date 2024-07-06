@@ -446,6 +446,8 @@ func (r *OrderPreview) InitPayTypeOption(info *common.HeaderInfo, payTypes ...st
 		switch info.HChannel {
 		case "weixin": //如果是小程序微信使用
 			r.getWeiXinMinaOpt()
+		case "alipay":
+			r.getAliPayMinaOpt() //支付宝小程序
 		}
 	case app_param.TerminalH5:
 		r.getH5Opt()
@@ -484,6 +486,19 @@ func (r *OrderPreview) getH5Opt() {
 	return
 }
 
+//支付宝小程序小程序
+func (r *OrderPreview) getAliPayMinaOpt() {
+	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
+	r.PayTypeOpt = base.ModelItemOptions{
+		{
+			Label: mapPay[OrderPayTypeWeiXin],
+			Value: OrderPayTypeWeiXin,
+		},
+	}
+	return
+}
+
+//微信小程序
 func (r *OrderPreview) getWeiXinMinaOpt() {
 	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
 	r.PayTypeOpt = base.ModelItemOptions{
