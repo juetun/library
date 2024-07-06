@@ -497,8 +497,8 @@ func (r *OrderPreview) getAliPayMinaOpt() {
 	mapPay, _ := SliceOrderPayType.GetMapAsKeyUint8()
 	r.PayTypeOpt = base.ModelItemOptions{
 		{
-			Label: mapPay[OrderPayTypeWeiXin],
-			Value: OrderPayTypeWeiXin,
+			Label: mapPay[OrderPayTypeAliPay],
+			Value: OrderPayTypeAliPay,
 		},
 	}
 	return
