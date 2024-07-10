@@ -6,7 +6,14 @@ import (
 	"strings"
 )
 
-const IndexPrefix string = "jt"
+const (
+	FullTextIndexPrefix string = "jt"
+	FullTextSpu                = "spu"       //商品
+	FullTextFishSport          = "fish_spot" //钓点
+	FullTextSns                = "sns"       //动态
+	FullTextShop               = "shop"      //店铺
+	FullTextUser               = "user"      //用户
+)
 
 func GetEsIndex(indexName string) (res string) {
 	return gerPreString() + indexName
@@ -17,6 +24,6 @@ func GetEsRealIndex(indexName string) (res string) {
 }
 
 func gerPreString() (res string) {
-	res = fmt.Sprintf("%v%v_", IndexPrefix, app_obj.App.AppEnv)
+	res = fmt.Sprintf("%v%v_", FullTextIndexPrefix, app_obj.App.AppEnv)
 	return
 }
