@@ -84,6 +84,10 @@ var (
 			Value: AdDataDataTypeSocialIntercourse,
 		},
 		{
+			Label: "圈子",
+			Value: AdDataDataTypeRing,
+		},
+		{
 			Label: "钓点",
 			Value: AdDataDataTypeFishingSport,
 		},
