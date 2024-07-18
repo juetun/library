@@ -375,6 +375,19 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UIsMocking = userInfo.IsMocking
 }
 
+func (r *UserInfo) GetEncryptionMockAdminToken() (res string) {
+	res = GetUserInfoEncryptionMockAdminToken(r.MockAdminToken)
+	return
+}
+
+func GetUserInfoEncryptionMockAdminToken(MockAdminToken string) (res string) {
+	if len(MockAdminToken) > 10 {
+		res = MockAdminToken[len(MockAdminToken)-10:]
+	} else {
+		res = MockAdminToken
+	}
+	return
+}
 func GetResultUserByUid(userId string, ctx *base.Context, dataTypes ...string) (res *ResultUser, err error) {
 	res = &ResultUser{List: make(map[int64]ResultUserItem, )}
 	var value = url.Values{}
