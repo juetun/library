@@ -113,6 +113,7 @@ type (
 		RememberToken     string           `json:"remember_token"`
 		MsgReadTimeCursor base.TimeNormal  `json:"msg_read_time_cursor"`
 		HaveDashboard     uint8            `json:"have_dashboard"`
+		IsMocking         bool             `json:"is_mocking"` //当前是否是模拟账号
 	}
 	RequestUser struct {
 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
@@ -130,7 +131,7 @@ type (
 		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
 		UShopId            int64           `json:"u_shop_id" form:"u_shop_id"`                           //店铺ID
 		UHaveDashboard     uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
-
+		UIsMocking         bool            `json:"uis_mocking" form:"uis_mocking"`                       //当前是否在模拟状态
 		//UHeaderInfo *base.HeaderInfo `json:"u_header_info" form:"u_header_info"` //用户设备信息
 	}
 
@@ -139,6 +140,7 @@ type (
 		UserIndex *UserIndex `json:"user_index,omitempty"`
 		UserMain  *UserMain  `json:"user_main,omitempty"`
 		UserInfo  *UserInfo  `json:"user_info,omitempty"`
+		IsMocking bool       `json:"is_mocking"` //当前是否在模拟状态
 	}
 	UserIndex struct {
 		ID            int64            `gorm:"column:id;primary_key" json:"id"`
@@ -274,6 +276,11 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.HaveDashboard = item.UserMain.HaveDashboard
 		r.ShopId = item.UserMain.CurrentShopId
 	}
+
+	//如果当前账号有管理员权限
+	if r.HaveDashboard == UserHaveDashboardYes {
+		r.IsMocking = item.IsMocking
+	}
 	if item.UserInfo != nil {
 		r.Signature = item.UserInfo.Signature
 		r.Remark = item.UserInfo.Remark
@@ -364,6 +371,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.URememberToken = userInfo.RememberToken
 	r.UMsgReadTimeCursor = userInfo.MsgReadTimeCursor
 	r.UHaveDashboard = userInfo.HaveDashboard
+	r.UIsMocking = userInfo.IsMocking
 }
 
 func GetResultUserByUid(userId string, ctx *base.Context, dataTypes ...string) (res *ResultUser, err error) {
