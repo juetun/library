@@ -140,7 +140,6 @@ type (
 		UserIndex *UserIndex `json:"user_index,omitempty"`
 		UserMain  *UserMain  `json:"user_main,omitempty"`
 		UserInfo  *UserInfo  `json:"user_info,omitempty"`
-		IsMocking bool       `json:"is_mocking"` //当前是否在模拟状态
 	}
 	UserIndex struct {
 		ID            int64            `gorm:"column:id;primary_key" json:"id"`
@@ -191,6 +190,8 @@ type (
 		WeiBo             string           `gorm:"column:wei_bo;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:微博账号" json:"wei_bo"`
 		Signature         string           `gorm:"column:signature;not null;type:varchar(256) COLLATE utf8mb4_general_ci;comment:用户签名" json:"signature"`
 		RegisterChannel   string           `gorm:"column:register_channel;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:账号注册渠道" json:"register_channel"`
+		MockAdminToken    string           `gorm:"column:mock_admin_token;not null;type:varchar(1000) COLLATE utf8mb4_general_ci;comment:mock用户token" json:"mock_admin_token,omitempty"`
+		MockAdminUid      int64            `gorm:"column:mock_admin_uid;not null;type:bigint(20) COLLATE utf8mb4_bin;comment:mock用户ID" json:"mock_admin_uid,omitempty"`
 		InviteCode        int64            `gorm:"column:invite_code;not null;default:0;type:int(10);comment:邀请码" json:"invite_code"`
 		AttendNum         int64            `gorm:"column:attend_num;not null;default:0;type:bigint(20);comment:关注数 实时性不是高" json:"attend_num"`   // 关注数
 		LoveNum           int64            `gorm:"column:love_num;not null;default:0;type:bigint(20);comment:点赞数 实时性不是高" json:"love_num"`       // 点赞数
@@ -278,9 +279,7 @@ func (r *ResultUserItem) InitData(item *User) {
 	}
 
 	//如果当前账号有管理员权限
-	if r.HaveDashboard == UserHaveDashboardYes {
-		r.IsMocking = item.IsMocking
-	}
+
 	if item.UserInfo != nil {
 		r.Signature = item.UserInfo.Signature
 		r.Remark = item.UserInfo.Remark
@@ -288,7 +287,9 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.RealName = item.UserInfo.RealName
 		r.RememberToken = item.UserInfo.RememberToken
 		r.MsgReadTimeCursor = item.UserInfo.MsgReadTimeCursor
-
+		if item.UserInfo.MockAdminToken != "" {
+			r.IsMocking = true
+		}
 	}
 
 	return
