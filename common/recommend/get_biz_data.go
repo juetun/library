@@ -83,6 +83,17 @@ func GetMapDataGetHandler(dataTypes ...string) (res map[string]DataStructArgumen
 				return
 			},
 		},
+		AdDataDataTypeRing: { //圈子数据
+			AppName: app_param.AppNameSocialIntercourse,
+			URI:     "/data/get_ring_by_ids",
+			Method:  http.MethodPost,
+			OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
+		},
 		AdDataDataTypeGetSnsData: { //获取社交和钓点数据可使用此参数集中获取
 			AppName: app_param.AppNameSocialIntercourse,
 			URI:     "/data/base_data_by_ids",
@@ -202,7 +213,7 @@ func (r *GetBizData) GetFromApplication(handlerOp DataStructArguments, argumentI
 
 //根据场景Key获取数据
 func GetRecommendDataByScenes(arg *ArgGetDataByScenes, ctx *base.Context) (res ResultGetDataByScenes, err error) {
-	 
+
 	var header = http.Header{}
 	header.Set(app_obj.HttpHeaderInfo, arg.HeaderInfoString)
 	header.Set(app_obj.HttpUserHid, fmt.Sprintf("%v", arg.UUserHid))
