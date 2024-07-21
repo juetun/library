@@ -16,6 +16,7 @@ const (
 	PageNameUsr          = "user"
 	PageNameSns          = "article"       //社交前台界面
 	PageNameFishingSport = "fishing_spots" //钓点信息
+	PageNameRing         = "ring_article"  //圈子信息
 
 	PageNameOther      = "other"      //无实际意义拼接数据使用
 	PageNamePayFinish  = "pay_finish" //支付结果界面
@@ -37,6 +38,7 @@ var (
 		AdDataDataTypeUser:              PageNameUsr,          //用户信息
 		AdDataDataTypeSocialIntercourse: PageNameSns,          //广告社交动态信息
 		AdDataDataTypeFishingSport:      PageNameFishingSport, //钓点信息
+		AdDataDataTypeRing:              PageNameRing,         //圈子信息
 		AdDataDataTypeOther:             PageNameOther,        //其他信息
 	}
 	MapPageMallName = map[string]string{
@@ -44,6 +46,7 @@ var (
 		PageNameShop:                    "/#/pages/mall/shop/home/index",
 		PageNameUsr:                     "/#/pages/user/view/index",
 		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
+		AdDataDataTypeRing:              "/#/pages/sns/ring_article/index", //圈子界面
 		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
 		PageNamePayFinish:               "/#/pages/mall/order/pay_finish/index", //支付结果界面
 		PageNamePayPreview:              "/#/pages/mall/order/preview/index",    //支付预付界面
@@ -51,6 +54,7 @@ var (
 	MapPageSNsName = map[string]string{
 		PageNameSns:          "/#/pages/sns/detail/index",
 		PageNameFishingSport: "/#/pages/fishingsport/detail/index",
+		PageNameRing:         "/#/pages/ring_article/detail/index",
 	}
 	MapPageUserShop = map[string]string{
 		UserShopInfo: "/shop/info",

@@ -18,6 +18,7 @@ const (
 	DataItemShowTypeCardRight  = "card_right"  //card图片展示在右边
 	DataItemShowTypeCardDouble = "card_double" //双列
 	DataItemShowTypeUser       = "card_user"   //用户信息
+	DataItemShowTypeRing       = "ring"        //圈子
 )
 
 //是否在推荐列表中展示

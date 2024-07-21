@@ -20,6 +20,7 @@ const (
 	AttendDataTypeShop         = "shop"          // 店铺
 	AttendDataTypeFishingSpots = "fishing_spots" // 钓点
 	AttendDataTypeSns          = "article"       // 社交帖子
+	AttendDataTypeRing         = "ring"          // 圈子
 )
 const (
 	ActTypeLove     = "love"      //点赞
@@ -65,6 +66,10 @@ var (
 		{
 			Value: AttendDataTypeSns,
 			Label: "帖子",
+		},
+		{
+			Value: AttendDataTypeRing,
+			Label: "圈子",
 		},
 	}
 
