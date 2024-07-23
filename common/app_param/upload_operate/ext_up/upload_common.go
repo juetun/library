@@ -32,7 +32,7 @@ type (
 )
 
 func (r *UploadCommon) ToString() (res string) {
-	res = fmt.Sprintf("%s%s%s%s%d", r.Type, UploadDivideString, r.Channel, UploadDivideString, r.ID)
+	res = r.GetFilePk()
 	if r.UrlParams != nil && len(r.UrlParams) > 0 {
 		res = base64.StdEncoding.EncodeToString([]byte(r.UrlParams.Encode())) + UploadDivideParams + res
 	}
@@ -46,6 +46,12 @@ func (r *UploadCommon) GetKey(keys ...string) (key string) {
 	if key == "" {
 		key = r.ToString()
 	}
+	return
+}
+
+//获取文件的唯一KEY
+func (r *UploadCommon) GetFilePk() (res string) {
+	res = fmt.Sprintf("%s%s%s%s%d", r.Type, UploadDivideString, r.Channel, UploadDivideString, r.ID)
 	return
 }
 
