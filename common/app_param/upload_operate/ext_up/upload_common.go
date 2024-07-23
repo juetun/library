@@ -31,6 +31,19 @@ type (
 	PlayAddress map[string]string
 )
 
+//获取添加参数后的字符串
+func (r *UploadCommon) GetAfterAddUrlParams(srcPk string, urlParams url.Values) (res string) {
+	res = srcPk
+	if srcPk == "" {
+		res = r.GetFilePk()
+	}
+	r.UrlParams = urlParams
+	if r.UrlParams != nil && len(r.UrlParams) > 0 {
+		res = base64.StdEncoding.EncodeToString([]byte(r.UrlParams.Encode())) + UploadDivideParams + res
+	}
+	return
+}
+
 func (r *UploadCommon) ToString() (res string) {
 	res = r.GetFilePk()
 	if r.UrlParams != nil && len(r.UrlParams) > 0 {
