@@ -11,6 +11,7 @@ const (
 	FileTypeFile     = "file"     // 普通文件
 	FileTypePicture  = "image"    // 普通图片
 	FileTypeMaterial = "material" // 重要资料，如身份证，证书之类的数据
+	FileTypeDownload = "download" // app安装包
 )
 
 var (

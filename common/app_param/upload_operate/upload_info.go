@@ -15,8 +15,9 @@ type (
 	}
 	ResultMapUploadInfo struct {
 		//Img      map[string]*UploadImage    `json:"img"`
-		Video map[string]*UploadVideo `json:"video"`
-		Music map[string]*UploadMusic `json:"music"`
+		Video    map[string]*UploadVideo `json:"video"`
+		Music    map[string]*UploadMusic `json:"music"`
+		Download map[string]*UploadFile  `json:"download"`
 		//Material map[string]*UploadMaterial `json:"material"`
 		File map[string]*UploadFile `json:"file"`
 	}
@@ -25,7 +26,8 @@ type (
 		VideoKeys []string `json:"video_keys"`
 		MusicKey  []string `json:"music_key"`
 		//Material  []string `json:"material"`
-		File []string `json:"file"`
+		File     []string `json:"file"`
+		Download []string `json:"download"`
 		base.GetDataTypeCommon
 	}
 
@@ -108,7 +110,7 @@ func (r *ArgUploadGetInfo) IsNull() (isNull bool) {
 
 	if len(r.VideoKeys) == 0 && len(r.MusicKey) == 0 &&
 		//len(r.Material) == 0 &&
-		len(r.File) == 0 {
+		len(r.File) == 0 && len(r.Download) == 0 {
 		isNull = true
 		return
 	}
@@ -121,7 +123,8 @@ func NewResultMapUploadInfo() (res *ResultMapUploadInfo) {
 		Video: make(map[string]*UploadVideo, 10),
 		Music: make(map[string]*UploadMusic, 10),
 		//Material: make(map[string]*UploadMaterial, 50),
-		File: make(map[string]*UploadFile, 50),
+		File:     make(map[string]*UploadFile, 50),
+		Download: make(map[string]*UploadFile, 10),
 	}
 	return
 }

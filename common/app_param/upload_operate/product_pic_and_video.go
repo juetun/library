@@ -65,7 +65,7 @@ func (r *CacheProductPicAndVideoAction) SetToCacheNew(key string, duration time.
 		r.Context.Info(map[string]interface{}{
 			"data":           data,
 			"key":            key,
-			"period":       duration,
+			"period":         duration,
 			"expireTimeRand": expireTimeRand,
 		}, "CacheActionSetToCache")
 		return
@@ -100,6 +100,16 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 
 		for id, value := range res.Video {
 			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeVideo)
+			if err = r.SetToCacheNew(key, duration, value); err != nil {
+				return
+			}
+		}
+	}
+
+	if len(res.Download) > 0 {
+
+		for id, value := range res.Video {
+			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeDownload)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
 				return
 			}
@@ -192,6 +202,18 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 			continue
 		}
 		res.Video[it] = data
+	}
+	for _, it := range arg.Download {
+		var data = &UploadFile{}
+		if e = r.getFromCache(it, FileTypeDownload, data); e != nil {
+			if e != redis.Nil {
+				err = e
+				return
+			}
+			noCacheIds.MusicKey = append(noCacheIds.MusicKey, it)
+			continue
+		}
+		res.Download[it] = data
 	}
 	for _, it := range arg.MusicKey {
 		var data = &UploadMusic{}
