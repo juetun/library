@@ -46,8 +46,9 @@ const (
 	AdDataDataTypeRingComment              = "23" //评论 （圈子动态或钓点信息）
 	AdDataDataTypeExpress                  = "24" //物流公司LOGO
 
-	AdDataDataTypeOther  = "200" //其他数据
-	AdDataDataTypeAllSpu = "-1"  //所有的商品
+	AdDataDataTypeAppInstall = "199" //手机APP安装包
+	AdDataDataTypeOther      = "200" //其他数据
+	AdDataDataTypeAllSpu     = "-1"  //所有的商品
 
 )
 
