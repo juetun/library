@@ -210,7 +210,7 @@ func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo)
 				err = e
 				return
 			}
-			noCacheIds.MusicKey = append(noCacheIds.MusicKey, it)
+			noCacheIds.Download = append(noCacheIds.Download, it)
 			continue
 		}
 		res.Download[it] = data
