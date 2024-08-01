@@ -61,6 +61,16 @@ func GetMapDataGetHandler(dataTypes ...string) (res map[string]DataStructArgumen
 				return
 			},
 		}, //配置获取电商数据映射
+		AdDataDataTypeSpuCategory: {
+			AppName: app_param.AppNameMall,
+			URI:     "/category/get_for_recomm",
+			Method:  http.MethodPost, OrgParams: func(argItem *ArgumentGetBizDataItem) (urlValue url.Values, requestBody []byte) {
+				urlValue = url.Values{}
+				urlValue.Set("data_types", dataType)
+				urlValue.Set("ids", strings.Join(argItem.DataIds, ","))
+				return
+			},
+		}, //配置获取电商数据映射
 		AdDataDataTypeSocialIntercourse: {
 			AppName: app_param.AppNameSocialIntercourse,
 			URI:     "/data/get_article_by_ids",

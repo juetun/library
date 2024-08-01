@@ -38,6 +38,7 @@ var (
 		AdDataDataTypeUserShop:          PageNameShop,         //店铺信息（后台）
 		AdDataDataTypeUserShopHome:      PageNameShop,         //店铺信息（前台）
 		AdDataDataTypeUser:              PageNameUsr,          //用户信息
+		AdDataDataTypeSpuCategory:       PageNameHome,         //类目页面 -首页- 电商 tab
 		AdDataDataTypeSocialIntercourse: PageNameSns,          //广告社交动态信息
 		AdDataDataTypeFishingSport:      PageNameFishingSport, //钓点信息
 		AdDataDataTypeRing:              PageNameRing,         //圈子信息
@@ -181,6 +182,7 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
 			AdDataDataTypeUser:              getPageSpuPathByPageName,
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
 			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
 			AdDataDataTypeOther:             getPageSpuPathByPageName,
 		}
