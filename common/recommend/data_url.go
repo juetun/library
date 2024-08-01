@@ -10,6 +10,8 @@ import (
 )
 
 const (
+	PageNameHome = "home" //首页
+
 	//商品前台界面
 	PageNameSpu          = "spu"
 	PageNameShop         = "shop"
@@ -52,6 +54,7 @@ var (
 		PageNamePayPreview:              "/#/pages/mall/order/preview/index",    //支付预付界面
 	}
 	MapPageSNsName = map[string]string{
+		PageNameHome:         "/#/pages/home/index/index",
 		PageNameSns:          "/#/pages/sns/detail/index",
 		PageNameFishingSport: "/#/pages/fishingsport/detail/index",
 		PageNameRing:         "/#/pages/ring_article/detail/index",

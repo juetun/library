@@ -94,6 +94,10 @@ var (
 			Value: AdDataDataTypeFishingSport,
 		},
 		{
+			Label: "电商类目",
+			Value: AdDataDataTypeSpuCategory,
+		},
+		{
 			Label: "电商_SKU",
 			Value: AdDataDataTypeSku,
 		},
