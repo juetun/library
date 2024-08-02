@@ -72,9 +72,9 @@ func (r *ArgGetDataByScenes) Default(ctx *base.Context) (err error) {
 	_ = r.InitHeaderInfo(ctx.GinContext)
 	_ = r.InitRequestUser(ctx)
 	r.HeaderInfoString = ctx.GinContext.Request.Header.Get(app_obj.HttpHeaderInfo)
-	if r.RequestId == "" {
-		if r.RequestId = ctx.GinContext.GetHeader(app_obj.HttpTraceId); r.RequestId == "" {
-			r.RequestId = utils.Guid("")
+	if r.HttpRequestId == "" {
+		if r.HttpRequestId = ctx.GinContext.GetHeader(app_obj.HttpTraceId); r.HttpRequestId == "" {
+			r.HttpRequestId = utils.Guid("")
 		}
 	}
 	return
