@@ -12,14 +12,14 @@ import (
 
 type (
 	ArgGetDataByScenes struct {
-		NowItemId         string                 `json:"now_id,omitempty" form:"now_id"`           // 当前数据的ID
-		NowItemType       int8                   `json:"now_type,omitempty" form:"now_type"`       // 当前数据的类型
-		RequestId         string                 `json:"request_id,omitempty" form:"request_id"`   // 每次请求的数据的ID
-		DeviceId          string                 `json:"device_id,omitempty" form:"device_id"`     // 用户设备号
-		ClientType        string                 `json:"client_type,omitempty" form:"client_type"` // 终端类型 "m ,android,iso,weixin,alipay"
-		Channel           string                 `json:"channel,omitempty" form:"channel"`         // APP发布的渠道
-		AppVersion        string                 `json:"app_version,omitempty" form:"app_version"` // APP版本号
-		App               string                 `json:"app,omitempty" form:"app"`                 // APP名称
+		NowItemId         string                 `json:"now_id,omitempty" form:"now_id"`                   // 当前数据的ID
+		NowItemType       int8                   `json:"now_type,omitempty" form:"now_type"`               // 当前数据的类型
+		HttpRequestId     string                 `json:"http_request_id,omitempty" form:"http_request_id"` // 每次请求的数据的ID
+		DeviceId          string                 `json:"device_id,omitempty" form:"device_id"`             // 用户设备号
+		ClientType        string                 `json:"client_type,omitempty" form:"client_type"`         // 终端类型 "m ,android,iso,weixin,alipay"
+		Channel           string                 `json:"channel,omitempty" form:"channel"`                 // APP发布的渠道
+		AppVersion        string                 `json:"app_version,omitempty" form:"app_version"`         // APP版本号
+		App               string                 `json:"app,omitempty" form:"app"`                         // APP名称
 		GetDataTypeCommon base.GetDataTypeCommon `json:"common,omitempty" form:"common"`
 		Scenes            []*ArgDataBySceneItem  `json:"scenes,omitempty"`
 
