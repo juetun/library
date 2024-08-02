@@ -105,6 +105,7 @@ type (
 		BadgeString   string                     `json:"badge_string,omitempty"` //徽标值    "100" "10"
 		PageName      string                     `json:"-"`                      //页面名称 内部使用参数不对前端展示
 		PageConfigId  int64                      `json:"-"`
+		SortRequestId string                     `json:"-"` //排序的RequestId
 	}
 	DataItemLinkMina struct {
 		PageName string                 `json:"page_name"`
