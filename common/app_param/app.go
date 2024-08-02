@@ -24,11 +24,12 @@ const (
 )
 
 const (
-	TerminalWeb     = "web" //web站
-	TerminalMina    = "mina"
-	TerminalH5      = "h5"
-	TerminalAndroid = "android"
-	TerminalIos     = "ios"
+	TerminalWeb       = "web" //web站
+	TerminalMina      = "mina"
+	TerminalH5        = "h5"
+	TerminalAndroid   = "android"
+	TerminalIos       = "ios"
+	TerminalHarmonyOS = "harmonyOS"
 )
 
 var (
@@ -38,6 +39,7 @@ var (
 		{Label: "h5", Value: TerminalH5},
 		{Label: "安卓", Value: TerminalAndroid},
 		{Label: "IOS", Value: TerminalIos},
+		{Label: "华为鸿蒙", Value: TerminalHarmonyOS},
 	}
 )
 
