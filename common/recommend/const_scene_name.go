@@ -130,6 +130,7 @@ type (
 		DataId      string           `json:"data_id"`       //数据ID
 		ShopId      string           `json:"shop_id"`       //店铺ID
 		SceneKey    string           `json:"scene_key"`     //场景KEY
+		CategoryId  int64            `json:"category_id"`   //商品所属类目
 		Status      uint8            `json:"status"`        //状态
 		PullOnTime  *base.TimeNormal `json:"pull_on_time"`  //上架时间
 		PullOffTime *base.TimeNormal `json:"pull_off_time"` //下架时间
