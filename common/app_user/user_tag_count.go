@@ -27,6 +27,7 @@ const (
 	PlatSNSApprove        = "plat_sns_approve"         //社交与钓点
 	PlatArticleApprove    = "plat_article_approve"     //社交与钓点- 圈子动态
 	PlatArticleFishSports = "plat_article_fish_sports" //社交与钓点- 钓点信息
+	PlatFeedBack          = "plat_feed_back"           //评论违规信息反馈
 
 	//---------------------从缓存获取Tag----------------------
 	PlatTagOrderWaitingSend = "plat_waiting_send" //待发货订单数
