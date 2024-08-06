@@ -142,6 +142,7 @@ type (
 		ActType    string `json:"act_type" form:"act_type"`
 		DataType   string `json:"data_type" form:"data_type"`
 		DataId     string `json:"data_id" form:"data_id"`
+		ParentId   string `json:"parent_id" form:"parent_id"`
 		CommentId  string `json:"comment_id" form:"comment_id"`
 		Key        string `json:"key" form:"key"`
 		Num        int64  `json:"num" form:"num"`                 //数量
