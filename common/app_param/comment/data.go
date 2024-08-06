@@ -207,7 +207,7 @@ func (r *ArgGetNumberByKeys) ParseByKey(key string) (ActType, DataType, DataId, 
 		ActType = list[0]
 		DataType = list[1]
 		DataId = list[2]
-		DataId = list[4]
+		commentId = list[3]
 	}
 
 	return
