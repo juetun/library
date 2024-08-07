@@ -146,15 +146,12 @@ type (
 		Ctx  *base.Context                  `json:"-"` //上下文信息
 		List []*ArgWriteRecommendDataSingle `json:"list"`
 	}
-	ArgRemoveAttendTrendData struct {
-		Ctx *base.Context `json:"-"`
-	}
 
 	ArgInitTrendDataImport struct {
 		ActType         string          `json:"act_type" form:"act_type"`       //操作动作 枚举型 attend-关注 cancel-取关
 		CurrentLoginUid int64           `json:"current_uid" form:"current_uid"` //当前登录用户
 		UidString       string          `json:"user_hids" form:"user_hids"`
-		UserHids        []int64         `json:"user_hids" form:"user_hids"` //多个用户的目的是批量关注数据导入
+		UserHids        []int64         `json:"-" form:"-"` //多个用户的目的是批量关注数据导入
 		TimeNow         base.TimeNormal `json:"-" form:"-"`
 	}
 )
@@ -258,14 +255,14 @@ func WriteRecommendDataList(arg *ArgWriteRecommendDataList) (res bool, err error
 	return
 }
 
-func RemoveAttendTrendData(arg *ArgRemoveAttendTrendData) (res bool, err error) {
+func RemoveAttendTrendData(arg *ArgInitTrendDataImport, ctx *base.Context) (res bool, err error) {
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     app_param.AppNameRecommend,
 		URI:         "/recommend/remove_attend_trend_data",
 		Header:      http.Header{},
 		Value:       url.Values{},
-		Context:     arg.Ctx,
+		Context:     ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
 	if ro.BodyJson, err = arg.GetJson(); err != nil {
@@ -297,7 +294,7 @@ func (r *ArgWriteRecommendDataList) GetJson() (res []byte, err error) {
 	return
 }
 
-func (r *ArgRemoveAttendTrendData) GetJson() (res []byte, err error) {
+func (r *ArgInitTrendDataImport) GetJson() (res []byte, err error) {
 	res, err = json.Marshal(r)
 	return
 }
