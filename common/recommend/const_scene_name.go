@@ -255,6 +255,7 @@ func WriteRecommendDataList(arg *ArgWriteRecommendDataList) (res bool, err error
 	return
 }
 
+//移除取消关注的数据
 func RemoveAttendTrendData(arg *ArgInitTrendDataImport, ctx *base.Context) (res bool, err error) {
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
