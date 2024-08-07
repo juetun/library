@@ -9,6 +9,8 @@ import (
 	"github.com/juetun/library/common/app_param"
 	"net/http"
 	"net/url"
+	"strconv"
+	"strings"
 )
 
 const (
@@ -144,6 +146,17 @@ type (
 		Ctx  *base.Context                  `json:"-"` //上下文信息
 		List []*ArgWriteRecommendDataSingle `json:"list"`
 	}
+	ArgRemoveAttendTrendData struct {
+		Ctx *base.Context `json:"-"`
+	}
+
+	ArgInitTrendDataImport struct {
+		ActType         string          `json:"act_type" form:"act_type"`       //操作动作 枚举型 attend-关注 cancel-取关
+		CurrentLoginUid int64           `json:"current_uid" form:"current_uid"` //当前登录用户
+		UidString       string          `json:"user_hids" form:"user_hids"`
+		UserHids        []int64         `json:"user_hids" form:"user_hids"` //多个用户的目的是批量关注数据导入
+		TimeNow         base.TimeNormal `json:"-" form:"-"`
+	}
 )
 
 func (r *ArgWriteRecommendData) Default() (err error) {
@@ -245,6 +258,35 @@ func WriteRecommendDataList(arg *ArgWriteRecommendDataList) (res bool, err error
 	return
 }
 
+func RemoveAttendTrendData(arg *ArgRemoveAttendTrendData) (res bool, err error) {
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameRecommend,
+		URI:         "/recommend/remove_attend_trend_data",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     arg.Ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                                   `json:"code"`
+		Data struct{ Result bool `json:"result"` } `json:"data"`
+		Msg  string                                `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	res = data.Data.Result
+	return
+}
+
 func (r *ArgWriteRecommendDataList) Default(c *base.Context) (err error) {
 
 	return
@@ -252,5 +294,37 @@ func (r *ArgWriteRecommendDataList) Default(c *base.Context) (err error) {
 
 func (r *ArgWriteRecommendDataList) GetJson() (res []byte, err error) {
 	res, err = json.Marshal(r)
+	return
+}
+
+func (r *ArgRemoveAttendTrendData) GetJson() (res []byte, err error) {
+	res, err = json.Marshal(r)
+	return
+}
+
+func (r *ArgInitTrendDataImport) Default(ctx *base.Context) (err error) {
+	if err = r.InitWithUidStr(); err != nil {
+		return
+	}
+	r.TimeNow = base.GetNowTimeNormal()
+	return
+}
+
+func (r *ArgInitTrendDataImport) InitWithUidStr() (err error) {
+	if r.UidString == "" {
+		return
+	}
+	uidSlice := strings.Split(r.UidString, ",")
+	r.UserHids = make([]int64, 0, len(uidSlice))
+	var uid int64
+	for _, item := range uidSlice {
+		if item == "" {
+			continue
+		}
+		if uid, err = strconv.ParseInt(item, 10, 64); err != nil {
+			return
+		}
+		r.UserHids = append(r.UserHids, uid)
+	}
 	return
 }
