@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	SceneNameTendencies    = "tendencies"     //广告用户首页动态
-	SceneNameHomeRecommend = "home_recommend" //广告首页数据推荐
+	SceneNameTendencies           = "tendencies"             //广告用户首页动态
+	SceneNameAttendUserTendencies = "attend_user_tendencies" //关注用户首页动态
+	SceneNameHomeRecommend        = "home_recommend"         //广告首页数据推荐
 )
 
 const (
@@ -124,7 +125,10 @@ var (
 
 type (
 	ArgWriteRecommendData struct {
-		Ctx         *base.Context    `json:"-"`             //上下文信息
+		Ctx *base.Context `json:"-"` //上下文信息
+		ArgWriteRecommendDataSingle
+	}
+	ArgWriteRecommendDataSingle struct {
 		UserHid     int64            `json:"user_hid"`      //用户
 		DataType    string           `json:"data_type"`     //数据类型
 		DataId      string           `json:"data_id"`       //数据ID
@@ -135,6 +139,10 @@ type (
 		PullOnTime  *base.TimeNormal `json:"pull_on_time"`  //上架时间
 		PullOffTime *base.TimeNormal `json:"pull_off_time"` //下架时间
 		Weight      int64            `json:"weight"`        //权重
+	}
+	ArgWriteRecommendDataList struct {
+		Ctx  *base.Context                  `json:"-"` //上下文信息
+		List []*ArgWriteRecommendDataSingle `json:"list"`
 	}
 )
 
@@ -179,7 +187,6 @@ func WriteRecommendData(arg *ArgWriteRecommendData) (res bool, err error) {
 	if err = arg.Default(); err != nil {
 		return
 	}
-
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     app_param.AppNameRecommend,
@@ -205,5 +212,45 @@ func WriteRecommendData(arg *ArgWriteRecommendData) (res bool, err error) {
 		return
 	}
 	res = data.Data.Result
+	return
+}
+
+//当前采用接口直接发送，后续采用消息队列解耦重新实现
+func WriteRecommendDataList(arg *ArgWriteRecommendDataList) (res bool, err error) {
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameRecommend,
+		URI:         "/recommend/write_data_batch",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     arg.Ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                                   `json:"code"`
+		Data struct{ Result bool `json:"result"` } `json:"data"`
+		Msg  string                                `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	res = data.Data.Result
+	return
+}
+
+func (r *ArgWriteRecommendDataList) Default(c *base.Context) (err error) {
+
+	return
+}
+
+func (r *ArgWriteRecommendDataList) GetJson() (res []byte, err error) {
+	res, err = json.Marshal(r)
 	return
 }
