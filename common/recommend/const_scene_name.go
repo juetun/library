@@ -285,6 +285,36 @@ func RemoveAttendTrendData(arg *ArgInitTrendDataImport, ctx *base.Context) (res 
 	return
 }
 
+//关注当前用户的动态更新
+func AttendTrendUserImport(arg *ArgInitTrendDataImport, ctx *base.Context) (res bool, err error) {
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameComment,
+		URI:         "/recommend/attend_user_import",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                                   `json:"code"`
+		Data struct{ Result bool `json:"result"` } `json:"data"`
+		Msg  string                                `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	res = data.Data.Result
+	return
+}
+
 func (r *ArgWriteRecommendDataList) Default(c *base.Context) (err error) {
 
 	return
