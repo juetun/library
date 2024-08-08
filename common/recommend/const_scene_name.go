@@ -143,8 +143,9 @@ type (
 		Weight      int64            `json:"weight"`        //权重
 	}
 	ArgWriteRecommendDataList struct {
-		Ctx  *base.Context                  `json:"-"` //上下文信息
-		List []*ArgWriteRecommendDataSingle `json:"list"`
+		CurrentUid int64                          `json:"current_uid"`
+		Ctx        *base.Context                  `json:"-"` //上下文信息
+		List       []*ArgWriteRecommendDataSingle `json:"list"`
 	}
 
 	ArgInitTrendDataImport struct {
