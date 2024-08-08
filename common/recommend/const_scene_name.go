@@ -155,8 +155,18 @@ type (
 		UserHids        []int64         `json:"-" form:"-"` //多个用户的目的是批量关注数据导入
 		TimeNow         base.TimeNormal `json:"-" form:"-"`
 	}
+	ArgAttendUserImport struct {
+		AttendedUid int64           `json:"attended_uid"` //被关注用户Id
+		TimeNow     base.TimeNormal `json:"-" form:"-"`
+	}
 )
 
+func (r *ArgAttendUserImport) Default(c *base.Context) (err error) {
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
+	return
+}
 func (r *ArgWriteRecommendData) Default() (err error) {
 	var (
 		dataTypeMap map[string]string
@@ -291,7 +301,37 @@ func AttendTrendUserImport(arg *ArgInitTrendDataImport, ctx *base.Context) (res 
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     app_param.AppNameComment,
-		URI:         "/recommend/attend_user_import",
+		URI:         "/trends/attend_user_import",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = arg.GetJson(); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                                   `json:"code"`
+		Data struct{ Result bool `json:"result"` } `json:"data"`
+		Msg  string                                `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	res = data.Data.Result
+	return
+}
+
+//更新所有关注指定用户的动态
+func AttendTrendedUserImport(arg *ArgAttendUserImport, ctx *base.Context) (res bool, err error) {
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameComment,
+		URI:         "/trends/attend_user_trend_import",
 		Header:      http.Header{},
 		Value:       url.Values{},
 		Context:     ctx,
@@ -322,6 +362,11 @@ func (r *ArgWriteRecommendDataList) Default(c *base.Context) (err error) {
 }
 
 func (r *ArgWriteRecommendDataList) GetJson() (res []byte, err error) {
+	res, err = json.Marshal(r)
+	return
+}
+
+func (r *ArgAttendUserImport) GetJson() (res []byte, err error) {
 	res, err = json.Marshal(r)
 	return
 }
