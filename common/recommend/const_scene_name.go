@@ -132,6 +132,7 @@ type (
 	}
 	ArgWriteRecommendDataSingle struct {
 		UserHid     int64            `json:"user_hid"`      //用户
+		ToUserHid   int64            `json:"to_user_hid"`   //如果指定了固定用户展示值 默认0 适用个性化推荐数据
 		DataType    string           `json:"data_type"`     //数据类型
 		DataId      string           `json:"data_id"`       //数据ID
 		ShopId      string           `json:"shop_id"`       //店铺ID
