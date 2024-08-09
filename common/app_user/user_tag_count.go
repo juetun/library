@@ -72,6 +72,8 @@ const (
 	UserTagOrderWaitingSendGood = "user_receive_send_goods" //待发货订单数
 	UserTagOrderWaitingComment  = "user_order_comment"      //待评价
 	UserTagOrderNotOverRefund   = "user_not_over_refund"    //未完成退款单
+
+	UserPublicDataTimeMilliseconds = "user_pub_data_time" //用户最近一次更新动态的时间戳 Milliseconds值
 )
 
 const (
