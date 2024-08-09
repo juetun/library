@@ -35,6 +35,7 @@ type (
 		UserHid        int64           `json:"user_hid"`             //用户信息
 		TrendType      string          `json:"trend_type"`           //动态类型
 		TrendTypeId    int64           `json:"trend_type_id"`        //动态ID号
+		ShopId         string          `json:"shop_id"`              //店铺ID
 		DataType       string          `json:"data_type"`            //数据类型
 		DataId         string          `json:"data_id"`              //数据ID
 		Img            string          `json:"img,omitempty"`        //头图
