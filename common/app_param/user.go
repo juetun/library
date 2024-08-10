@@ -198,6 +198,7 @@ type (
 		CommentNum        int64            `gorm:"column:comment_num;not null;default:0;type:bigint(20);comment:评论数 实时性不是高" json:"comment_num"` // 评论数
 		MobileVerifiedAt  *base.TimeNormal `json:"mobile_verified_at" gorm:"column:mobile_verified_at;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
 		EmailVerifiedAt   *base.TimeNormal `gorm:"column:email_verified_at;uniqueIndex:idx_email,priority:3;type:datetime;default:'2000-01-01 00:00:00';comment:认证时间;" json:"-"`
+		JGToken           string           `gorm:"column:jg_token;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:极光推送的别名" json:"jg_token,omitempty"`
 		DataName          string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
 		TbName            string           `json:"-" gorm:"-"` // 数据所在分库分表的位置
 	}
