@@ -28,6 +28,7 @@ const (
 	TerminalMina      = "mina"
 	TerminalH5        = "h5"
 	TerminalAndroid   = "android"
+	TerminalWINPHONE  = "winphone"
 	TerminalIos       = "ios"
 	TerminalHarmonyOS = "harmonyOS"
 )
