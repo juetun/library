@@ -366,6 +366,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	var userInfo ResultUserItem
 	var ok bool
 	if userInfo, ok = user.List[r.UUserHid]; !ok {
+		r.UDialog = "用户信息不存在"
 		return
 	}
 
