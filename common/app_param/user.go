@@ -113,6 +113,8 @@ type (
 		RememberToken     string           `json:"remember_token"`
 		MsgReadTimeCursor base.TimeNormal  `json:"msg_read_time_cursor"`
 		HaveDashboard     uint8            `json:"have_dashboard"`
+		Exists            bool             `json:"exists"`
+		MsgInfo           string           `json:"msg_info"`
 		IsMocking         bool             `json:"is_mocking"` //当前是否是模拟账号
 	}
 	RequestUser struct {
@@ -132,11 +134,13 @@ type (
 		UShopId            int64           `json:"u_shop_id" form:"u_shop_id"`                           //店铺ID
 		UHaveDashboard     uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
 		UIsMocking         bool            `json:"uis_mocking" form:"uis_mocking"`                       //当前是否在模拟状态
-		//UHeaderInfo *base.HeaderInfo `json:"u_header_info" form:"u_header_info"` //用户设备信息
+		UExists            bool            `json:"u_exists" form:"u_exists"`                             //用户是否存在
+		UDialog            string          `json:"u_dialog" form:"u_dialog"`                             //用户信息提示 如 - 用户不存在  ；用户没权限
 	}
 
 	User struct {
 		UserHid   int64      `json:"user_hid"`
+		MsgInfo   string     `json:"msg_info"`
 		UserIndex *UserIndex `json:"user_index,omitempty"`
 		UserMain  *UserMain  `json:"user_main,omitempty"`
 		UserInfo  *UserInfo  `json:"user_info,omitempty"`
@@ -257,6 +261,7 @@ func (r *ResultUserItem) GetRealName(nilDefaultValue ...string) (res string) {
 
 func (r *ResultUserItem) InitData(item *User) {
 	r.UserHid = item.UserHid
+	r.MsgInfo = item.MsgInfo
 	if item.UserMain != nil {
 		r.AuthStatus = item.UserMain.AuthStatus
 		r.AuthType = item.UserMain.AuthType
@@ -277,10 +282,14 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.EmailVerifiedAt = item.UserMain.EmailVerifiedAt
 		r.HaveDashboard = item.UserMain.HaveDashboard
 		r.ShopId = item.UserMain.CurrentShopId
+		if item.UserMain.Id > 0 {
+			r.Exists = true
+		} else {
+			r.MsgInfo = "用户不存在"
+		}
 	}
 
 	//如果当前账号有管理员权限
-
 	if item.UserInfo != nil {
 		r.Signature = item.UserInfo.Signature
 		r.Remark = item.UserInfo.Remark
@@ -373,6 +382,8 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.URememberToken = userInfo.RememberToken
 	r.UMsgReadTimeCursor = userInfo.MsgReadTimeCursor
 	r.UHaveDashboard = userInfo.HaveDashboard
+	r.UExists = userInfo.Exists
+	r.UDialog = userInfo.MsgInfo
 	r.UIsMocking = userInfo.IsMocking
 }
 
