@@ -25,8 +25,7 @@ const (
 
 	//---------------------从缓存获取Tag----------------------
 	PlatTagOrderWaitingSend = "plat_waiting_send"      //待发货订单数
-	PlatChatNotRead         = "plat_chat_not_read"     //平台托管的未读消息
-	PlatChatNotReadConsole  = "plat_con_chat_not_read" //官方客服未读消息
+
 )
 
 const (
