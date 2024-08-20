@@ -66,8 +66,21 @@ const (
 const (
 	ShopSliceVerifyStatusIcon = "shop_icon"
 )
+const (
+	ShopChatManagerHelpYes uint8 = iota + 1
+	ShopChatManagerHelpNo
+)
 
 var (
+	SliceShopChatManagerHelp = base.ModelItemOptions{
+		{
+			Value: ShopChatManagerHelpYes,
+			Label: "托管",
+		}, {
+			Value: ShopChatManagerHelpNo,
+			Label: "不托管",
+		},
+	}
 	SliceShopSliceVerifyStatus = base.ModelItemOptions{
 		{
 			Value: ShopSliceVerifyStatusValue,
@@ -202,7 +215,7 @@ type (
 		AdminUserHid     int64            `gorm:"column:admin_user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:管理管理员账号" json:"admin_user_hid"`
 		NeedVerifyStatus int8             `gorm:"column:need_verify_status;type:tinyint(2);not null;default:1;comment:当前需要审核状态 1-审核通过 2-待审核 3-审核失败" json:"need_verify_status"`
 		VerifyStatus     string           `gorm:"column:verify_status;type:varchar(20);not null;default:'';comment:审核数据状态" json:"verify_status"`
-		ChatManagerGid   int64            `gorm:"column:chat_manager_gid;default:0;type:bigint(20);not null;comment:在线客服托管组id" json:"chat_manager_gid"`
+		ChatManagerHelp  uint8            `gorm:"column:chat_manager_help;type:tinyint(2);not null;default:2;comment:在线客服是否托管 1-托管 2-不托管" json:"chat_manager_help"`
 		CreatedAt        base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt        base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
@@ -226,6 +239,9 @@ func (r *Shop) Default() {
 	r.Status = 1
 	r.FlagTester = 2
 	r.NeedVerifyStatus = 1
+	if r.ChatManagerHelp == 0 {
+		r.ChatManagerHelp = ShopChatManagerHelpNo
+	}
 	return
 }
 
