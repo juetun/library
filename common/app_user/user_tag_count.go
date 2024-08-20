@@ -24,7 +24,9 @@ const (
 	PlatFeedBack          = "plat_feed_back"           //评论违规信息反馈
 
 	//---------------------从缓存获取Tag----------------------
-	PlatTagOrderWaitingSend = "plat_waiting_send" //待发货订单数
+	PlatTagOrderWaitingSend = "plat_waiting_send"     //待发货订单数
+	PlatChatNotRead         = "plat_not_read"         //平台托管的未读消息
+	PlatChatNotReadConsole  = "plat_console_not_read" //官方客服未读消息
 )
 
 const (
