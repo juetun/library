@@ -28,10 +28,55 @@ type (
 		TagKey string  `json:"tag_key"` //数量对应的key
 		Count  float64 `json:"count"`   //数量
 	}
+	ShopTagUpdateCount struct {
+		ShopId int64   `json:"shop_id"` //用户ID
+		TagKey string  `json:"tag_key"` //数量对应的key
+		Count  float64 `json:"count"`   //数量
+	}
 )
 
-func getShopTagKeyByUid(userHid int64) (res string) {
+func GetShopTagKeyByUid(userHid int64) (res string) {
 	res = fmt.Sprintf("tag:shop:%v", userHid)
+	return
+}
+
+//设置用户的tag标签值
+func UpdateShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Context) (err error) {
+	otherData := make(map[string]interface{})
+	defer func() {
+
+		if err == nil || ctx == nil {
+			return
+		} else if err != nil {
+			ctx.Error(map[string]interface{}{
+				"data":      data,
+				"otherData": otherData,
+				"err":       err.Error(),
+			}, "UpdateShopTagCount")
+		}
+		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
+	}()
+
+	if len(data) == 0 {
+		return
+	}
+	var (
+		ctxt           = GetCtxWithMany(ctxs...)
+		cacheClient, _ = app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
+		l              = len(data)
+		dataListMap    = make(map[int64][]interface{}, l)
+		cacheKey       string
+		e              error
+	)
+	for _, item := range data {
+		if _, ok := dataListMap[item.ShopId]; !ok {
+			dataListMap[item.ShopId] = make([]interface{}, 0, l*2)
+		}
+		cacheKey = GetShopTagKeyByUid(item.ShopId)
+		if e = cacheClient.HIncrByFloat(ctxt, cacheKey, item.TagKey, item.Count).Err(); e != nil {
+			otherData[fmt.Sprintf("%v", item.ShopId)] = e.Error()
+		}
+	}
 	return
 }
 
@@ -55,7 +100,7 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 	if len(data) == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
 
 	var l = len(data)
@@ -73,7 +118,7 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 		if len(items) == 0 {
 			continue
 		}
-		cacheKey = getShopTagKeyByUid(shopId)
+		cacheKey = GetShopTagKeyByUid(shopId)
 		if e = cacheClient.HMSet(ctxt, cacheKey, items...).Err(); e != nil {
 			otherData[fmt.Sprintf("%v", shopId)] = e.Error()
 		}
@@ -81,7 +126,7 @@ func SetShopTagCount(ctx *base.Context, data []*ShopTagCount, ctxs ...context.Co
 	return
 }
 
-func getCtxWithMany(ctxs ...context.Context) (ctxt context.Context) {
+func GetCtxWithMany(ctxs ...context.Context) (ctxt context.Context) {
 	if len(ctxs) == 0 {
 		ctxt = context.TODO()
 	} else {
@@ -106,12 +151,12 @@ func GetShopTagCount(ctx *base.Context, shopId int64, tagKey string, ctxs ...con
 		}, "GetShopTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
 	var e error
 	if count, e = cacheClient.
-		HGet(ctxt, getShopTagKeyByUid(shopId), tagKey).
+		HGet(ctxt, GetShopTagKeyByUid(shopId), tagKey).
 		Float64(); e != nil && e != redis.Nil {
 		err = e
 		return
@@ -145,7 +190,7 @@ func GetShopsTagsCount(ctx *base.Context, shopIds []int64, tagKeys []string, ctx
 		var e error
 		var result []interface{}
 		if result, e = cacheClient.
-			HMGet(ctxt, getShopTagKeyByUid(shopId), tagKeys...).Result(); e != nil && e != redis.Nil {
+			HMGet(ctxt, GetShopTagKeyByUid(shopId), tagKeys...).Result(); e != nil && e != redis.Nil {
 			err = e
 			return
 		}
