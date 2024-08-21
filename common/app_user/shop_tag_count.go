@@ -182,7 +182,7 @@ func GetShopsTagsCount(ctx *base.Context, shopIds []int64, tagKeys []string, ctx
 		}, "GetShopTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(ShopTagCountCacheNameSpace)
 

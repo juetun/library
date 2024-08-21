@@ -106,7 +106,7 @@ func UpdateUseTagAddCount(ctx *base.Context, userHid int64, key string, value fl
 	if value == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	err = cacheClient.HIncrByFloat(ctxt, getUserTagKeyByUid(userHid), key, value).Err()
 	return
@@ -129,7 +129,7 @@ func SetUseTagCount(ctx *base.Context, data []*UserTagCount, ctxs ...context.Con
 	if len(data) == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var l = len(data)
 	var dataListMap = make(map[int64][]interface{}, l)
@@ -168,7 +168,7 @@ func GetUseTagCount(ctx *base.Context, useHid int64, tagKey string, ctxs ...cont
 		}, "GetUseTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var e error
 	var cacheKey = getUserTagKeyByUid(useHid)
@@ -199,7 +199,7 @@ func GetUsersTagsCount(ctx *base.Context, userHIds []int64, tagKeys []string, ct
 		}, "GetUsersTagsCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(UserTagCountCacheNameSpace)
 	var cacheKey string

@@ -53,7 +53,7 @@ func UpdateDataTagAddCount(ctx *base.Context, dataId string, key string, value f
 	if value == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(DataTagCountCacheNameSpace)
 	err = cacheClient.HIncrByFloat(ctxt, getDataTagKeyByUid(dataId), key, value).Err()
 	return
@@ -76,7 +76,7 @@ func SetDataTagCount(ctx *base.Context, data []*DataTagCount, ctxs ...context.Co
 	if len(data) == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(DataTagCountCacheNameSpace)
 	var l = len(data)
 	var dataListMap = make(map[string][]interface{}, l)
@@ -115,7 +115,7 @@ func GetDataTagCount(ctx *base.Context, dataId string, tagKey string, ctxs ...co
 		}, "GetUseTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(DataTagCountCacheNameSpace)
 	var e error
 	var cacheKey = getDataTagKeyByUid(dataId)
@@ -146,7 +146,7 @@ func GetDataTagsCount(ctx *base.Context, dataIds []string, tagKeys []string, ctx
 		}, "GetDataTagsCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(DataTagCountCacheNameSpace)
 	var cacheKey string

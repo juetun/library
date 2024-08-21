@@ -45,7 +45,7 @@ func SetPlatTagCount(ctx *base.Context, data []*PlatTagCount, ctxs ...context.Co
 	if len(data) == 0 {
 		return
 	}
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 	cacheClient, _ := app_obj.GetRedisClient(PlatTagCountCacheNameSpace)
 
 	var l = len(data)
@@ -81,7 +81,7 @@ func GetPlatTagCount(ctx *base.Context, tagKey string, ctxs ...context.Context) 
 		}, "GetPlatTagCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(PlatTagCountCacheNameSpace)
 	var e error
@@ -111,7 +111,7 @@ func GetPlatTagsCount(ctx *base.Context, tagKeys []string, ctxs ...context.Conte
 		}, "GetPlatTagsCount")
 		err = base.NewErrorRuntime(err, base.ErrorRedisCode)
 	}()
-	var ctxt = getCtxWithMany(ctxs...)
+	var ctxt = GetCtxWithMany(ctxs...)
 
 	cacheClient, _ := app_obj.GetRedisClient(PlatTagCountCacheNameSpace)
 
