@@ -22,7 +22,7 @@ func ImageContext(ctx *base.Context) ImageHandler {
 }
 
 //获取封面图数据
-func (r ProductImages) GetThumbnail() (res *ProductImage) {
+func (r ProductImages) GetThumbnail() (res ProductImage) {
 	var (
 		first ProductImage
 		i     int
@@ -35,12 +35,13 @@ func (r ProductImages) GetThumbnail() (res *ProductImage) {
 			first = item
 		}
 		if item.IsThumbnail {
-			res = &item
+			res = item
+			return
 		}
 		i++
 	}
-	if (res == nil || res.ID == 0) && first.ID != 0 {
-		res = &first
+	if res.ID == 0 && first.ID != 0 {
+		res = first
 	}
 	return
 }
