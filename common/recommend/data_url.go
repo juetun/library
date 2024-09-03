@@ -45,20 +45,20 @@ var (
 		AdDataDataTypeOther:             PageNameOther,        //其他信息
 	}
 	MapPageMallName = map[string]string{
-		PageNameSpu:                     "/#/pages/mall/detail/index",
-		PageNameShop:                    "/#/pages/mall/shop/home/index",
-		PageNameUsr:                     "/#/pages/user/view/index",
-		AdDataDataTypeSocialIntercourse: "/#/pages/sns/detail/index",
-		AdDataDataTypeRing:              "/#/pages/sns/ring_article/index", //圈子界面
-		AdDataDataTypeFishingSport:      "/#/pages/fishingsport/detail/index",
-		PageNamePayFinish:               "/#/pages/mall/order/pay_finish/index", //支付结果界面
+		PageNameSpu:                     "/#/mall/pages/detail/index",
+		PageNameShop:                    "/#/shop/pages/home/index",
+		PageNameUsr:                     "/#/user/pages/view/index",
+		AdDataDataTypeSocialIntercourse: "/#/sns/pages/detail/index",
+		AdDataDataTypeRing:              "/#/sns/pages/ring_article/index", //圈子界面
+		AdDataDataTypeFishingSport:      "/#/fishingsport/pages/detail/index",
+		PageNamePayFinish:               "/#/order/pages/pay_finish/index", //支付结果界面
 		PageNamePayPreview:              "/#/pages/mall/order/preview/index",    //支付预付界面
 	}
 	MapPageSNsName = map[string]string{
-		PageNameHome:         "/#/pages/home/index/index",
-		PageNameSns:          "/#/pages/sns/detail/index",
-		PageNameFishingSport: "/#/pages/fishingsport/detail/index",
-		PageNameRing:         "/#/pages/ring_article/detail/index",
+		PageNameHome:         "/#/home/index/index",
+		PageNameSns:          "/#/sns/pages/detail/index",
+		PageNameFishingSport: "/#/fishingsport/pages/detail/index",
+		PageNameRing:         "/#/sns/pages/ring_article/detail/index",
 	}
 	MapPageUserShop = map[string]string{
 		UserShopInfo: "/shop/info",
