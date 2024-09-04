@@ -116,6 +116,8 @@ type (
 		Exists            bool             `json:"exists"`
 		MsgInfo           string           `json:"msg_info"`
 		IsMocking         bool             `json:"is_mocking"` //当前是否是模拟账号
+		LastAccent        base.TimeNormal  `json:"last_accent"`
+		LastAccToken      string           `json:"last_acc_token"`
 	}
 	RequestUser struct {
 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
@@ -278,6 +280,8 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.IsV = item.UserMain.IsV
 		r.Mobile = item.UserMain.Mobile
 		r.MobileVerifiedAt = item.UserMain.MobileVerifiedAt
+		r.LastAccent = item.UserMain.LastAccent
+		r.LastAccToken = item.UserMain.LastAccToken
 		r.Email = item.UserMain.Email
 		r.EmailVerifiedAt = item.UserMain.EmailVerifiedAt
 		r.HaveDashboard = item.UserMain.HaveDashboard
