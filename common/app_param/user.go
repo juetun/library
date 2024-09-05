@@ -244,7 +244,7 @@ func GetUserInfoByXAuthToken(xAuthToken string, ctx *base.Context) (requestUser 
 		if user, err = GetResultUserByUid(fmt.Sprintf("%d", jwtUser.UserId), ctx); err != nil {
 			return
 		}
-		requestUser.SetResultUser(user)
+		requestUser.SetResultUser(user, xAuthToken)
 	}
 	return
 }
@@ -336,6 +336,7 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 			r.UShopId, _ = strconv.ParseInt(shopId, 10, 64)
 		}
 	}()
+
 	//获取用户信息
 	if r.UUserHid == 0 {
 		jwtUser, exit := common.TokenValidate(ctx, true)
@@ -358,12 +359,13 @@ func (r *RequestUser) InitRequestUser(ctx *base.Context, needValidateShop ...boo
 	if user, err = GetResultUserByUid(fmt.Sprintf("%d", r.UUserHid), ctx); err != nil {
 		return
 	}
-	r.SetResultUser(user)
+	token := ctx.GinContext.Request.Header.Get(app_obj.HttpUserToken)
+	err = r.SetResultUser(user, token)
 
 	return
 }
 
-func (r *RequestUser) SetResultUser(user *ResultUser) {
+func (r *RequestUser) SetResultUser(user *ResultUser, token string) (err error) {
 	if user == nil {
 		return
 	}
@@ -373,7 +375,10 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 		r.UDialog = "用户信息不存在"
 		return
 	}
-
+	if token != userInfo.LastAccToken {
+		err = base.NewErrorRuntime(fmt.Errorf("已重新登录"), base.ErrorHasNotPermit)
+		return
+	}
 	r.UPortrait = userInfo.Portrait
 	r.UNickName = userInfo.NickName
 	r.UUserName = userInfo.UserName
@@ -390,6 +395,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser) {
 	r.UExists = userInfo.Exists
 	r.UDialog = userInfo.MsgInfo
 	r.UIsMocking = userInfo.IsMocking
+	return
 }
 
 func (r *UserInfo) GetEncryptionMockAdminToken() (res string) {
