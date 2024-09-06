@@ -82,7 +82,7 @@ type (
 		OrgRoot          string           `gorm:"column:org_root;not null;type:varchar(32) COLLATE utf8mb4_bin;comment:机构号" json:"org_root"`
 		IsV              int              `gorm:"column:is_v;not null;type:tinyint(1);default:0;comment:用户头像加V 0-不加 1-加" json:"is_v" ` // 用户头像加V
 		AuthType         uint8            `gorm:"column:auth_type;not null;type:tinyint(2);default:0;comment:认证类型 0-个人用户 1-企业用户" json:"auth_type"`
-		AuthStatus       uint8            `gorm:"column:auth_status;not null;type:tinyint(2);default:2;comment:认证状态0-未审核 1-可用 2-不可用 3-待审核" json:"auth_status"`
+		AuthStatus       int8             `gorm:"column:auth_status;not null;type:tinyint(2);default:2;comment:认证状态0-未审核 1-可用 2-不可用 3-待审核" json:"auth_status"`
 		AuthDesc         string           `gorm:"column:auth_desc;not null;type:varchar(30);default:'';comment:认证描述" json:"auth_desc"` // 认证描述
 		HaveDashboard    uint8            `gorm:"column:have_dashboard;not null;type:tinyint(1);default:2;comment:性别 1-有客服后台权限 2-无权限"  json:"have_dashboard"`
 		Email            string           `gorm:"column:email;uniqueIndex:idx_email,priority:1;not null;type:varchar(100);default:'';comment:邮箱" json:"-"`

@@ -97,7 +97,7 @@ type (
 		Gender            uint8            `json:"gender,omitempty"`    //
 		Status            int8             `json:"status,omitempty"`    //
 		Score             int              `json:"score,omitempty"`     //
-		AuthStatus        uint8            `json:"auth_status,omitempty"`
+		AuthStatus        int8             `json:"auth_status,omitempty"`
 		AuthDesc          string           `json:"auth_desc,omitempty"` // 认证描述
 		AuthType          uint8            `json:"auth_type,omitempty"` // 认证类型
 		IsV               int              `json:"is_v,omitempty"`      // 用户头像加V
