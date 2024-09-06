@@ -6,10 +6,12 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
+	"github.com/juetun/base-wrapper/lib/utils"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // 获取用户信息对应的表
@@ -118,6 +120,7 @@ type (
 		IsMocking         bool             `json:"is_mocking"` //当前是否是模拟账号
 		LastAccent        base.TimeNormal  `json:"last_accent"`
 		LastAccToken      string           `json:"last_acc_token"`
+		BanPeriod         base.TimeNormal  `json:"ban_period"`
 	}
 	RequestUser struct {
 		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
@@ -282,6 +285,7 @@ func (r *ResultUserItem) InitData(item *User) {
 		r.MobileVerifiedAt = item.UserMain.MobileVerifiedAt
 		r.LastAccent = item.UserMain.LastAccent
 		r.LastAccToken = item.UserMain.LastAccToken
+		r.BanPeriod = item.UserMain.BanPeriod
 		r.Email = item.UserMain.Email
 		r.EmailVerifiedAt = item.UserMain.EmailVerifiedAt
 		r.HaveDashboard = item.UserMain.HaveDashboard
@@ -376,9 +380,19 @@ func (r *RequestUser) SetResultUser(user *ResultUser, token string) (err error) 
 		return
 	}
 	if token != userInfo.LastAccToken {
-		err = base.NewErrorRuntime(fmt.Errorf("已重新登录"), base.ErrorHasNotPermit)
+		err = base.NewErrorRuntime(fmt.Errorf("当前账号可能已在其他地方登录,稍后将返回登录界面如要继续操作。请重新登录本账号"), base.ErrorHasNotPermit)
 		return
 	}
+
+	//判断当前账号是否被封禁使用
+	if !userInfo.BanPeriod.IsZero() {
+		timeNow := time.Now()
+		if userInfo.BanPeriod.Unix()-timeNow.Unix() > 0 {
+			err = base.NewErrorRuntime(fmt.Errorf("当前账号已被临时封禁，%v后将解除封禁。如有疑问请联系管理员", utils.DateTimeDiff(userInfo.BanPeriod.Time, timeNow)), base.ErrorHasNotPermit)
+			return
+		}
+	}
+
 	r.UPortrait = userInfo.Portrait
 	r.UNickName = userInfo.NickName
 	r.UUserName = userInfo.UserName

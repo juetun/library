@@ -92,6 +92,7 @@ type (
 		MobileVerifiedAt *base.TimeNormal `json:"mobile_verified_at" gorm:"column:mobile_verified_at;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
 		LastAccent       base.TimeNormal  `gorm:"column:last_accent;not null;default:CURRENT_TIMESTAMP;comment:最近访问时间" json:"last_accent,omitempty" `
 		LastAccToken     string           `gorm:"column:last_acc_token;not null;type:varchar(600);default:'';comment:最近一次访问的用户token" json:"last_acc_token"` // 单点登录的凭证
+		BanPeriod        base.TimeNormal  `gorm:"column:ban_period;not null;default:'2000-01-01 00:00:00';comment:封禁时间" json:"ban_period,omitempty" `
 		CreatedAt        base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at" `
 		UpdatedAt        base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at" `
 		DeletedAt        *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
