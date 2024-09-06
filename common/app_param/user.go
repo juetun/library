@@ -379,7 +379,7 @@ func (r *RequestUser) SetResultUser(user *ResultUser, token string) (err error) 
 		r.UDialog = "用户信息不存在"
 		return
 	}
-	if token != userInfo.LastAccToken {
+	if userInfo.LastAccToken != "" && token != "" && token != userInfo.LastAccToken {
 		err = base.NewErrorRuntime(fmt.Errorf("当前账号可能已在其他地方登录,稍后将返回登录界面如要继续操作。请重新登录本账号"), base.ErrorHasNotPermit)
 		return
 	}
