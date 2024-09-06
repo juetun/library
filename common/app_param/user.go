@@ -131,7 +131,7 @@ type (
 		UUserName          string          `json:"u_user_name" form:"u_user_name"`                       //账号
 		UGender            uint8           `json:"u_gender" form:"u_gender"`                             //性别
 		UStatus            int8            `json:"u_status" form:"u_status"`                             //状态
-		UAuthStatus        uint8           `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
+		UAuthStatus        int8            `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
 		UAuthType          uint8           `json:"u_auth_type" form:"u_auth_type"`                       //认证类型
 		UScore             int             `json:"u_score" form:"u_score"`                               //积分
 		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
