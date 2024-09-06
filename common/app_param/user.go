@@ -388,7 +388,8 @@ func (r *RequestUser) SetResultUser(user *ResultUser, token string) (err error) 
 	if !userInfo.BanPeriod.IsZero() {
 		timeNow := time.Now()
 		if userInfo.BanPeriod.Unix()-timeNow.Unix() > 0 {
-			err = base.NewErrorRuntime(fmt.Errorf("当前账号已被临时封禁，%v后将解除封禁。如有疑问请联系管理员", utils.DateTimeDiff(userInfo.BanPeriod.Time, timeNow)), base.ErrorHasNotPermit)
+			diffString, _, _ := utils.DateTimeDiff(userInfo.BanPeriod.Time, timeNow)
+			err = base.NewErrorRuntime(fmt.Errorf("当前账号已被临时封禁，%v后将解除封禁。如有疑问请联系管理员", diffString), base.ErrorHasNotPermit)
 			return
 		}
 	}
