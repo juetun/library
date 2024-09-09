@@ -51,7 +51,6 @@ type (
 	ExcelImportHeaderRelateItem struct {
 		Type            string          `json:"type,omitempty"`       //列类型，可选值为  index、selection、expand、html
 		Title           string          `json:"title,omitempty"`      //列中文标题
-		ColumnName      string          `json:"key,omitempty"`        //对应列内容的字段名
 		ColumnKey       string          `json:"column_key,omitempty"` //字段的 key
 		Index           int64           `json:"index,omitempty"`      //列序号 如:第一列：0, 第二列：1
 		ClassName       string          `json:"className,omitempty"`  //列的样式名称
