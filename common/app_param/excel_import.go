@@ -46,6 +46,7 @@ type (
 		Data              []*ExcelImportDataItem `json:"data" form:"data"`
 		CurrentUserShopId int64                  `json:"current_user_shop_id" form:"current_user_shop_id"`
 		CurrentUid        int64                  `json:"current_uid" form:"current_uid"`
+		CommonArg         string                 `json:"common_arg" form:"common_arg"` //其他参数公共字符串
 		TimeNow           base.TimeNormal        `json:"time_now" form:"time_now"`
 	}
 	ExcelImportHeaderRelateItem struct {
