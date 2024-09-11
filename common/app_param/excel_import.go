@@ -160,6 +160,10 @@ func (r *SheetHeader) GetSheetHeaderMap() (res map[string]*ExcelImportHeaderRela
 	return
 }
 
+func (r *ArgExcelImportValidateAndSync) Default(ctx *base.Context) (err error) {
+	return
+}
+
 func (r *ArgExcelImportValidateAndSync) ToJson() (res []byte, err error) {
 	if r == nil {
 		r = &ArgExcelImportValidateAndSync{}
