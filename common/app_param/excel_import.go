@@ -132,7 +132,7 @@ func (r *ExcelImportDataItem) SetErrMsg(importErrMsgInfos ImportErrMsgInfos) (er
 	return
 }
 
-func (r *ExcelImportDataItem) GetDataMap() (dataValue map[string]string, err error) {
+func (r *ExcelImportDataItem) GetDataMap() (dataValue map[string]interface{}, err error) {
 	if r.Data != "" {
 		if err = json.Unmarshal([]byte(r.Data), &dataValue); err != nil {
 			return
