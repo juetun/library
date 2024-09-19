@@ -72,7 +72,7 @@ type (
 		ErrMsg         string                 `gorm:"-" json:"err_msg,omitempty"`         //错误信息提示
 		DataMap        map[string]interface{} `json:"data_map" gorm:"-"`
 	}
-	ImportErrMsgInfos []*ImportErrMsgInfo
+	ImportErrMsgInfos []ImportErrMsgInfo
 	ImportErrMsgInfo  struct {
 		ColumnKey      string `json:"k,omitempty"`
 		ValidateStatus uint8  `json:"vs,omitempty"`
