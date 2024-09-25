@@ -94,6 +94,7 @@ type (
 		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID（此处值可能为店铺信息或用户信息）
 		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina（此处值可能为店铺信息或用户信息）
 		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon（此处值可能为店铺信息或用户信息）
+		ShopVip       uint8                      `json:"shop_vip,omitempty"`     //店铺ID 是否是vip
 		HasAttend     bool                       `json:"has_attend,omitempty"`   //是否关注店铺（此处值可能为店铺信息或用户信息）
 		ExtraMsg      string                     `json:"extra_msg,omitempty"`    //携带的其他信息
 		ShowType      string                     `json:"show_type"`              //展示样式 默认card
