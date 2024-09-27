@@ -78,6 +78,7 @@ type (
 		Link          interface{}                `json:"link,omitempty"`          //链接地址 小程序对象DataItemLinkMina
 		HaveVideo     bool                       `json:"have_video,omitempty"`    //是否有视频
 		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"`    //视频信息
+		Attrs         base.ModelItemOptions      `json:"attrs,omitempty"`         //商品属性
 		ImgData       string                     `json:"-"`
 		Img           string                     `json:"img,omitempty"`          //头图
 		Imgs          []string                   `json:"imgs,omitempty"`         //多条图片
