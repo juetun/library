@@ -52,7 +52,7 @@ var (
 		AdDataDataTypeRing:              "/#/sns/pages/ring_article/index", //圈子界面
 		AdDataDataTypeFishingSport:      "/#/fishingsport/pages/detail/index",
 		PageNamePayFinish:               "/#/order/pages/pay_finish/index", //支付结果界面
-		PageNamePayPreview:              "/#/pages/mall/order/preview/index",    //支付预付界面
+		PageNamePayPreview:              "/#/order/pages/preview/index",    //支付预付界面
 	}
 	MapPageSNsName = map[string]string{
 		PageNameHome:         "/#/home/index/index",
