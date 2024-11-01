@@ -53,8 +53,16 @@ const (
 	PapersIsNeverExpiresYes uint8 = iota + 1 //永久有效
 	PapersIsNeverExpiresNo                   //有过期时间
 )
+const (
+	ShopIsFactoryYes uint8 = iota + 1 //如果是厂家在
+	ShopIsFactoryNo                   //不是厂家
+)
 
 var (
+	SliceShopIsFactory = base.ModelItemOptions{
+		{Value: ShopIsFactoryYes, Label: "生产厂家",},
+		{Value: ShopIsFactoryNo, Label: "经销商",},
+	}
 	SlicePapersIsNeverExpires = base.ModelItemOptions{
 		{
 			Value: PapersIsNeverExpiresNo,
