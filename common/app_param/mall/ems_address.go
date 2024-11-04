@@ -10,16 +10,14 @@ import (
 
 type (
 	ArgGetByAddressIds struct {
-		IdString string `json:"ids" form:"ids"`
+		NotNeedEncrypt bool   `json:"not_need_encrypt" form:"not_need_encrypt"` //手机号是否需要加密 默认false-需要
+		IdString       string `json:"ids" form:"ids"`
 		base.GetDataTypeCommon
 		Ids []int64 `json:"-" form:"-"`
 	}
 
 	ResultGetByAddressIds map[int64]*freight.ResultGetByAddressIdsItem
-
 )
-
-
 
 func (r *ArgGetByAddressIds) Default(ctx *base.Context) (err error) {
 	idString := strings.Split(r.IdString, ",")
