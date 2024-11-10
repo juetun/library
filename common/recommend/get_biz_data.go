@@ -134,7 +134,9 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 			err = fmt.Errorf("当前不支持您选择的商品数据类型(%s)", key)
 			return
 		}
-
+		if len(argumentItem.DataIds) == 0 {
+			continue
+		}
 		dataMul.Add(1)
 
 		//并行获取商品数据详情
