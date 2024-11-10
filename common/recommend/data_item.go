@@ -80,32 +80,32 @@ type (
 		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"`    //视频信息
 		Attrs         base.ModelItemOptions      `json:"attrs,omitempty"`         //商品属性
 		ImgData       string                     `json:"-"`
-		Img           string                     `json:"img,omitempty"`          //头图
-		Imgs          []string                   `json:"imgs,omitempty"`         //多条图片
-		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`   //详情
-		CanBuy        bool                       `json:"can_buy,omitempty"`      //是否能够购买
-		ShowError     bool                       `json:"show_error,omitempty"`   //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
-		ShopManager   bool                       `json:"shop_manager,omitempty"` //当前用户是否为店铺管理员
-		Mark          string                     `json:"mark,omitempty"`         //备注
-		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"`  //后缀标签
-		ShowShop      bool                       `json:"show_shop,omitempty"`    //是否显示店铺名
-		ShopName      string                     `json:"shop_name,omitempty"`    //店铺名称
-		CurrentAccUId int64                      `json:"current_acc_uid"`        //获取数据的用户ID
-		CreateUid     int64                      `json:"create_uid,omitempty"`   //信息发布者
-		ShopId        int64                      `json:"shop_id,omitempty"`      //店铺ID（此处值可能为店铺信息或用户信息）
-		ShopLink      interface{}                `json:"shop_link,omitempty"`    //链接地址 小程序对象DataItemLinkMina（此处值可能为店铺信息或用户信息）
-		ShopIcon      string                     `json:"shop_icon,omitempty"`    //店铺Icon（此处值可能为店铺信息或用户信息）
-		ShopVip       uint8                      `json:"shop_vip,omitempty"`     //店铺ID 是否是vip
-		HasAttend     bool                       `json:"has_attend,omitempty"`   //是否关注店铺（此处值可能为店铺信息或用户信息）
-		ExtraMsg      string                     `json:"extra_msg,omitempty"`    //携带的其他信息
-		ShowType      string                     `json:"show_type"`              //展示样式 默认card
-		Children      []*DataItem                `json:"children,omitempty"`     //子列表
-		ShowTime      string                     `json:"show_time,omitempty"`    //展示时间
-		OtherData     interface{}                `json:"other_data,omitempty"`   //其他数据
-		Pk            string                     `json:"pk"`                     //数据的唯一KEy
-		BadgeType     string                     `json:"badge_type,omitempty"`   //徽标类型 num-数字 dot-点 空不填
-		BadgeString   string                     `json:"badge_string,omitempty"` //徽标值    "100" "10"
-		PageName      string                     `json:"-"`                      //页面名称 内部使用参数不对前端展示
+		Img           string                     `json:"img,omitempty"`             //头图
+		Imgs          []string                   `json:"imgs,omitempty"`            //多条图片
+		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`      //详情
+		CanBuy        bool                       `json:"can_buy,omitempty"`         //是否能够购买
+		ShowError     bool                       `json:"show_error,omitempty"`      //是否展示错误提示，不显示商品其他内容 true-商品不在列表展示（详情页提示错误信息）
+		ShopManager   bool                       `json:"shop_manager,omitempty"`    //当前用户是否为店铺管理员
+		Mark          string                     `json:"mark,omitempty"`            //备注
+		SuffixTags    []*DataItemTag             `json:"suffix_tags,omitempty"`     //后缀标签
+		ShowShop      bool                       `json:"show_shop,omitempty"`       //是否显示店铺名
+		ShopName      string                     `json:"shop_name,omitempty"`       //店铺名称
+		CurrentAccUId int64                      `json:"current_acc_uid,omitempty"` //获取数据的用户ID
+		CreateUid     int64                      `json:"create_uid,omitempty"`      //信息发布者
+		ShopId        int64                      `json:"shop_id,omitempty"`         //店铺ID（此处值可能为店铺信息或用户信息）
+		ShopLink      interface{}                `json:"shop_link,omitempty"`       //链接地址 小程序对象DataItemLinkMina（此处值可能为店铺信息或用户信息）
+		ShopIcon      string                     `json:"shop_icon,omitempty"`       //店铺Icon（此处值可能为店铺信息或用户信息）
+		ShopVip       uint8                      `json:"shop_vip,omitempty"`        //店铺ID 是否是vip
+		HasAttend     bool                       `json:"has_attend,omitempty"`      //是否关注店铺（此处值可能为店铺信息或用户信息）
+		ExtraMsg      string                     `json:"extra_msg,omitempty"`       //携带的其他信息
+		ShowType      string                     `json:"show_type"`                 //展示样式 默认card
+		Children      []*DataItem                `json:"children,omitempty"`        //子列表
+		ShowTime      string                     `json:"show_time,omitempty"`       //展示时间
+		OtherData     interface{}                `json:"other_data,omitempty"`      //其他数据
+		Pk            string                     `json:"pk"`                        //数据的唯一KEy
+		BadgeType     string                     `json:"badge_type,omitempty"`      //徽标类型 num-数字 dot-点 空不填
+		BadgeString   string                     `json:"badge_string,omitempty"`    //徽标值    "100" "10"
+		PageName      string                     `json:"-"`                         //页面名称 内部使用参数不对前端展示
 		PageConfigId  int64                      `json:"-"`
 		SortRequestId string                     `json:"-"` //排序的RequestId
 	}
