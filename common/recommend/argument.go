@@ -36,7 +36,7 @@ type (
 	ResultGetDataByScenes map[string]*PagerRecommend
 
 	PagerRecommend struct {
-		List          []*DataItem    `json:"list"`
+		List          []DataItem     `json:"list"`
 		TotalCount    int64          `json:"total_count,omitempty"`
 		IsNext        bool           `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
 		SceneProperty *SceneProperty `json:"scene_property"`
