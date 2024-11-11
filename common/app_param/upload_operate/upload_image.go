@@ -8,8 +8,8 @@ import (
 type (
 	ProductImage struct {
 		UploadFile
-		IsThumbnail bool `json:"is_thumb"` // 是否是缩略图
-		Deleted     bool `json:"deleted"`  //是否已删除
+		IsThumbnail bool `json:"is_thumb,omitempty"` // 是否是缩略图
+		Deleted     bool `json:"deleted,omitempty"`  //是否已删除
 	}
 	ImageHandler  func(uploadImage *UploadFile)
 	ProductImages []ProductImage

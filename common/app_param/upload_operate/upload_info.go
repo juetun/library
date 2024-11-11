@@ -8,25 +8,25 @@ import (
 type (
 	UploadInfo struct {
 		//Img      *UploadImage    `json:"img"`
-		Video *UploadVideo `json:"video"`
-		Music *UploadMusic `json:"music"`
+		Video *UploadVideo `json:"video,omitempty"`
+		Music *UploadMusic `json:"music,omitempty"`
 		//Material *UploadMaterial `json:"material"`
-		File *UploadFile `json:"file"`
+		File *UploadFile `json:"file,omitempty"`
 	}
 	ResultMapUploadInfo struct {
 		//Img      map[string]*UploadImage    `json:"img"`
-		Video    map[string]*UploadVideo `json:"video"`
-		Music    map[string]*UploadMusic `json:"music"`
-		Download map[string]*UploadFile  `json:"download"`
+		Video    map[string]*UploadVideo `json:"video,omitempty"`
+		Music    map[string]*UploadMusic `json:"music,omitempty"`
+		Download map[string]*UploadFile  `json:"download,omitempty"`
 		//Material map[string]*UploadMaterial `json:"material"`
-		File map[string]*UploadFile `json:"file"`
+		File map[string]*UploadFile `json:"file,omitempty"`
 	}
 	ArgUploadGetInfo struct {
 		//ImgKeys   []string `json:"img_keys"`
-		VideoKeys []string `json:"video_keys"`
-		MusicKey  []string `json:"music_key"`
+		VideoKeys []string `json:"video_keys,omitempty"`
+		MusicKey  []string `json:"music_key,omitempty"`
 		//Material  []string `json:"material"`
-		File     []string `json:"file"`
+		File     []string `json:"file,omitempty"`
 		Download []string `json:"download"`
 		base.GetDataTypeCommon
 	}

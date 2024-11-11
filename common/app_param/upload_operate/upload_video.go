@@ -20,20 +20,20 @@ const (
 type (
 	UploadVideo struct {
 		ext_up.UploadCommon
-		ParseCodeStatus uint8  `json:"parse_code_status"` //转码状态
-		Pk              string `json:"pk"`
+		ParseCodeStatus uint8  `json:"parse_code_status,omitempty"` //转码状态
+		Pk              string `json:"pk,omitempty"`
 		VideoInfo
 	}
 	VideoInfo struct {
-		Src         string `json:"src"`          //源站地址
-		HD          string `json:"hd,omitempty"` //高清
-		SD          string `json:"sd,omitempty"` //标清
-		LD          string `json:"ld,omitempty"` //普清
-		DefaultType string `json:"default_type"` //hd,sd,ld,src
-		Cover       string `json:"cover"`        //封面图
-		VideoTurn   uint8  `json:"video_turn"`   //1-横向 2-纵向
-		Width       string `json:"width"`        //视频宽
-		Height      string `json:"height"`       //视频高
+		Src         string `json:"src,omitempty"`        //源站地址
+		HD          string `json:"hd,omitempty"`         //高清
+		SD          string `json:"sd,omitempty"`         //标清
+		LD          string `json:"ld,omitempty"`         //普清
+		DefaultType string `json:"default_type"`         //hd,sd,ld,src
+		Cover       string `json:"cover,omitempty"`      //封面图
+		VideoTurn   uint8  `json:"video_turn,omitempty"` //1-横向 2-纵向
+		Width       string `json:"width,omitempty"`      //视频宽
+		Height      string `json:"height,omitempty"`     //视频高
 	}
 	VideoHandler func(uploadVideo *UploadVideo)
 )

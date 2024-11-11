@@ -10,7 +10,7 @@ import (
 type (
 	UploadMusic struct {
 		ext_up.UploadCommon
-		Src string `json:"src"`
+		Src string `json:"src,omitempty"`
 	}
 	MusicHandler func(uploadMusic *UploadMusic)
 )

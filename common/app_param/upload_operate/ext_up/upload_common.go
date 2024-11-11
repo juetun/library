@@ -18,10 +18,10 @@ const (
 type (
 	UploadCommon struct {
 		Context   *base.Context `json:"-" form:"-"`
-		Type      string        `json:"type" form:"type"`
-		Channel   string        `json:"channel" form:"channel"`
-		ID        int64         `json:"id" form:"id"`
-		UrlParams url.Values    `json:"url_params" form:"url_params"`
+		Type      string        `json:"type,omitempty" form:"type"`
+		Channel   string        `json:"channel,omitempty" form:"channel"`
+		ID        int64         `json:"id,omitempty" form:"id"`
+		UrlParams url.Values    `json:"url_params,omitempty" form:"url_params"`
 	}
 
 	ShowData struct {
