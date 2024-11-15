@@ -21,6 +21,15 @@ type (
 		//Material map[string]*UploadMaterial `json:"material"`
 		File map[string]*UploadFile `json:"file,omitempty"`
 	}
+
+	//复制文件返回参数
+	ResultMapCopyUploadInfo struct {
+		Video    map[string]string `json:"video,omitempty"`
+		Music    map[string]string `json:"music,omitempty"`
+		Download map[string]string `json:"download,omitempty"`
+		File     map[string]string `json:"file,omitempty"`
+	}
+
 	ArgUploadGetInfo struct {
 		//ImgKeys   []string `json:"img_keys"`
 		VideoKeys []string `json:"video_keys,omitempty"`
@@ -117,14 +126,20 @@ func (r *ArgUploadGetInfo) IsNull() (isNull bool) {
 	return
 }
 
-func NewResultMapUploadInfo() (res *ResultMapUploadInfo) {
-	res = &ResultMapUploadInfo{
-		//Img:      make(map[string]*UploadImage, 50),
-		Video: make(map[string]*UploadVideo, 10),
-		Music: make(map[string]*UploadMusic, 10),
-		//Material: make(map[string]*UploadMaterial, 50),
-		File:     make(map[string]*UploadFile, 50),
-		Download: make(map[string]*UploadFile, 10),
-	}
+func NewResultMapUploadInfo(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo) {
+	res = &ResultMapUploadInfo{}
+	res.Video = make(map[string]*UploadVideo, len(arg.VideoKeys))
+	res.Music = make(map[string]*UploadMusic, len(arg.MusicKey))
+	res.File = make(map[string]*UploadFile, len(arg.File))
+	res.Download = make(map[string]*UploadFile, len(arg.Download))
+	return
+}
+
+func NewResultMapCopyUploadInfo(arg *ArgUploadGetInfo) (res *ResultMapCopyUploadInfo) {
+	res = &ResultMapCopyUploadInfo{}
+	res.Video = make(map[string]string, len(arg.VideoKeys))
+	res.Music = make(map[string]string, len(arg.MusicKey))
+	res.File = make(map[string]string, len(arg.File))
+	res.Download = make(map[string]string, len(arg.Download))
 	return
 }

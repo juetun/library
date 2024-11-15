@@ -187,7 +187,7 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 func (r *CacheProductPicAndVideoAction) getByIdsFromCache(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, noCacheIds *ArgUploadGetInfo, err error) {
 	var e error
 
-	res = NewResultMapUploadInfo()
+	res = NewResultMapUploadInfo(arg)
 
 	//收集缓存中没有的数据ID，便于后边查询使用
 	noCacheIds = NewArgUploadGetInfo()

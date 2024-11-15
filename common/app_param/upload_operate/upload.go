@@ -22,13 +22,16 @@ type (
 	DaoUpload interface {
 		GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapUploadInfo, err error)
 
+		//拷贝文件
+		CopyUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapCopyUploadInfo, err error)
+
 		//删除文件 更具 upload_data_type和upload_data_id
 		RemoveFile(arg *ArgUploadRemove) (resData *ResultUploadRemove, err error)
 	}
 )
 
 func (r *DaoUploadImpl) getDataByUserIdsFromUploadServer(arg *ArgUploadGetInfo) (resData *ResultMapUploadInfo, err error) {
-	resData = NewResultMapUploadInfo()
+	resData = NewResultMapUploadInfo(arg)
 	var value = url.Values{}
 	var bodyByte []byte
 
@@ -80,6 +83,50 @@ func (r *DaoUploadImpl) getUploadCacheKey(id interface{}, Type string, expireTim
 		randNumber, _ := r.RealRandomNumber(60) //打乱缓存时长，防止缓存同一时间过期导致数据库访问压力变大
 		timeExpire = timeExpire + time.Duration(randNumber)*time.Second
 	}
+	return
+}
+
+//从
+func (r *DaoUploadImpl) CopyUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapCopyUploadInfo, err error) {
+	res = NewResultMapCopyUploadInfo(arg)
+	var value = url.Values{}
+	var bodyByte []byte
+
+	//判断参数是否为空
+	if arg == nil || arg.IsNull() {
+		return
+	}
+
+	if bodyByte, err = json.Marshal(arg); err != nil {
+		return
+	}
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameUpload,
+		URI:         "/upload/copy_file",
+		Header:      http.Header{},
+		Value:       value,
+		BodyJson:    bodyByte,
+		Context:     r.Context,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	var data = struct {
+		Code int                      `json:"code"`
+		Data *ResultMapCopyUploadInfo `json:"data"`
+		Msg  string                   `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).
+		Error; err != nil {
+		return
+	}
+	if data.Data != nil {
+		res = data.Data
+	}
+
 	return
 }
 
