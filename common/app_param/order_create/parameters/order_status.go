@@ -137,7 +137,7 @@ var (
 		},
 		{
 			Value: OrderStatusFinished,
-			Label: "订单完成",
+			Label: "已完成",
 		},
 		{
 			Value: OrderStatusError,
