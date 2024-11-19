@@ -61,8 +61,7 @@ const (
 	UserTagHomeFlag          = "user_home"       //用户主页（我的）是否点显示 0-不显示 1-显示
 	UserTagMainFlag          = "user_main"       //首页(打开APP第一个页面)是否点显示 0-不显示 1-显示
 
-	UserTagOrderBadge = "user_order_badge" //当前未处理的订单数（网站个人中心左侧菜单 “我的订单” 上使用）
-
+	UserTagOrderBadge           = "user_order_badge"        //当前未处理的订单数（网站个人中心左侧菜单 “我的订单” 上使用）
 	UserTagOrderNotPay          = "user_waiting_pay"        //未付款订单数
 	UserTagOrderWaitingSendGood = "user_receive_send_goods" //待发货订单数
 	UserTagOrderWaitingComment  = "user_order_comment"      //待评价
