@@ -49,6 +49,7 @@ const (
 	AdDataDataTypeRingComment              = "23" //评论 （圈子动态或钓点信息）
 	AdDataDataTypeExpress                  = "24" //物流公司LOGO
 	AdDataDataTypeFactory                  = "25" //厂家LOGO
+	AdDataDataTypePlatActivity             = "26" //平台活动缩略图
 
 	AdDataDataTypeAppLogo    = "198" //手机APP logo
 	AdDataDataTypeAppInstall = "199" //手机APP安装包
