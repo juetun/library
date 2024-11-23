@@ -253,16 +253,28 @@ func WriteRecommendDataList(arg *ArgWriteRecommendDataList) (res bool, err error
 	if ro.BodyJson, err = arg.GetJson(); err != nil {
 		return
 	}
-	var data = struct {
-		Code int                                   `json:"code"`
-		Data struct{ Result bool `json:"result"` } `json:"data"`
-		Msg  string                                `json:"message"`
-	}{}
-
-	if err = rpc.NewHttpRpc(&ro).
-		Send().
-		GetBody().
-		Bind(&data).Error; err != nil {
+	var (
+		data = struct {
+			Code int                                   `json:"code"`
+			Data struct{ Result bool `json:"result"` } `json:"data"`
+			Msg  string                                `json:"message"`
+		}{}
+		body []byte
+	)
+	req := rpc.NewHttpRpc(&ro).
+		Send().GetBody()
+	if err = req.Error; err != nil {
+		return
+	}
+	if body = req.Body; len(body) == 0 {
+		err = fmt.Errorf("系统异常,请重试")
+		return
+	}
+	if err = json.Unmarshal(body, &data); err != nil {
+		return
+	}
+	if data.Code > 0 {
+		err = fmt.Errorf(data.Msg)
 		return
 	}
 	res = data.Data.Result
