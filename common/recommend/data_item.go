@@ -99,7 +99,7 @@ type (
 		HasAttend     bool                       `json:"has_attend,omitempty"`      //是否关注店铺（此处值可能为店铺信息或用户信息）
 		ExtraMsg      string                     `json:"extra_msg,omitempty"`       //携带的其他信息
 		ShowType      string                     `json:"show_type"`                 //展示样式 默认card
-		Children      []*DataItem                `json:"children,omitempty"`        //子列表
+		Children      []DataItem                 `json:"children,omitempty"`        //子列表
 		ShowTime      string                     `json:"show_time,omitempty"`       //展示时间
 		OtherData     interface{}                `json:"other_data,omitempty"`      //其他数据
 		Pk            string                     `json:"pk"`                        //数据的唯一KEy
