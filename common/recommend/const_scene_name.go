@@ -25,17 +25,17 @@ const (
 
 const (
 	AdDataDataTypeSpu               string = "1"  //商品信息
-	AdDataDataTypeSku                      = "5"  //sku信息
-	AdDataDataTypeSpuCategory              = "7"  //商品类目
 	AdDataDataTypeSocialIntercourse        = "2"  //广告社交动态信息
-	AdDataStatusUserSet                    = "3"  //用户手工设置
+	AdDataStatusUserSet                    = "3"  //广告场景数据
 	AdDataDataTypeUserShop                 = "4"  //店铺后台
+	AdDataDataTypeSku                      = "5"  //sku信息
+	AdDataDataTypeUser                     = "6"  //用户信息
+	AdDataDataTypeSpuCategory              = "7"  //商品类目
 	AdDataDataTypeFishingSport             = "8"  //钓点信息
 	AdDataDataTypeShopNotice               = "9"  //店铺公告（上传图片时使用）
 	AdDataDataTypeShopLogo                 = "10" //店铺LOGO（上传图片时使用）
 	AdDataDataTypeShopBgImg                = "11" //店铺背景图（上传图片时使用）
 	AdDataDataTypeShopBrandQuality         = "12" //店铺品牌资质（上传图片或文件时使用）
-	AdDataDataTypeUser                     = "6"  //用户信息
 	AdDataDataTypeIdCard                   = "13" //用户身份证
 	AdDataDataTypeUserAvatar               = "14" //用户头像
 	AdDataDataTypeSuggestion               = "15" //投诉建议
@@ -50,6 +50,7 @@ const (
 	AdDataDataTypeExpress                  = "24" //物流公司LOGO
 	AdDataDataTypeFactory                  = "25" //厂家LOGO
 	AdDataDataTypePlatActivity             = "26" //平台活动缩略图
+	AdDataStatusDataScene                  = "27" //广告场景
 
 	AdDataDataTypeAppLogo    = "198" //手机APP logo
 	AdDataDataTypeAppInstall = "199" //手机APP安装包
@@ -82,6 +83,10 @@ var (
 		},
 	}
 	SliceAdDataType = base.ModelItemOptions{ //
+		{
+			Label: "广告场景",
+			Value: AdDataStatusDataScene,
+		},
 		{
 			Label: "电商_SPU",
 			Value: AdDataDataTypeSpu,
