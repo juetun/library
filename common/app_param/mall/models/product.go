@@ -309,6 +309,8 @@ type (
 		name      string `json:"name"`      //	当前标签的名称，使用 v-for，并支持关闭时，会比较有用	String | Number	-
 		Size      string `json:"size"`      // large、medium、default
 	}
+
+
 )
 
 func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
