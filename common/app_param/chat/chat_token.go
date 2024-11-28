@@ -95,11 +95,12 @@ type (
 
 	//审核状态
 	ApplyResult struct {
-		Status    uint8  `json:"status"`     //审核状态
-		Message   string `json:"msg"`        //审核结果
-		ErrorType string `json:"e_type"`     //审核失败类型
-		ApplyId   string `json:"apply_id"`   //审核请求ID
-		ApplyType uint8  `json:"apply_type"` //审核类型
+		Status        uint8  `json:"status"`         //审核状态
+		Message       string `json:"msg"`            //审核结果
+		ErrorType     string `json:"e_type"`         //审核失败类型
+		ApplyId       string `json:"apply_id"`       //审核请求ID
+		ApplyType     uint8  `json:"apply_type"`     //审核类型
+		ApplyResponse string `json:"apply_response"` //审核请求的响应
 	}
 )
 
