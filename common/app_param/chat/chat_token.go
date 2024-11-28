@@ -25,8 +25,27 @@ const (
 	ApplyToolTypeShuMei               //数美审核
 	ApplyToolTypeClient               //平台人工审核
 )
+const (
+	DataChatStatusOk      uint8 = iota + 1 //审核通过
+	DataChatStatusWaiting                  //待审核
+	DataChatStatusFailure                  //审核失败
+)
 
 var (
+	SliceDataChatStatus = base.ModelItemOptions{
+		{
+			Value: DataChatStatusOk,
+			Label: "审核通过",
+		},
+		{
+			Value: DataChatStatusWaiting,
+			Label: "待审核",
+		},
+		{
+			Value: DataChatStatusFailure,
+			Label: "审核失败",
+		},
+	}
 	SliceDataChatApplyToolType = base.ModelItemOptions{
 		{
 			Value: ApplyToolTypeDefault,
@@ -79,7 +98,7 @@ type (
 		Status    uint8  `json:"status"`     //审核状态
 		Message   string `json:"msg"`        //审核结果
 		ErrorType string `json:"e_type"`     //审核失败类型
-		AppId     string `json:"app_id"`     //审核请求ID
+		ApplyId   string `json:"apply_id"`   //审核请求ID
 		ApplyType uint8  `json:"apply_type"` //审核类型
 	}
 )
