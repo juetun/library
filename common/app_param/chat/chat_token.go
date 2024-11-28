@@ -2,6 +2,7 @@ package chat
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 )
 
@@ -16,7 +17,38 @@ const (
 	ConstChatTokenNeedAttendEachOther              //彼此关注
 )
 
+//审核工具类型
+const (
+	ApplyToolTypeDefault uint8 = iota //默认为审核
+	ApplyToolTypePrivate              //平台自审程序
+	ApplyToolTypeBaiDu                //百度审核
+	ApplyToolTypeShuMei               //数美审核
+	ApplyToolTypeClient               //平台人工审核
+)
+
 var (
+	SliceDataChatApplyToolType = base.ModelItemOptions{
+		{
+			Value: ApplyToolTypeDefault,
+			Label: "~",
+		},
+		{
+			Value: ApplyToolTypePrivate,
+			Label: "平台自审",
+		},
+		{
+			Value: ApplyToolTypeBaiDu,
+			Label: "百度审核",
+		},
+		{
+			Value: ApplyToolTypeShuMei,
+			Label: "数美审核",
+		},
+		{
+			Value: ApplyToolTypeClient,
+			Label: "客服人工审核",
+		},
+	}
 	SliceChatTokenTo = base.ModelItemOptions{
 		{Label: "用户", Value: ConstChatTokenToUser},
 		{Label: "店铺", Value: ConstChatTokenToShop},
@@ -41,7 +73,31 @@ type (
 		NeedAttend uint8           `json:"need_attend" form:"need_attend"` // 0:不关注 1:关注to_user_hid用户 2:彼此关注
 		TimeNow    base.TimeNormal `json:"time_now" form:"time_now"`
 	}
+
+	//审核状态
+	ApplyResult struct {
+		Status    uint8  `json:"status"`     //审核状态
+		Message   string `json:"msg"`        //审核结果
+		ErrorType string `json:"e_type"`     //审核失败类型
+		AppId     string `json:"app_id"`     //审核请求ID
+		ApplyType uint8  `json:"apply_type"` //审核类型
+	}
 )
+
+func (r *ApplyResult) ParseApplyType() (typeName string) {
+	typeName = ParseApplyType(r.ApplyType)
+	return
+}
+
+func ParseApplyType(applyType uint8) (typeName string) {
+	mapApplyType, _ := SliceDataChatApplyToolType.GetMapAsKeyUint8()
+	var ok bool
+	if typeName, ok = mapApplyType[applyType]; !ok {
+		typeName = fmt.Sprintf("未知审核类型(%v)", applyType)
+		return
+	}
+	return
+}
 
 func (r *ArgGetChatTokenOther) GetIsCustomer() (isCustomer bool) {
 	switch r.FromType {
