@@ -126,7 +126,7 @@ func (r *ArgGetChatTokenOther) GetIsCustomer() (isCustomer bool) {
 		return
 	}
 	switch r.ToType {
-	case ConstChatTokenToShop: //房间
+	case ConstChatTokenToShop: //店铺
 		isCustomer = true
 		return
 	}
