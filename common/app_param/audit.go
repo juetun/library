@@ -70,7 +70,7 @@ type (
 	}
 	AuditData struct {
 		client     Client                     `json:"-"`
-		Ctx        base.Context               `json:"-"`
+		Ctx        *base.Context              `json:"-"`
 		Context    context.Context            `json:"-"`
 		Parameters []AuditParametersInterface `json:"arg"`
 	}
@@ -116,7 +116,7 @@ func AuditDataClient(client Client) AuditDataOption {
 		property.client = client
 	}
 }
-func AuditCtx(ctx base.Context) AuditDataOption {
+func AuditCtx(ctx *base.Context) AuditDataOption {
 	return func(property *AuditData) {
 		property.Ctx = ctx
 	}
