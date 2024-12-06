@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param"
 )
 
 const (
@@ -17,9 +18,7 @@ const (
 	ConstChatTokenNeedAttendEachOther              //彼此关注
 )
 
-
 var (
-
 	SliceChatTokenTo = base.ModelItemOptions{
 		{Label: "用户", Value: ConstChatTokenToUser},
 		{Label: "店铺", Value: ConstChatTokenToShop},
@@ -62,7 +61,7 @@ func (r *ApplyResult) ParseApplyType() (typeName string) {
 }
 
 func ParseApplyType(applyType uint8) (typeName string) {
-	mapApplyType, _ := SliceDataChatApplyToolType.GetMapAsKeyUint8()
+	mapApplyType, _ := app_param.SliceDataChatApplyToolType.GetMapAsKeyUint8()
 	var ok bool
 	if typeName, ok = mapApplyType[applyType]; !ok {
 		typeName = fmt.Sprintf("未知审核类型(%v)", applyType)
