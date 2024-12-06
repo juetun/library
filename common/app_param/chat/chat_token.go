@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/audit"
+	"github.com/juetun/library/common/app_param/audit_data"
 )
 
 const (
