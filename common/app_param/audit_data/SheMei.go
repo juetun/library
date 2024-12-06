@@ -1,4 +1,4 @@
-package audit
+package audit_data
 
 import (
 	"context"
@@ -6,17 +6,13 @@ import (
 )
 
 type (
-	//默认为审核
-	CommonAudit struct {
-		Ctx     *base.Context   `json:"-"`
-		Context context.Context `json:"-"`
-	}
-	DefaultAudit struct {
+	//数美审核
+	ShuMeiAudit struct {
 		CommonAudit
 	}
 )
 
-func (r *DefaultAudit) Do(item AuditParametersInterface) (result *ApplyResult, err error) {
+func (r *ShuMeiAudit) Do(item AuditParametersInterface) (result *ApplyResult, err error) {
 	result = &ApplyResult{Status: DataChatStatusOk}
 	if item.GetIsSynchronous() == IsSynchronousNo { //如果是异步审核
 		result.Status = DataChatStatusWaiting
@@ -25,8 +21,8 @@ func (r *DefaultAudit) Do(item AuditParametersInterface) (result *ApplyResult, e
 	return
 }
 
-func NewDefaultAudit(Ctx *base.Context, Context context.Context) AuditClient {
-	res := &DefaultAudit{}
+func NewShuMeiAudit(Ctx *base.Context, Context context.Context) AuditClient {
+	res := &ShuMeiAudit{}
 	res.CommonAudit.Ctx = Ctx
 	res.CommonAudit.Context = Context
 	return res

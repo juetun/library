@@ -61,7 +61,7 @@ func (r *ApplyResult) ParseApplyType() (typeName string) {
 }
 
 func ParseApplyType(applyType uint8) (typeName string) {
-	mapApplyType, _ := audit.SliceDataChatApplyToolType.GetMapAsKeyUint8()
+	mapApplyType, _ := audit_data.SliceDataChatApplyToolType.GetMapAsKeyUint8()
 	var ok bool
 	if typeName, ok = mapApplyType[applyType]; !ok {
 		typeName = fmt.Sprintf("未知审核类型(%v)", applyType)

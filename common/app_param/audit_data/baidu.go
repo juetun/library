@@ -1,4 +1,4 @@
-package audit
+package audit_data
 
 import (
 	"context"
@@ -6,13 +6,13 @@ import (
 )
 
 type (
-	//平台人工审核
-	ToolClientAudit struct {
+	//百度审核
+	BaiDuAudit struct {
 		CommonAudit
 	}
 )
 
-func (r *ToolClientAudit) Do(item AuditParametersInterface) (result *ApplyResult, err error) {
+func (r *BaiDuAudit) Do(item AuditParametersInterface) (result *ApplyResult, err error) {
 	result = &ApplyResult{Status: DataChatStatusOk}
 	if item.GetIsSynchronous() == IsSynchronousNo { //如果是异步审核
 		result.Status = DataChatStatusWaiting
@@ -21,8 +21,8 @@ func (r *ToolClientAudit) Do(item AuditParametersInterface) (result *ApplyResult
 	return
 }
 
-func NewToolClientAudit(Ctx *base.Context, Context context.Context) AuditClient {
-	res := &ToolClientAudit{}
+func NewBaiDuAudit(Ctx *base.Context, Context context.Context) AuditClient {
+	res := &BaiDuAudit{}
 	res.CommonAudit.Ctx = Ctx
 	res.CommonAudit.Context = Context
 	return res
