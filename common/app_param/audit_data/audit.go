@@ -75,7 +75,6 @@ type (
 		GetApplyType() (res uint8)
 		GetIsSynchronous() (isSynchronous uint8)
 		Default()
-		Audit(auditData *AuditData) (result *ApplyResult, err error) //审核逻辑
 	}
 	AuditData struct {
 		DefaultClient                                                   AuditClient                `json:"-"`
