@@ -1,17 +1,16 @@
-package app_param
+package audit
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/audit"
 	"sync"
 )
 
 //审核工具类型
 const (
-	ApplyToolTypeDefault uint8 = iota //默认为审核
+	ApplyToolTypeDefault uint8 = iota //默认不审核
 	ApplyToolTypePrivate              //平台自审程序
 	ApplyToolTypeBaiDu                //百度审核
 	ApplyToolTypeShuMei               //数美审核
@@ -45,7 +44,7 @@ var (
 	SliceDataChatApplyToolType = base.ModelItemOptions{
 		{
 			Value: ApplyToolTypeDefault,
-			Label: "~",
+			Label: "不审核",
 		},
 		{
 			Value: ApplyToolTypePrivate,
@@ -107,6 +106,7 @@ type (
 		IsSynchronous uint8    `json:"is_synchronous"` //是否同步返回
 		ApplyType     uint8    `json:"apply_type"`
 	}
+
 	AuditParametersMusicUrls struct {
 		MsgId         string   `json:"msg_id"`
 		MusicUrls     []string `json:"music_urls"`     //审核的音频链接
@@ -153,42 +153,41 @@ func AuditParameters(parameters []AuditParametersInterface) AuditDataOption {
 
 func (r *AuditData) InitAuditDefault() {
 	r.onceDefault.Do(func() {
-		r.DefaultClient = audit.NewDefaultAudit(r.Ctx, r.Context)
+		r.DefaultClient = NewDefaultAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitPrivateDefault() {
 	r.oncePrivate.Do(func() {
-		r.PrivateClient = audit.NewPrivateAudit(r.Ctx, r.Context)
+		r.PrivateClient = NewPrivateAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitBaiDuDefault() {
 	r.onceBaiDu.Do(func() {
-		r.BaiDuClient = audit.NewBaiDuAudit(r.Ctx, r.Context)
+		r.BaiDuClient = NewBaiDuAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitShuMeiDefault() {
 	r.onceShuMei.Do(func() {
-		r.ShuMeiClient = audit.NewShuMeiAudit(r.Ctx, r.Context)
+		r.ShuMeiClient = NewShuMeiAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitToolClientDefault() {
 	r.onceToolClient.Do(func() {
-		r.ToolClientClient = audit.NewToolClientAudit(r.Ctx, r.Context)
+		r.ToolClientClient = NewToolClientAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) Audit(item AuditParametersInterface) (applyResult *ApplyResult, err error) {
 	applyResult = &ApplyResult{}
-
 	switch item.GetApplyType() {
 	case ApplyToolTypeDefault: //默认为审核
 		r.InitAuditDefault()
@@ -325,6 +324,7 @@ func (r *AuditParametersMusicUrls) Default() {
 }
 
 func (r *AuditParametersImg) Default() {
+
 	if r.IsSynchronous == 0 {
 		r.IsSynchronous = IsSynchronousNo
 	}

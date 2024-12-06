@@ -3,7 +3,6 @@ package audit
 import (
 	"context"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param"
 )
 
 type (
@@ -17,12 +16,16 @@ type (
 	}
 )
 
-func (r *DefaultAudit) Do(item app_param.AuditParametersInterface) (result *app_param.ApplyResult, err error) {
-	result = &app_param.ApplyResult{}
+func (r *DefaultAudit) Do(item AuditParametersInterface) (result *ApplyResult, err error) {
+	result = &ApplyResult{Status: DataChatStatusOk}
+	if item.GetIsSynchronous() == IsSynchronousNo { //如果是异步审核
+		result.Status = DataChatStatusWaiting
+		result.Message = "审核中..."
+	}
 	return
 }
 
-func NewDefaultAudit(Ctx *base.Context, Context context.Context) ( app_param.AuditClient) {
+func NewDefaultAudit(Ctx *base.Context, Context context.Context) AuditClient {
 	res := &DefaultAudit{}
 	res.CommonAudit.Ctx = Ctx
 	res.CommonAudit.Context = Context

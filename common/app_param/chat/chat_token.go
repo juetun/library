@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/app_param/audit"
 )
 
 const (
@@ -61,7 +61,7 @@ func (r *ApplyResult) ParseApplyType() (typeName string) {
 }
 
 func ParseApplyType(applyType uint8) (typeName string) {
-	mapApplyType, _ := app_param.SliceDataChatApplyToolType.GetMapAsKeyUint8()
+	mapApplyType, _ := audit.SliceDataChatApplyToolType.GetMapAsKeyUint8()
 	var ok bool
 	if typeName, ok = mapApplyType[applyType]; !ok {
 		typeName = fmt.Sprintf("未知审核类型(%v)", applyType)
