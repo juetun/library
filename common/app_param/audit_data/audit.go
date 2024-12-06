@@ -8,6 +8,12 @@ import (
 	"sync"
 )
 
+const (
+	AuditTypeOrderComment int = iota + 1 //订单评论
+	AuditTypeComment                     //社交评论
+	AuditTypeChat                        //聊天信息
+)
+
 //审核工具类型
 const (
 	ApplyToolTypeDefault uint8 = iota //默认不审核
@@ -27,6 +33,20 @@ const (
 )
 
 var (
+	SliceAuditType = base.ModelItemOptions{
+		{
+			Value: AuditTypeOrderComment,
+			Label: "订单评论",
+		},
+		{
+			Value: AuditTypeComment,
+			Label: "社交评论",
+		},
+		{
+			Value: AuditTypeChat,
+			Label: "聊天信息",
+		},
+	}
 	SliceDataChatStatus = base.ModelItemOptions{
 		{
 			Value: DataChatStatusOk,
@@ -77,15 +97,17 @@ type (
 		Default()
 	}
 	AuditData struct {
-		DefaultClient                                                   AuditClient                `json:"-"`
-		PrivateClient                                                   AuditClient                `json:"-"`
-		BaiDuClient                                                     AuditClient                `json:"-"`
-		ShuMeiClient                                                    AuditClient                `json:"-"`
-		ToolClientClient                                                AuditClient                `json:"-"`
-		Ctx                                                             *base.Context              `json:"-"`
-		Context                                                         context.Context            `json:"-"`
-		onceDefault, oncePrivate, onceBaiDu, onceShuMei, onceToolClient sync.Once                  `json:"-"`
-		Parameters                                                      []AuditParametersInterface `json:"arg"`
+		Parameters []AuditParametersInterface `json:"arg"`
+		ActionType int                        `json:"action_type"` //当前审核的数据类型（order_comment:订单评论;comment:普通数据评论 聊天信息评论）
+
+		DefaultClient                                                   AuditClient     `json:"-"`
+		PrivateClient                                                   AuditClient     `json:"-"`
+		BaiDuClient                                                     AuditClient     `json:"-"`
+		ShuMeiClient                                                    AuditClient     `json:"-"`
+		ToolClientClient                                                AuditClient     `json:"-"`
+		Ctx                                                             *base.Context   `json:"-"`
+		Context                                                         context.Context `json:"-"`
+		onceDefault, oncePrivate, onceBaiDu, onceShuMei, onceToolClient sync.Once       `json:"-"`
 	}
 	AuditParametersText struct {
 		MsgId         string   `json:"msg_id"`
@@ -141,6 +163,12 @@ func AuditCtx(ctx *base.Context) AuditDataOption {
 func AuditContext(context context.Context) AuditDataOption {
 	return func(property *AuditData) {
 		property.Context = context
+	}
+}
+
+func AuditActionType(actionType int) AuditDataOption {
+	return func(property *AuditData) {
+		property.ActionType = actionType
 	}
 }
 
