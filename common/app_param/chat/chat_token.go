@@ -17,57 +17,9 @@ const (
 	ConstChatTokenNeedAttendEachOther              //彼此关注
 )
 
-//审核工具类型
-const (
-	ApplyToolTypeDefault uint8 = iota //默认为审核
-	ApplyToolTypePrivate              //平台自审程序
-	ApplyToolTypeBaiDu                //百度审核
-	ApplyToolTypeShuMei               //数美审核
-	ApplyToolTypeClient               //平台人工审核
-)
-const (
-	DataChatStatusOk      uint8 = iota + 1 //审核通过
-	DataChatStatusWaiting                  //待审核
-	DataChatStatusFailure                  //审核失败
-)
 
 var (
-	SliceDataChatStatus = base.ModelItemOptions{
-		{
-			Value: DataChatStatusOk,
-			Label: "审核通过",
-		},
-		{
-			Value: DataChatStatusWaiting,
-			Label: "待审核",
-		},
-		{
-			Value: DataChatStatusFailure,
-			Label: "审核失败",
-		},
-	}
-	SliceDataChatApplyToolType = base.ModelItemOptions{
-		{
-			Value: ApplyToolTypeDefault,
-			Label: "~",
-		},
-		{
-			Value: ApplyToolTypePrivate,
-			Label: "平台自审",
-		},
-		{
-			Value: ApplyToolTypeBaiDu,
-			Label: "百度审核",
-		},
-		{
-			Value: ApplyToolTypeShuMei,
-			Label: "数美审核",
-		},
-		{
-			Value: ApplyToolTypeClient,
-			Label: "客服人工审核",
-		},
-	}
+
 	SliceChatTokenTo = base.ModelItemOptions{
 		{Label: "用户", Value: ConstChatTokenToUser},
 		{Label: "店铺", Value: ConstChatTokenToShop},
