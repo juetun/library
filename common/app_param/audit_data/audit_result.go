@@ -106,19 +106,20 @@ func NewAuditResult(options ...AuditResultOption) (res *AuditResult) {
 	return
 }
 
-func AuditResultActionType(actionType int) AuditDataOption {
-	return func(property *AuditData) {
+func AuditResultActionType(actionType int) AuditResultOption {
+	return func(property *AuditResult) {
 		property.ActionType = actionType
 	}
 }
 
-func AuditResultContext(context context.Context) AuditDataOption {
-	return func(property *AuditData) {
+func AuditResultContext(context context.Context) AuditResultOption {
+	return func(property *AuditResult) {
 		property.Context = context
 	}
 }
-func AuditResultCtx(ctx *base.Context) AuditDataOption {
-	return func(property *AuditData) {
+
+func AuditResultCtx(ctx *base.Context) AuditResultOption {
+	return func(property *AuditResult) {
 		property.Ctx = ctx
 	}
 }
