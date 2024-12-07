@@ -9,6 +9,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/base-wrapper/lib/utils"
 	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/app_param/audit_data/action"
 	"net/http"
 	"net/url"
 	"sync"
@@ -225,35 +226,35 @@ func AuditParameters(parameters []AuditParametersInterface) AuditDataOption {
 
 func (r *AuditData) InitAuditDefault() {
 	r.onceDefault.Do(func() {
-		r.DefaultClient = NewDefaultAudit(r.Ctx, r.Context)
+		r.DefaultClient = action.NewDefaultAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitPrivateDefault() {
 	r.oncePrivate.Do(func() {
-		r.PrivateClient = NewPrivateAudit(r.Ctx, r.Context)
+		r.PrivateClient = action.NewPrivateAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitBaiDuDefault() {
 	r.onceBaiDu.Do(func() {
-		r.BaiDuClient = NewBaiDuAudit(r.Ctx, r.Context)
+		r.BaiDuClient = action.NewBaiDuAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitShuMeiDefault() {
 	r.onceShuMei.Do(func() {
-		r.ShuMeiClient = NewShuMeiAudit(r.Ctx, r.Context)
+		r.ShuMeiClient = action.NewShuMeiAudit(r.Ctx, r.Context)
 	})
 	return
 }
 
 func (r *AuditData) InitToolClientDefault() {
 	r.onceToolClient.Do(func() {
-		r.ToolClientClient = NewToolClientAudit(r.Ctx, r.Context)
+		r.ToolClientClient = action.NewToolClientAudit(r.Ctx, r.Context)
 	})
 	return
 }
