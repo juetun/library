@@ -4,7 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/plugins/rpc"
+	"github.com/juetun/base-wrapper/lib/utils"
+	"github.com/juetun/library/common/app_param"
+	"net/http"
+	"net/url"
 	"sync"
 )
 
@@ -87,19 +93,39 @@ var (
 
 //审核信息
 type (
+	ArgWriteRecord struct {
+		TimeNow   base.TimeNormal       `json:"time_now" form:"time_now"`
+		DataItems []*ArgWriteRecordItem `json:"data_items" form:"data_items"`
+	}
+	ArgWriteRecordItem struct {
+		DataType       int    `json:"data_type"`      //数据类型（商品评论、聊天信息、社交评论）
+		MsgId          string `json:"msg_id"`         //消息ID
+		IndexId        string `json:"index_id"`       //同一消息ID中不同区分
+		ApplyStatus    uint8  `json:"apply_status"`   //审核状态
+		ApplyId        string `json:"apply_id"`       //审核请求ID
+		ApplyType      uint8  `json:"apply_type"`     //请求类型（百度审核或数美审核或其他）
+		ApplyErrorType string `json:"error_type"`     //审核错误类型
+		ApplyResponse  string `json:"apply_response"` //审核响应
+	}
+	ResultWriteRecord struct {
+		Result bool `json:"result"`
+	}
 	AuditClient interface {
 		Do(item AuditParametersInterface) (result *ApplyResult, err error)
 	}
 	AuditParametersInterface interface {
 		GetArg() (res []byte) //获取参数
 		GetApplyType() (res uint8)
+		GetMsgId() (res string)
 		GetIsSynchronous() (isSynchronous uint8)
 		Default()
 	}
 	AuditData struct {
 		Parameters []AuditParametersInterface `json:"arg"`
 		ActionType int                        `json:"action_type"` //当前审核的数据类型（order_comment:订单评论;comment:普通数据评论 聊天信息评论）
+		TimeNow    base.TimeNormal            `json:"time_now"`
 
+		RecordSync                                                      bool            `json:"record_sync"` //是否记录同步审核失败
 		DefaultClient                                                   AuditClient     `json:"-"`
 		PrivateClient                                                   AuditClient     `json:"-"`
 		BaiDuClient                                                     AuditClient     `json:"-"`
@@ -154,9 +180,28 @@ func NewAuditData(options ...AuditDataOption) (res *AuditData) {
 	return
 }
 
+func (r *ArgWriteRecord) Default(ctx *base.Context) (err error) {
+	if r.TimeNow.IsZero() {
+		r.TimeNow = base.GetNowTimeNormal()
+	}
+	return
+}
+
+func AuditTimeNow(timeNow base.TimeNormal) AuditDataOption {
+	return func(property *AuditData) {
+		property.TimeNow = timeNow
+	}
+}
+
 func AuditCtx(ctx *base.Context) AuditDataOption {
 	return func(property *AuditData) {
 		property.Ctx = ctx
+	}
+}
+
+func AuditRecordSync(recordSync bool) AuditDataOption {
+	return func(property *AuditData) {
+		property.RecordSync = recordSync
 	}
 }
 
@@ -237,12 +282,75 @@ func (r *AuditData) Audit(item AuditParametersInterface) (applyResult *ApplyResu
 	return
 }
 
+func (r *AuditData) writeRecord(param *ArgWriteRecord) (err error) {
+	if param == nil {
+		return
+	}
+
+	var bodyContent []byte
+	if bodyContent, err = json.Marshal(param); err != nil {
+		return
+	}
+
+	arg := url.Values{}
+	params := rpc.RequestOptions{
+		Context:     r.Ctx,
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameComment,
+		URI:         "/audit_data/write_record",
+		Value:       arg,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+		BodyJson:    bodyContent,
+		Header:      http.Header{},
+	}
+
+	req := rpc.NewHttpRpc(&params).
+		Send().GetBody()
+	if err = req.Error; err != nil {
+		return
+	}
+	var body []byte
+	if body = req.Body; len(body) == 0 {
+		return
+	}
+
+	var resResult struct {
+		Code int `json:"code"`
+		Data struct {
+			Result bool `json:"result"`
+		} `json:"data"`
+		Msg string `json:"message"`
+	}
+	if err = json.Unmarshal(body, &resResult); err != nil {
+		return
+	}
+	if resResult.Code > 0 {
+		err = fmt.Errorf(resResult.Msg)
+		return
+	}
+	return
+}
+
 func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 	applyResult = &ApplyResult{}
 	applyResult.Status = DataChatStatusOk
 	var (
 		result *ApplyResult
+		//保存审核信息
+		argWriteData    = ArgWriteRecord{TimeNow: r.TimeNow, DataItems: make([]*ArgWriteRecordItem, 0, len(r.Parameters))}
+		dataItem        *ArgWriteRecordItem
+		haveWriteRecord bool
 	)
+	defer func() {
+		if err != nil {
+			return
+		}
+		if !haveWriteRecord && r.RecordSync {
+			if err = r.writeRecord(&argWriteData); err != nil {
+				return
+			}
+		}
+	}()
 	for _, item := range r.Parameters {
 		item.Default()
 		if item.GetIsSynchronous() != IsSynchronousYes { //如果不是同步返回
@@ -251,6 +359,16 @@ func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 		if result, err = r.Audit(item); err != nil {
 			return
 		}
+		dataItem = &ArgWriteRecordItem{}
+		dataItem.DataType = r.ActionType
+		dataItem.MsgId = item.GetMsgId()
+		dataItem.IndexId = utils.Guid("")
+		dataItem.ApplyStatus = result.Status
+		dataItem.ApplyId = result.ApplyId
+		dataItem.ApplyType = result.ApplyType
+		dataItem.ApplyErrorType = result.ErrorType
+		dataItem.ApplyResponse = result.ApplyResponse
+		argWriteData.DataItems = append(argWriteData.DataItems, dataItem)
 		switch result.Status {
 		case DataChatStatusOk: //审核通过
 		case DataChatStatusWaiting: //待审核
@@ -259,6 +377,7 @@ func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 			applyResult = result
 			return
 		}
+
 	}
 	for _, item := range r.Parameters {
 		if item.GetIsSynchronous() != IsSynchronousNo { //上边已经同步验证过
@@ -268,6 +387,21 @@ func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 			return
 		}
 		applyResult.Status = DataChatStatusWaiting
+		applyResult.Message = "审核中..."
+		dataItem = &ArgWriteRecordItem{}
+		dataItem.DataType = r.ActionType
+		dataItem.MsgId = item.GetMsgId()
+		dataItem.IndexId = utils.Guid("")
+		dataItem.ApplyStatus = applyResult.Status
+		dataItem.ApplyId = result.ApplyId
+		dataItem.ApplyType = result.ApplyType
+		dataItem.ApplyErrorType = result.ErrorType
+		dataItem.ApplyResponse = result.ApplyResponse
+		argWriteData.DataItems = append(argWriteData.DataItems, dataItem)
+	}
+	haveWriteRecord = true
+	if err = r.writeRecord(&argWriteData); err != nil {
+		return
 	}
 	return
 }
@@ -334,6 +468,22 @@ func (r *AuditParametersImg) GetIsSynchronous() (res uint8) {
 
 func (r *AuditParametersText) GetIsSynchronous() (res uint8) {
 	return r.IsSynchronous
+}
+
+func (r *AuditParametersVideoUrls) GetMsgId() (res string) {
+	return r.MsgId
+}
+
+func (r *AuditParametersMusicUrls) GetMsgId() (res string) {
+	return r.MsgId
+}
+
+func (r *AuditParametersImg) GetMsgId() (res string) {
+	return r.MsgId
+}
+
+func (r *AuditParametersText) GetMsgId() (res string) {
+	return r.MsgId
 }
 
 func (r *AuditParametersVideoUrls) Default() {
