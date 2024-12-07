@@ -15,7 +15,7 @@ type (
 
 func (r *BaiDuAudit) Do(item audit_data.AuditParametersInterface) (result *audit_data.ApplyResult, err error) {
 	result = &audit_data.ApplyResult{Status: audit_data.DataChatStatusOk}
-	if audit_data.GetIsSynchronous() == audit_data.IsSynchronousNo { //如果是异步审核
+	if item.GetIsSynchronous() == audit_data.IsSynchronousNo { //如果是异步审核
 		result.Status = audit_data.DataChatStatusWaiting
 		result.Message = "审核中..."
 	}
