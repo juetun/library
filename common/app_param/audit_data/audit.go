@@ -121,20 +121,21 @@ type (
 		Default()
 	}
 	AuditData struct {
-		Parameters []AuditParametersInterface `json:"arg"`
-		ActionType int                        `json:"action_type"` //当前审核的数据类型（order_comment:订单评论;comment:普通数据评论 聊天信息评论）
-		TimeNow    base.TimeNormal            `json:"time_now"`
-
-		RecordSync                                                      bool            `json:"record_sync"` //是否记录同步审核失败
-		DefaultClient                                                   AuditClient     `json:"-"`
-		PrivateClient                                                   AuditClient     `json:"-"`
-		BaiDuClient                                                     AuditClient     `json:"-"`
-		ShuMeiClient                                                    AuditClient     `json:"-"`
-		ToolClientClient                                                AuditClient     `json:"-"`
-		Ctx                                                             *base.Context   `json:"-"`
-		Context                                                         context.Context `json:"-"`
-		onceDefault, oncePrivate, onceBaiDu, onceShuMei, onceToolClient sync.Once       `json:"-"`
+		Parameters                                                      []AuditParametersInterface `json:"arg"`
+		ActionType                                                      int                        `json:"action_type"` //当前审核的数据类型（order_comment:订单评论;comment:普通数据评论 聊天信息评论）
+		TimeNow                                                         base.TimeNormal            `json:"time_now"`
+		WriteRecordHandler                                              WriteRecordFunc            `json:"-"`
+		RecordSync                                                      bool                       `json:"record_sync"` //是否记录同步审核失败
+		DefaultClient                                                   AuditClient                `json:"-"`
+		PrivateClient                                                   AuditClient                `json:"-"`
+		BaiDuClient                                                     AuditClient                `json:"-"`
+		ShuMeiClient                                                    AuditClient                `json:"-"`
+		ToolClientClient                                                AuditClient                `json:"-"`
+		Ctx                                                             *base.Context              `json:"-"`
+		Context                                                         context.Context            `json:"-"`
+		onceDefault, oncePrivate, onceBaiDu, onceShuMei, onceToolClient sync.Once                  `json:"-"`
 	}
+	WriteRecordFunc     func(param *ArgWriteRecord) (err error)
 	AuditParametersText struct {
 		MsgId         string   `json:"msg_id"`
 		Text          []string `json:"text"`           //审核的图片列表
@@ -211,6 +212,12 @@ func AuditContext(context context.Context) AuditDataOption {
 	}
 }
 
+func AuditWriteRecordHandler(writeRecordHandler WriteRecordFunc) AuditDataOption {
+	return func(property *AuditData) {
+		property.WriteRecordHandler = writeRecordHandler
+	}
+}
+
 func AuditActionType(actionType int) AuditDataOption {
 	return func(property *AuditData) {
 		property.ActionType = actionType
@@ -283,6 +290,18 @@ func (r *AuditData) Audit(item AuditParametersInterface) (applyResult *ApplyResu
 }
 
 func (r *AuditData) writeRecord(param *ArgWriteRecord) (err error) {
+	if r.WriteRecordHandler != nil { //如果配置了记录数据方法
+		if err = r.WriteRecordHandler(param); err != nil {
+			return
+		}
+	}
+	if err = r.writeRecordData(param); err != nil {
+		return
+	}
+	return
+}
+
+func (r *AuditData) writeRecordData(param *ArgWriteRecord) (err error) {
 	if param == nil {
 		return
 	}
