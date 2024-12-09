@@ -135,7 +135,7 @@ type (
 		Context                                                         context.Context            `json:"-"`
 		onceDefault, oncePrivate, onceBaiDu, onceShuMei, onceToolClient sync.Once                  `json:"-"`
 	}
-	WriteRecordFunc     func(param *ArgWriteRecord) (err error)
+	WriteRecordFunc     func(param *ArgWriteRecord, applyResult *ApplyResult) (res *ApplyResult, err error)
 	AuditParametersText struct {
 		MsgId         string   `json:"msg_id"`
 		Text          []string `json:"text"`           //审核的图片列表
@@ -289,9 +289,10 @@ func (r *AuditData) Audit(item AuditParametersInterface) (applyResult *ApplyResu
 	return
 }
 
-func (r *AuditData) writeRecord(param *ArgWriteRecord) (err error) {
+func (r *AuditData) writeRecord(param *ArgWriteRecord, applyResult *ApplyResult) (res *ApplyResult, err error) {
+	res = applyResult
 	if r.WriteRecordHandler != nil { //如果配置了记录数据方法
-		if err = r.WriteRecordHandler(param); err != nil {
+		if res, err = r.WriteRecordHandler(param, applyResult); err != nil {
 			return
 		}
 	}
@@ -365,7 +366,7 @@ func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 			return
 		}
 		if !haveWriteRecord && r.RecordSync {
-			if err = r.writeRecord(&argWriteData); err != nil {
+			if applyResult, err = r.writeRecord(&argWriteData, applyResult); err != nil {
 				return
 			}
 		}
@@ -419,7 +420,7 @@ func (r *AuditData) Apply() (applyResult *ApplyResult, err error) {
 		argWriteData.DataItems = append(argWriteData.DataItems, dataItem)
 	}
 	haveWriteRecord = true
-	if err = r.writeRecord(&argWriteData); err != nil {
+	if applyResult, err = r.writeRecord(&argWriteData, applyResult); err != nil {
 		return
 	}
 	return
