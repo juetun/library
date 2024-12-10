@@ -19,8 +19,9 @@ type (
 		Context    context.Context `json:"-"`
 	}
 	ArgSyncAuditRecord struct {
-		MsgId       string                 `json:"msg_id" form:"msg_id"`
-		OtherParams map[string]interface{} `json:"other_params" form:"other_params"`
+		MsgId       string                 `json:"msg_id,omitempty" form:"msg_id"`
+		OtherParams map[string]interface{} `json:"other_params,omitempty" form:"other_params"`
+		ApplyResult *ApplyResult           `json:"apply_result,omitempty" form:"apply_result"`
 	}
 	AuditResultOption func(property *AuditResult)
 )
