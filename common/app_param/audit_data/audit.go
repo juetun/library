@@ -18,6 +18,9 @@ const (
 	AuditTypeOrderComment int = iota + 1 //订单评论
 	AuditTypeComment                     //社交评论
 	AuditTypeChat                        //聊天信息
+	AuditTypeSns                         //社交帖子
+	AuditTypeFishingSport                //钓点信息
+	AuditTypeSpu                         //商品信息
 )
 
 //审核工具类型
@@ -51,6 +54,18 @@ var (
 		{
 			Value: AuditTypeChat,
 			Label: "聊天信息",
+		},
+		{
+			Value: AuditTypeSns,
+			Label: "圈子动态",
+		},
+		{
+			Value: AuditTypeFishingSport,
+			Label: "钓点信息",
+		},
+		{
+			Value: AuditTypeSpu,
+			Label: "商品信息",
 		},
 	}
 	SliceDataChatStatus = base.ModelItemOptions{
