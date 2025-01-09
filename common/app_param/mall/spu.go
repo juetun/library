@@ -230,7 +230,7 @@ func GetSpusDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgGetSpuDataWithSp
 
 
 //商品详情页数据
-func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *base.ArgGetByStringIds) (res map[string]*ResultSpuDetail, err error) {
+func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgSpuDetail) (res ResultSpuDetail, err error) {
 	arg := url.Values{}
 	params := rpc.RequestOptions{
 		Context:     ctx,
@@ -261,7 +261,7 @@ func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *base.ArgGetBySt
 
 	var resResult struct {
 		Code int                 `json:"code"`
-		Data map[string]*ResultSpuDetail `json:"data"`
+		Data ResultSpuDetail `json:"data"`
 		Msg  string              `json:"message"`
 	}
 	if err = json.Unmarshal(body, &resResult); err != nil {
