@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
-	"github.com/juetun/library/common/app_param"
 	"strings"
 )
 
@@ -20,7 +19,7 @@ type PageCommonParams struct {
 	HeaderInfoString string          `json:"-" form:"-"`
 	TimeNow          base.TimeNormal `json:"" form:"-"`
 	common.HeaderInfo
-	app_param.RequestUser
+	RequestUser
 }
 
 func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err error) {
@@ -29,7 +28,7 @@ func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err erro
 	}
 	_ = r.InitHeaderInfo(c.GinContext)
 	if r.HeaderInfo.HTerminal == "" {
-		r.HeaderInfo.HTerminal = app_param.TerminalWeb
+		r.HeaderInfo.HTerminal = TerminalWeb
 	}
 	if r.HeaderInfo.HApp == "" {
 		r.HeaderInfo.HApp = HTerminal
