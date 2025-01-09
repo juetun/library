@@ -7,6 +7,9 @@ const (
 	ForceUpgradeDialog               //弹窗提示升级
 	ForceUpgradeYes                  //强制用户升级app
 )
+const (
+	HTerminal = "juetun"
+)
 
 var (
 	SliceForceUpgrade = base.ModelItemOptions{
