@@ -11,7 +11,10 @@ import (
 	"strings"
 )
 
-type CommonParams struct {
+const(
+	PageNeedUserYes bool=true
+)
+type PageCommonParams struct {
 	City             string          `json:"city" form:"city"`
 	Cate             string          `json:"cate" form:"cate"`
 	HeaderInfoString string          `json:"-" form:"-"`
@@ -20,7 +23,7 @@ type CommonParams struct {
 	app_param.RequestUser
 }
 
-func (r *CommonParams) Default(c *base.Context, needUsers ...bool) (err error) {
+func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err error) {
 	if r.TimeNow.IsZero() {
 		r.TimeNow = base.GetNowTimeNormal()
 	}
@@ -56,7 +59,7 @@ func (r *CommonParams) Default(c *base.Context, needUsers ...bool) (err error) {
 	return
 }
 
-func (r *CommonParams) GetCityCode(c *gin.Context) (code string) {
+func (r *PageCommonParams) GetCityCode(c *gin.Context) (code string) {
 	v, ok := c.Get(base.MiddleCityCode)
 	if ok {
 		code = v.(string)
@@ -64,7 +67,7 @@ func (r *CommonParams) GetCityCode(c *gin.Context) (code string) {
 	return
 }
 
-func (r *CommonParams) InitWebHeaderInfo(headerInfo common.HeaderInfo, c *gin.Context) (headerInfoString string, err error) {
+func (r *PageCommonParams) InitWebHeaderInfo(headerInfo common.HeaderInfo, c *gin.Context) (headerInfoString string, err error) {
 	var (
 		headerInfoByte []byte
 	)
@@ -82,7 +85,7 @@ func (r *CommonParams) InitWebHeaderInfo(headerInfo common.HeaderInfo, c *gin.Co
 	return
 }
 
-func (r *CommonParams) GetDetailParamByKey(c *gin.Context, key string, ext ...string) string {
+func (r *PageCommonParams) GetDetailParamByKey(c *gin.Context, key string, ext ...string) string {
 	extName := ".html"
 	if len(ext) > 0 {
 		extName = ext[0]
