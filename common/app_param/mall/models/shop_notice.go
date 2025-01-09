@@ -33,6 +33,7 @@ type (
 		ID        int64            `gorm:"column:id;primary_key" json:"-"`
 		ShopID    int64            `gorm:"column:shop_id;default:0;" json:"shop_id"`
 		Image     string           `gorm:"column:image;type:varchar(255);not null;default:'';comment:公告图片" json:"image"`
+		ImageUrl string `json:"image_url" gorm:"-"`
 		StartTime base.TimeNormal  `gorm:"column:start_time;not null;default:CURRENT_TIMESTAMP" json:"start_time"`
 		OverTime  base.TimeNormal  `gorm:"column:over_time;not null;default:CURRENT_TIMESTAMP" json:"over_time"`
 		Status    uint8            `gorm:"column:status;type:tinyint(2);not null;default:2;comment:当前使用状态" json:"status"`
