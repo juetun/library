@@ -236,7 +236,7 @@ func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *base.ArgGetBySt
 		Context:     ctx,
 		Method:      http.MethodPost,
 		AppName:     app_param.AppNameMall,
-		URI:         "/product/get_spu_map_by_ids",
+		URI:         "/product/detail_for_page",
 		Value:       arg,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 		Header:      http.Header{},
