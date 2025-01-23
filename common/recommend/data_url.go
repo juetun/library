@@ -281,6 +281,58 @@ func getPageH5Mina(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	return
 }
 
+func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
+	if argument.NeedHeaderInfo {
+		if argument.UrlValue == nil {
+			argument.UrlValue = &url.Values{}
+		}
+		if argument.HeaderInfo.HApp != "" {
+			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
+		}
+		if argument.HeaderInfo.HTerminal != "" {
+			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
+		}
+		if argument.HeaderInfo.HChannel != "" {
+			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
+		}
+		if argument.HeaderInfo.HVersion != "" {
+			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
+		}
+	}
+
+	res, err = getPageWebLinkDefault(argument.UrlValue, argument.DataType, argument.PageName)
+	return
+}
+
+func getPageWebLinkDefault(urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
+	var (
+		mapGetPagePath = map[string]GetPagePathHandler{
+			AdDataDataTypeSpu:               getPageSpuPathByPageName,
+			AdDataDataTypeSku:               getPageSpuPathByPageName,
+			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
+			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
+			AdDataDataTypeUser:              getPageSpuPathByPageName,
+			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
+			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
+			AdDataDataTypeOther:             getPageSpuPathByPageName,
+		}
+
+		ok      bool
+		handler GetPagePathHandler
+	)
+	if dataType != AdDataDataTypeOther {
+		if handler, ok = mapGetPagePath[dataType]; !ok {
+			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", dataType)
+			return
+		}
+	}
+	if res, err = getPageLink(handler, urlValue, dataType, pageNames...); err != nil {
+		return
+	}
+	return
+}
+
 func getDefault(argument *LinkArgument) (res interface{}, err error) {
 	if argument.NeedHeaderInfo {
 		if argument.UrlValue == nil {
@@ -361,18 +413,24 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 		return
 	}
 	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
-	var getLinkMap = map[string]GetPageLinkHandler{
-		app_param.TerminalMina:    getPageLinkMina, //小程序
-		app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
-		app_param.TerminalAndroid: getPageLinkApp,  //安卓
-		app_param.TerminalIos:     getPageLinkApp,  //IOS
+	switch argument.HeaderInfo.HTerminal {
+	case app_param.TerminalMina, app_param.TerminalH5, app_param.TerminalAndroid, app_param.TerminalIos:
+		var getLinkMap = map[string]GetPageLinkHandler{
+			app_param.TerminalMina:    getPageLinkMina, //小程序
+			app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
+			app_param.TerminalAndroid: getPageLinkApp,  //安卓
+			app_param.TerminalIos:     getPageLinkApp,  //IOS
+		}
+		if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
+			res, err = handler(argument)
+			return
+		}
+	case app_param.TerminalWeb: //网站链接
+		res, err = getPageLinkWeb(argument)
+	default:
+		res, err = getDefault(argument)
 	}
 
-	if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
-		res, err = handler(argument)
-		return
-	}
-	res, err = getDefault(argument)
 	return
 }
 

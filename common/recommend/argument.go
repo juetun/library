@@ -29,8 +29,9 @@ type (
 		common.HeaderInfo
 	}
 	ArgDataBySceneItem struct {
-		Scene   string `json:"scene,omitempty" form:"scene"`
-		SceneId int64  `json:"scene_id,omitempty" form:"scene_id"`
+		Scene      string                 `json:"scene,omitempty" form:"scene"`
+		SceneId    int64                  `json:"scene_id,omitempty" form:"scene_id"`
+		Parameters map[string]interface{} `json:"parameters" form:"parameters"`
 		response.PageQuery
 	}
 	ResultGetDataByScenes map[string]*PagerRecommend
