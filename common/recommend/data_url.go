@@ -44,109 +44,160 @@ var (
 		AdDataDataTypeRing:              PageNameRing,         //圈子信息
 		AdDataDataTypeOther:             PageNameOther,        //其他信息
 	}
-	MapPageMallName = map[string]string{
-		PageNameSpu:                     "/#/mall/pages/detail/index",
-		PageNameShop:                    "/#/shop/pages/home/index",
-		PageNameUsr:                     "/#/user/pages/view/index",
-		AdDataDataTypeSocialIntercourse: "/#/sns/pages/detail/index",
-		AdDataDataTypeRing:              "/#/sns/pages/ring_article/index", //圈子界面
-		AdDataDataTypeFishingSport:      "/#/fishingsport/pages/detail/index",
-		PageNamePayFinish:               "/#/order/pages/pay_finish/index", //支付结果界面
-		PageNamePayPreview:              "/#/order/pages/preview/index",    //支付预付界面
+	MapPageMallName = map[string]PageUrl{
+		PageNameSpu: {
+			H5:  "/#/mall/pages/detail/index",
+			Web: "/spu_{{spu_id}}.html",
+		},
+		PageNameShop: {
+			H5:  "/#/shop/pages/home/index",
+			Web: "/spu_{{shop_id}}.html",
+		},
+		PageNameUsr: {
+			H5:  "/#/user/pages/view/index",
+			Web: "/usr_{{user_id}}.html",
+		},
+		AdDataDataTypeSocialIntercourse: {
+			H5:  "/#/sns/pages/detail/index",
+			Web: "/article_{{id}}.html",
+		},
+		AdDataDataTypeRing: {
+			H5:  "/#/sns/pages/ring_article/index",
+			Web: "/ring_{{id}}.html",
+		}, //圈子界面
+		AdDataDataTypeFishingSport: {
+			H5:  "/#/fishingsport/pages/detail/index",
+			Web: "/fish_sports_{{id}}.html",
+		},
+		PageNamePayFinish: {
+			H5:  "/#/order/pages/pay_finish/index",
+			Web: "/page_finish.html",
+		}, //支付结果界面
+		PageNamePayPreview: {
+			H5:  "/#/order/pages/preview/index",
+			Web: "/pay.html",
+		}, //支付预付界面
 	}
-	MapPageSNsName = map[string]string{
-		PageNameHome:         "/#/home/index/index",
-		PageNameSns:          "/#/sns/pages/detail/index",
-		PageNameFishingSport: "/#/fishingsport/pages/detail/index",
-		PageNameRing:         "/#/sns/pages/ring_article/detail/index",
+	MapPageSNsName = map[string]PageUrl{
+		PageNameHome: {
+			H5: "/#/home/index/index",
+		},
+		PageNameSns: {
+			H5: "/#/sns/pages/detail/index",
+		},
+		PageNameFishingSport: {
+			H5: "/#/fishingsport/pages/detail/index",
+		},
+		PageNameRing: {
+			H5: "/#/sns/pages/ring_article/detail/index",
+		},
 	}
-	MapPageUserShop = map[string]string{
-		UserShopInfo: "/shop/info",
-		UserShopHome: "/",
+	MapPageUserShop = map[string]PageUrl{
+		UserShopInfo: {
+			H5: "/shop/info",
+		},
+		UserShopHome: {
+			H5: "/",
+		},
 	}
 )
 
 type (
-	GetPagePathHandler func(pageNames ...string) (res string)
+	PageUrl struct {
+		H5  string `json:"h_5"`
+		Web string `json:"web"`
+	}
+	GetPagePathHandler func(terminal string, pageNames ...string) (res string)
 )
 
-func getPageSpuPathByPageName(pageNames ...string) (res string) {
+func getPageSpuPathByPageName(terminal string, pageNames ...string) (res string) {
 	var pageName = PageNameSpu
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageMallName[pageName]; ok {
-		res = tmp
+		res = getLinkValue(terminal, tmp)
 		return
 	}
 	return
 }
 
-func getPageUserShopPathByPageName(pageNames ...string) (res string) {
+func getLinkValue(terminal string, pageUrl PageUrl) (res string) {
+	switch terminal {
+	case terminal:
+		res = pageUrl.Web
+	default:
+		res = pageUrl.H5
+	}
+	return
+}
+
+func getPageUserShopPathByPageName(terminal string, pageNames ...string) (res string) {
 	var pageName = UserShopInfo
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = tmp
+		res = getLinkValue(terminal, tmp)
 		return
 	}
 	return
 }
-func getPageShopPathByPageName(pageNames ...string) (res string) {
+func getPageShopPathByPageName(terminal string, pageNames ...string) (res string) {
 	var pageName = UserShopHome
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = tmp
+		res = getLinkValue(terminal, tmp)
 		return
 	}
 	return
 }
 
-func getPageSNSPathByPageName(pageNames ...string) (res string) {
+func getPageSNSPathByPageName(terminal string, pageNames ...string) (res string) {
 	var pageName = PageNameSns
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = tmp
+		res = getLinkValue(terminal, tmp)
 		return
 	}
 	return
 }
 
-func getPageFishingSpotsPathByPageName(pageNames ...string) (res string) {
+func getPageFishingSpotsPathByPageName(terminal string, pageNames ...string) (res string) {
 	var pageName = PageNameFishingSport
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = tmp
+		res = getLinkValue(terminal, tmp)
 		return
 	}
 	return
 }
 
-func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
+//argument.UrlValue, argument.DataType, argument.PageName...
+func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) (res string, err error) {
 	var (
 		stringValue  string
 		urlValue1    = url.Values{}
 		paramsDivide = "?"
 	)
 
-	if tmp, ok := MapDataTypeBiz[dataType]; ok {
-		dataType = tmp
+	if tmp, ok := MapDataTypeBiz[argument.DataType]; ok {
+		argument.DataType = tmp
 	}
 	if getPagePathHandler != nil {
-		suffix := getPagePathHandler(pageNames...)
-		if tmp, ok := plugins_lib.WebMap[dataType]; ok {
+		suffix := getPagePathHandler(argument.PageName)
+		if tmp, ok := plugins_lib.WebMap[argument.DataType]; ok {
 			stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
 		} else {
 			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
@@ -164,16 +215,17 @@ func getPageLink(getPagePathHandler GetPagePathHandler, urlValue *url.Values, da
 		stringValue = strings.Join(preUrl, paramsDivide)
 		if urlValue1 != nil {
 			for key, value := range urlValue1 {
-				urlValue.Set(key, strings.Join(value, ""))
+				argument.UrlValue.Set(key, strings.Join(value, ""))
 			}
 		}
 
 	}
-	res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, urlValue.Encode())
+	res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
 	return
 }
 
-func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
+func getPageLinkDefault(argument *LinkArgument) (res string, err error) {
+
 	var (
 		mapGetPagePath = map[string]GetPagePathHandler{
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
@@ -190,13 +242,13 @@ func getPageLinkDefault(urlValue *url.Values, dataType string, pageNames ...stri
 		ok      bool
 		handler GetPagePathHandler
 	)
-	if dataType != AdDataDataTypeOther {
-		if handler, ok = mapGetPagePath[dataType]; !ok {
-			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", dataType)
+	if argument.DataType != AdDataDataTypeOther {
+		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
+			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
 			return
 		}
 	}
-	if res, err = getPageLink(handler, urlValue, dataType, pageNames...); err != nil {
+	if res, err = getPageLink(handler, argument); err != nil {
 		return
 	}
 	return
@@ -300,11 +352,11 @@ func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
 		}
 	}
 
-	res, err = getPageWebLinkDefault(argument.UrlValue, argument.DataType, argument.PageName)
+	res, err = getPageWebLinkDefault(argument)
 	return
 }
 
-func getPageWebLinkDefault(urlValue *url.Values, dataType string, pageNames ...string) (res string, err error) {
+func getPageWebLinkDefault(argument *LinkArgument) (res string, err error) {
 	var (
 		mapGetPagePath = map[string]GetPagePathHandler{
 			AdDataDataTypeSpu:               getPageSpuPathByPageName,
@@ -321,13 +373,13 @@ func getPageWebLinkDefault(urlValue *url.Values, dataType string, pageNames ...s
 		ok      bool
 		handler GetPagePathHandler
 	)
-	if dataType != AdDataDataTypeOther {
-		if handler, ok = mapGetPagePath[dataType]; !ok {
-			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", dataType)
+	if argument.DataType != AdDataDataTypeOther {
+		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
+			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
 			return
 		}
 	}
-	if res, err = getPageLink(handler, urlValue, dataType, pageNames...); err != nil {
+	if res, err = getPageLink(handler, argument); err != nil {
 		return
 	}
 	return
@@ -352,7 +404,7 @@ func getDefault(argument *LinkArgument) (res interface{}, err error) {
 		}
 	}
 
-	res, err = getPageLinkDefault(argument.UrlValue, argument.DataType, argument.PageName)
+	res, err = getPageLinkDefault(argument)
 	return
 }
 
@@ -430,7 +482,6 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 	default:
 		res, err = getDefault(argument)
 	}
-
 	return
 }
 
