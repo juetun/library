@@ -13,7 +13,7 @@ import (
 )
 
 //前端路径映射
-var WebMap = map[string]string{}
+var WebMap = map[string]map[string]string{}
 
 func PluginWebMap(arg *app_start.PluginsOperate) (err error) {
 	var syncLock sync.Mutex

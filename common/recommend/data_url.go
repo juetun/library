@@ -1,10 +1,12 @@
 package recommend
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/plugins_lib"
+	"html/template"
 	"net/url"
 	"strings"
 )
@@ -107,78 +109,86 @@ type (
 		H5  string `json:"h_5"`
 		Web string `json:"web"`
 	}
-	GetPagePathHandler func(terminal string, pageNames ...string) (res string)
+	GetPagePathHandler func(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string)
 )
 
-func getPageSpuPathByPageName(terminal string, pageNames ...string) (res string) {
+func getPageSpuPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = PageNameSpu
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageMallName[pageName]; ok {
-		res = getLinkValue(terminal, tmp)
+		res = getLinkValue(terminal, urlLinkVal, tmp)
 		return
 	}
 	return
 }
 
-func getLinkValue(terminal string, pageUrl PageUrl) (res string) {
+func getLinkValue(terminal string, urlLinkVal map[string]interface{}, pageUrl PageUrl) (res string) {
 	switch terminal {
-	case terminal:
+	case app_param.TerminalWeb:
 		res = pageUrl.Web
+	case app_param.TerminalMina:
+		res = pageUrl.H5
 	default:
 		res = pageUrl.H5
+	}
+	if res != "" && urlLinkVal != nil {
+		tmpl, _ := template.New("test").Parse(res)
+		var result bytes.Buffer
+		_ = tmpl.Execute(&result, urlLinkVal)
+		res = result.String()
 	}
 	return
 }
 
-func getPageUserShopPathByPageName(terminal string, pageNames ...string) (res string) {
+func getPageUserShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = UserShopInfo
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = getLinkValue(terminal, tmp)
+		res = getLinkValue(terminal, urlLinkVal, tmp)
 		return
 	}
 	return
 }
-func getPageShopPathByPageName(terminal string, pageNames ...string) (res string) {
+func getPageShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = UserShopHome
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = getLinkValue(terminal, tmp)
+		res = getLinkValue(terminal, urlLinkVal, tmp)
 		return
 	}
 	return
 }
 
-func getPageSNSPathByPageName(terminal string, pageNames ...string) (res string) {
+func getPageSNSPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = PageNameSns
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = getLinkValue(terminal, tmp)
+		res = getLinkValue(terminal, urlLinkVal, tmp)
 		return
 	}
 	return
 }
 
-func getPageFishingSpotsPathByPageName(terminal string, pageNames ...string) (res string) {
+func getPageFishingSpotsPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = PageNameFishingSport
 	if len(pageNames) > 0 {
 		pageName = pageNames[0]
 	}
 
 	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = getLinkValue(terminal, tmp)
+		res = getLinkValue(terminal, urlLinkVal, tmp)
 		return
 	}
 	return
@@ -196,17 +206,19 @@ func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) 
 		argument.DataType = tmp
 	}
 	if getPagePathHandler != nil {
-		suffix := getPagePathHandler(argument.PageName)
-		if tmp, ok := plugins_lib.WebMap[argument.DataType]; ok {
-			stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
+		suffix := getPagePathHandler(argument.HeaderInfo.HTerminal, argument.UrlLinkVal, argument.PageName)
+		if terminalInfo, ok := plugins_lib.WebMap[argument.HeaderInfo.HTerminal]; ok {
+			if tmp, ok := terminalInfo[argument.DataType]; ok {
+				stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
+			} else {
+				stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
+			}
 		} else {
 			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
 		}
 	}
-	var (
-		dataSlice = strings.Split(stringValue, paramsDivide)
-	)
-	var l = len(dataSlice)
+	dataSlice := strings.Split(stringValue, paramsDivide)
+	l := len(dataSlice)
 	if l > 1 {
 		if urlValue1, err = url.ParseQuery(dataSlice[l-1]); err != nil {
 			return
@@ -333,6 +345,7 @@ func getPageH5Mina(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	return
 }
 
+//网站链接
 func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
 	if argument.NeedHeaderInfo {
 		if argument.UrlValue == nil {
@@ -356,6 +369,7 @@ func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
 	return
 }
 
+//网站链接
 func getPageWebLinkDefault(argument *LinkArgument) (res string, err error) {
 	var (
 		mapGetPagePath = map[string]GetPagePathHandler{
@@ -450,6 +464,7 @@ func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 type LinkArgument struct {
 	HeaderInfo     *common.HeaderInfo
 	UrlValue       *url.Values
+	UrlLinkVal     map[string]interface{} //url链接中的参数
 	DataType       string
 	PageName       string
 	NeedHeaderInfo bool `json:"need_header_info"` //拼接参数时，带上header_info数据
@@ -459,14 +474,15 @@ type LinkArgument struct {
 //获取页面链接
 //headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
 func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
-	//如果返回的为url连接地址
-	if argument.LinkTypIsURL {
-		res, err = getDefault(argument)
-		return
-	}
+
 	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
 	switch argument.HeaderInfo.HTerminal {
 	case app_param.TerminalMina, app_param.TerminalH5, app_param.TerminalAndroid, app_param.TerminalIos:
+		//如果返回的为url连接地址
+		if argument.LinkTypIsURL {
+			res, err = getDefault(argument)
+			return
+		}
 		var getLinkMap = map[string]GetPageLinkHandler{
 			app_param.TerminalMina:    getPageLinkMina, //小程序
 			app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
@@ -480,6 +496,11 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 	case app_param.TerminalWeb: //网站链接
 		res, err = getPageLinkWeb(argument)
 	default:
+		//如果返回的为url连接地址
+		if argument.LinkTypIsURL {
+			res, err = getDefault(argument)
+			return
+		}
 		res, err = getDefault(argument)
 	}
 	return
