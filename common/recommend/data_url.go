@@ -49,27 +49,27 @@ var (
 	MapPageMallName = map[string]PageUrl{
 		PageNameSpu: {
 			H5:  "/#/mall/pages/detail/index",
-			Web: "/spu_{{spu_id}}.html",
+			Web: "/spu_{{.spu_id}}.html",
 		},
 		PageNameShop: {
 			H5:  "/#/shop/pages/home/index",
-			Web: "/spu_{{shop_id}}.html",
+			Web: "/spu_{{.shop_id}}.html",
 		},
 		PageNameUsr: {
 			H5:  "/#/user/pages/view/index",
-			Web: "/usr_{{user_id}}.html",
+			Web: "/usr_{{.user_id}}.html",
 		},
 		AdDataDataTypeSocialIntercourse: {
 			H5:  "/#/sns/pages/detail/index",
-			Web: "/article_{{id}}.html",
+			Web: "/article_{{.id}}.html",
 		},
 		AdDataDataTypeRing: {
 			H5:  "/#/sns/pages/ring_article/index",
-			Web: "/ring_{{id}}.html",
+			Web: "/ring_{{.id}}.html",
 		}, //圈子界面
 		AdDataDataTypeFishingSport: {
 			H5:  "/#/fishingsport/pages/detail/index",
-			Web: "/fish_sports_{{id}}.html",
+			Web: "/fish_sports_{{.id}}.html",
 		},
 		PageNamePayFinish: {
 			H5:  "/#/order/pages/pay_finish/index",
@@ -83,15 +83,20 @@ var (
 	MapPageSNsName = map[string]PageUrl{
 		PageNameHome: {
 			H5: "/#/home/index/index",
+			Web: "/home.html",
 		},
 		PageNameSns: {
 			H5: "/#/sns/pages/detail/index",
+			Web: "/article_detail_{{.id}}.html",
 		},
 		PageNameFishingSport: {
 			H5: "/#/fishingsport/pages/detail/index",
+			Web: "/fish_sports_detail_{{.id}}.html",
 		},
 		PageNameRing: {
 			H5: "/#/sns/pages/ring_article/detail/index",
+			Web: "/ring_{{.id}}.html",
+
 		},
 	}
 	MapPageUserShop = map[string]PageUrl{
