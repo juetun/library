@@ -236,7 +236,11 @@ func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) 
 		}
 
 	}
-	res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
+	if len(*argument.UrlValue) != 0 {
+		res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
+	} else {
+		res = stringValue
+	}
 	return
 }
 
