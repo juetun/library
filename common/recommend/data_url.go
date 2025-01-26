@@ -82,21 +82,20 @@ var (
 	}
 	MapPageSNsName = map[string]PageUrl{
 		PageNameHome: {
-			H5: "/#/home/index/index",
+			H5:  "/#/home/index/index",
 			Web: "/home.html",
 		},
 		PageNameSns: {
-			H5: "/#/sns/pages/detail/index",
+			H5:  "/#/sns/pages/detail/index",
 			Web: "/article_detail_{{.id}}.html",
 		},
 		PageNameFishingSport: {
-			H5: "/#/fishingsport/pages/detail/index",
+			H5:  "/#/fishingsport/pages/detail/index",
 			Web: "/fish_sports_detail_{{.id}}.html",
 		},
 		PageNameRing: {
-			H5: "/#/sns/pages/ring_article/detail/index",
+			H5:  "/#/sns/pages/ring_article/detail/index",
 			Web: "/ring_{{.id}}.html",
-
 		},
 	}
 	MapPageUserShop = map[string]PageUrl{
@@ -386,6 +385,7 @@ func getPageWebLinkDefault(argument *LinkArgument) (res string, err error) {
 			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
 			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
 			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
+			AdDataDataTypeRing:              getPageSNSPathByPageName,
 			AdDataDataTypeOther:             getPageSpuPathByPageName,
 		}
 
