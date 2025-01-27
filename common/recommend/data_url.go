@@ -53,7 +53,7 @@ var (
 		},
 		PageNameShop: {
 			H5:  "/#/shop/pages/home/index",
-			Web: "/spu_{{.shop_id}}.html",
+			Web: "/shop_{{.shop_id}}.html",
 		},
 		PageNameUsr: {
 			H5:  "/#/user/pages/view/index",

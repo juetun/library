@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
+	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/juetun/library/common/plugins_lib"
 	"github.com/juetun/library/common/recommend"
@@ -256,13 +257,32 @@ func GetShopHref(headerInfo *common.HeaderInfo, urlValue *url.Values) (res inter
 	if urlValue == nil {
 		urlValue = &url.Values{}
 	}
-	res, err = recommend.GetPageLink(
-		&recommend.LinkArgument{
+	var linkArgument *recommend.LinkArgument
+	var shopId = urlValue.Get("shop_id")
+	switch headerInfo.HTerminal {
+	case app_param.TerminalWeb:
+		linkArgument = &recommend.LinkArgument{
 			HeaderInfo: headerInfo,
 			UrlValue:   urlValue,
 			DataType:   recommend.AdDataDataTypeUserShopHome,
 			PageName:   recommend.PageNameShop,
-		})
+		}
+		urlValue.Del("shop_id")
+		if linkArgument.UrlLinkVal == nil {
+			linkArgument.UrlLinkVal = make(map[string]interface{}, 5)
+		}
+		linkArgument.UrlLinkVal["shop_id"] = shopId
+	default:
+		urlValue.Set("shop_id", shopId)
+		linkArgument = &recommend.LinkArgument{
+			HeaderInfo: headerInfo,
+			UrlValue:   urlValue,
+			DataType:   recommend.AdDataDataTypeUserShopHome,
+			PageName:   recommend.PageNameShop,
+		}
+	}
+
+	res, err = recommend.GetPageLink(linkArgument)
 	return
 }
 
