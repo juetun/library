@@ -18,6 +18,7 @@ type (
 		Context           *base.Context
 		GetDataTypeCommon base.GetDataTypeCommon `json:"common"`
 		DataTypes         string                 `json:"data_types"`
+		UserHID           int64                  `json:"user_hid"`
 		HeaderInfoString  string                 `json:"header_info_string"`
 	}
 	ArgumentGetBizDataItem struct {
@@ -172,28 +173,25 @@ func (r *GetBizData) GetFromApplication(handlerOp DataStructArguments, argumentI
 	//args url.Values, appName, URI string, method string
 	//.OrgParams(), handlerOp.AppName, handlerOp.URI, handlerOp.Method
 	res = map[string]*DataItem{}
-
 	if handlerOp.AppName == "" {
 		err = fmt.Errorf("请选择查询数据的应用")
 		return
 	}
 	var (
-		urlValue    url.Values
-		requestBody []byte
+		urlValue, requestBody = handlerOp.OrgParams(argumentIt)
+		params                = rpc.RequestOptions{
+			Context:     r.Context,
+			Method:      handlerOp.Method,
+			AppName:     handlerOp.AppName,
+			URI:         handlerOp.URI,
+			Value:       urlValue,
+			PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+			Header:      http.Header{},
+			BodyJson:    requestBody,
+		}
 	)
-	urlValue, requestBody = handlerOp.OrgParams(argumentIt)
-	params := rpc.RequestOptions{
-		Context:     r.Context,
-		Method:      handlerOp.Method,
-		AppName:     handlerOp.AppName,
-		URI:         handlerOp.URI,
-		Value:       urlValue,
-		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
-		Header:      http.Header{},
-		BodyJson:    requestBody,
-	}
-
 	params.Header.Set(app_obj.HttpHeaderInfo, r.HeaderInfoString)
+	params.Header.Set(app_obj.HttpUserHid, fmt.Sprintf("%v", r.UserHID))
 	httpRpc := rpc.NewHttpRpc(&params)
 	req := httpRpc.Send()
 
