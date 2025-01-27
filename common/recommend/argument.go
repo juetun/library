@@ -31,6 +31,8 @@ type (
 	ArgDataBySceneItem struct {
 		Scene      string                 `json:"scene,omitempty" form:"scene"`
 		SceneId    int64                  `json:"scene_id,omitempty" form:"scene_id"`
+		NowType    string                 `json:"now_type,omitempty" form:"now_type"`
+		NowId      string                 `json:"now_id,omitempty" form:"now_id"`
 		Parameters map[string]interface{} `json:"parameters" form:"parameters"`
 		response.PageQuery
 	}
