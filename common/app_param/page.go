@@ -7,22 +7,28 @@ import (
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
+	"net/url"
 	"strings"
 )
 
-const(
-	PageNeedUserYes bool=true
+const (
+	PageNeedUserYes bool = true
 )
+
 type PageCommonParams struct {
 	City             string          `json:"city" form:"city"`
 	Cate             string          `json:"cate" form:"cate"`
+	UrlValues        url.Values      `json:"-"`
 	HeaderInfoString string          `json:"-" form:"-"`
 	TimeNow          base.TimeNormal `json:"" form:"-"`
 	common.HeaderInfo
 	RequestUser
 }
 
-func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err error) {
+func (r *PageCommonParams) Default(c *base.Context, addExtendParameters map[string]string, needUsers ...bool) (err error) {
+	if err = r.requestQuery(c.GinContext, addExtendParameters); err != nil {
+		return
+	}
 	if r.TimeNow.IsZero() {
 		r.TimeNow = base.GetNowTimeNormal()
 	}
@@ -33,6 +39,7 @@ func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err erro
 	if r.HeaderInfo.HApp == "" {
 		r.HeaderInfo.HApp = HTerminal
 	}
+
 	switch len(needUsers) {
 	case 1:
 		r.City = r.GetCityCode(c.GinContext)
@@ -54,6 +61,17 @@ func (r *PageCommonParams) Default(c *base.Context, needUsers ...bool) (err erro
 	}
 	if r.HeaderInfoString, err = r.InitWebHeaderInfo(r.HeaderInfo, c.GinContext); err != nil {
 		return
+	}
+	return
+}
+
+func (r *PageCommonParams)requestQuery(c *gin.Context, mapParameters map[string]string) (err error) {
+	parsedURL, _ := url.Parse(c.Request.RequestURI) // 解析基础URL为url.URL对象
+	r.UrlValues = parsedURL.Query()                 // 获取query对象，类型为url.Values
+	if mapParameters != nil {
+		for key, value := range mapParameters {
+			r.UrlValues.Set(key, value)
+		}
 	}
 	return
 }
