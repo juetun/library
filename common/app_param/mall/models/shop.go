@@ -264,7 +264,7 @@ func GetShopHref(headerInfo *common.HeaderInfo, urlValue *url.Values) (res inter
 		linkArgument = &recommend.LinkArgument{
 			HeaderInfo: headerInfo,
 			UrlValue:   urlValue,
-			DataType:   recommend.AdDataDataTypeUserShopHome,
+			DataType:   recommend.AdDataDataTypeSpu,
 			PageName:   recommend.PageNameShop,
 		}
 		urlValue.Del("shop_id")
@@ -277,7 +277,7 @@ func GetShopHref(headerInfo *common.HeaderInfo, urlValue *url.Values) (res inter
 		linkArgument = &recommend.LinkArgument{
 			HeaderInfo: headerInfo,
 			UrlValue:   urlValue,
-			DataType:   recommend.AdDataDataTypeUserShopHome,
+			DataType:   recommend.AdDataDataTypeSpu,
 			PageName:   recommend.PageNameShop,
 		}
 	}
