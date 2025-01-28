@@ -518,20 +518,19 @@ func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
 func GetUserHref(info *common.HeaderInfo, urlV url.Values) (link interface{}, err error) {
 
 	var (
-		urlValue     = url.Values{}
 		linkArgument *LinkArgument
 	)
 
 	switch info.HTerminal {
 	case app_param.TerminalWeb:
-		uid := urlValue.Get("uid")
+		uid := urlV.Get("uid")
 		linkArgument = &LinkArgument{
 			HeaderInfo: info,
 			UrlValue:   &urlV,
 			DataType:   AdDataDataTypeUser,
 			PageName:   PageNameUsr,
 		}
-		urlValue.Del("uid")
+		urlV.Del("uid")
 		if linkArgument.UrlLinkVal == nil {
 			linkArgument.UrlLinkVal = make(map[string]interface{}, 5)
 		}
