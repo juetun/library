@@ -204,6 +204,7 @@ func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) 
 		stringValue  string
 		urlValue1    = url.Values{}
 		paramsDivide = "?"
+		dtp          string
 	)
 
 	if tmp, ok := MapDataTypeBiz[argument.DataType]; ok {
@@ -216,9 +217,11 @@ func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) 
 				stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
 			} else {
 				stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
+				dtp = "1"
 			}
 		} else {
 			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
+			dtp = "2"
 		}
 	}
 	dataSlice := strings.Split(stringValue, paramsDivide)
@@ -235,6 +238,9 @@ func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) 
 			}
 		}
 
+	}
+	if dtp != "" {
+		argument.UrlValue.Set("ldtp", dtp)
 	}
 	if len(*argument.UrlValue) != 0 {
 		res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
