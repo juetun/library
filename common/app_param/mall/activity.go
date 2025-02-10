@@ -14,7 +14,7 @@ import (
 type (
 	//商品活动
 	ArgPlatActivityByIds struct {
-		base.ArgGetByNumberIds
+		base.ArgGetByStringIds
 	}
 	PlatIntranetActivity struct {
 		Id           int64            `json:"id"`
