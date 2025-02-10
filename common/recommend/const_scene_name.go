@@ -92,6 +92,10 @@ var (
 			Value: AdDataDataTypeSpu,
 		},
 		{
+			Label: "平台活动",
+			Value: AdDataDataTypePlatActivity,
+		},
+		{
 			Label: "社交",
 			Value: AdDataDataTypeSocialIntercourse,
 		},
