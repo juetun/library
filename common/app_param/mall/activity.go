@@ -35,7 +35,7 @@ func (r *ArgPlatActivityByIds) Default(ctx *base.Context) (err error) {
 }
 
 //获取平台活动信息
-func GetPlatActivity(ctx *base.Context, args *ArgPlatActivityByIds) (res PlatIntranetActivity, err error) {
+func GetPlatActivity(ctx *base.Context, args *ArgPlatActivityByIds) (res map[string]*PlatIntranetActivity, err error) {
 	if len(args.Ids) == 0 {
 		return
 	}
@@ -68,9 +68,9 @@ func GetPlatActivity(ctx *base.Context, args *ArgPlatActivityByIds) (res PlatInt
 	}
 
 	var resResult struct {
-		Code int                  `json:"code"`
-		Data PlatIntranetActivity `json:"data"`
-		Msg  string               `json:"message"`
+		Code int                              `json:"code"`
+		Data map[string]*PlatIntranetActivity `json:"data"`
+		Msg  string                           `json:"message"`
 	}
 	if err = json.Unmarshal(body, &resResult); err != nil {
 		return
@@ -80,6 +80,5 @@ func GetPlatActivity(ctx *base.Context, args *ArgPlatActivityByIds) (res PlatInt
 		return
 	}
 	res = resResult.Data
-
 	return
 }
