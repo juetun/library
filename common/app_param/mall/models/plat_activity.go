@@ -118,11 +118,33 @@ type (
 		OverTime     *base.TimeNormal `json:"over_time"`
 	}
 
-
 	OtherAttrValue struct {
 		Price string `json:"price"` //价格
 	}
 )
+
+//func (r *ResultAdminProductListItem) AddTitleTags(activity *mall.PlatIntranetActivity, timeNow time.Time) {
+func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time, titleTags *TitleTags) {
+	if activity == nil || activity.Id == 0 {
+		return
+	}
+	if !activity.WarmUpTime.IsZero() && !activity.StartTime.Equal(activity.WarmUpTime.Time) {
+		if activity.WarmUpTime.Before(timeNow) && activity.StartTime.After(timeNow) { //预热期
+			*titleTags = append(*titleTags, &PageTag{Label: "活动预热", Plain: true, TextColor: "#ff9900", Color: "#ff9900"})
+			return
+		}
+	}
+	if activity.StartTime.Before(timeNow) && activity.OverTime.After(timeNow) { //活动进行中
+		*titleTags = append(*titleTags, &PageTag{Label: "活动中", Plain: true, TextColor: "#ed4014", Color: "#ed4014"})
+		return
+	}
+	if activity.OverTime.Before(timeNow) {
+		*titleTags = append(*titleTags, &PageTag{Label: "活动结束", Plain: true, TextColor: "#a0d911", Color: "#a0d911"})
+		return
+	}
+	*titleTags = append(*titleTags, &PageTag{Label: "活动未开始", Plain: true, TextColor: "#e8eaec", Color: "#e8eaec"})
+	return
+}
 
 func (r *PlatActivity) GetOtherAttr() (otherAttrValue *OtherAttrValue, err error) {
 	otherAttrValue = &OtherAttrValue{}
@@ -161,17 +183,12 @@ func (r *PlatActivity) InitOtherAttr(price string, otherAttrValues ...*OtherAttr
 	return
 }
 
-
 func (r *OtherAttrValue) Default() (err error) {
 	if r.Price == "" {
 		r.Price = "0.00"
 	}
 	return
 }
-
-
-
-
 
 func (r *ArgPlatActivityByIds) Default(ctx *base.Context) (err error) {
 
@@ -212,9 +229,9 @@ func GetPlatActivity(ctx *base.Context, args *ArgPlatActivityByIds) (res map[str
 	}
 
 	var resResult struct {
-		Code int                              `json:"code"`
+		Code int                      `json:"code"`
 		Data map[string]*PlatActivity `json:"data"`
-		Msg  string                           `json:"message"`
+		Msg  string                   `json:"message"`
 	}
 	if err = json.Unmarshal(body, &resResult); err != nil {
 		return

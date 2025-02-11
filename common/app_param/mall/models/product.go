@@ -301,6 +301,8 @@ type (
 
 	PageTag struct {
 		Label     string `json:"label"`
+		Plain     bool   `json:"plain"`
+		TextColor string `json:"text_color"`
 		Closable  bool   `json:"closable"`  //标签是否可以关闭
 		Checkable bool   `json:"checkable"` //标签是否可以选择
 		Checked   bool   `json:"checked"`   //标签的选中状态
@@ -309,8 +311,7 @@ type (
 		name      string `json:"name"`      //	当前标签的名称，使用 v-for，并支持关闭时，会比较有用	String | Number	-
 		Size      string `json:"size"`      // large、medium、default
 	}
-
-
+	TitleTags []*PageTag
 )
 
 func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
@@ -555,11 +556,11 @@ func (r *Product) GetProductHref(headerInfo *common.HeaderInfo) (res interface{}
 	var vals = &url.Values{}
 	vals.Set("id", r.ProductID)
 	res, err = recommend.GetPageLink(&recommend.LinkArgument{
-			HeaderInfo: headerInfo,
-			UrlValue:   vals,
-			DataType:   recommend.AdDataDataTypeSpu,
-			PageName:   recommend.PageNameSpu,
-		})
+		HeaderInfo: headerInfo,
+		UrlValue:   vals,
+		DataType:   recommend.AdDataDataTypeSpu,
+		PageName:   recommend.PageNameSpu,
+	})
 	return
 }
 
