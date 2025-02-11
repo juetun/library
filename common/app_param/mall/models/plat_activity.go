@@ -24,6 +24,7 @@ const (
 	PlatActivityStatusInit                        //初始化中
 	PlatActivityStatusWaiting                     //待上架
 	PlatActivityStatusDelete                      //已删除
+	PlatActivityStatusPre                         //活动预热中
 )
 
 var (
@@ -59,6 +60,10 @@ var (
 		{
 			Value: PlatActivityStatusDelete,
 			Label: "已删除",
+		},
+		{
+			Value: PlatActivityStatusPre,
+			Label: "预热中",
 		},
 	}
 	SlicePlatActivityDataType = base.ModelItemOptions{
