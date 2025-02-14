@@ -20,6 +20,9 @@ type (
 		ThumbnailURL string `json:"thumbnail_url"`
 		ShowLevel    uint8  `json:"show_level"`
 		IsRecommend  uint8  `json:"is_recommend"` //是否推荐圈子
+		Key          string `json:"key,omitempty"`
+		PingYin      string `json:"ping_yin,omitempty"`
+		PingYinFirst string `json:"ping_yin_first,omitempty"`
 		Status       int8   `json:"status,omitempty"`
 		UserHid      int64  `json:"user_hid"`
 	}
