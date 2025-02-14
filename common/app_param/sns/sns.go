@@ -23,6 +23,7 @@ type (
 		Key          string `json:"key,omitempty"`
 		PingYin      string `json:"ping_yin,omitempty"`
 		PingYinFirst string `json:"ping_yin_first,omitempty"`
+		Description  string `json:"description"`
 		Status       int8   `json:"status,omitempty"`
 		UserHid      int64  `json:"user_hid"`
 	}
