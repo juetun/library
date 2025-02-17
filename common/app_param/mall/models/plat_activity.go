@@ -124,25 +124,34 @@ type (
 )
 
 //func (r *ResultAdminProductListItem) AddTitleTags(activity *mall.PlatIntranetActivity, timeNow time.Time) {
-func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time, titleTags *TitleTags) {
+func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time, titleTags *TitleTags) (label string, status uint8) {
+
 	if activity == nil || activity.Id == 0 {
 		return
 	}
 	if !activity.WarmUpTime.IsZero() && !activity.StartTime.Equal(activity.WarmUpTime.Time) {
 		if activity.WarmUpTime.Before(timeNow) && activity.StartTime.After(timeNow) { //预热期
 			*titleTags = append(*titleTags, &PageTag{Label: "活动预热", Plain: true, TextColor: "#ff9900", Color: "#ff9900"})
+			label = "活动预热"
+			status = PlatActivityStatusPre
 			return
 		}
 	}
 	if activity.StartTime.Before(timeNow) && activity.OverTime.After(timeNow) { //活动进行中
 		*titleTags = append(*titleTags, &PageTag{Label: "活动中", Plain: true, TextColor: "#ed4014", Color: "#ed4014"})
+		label = "活动中"
+		status = PlatActivityStatusPre
 		return
 	}
 	if activity.OverTime.Before(timeNow) {
 		*titleTags = append(*titleTags, &PageTag{Label: "活动结束", Plain: true, TextColor: "#a0d911", Color: "#a0d911"})
+		label = "活动结束"
+		status = PlatActivityStatusLapse
 		return
 	}
+	label = "活动未开始"
 	*titleTags = append(*titleTags, &PageTag{Label: "活动未开始", Plain: true, TextColor: "#e8eaec", Color: "#e8eaec"})
+	status = PlatActivityWaitingStart
 	return
 }
 
