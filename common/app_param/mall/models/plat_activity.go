@@ -123,34 +123,6 @@ type (
 	}
 )
 
-//func (r *ResultAdminProductListItem) AddTitleTags(activity *mall.PlatIntranetActivity, timeNow time.Time) {
-func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time) (label string, status uint8) {
-
-	if activity == nil || activity.Id == 0 {
-		return
-	}
-	if !activity.WarmUpTime.IsZero() && !activity.StartTime.Equal(activity.WarmUpTime.Time) {
-		if activity.WarmUpTime.Before(timeNow) && activity.StartTime.After(timeNow) { //预热期
-			label = "活动预热"
-			status = PlatActivityStatusPre
-			return
-		}
-	}
-	if activity.StartTime.Before(timeNow) && activity.OverTime.After(timeNow) { //活动进行中
-		label = "活动中"
-		status = PlatActivityStatusPre
-		return
-	}
-	if activity.OverTime.Before(timeNow) {
-		label = "活动结束"
-		status = PlatActivityStatusLapse
-		return
-	}
-	label = "活动未开始"
-	status = PlatActivityWaitingStart
-	return
-}
-
 func (r *PlatActivity) GetOtherAttr() (otherAttrValue *OtherAttrValue, err error) {
 	otherAttrValue = &OtherAttrValue{}
 	defer func() {
