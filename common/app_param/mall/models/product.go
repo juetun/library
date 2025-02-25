@@ -60,10 +60,25 @@ const (
 	FreightTypeElectronic                       //电子凭证
 )
 
+const (
+	SpuHaveGiftYes uint8 = iota + 1
+	SpuHaveGiftNo
+)
+
 //定金预售最多可延迟支付时间的范围
 const DownPayDelayPayLimit = 5 * time.Minute
 
 var (
+	SliceSpuHaveGift = base.ModelItemOptions{
+		{
+			Value: SpuHaveGiftYes,
+			Label: "有赠品",
+		},
+		{
+			Value: SpuHaveGiftNo,
+			Label: "无赠品",
+		},
+	}
 	SliceFreightType = base.ModelItemOptions{
 		{
 			Value: FreightTypeExpressDelivery,
@@ -273,6 +288,8 @@ type (
 		RelateBuyCount  int64                          `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
 		RelateBuyAMount string                         `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
 		SettleType      uint8                          `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
+		JoinActivityId  string                         `gorm:"column:join_activity_id;not null;type: varchar(80);default:'';comment:加入活动的活动ID"   json:"join_activity_id,omitempty"`
+		HaveGift        uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:结算方式 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
 		FlagTester      uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		CreatedAt       base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		UpdatedAt       base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
@@ -365,6 +382,9 @@ func (r *Product) DefaultBeforeAdd() {
 	}
 	if r.Status == 0 || r.Status == ProductStatusManuscript {
 		r.Status = ProductStatusInit
+	}
+	if r.HaveGift == 0 {
+		r.HaveGift = SpuHaveGiftNo
 	}
 }
 
@@ -587,6 +607,20 @@ func (r *Product) ParseRelateType() (res string) {
 	var ok bool
 	MapRelateType, _ := SliceRelateType.GetMapAsKeyUint8()
 	if res, ok = MapRelateType[r.RelateType]; ok {
+		return
+	}
+	return
+}
+
+// ParseRelateType 是否有赠品
+func (r *Product) ParseSpuHaveGifts() (res string) {
+	return ParseSpuHaveGifts(r.HaveGift)
+}
+
+func ParseSpuHaveGifts(haveGift uint8) (res string) {
+	var ok bool
+	MapRelateType, _ := SliceSpuHaveGift.GetMapAsKeyUint8()
+	if res, ok = MapRelateType[haveGift]; ok {
 		return
 	}
 	return
