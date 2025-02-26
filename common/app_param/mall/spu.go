@@ -45,8 +45,8 @@ type (
 		SkuProperty []*Property               `json:"sku_property"` //sku属性
 		SkuRelate   *models.SkuPropertyRelate `json:"sku_relate"`
 		//SkuStock    *models.SkuStock       `json:"sku_stock"`    //库存数据
-		Stock uint64            `json:"stock"`
-		Gifts []*models.SkuGift `json:"gifts"` //赠品数据
+		Stock uint64                 `json:"stock"`
+		Gifts []*models.SkuGiftModel `json:"gifts"` //赠品数据
 	}
 	ArgGetSpuDataWithSpuId struct {
 		ArgGetByStringIds *base.ArgGetByStringIds `json:"spu_id_info" form:"spu_id_info"`
@@ -182,8 +182,6 @@ func (r *ArgGetSpuDataWithSpuId) GetJsonByte() (res []byte, err error) {
 	return
 }
 
-
-
 func GetSpusDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgGetSpuDataWithSpuId) (res map[string]*SpuData, err error) {
 	arg := url.Values{}
 	params := rpc.RequestOptions{
@@ -227,8 +225,6 @@ func GetSpusDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgGetSpuDataWithSp
 	return
 }
 
-
-
 //商品详情页数据
 func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgSpuDetail) (res ResultSpuDetail, err error) {
 	arg := url.Values{}
@@ -245,7 +241,7 @@ func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgSpuDetail) (
 	if ctx.GinContext != nil {
 		params.Header.Set(app_obj.HttpHeaderInfo, ctx.GinContext.GetHeader(app_obj.HttpHeaderInfo))
 	}
-	if 	params.BodyJson,err=json.Marshal(spuIds);err!=nil{
+	if params.BodyJson, err = json.Marshal(spuIds); err != nil {
 		return
 	}
 
@@ -260,9 +256,9 @@ func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgSpuDetail) (
 	}
 
 	var resResult struct {
-		Code int                 `json:"code"`
+		Code int             `json:"code"`
 		Data ResultSpuDetail `json:"data"`
-		Msg  string              `json:"message"`
+		Msg  string          `json:"message"`
 	}
 	if err = json.Unmarshal(body, &resResult); err != nil {
 		return
@@ -274,7 +270,6 @@ func GetSpusPageDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgSpuDetail) (
 	res = resResult.Data
 	return
 }
-
 
 //根据SpuId获取Spu相关信息（sku spu spu详情 赠品）
 //Param skuDataType 获取SKU相关信息的类型取值范围

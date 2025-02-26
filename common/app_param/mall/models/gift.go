@@ -44,6 +44,17 @@ type (
 		DeletedAt   *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	SkuGiftCache []*SkuGift
+	SkuGiftModel struct {
+		SkuGift
+		GiftSkuImg   string `json:"gift_sku_img"`   //赠品的图片链接
+		GiftSkuTitle string `json:"gift_sku_title"` //赠品的标题
+	}
+	SkuGiftsInfo struct {
+		Src         string `json:"src"`           //赠品的封面图链接
+		Tip         string `json:"tip"`           //赠品名称
+		SkuId       string `json:"sku_id"`        //赠品的商品skuId
+		SkuSrcPrice string `json:"sku_src_price"` //赠品的商品原价
+	}
 )
 
 func (r *SkuGiftCache) UnmarshalBinary(data []byte) (err error) {
