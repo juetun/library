@@ -119,10 +119,12 @@ type (
 		Value interface{} `json:"value"`
 	}
 	DetailShop struct {
-		ShopId      int64       `json:"shop_id"`
-		ShopName    string      `json:"shop_name"`
-		ShopLogoUrl string      `json:"shop_logo_url"`
-		ShopHref    interface{} `json:"shop_href"`
+		ShopId            int64       `json:"shop_id"`
+		ShopName          string      `json:"shop_name"`
+		ShopLogoUrl       string      `json:"shop_logo_url"`
+		ShopHref          interface{} `json:"shop_href"`
+		ShopContact       string      `json:"contact"`        //联系人
+		ShopContactMobile string      `json:"contact_mobile"` //联系方式
 	}
 	DetailRelate struct {
 		RelateType      uint8  `json:"relate_type"`
