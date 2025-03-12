@@ -51,6 +51,7 @@ func (r *StockOperateResultItem) SetStockOperateItem(data *StockOperateItem) {
 	r.SkuId = data.SkuId
 	r.SpuId = data.SpuId
 	r.Num = data.Num
+	r.SrcPk = data.SrcPk
 	r.ActualityNum = data.ActualityNum
 	r.NotForce = data.NotForce
 	r.ActType = data.ActType
