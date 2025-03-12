@@ -71,11 +71,16 @@ type (
 		ProvideSaleCode string          `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
 		OrderSrcChannel string          `json:"order_src_channel" form:"order_src_channel"` //订单来源渠道
 		OrderSrcLoc     string          `json:"order_src_loc" form:"order_src_loc"`         //订单来源展示坑位
+		Gifts           []*CartGiftInfo `json:"gifts"`                                      //赠品信息
 		Link            interface{}     `json:"link"`                                       //商品链接
 		SaleOnlineTime  base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
 		SaleOverTime    base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
 		FinalStartTime  base.TimeNormal `json:"final_start_time" form:"final_start_time"`
 		FinalOverTime   base.TimeNormal `json:"final_over_time" form:"final_over_time"`
+	}
+	CartGiftInfo struct {
+		SkuId string `json:"sku_id"`
+		Num   int64  `json:"num"`
 	}
 )
 
