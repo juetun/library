@@ -29,6 +29,7 @@ type (
 	ResultStockOperateItems []StockOperateResultItem
 
 	StockOperateResultItem struct {
+		SpuId        string `json:"spu_id"`
 		SkuId        string `json:"sku_id"`
 		Num          int64  `json:"num"`           //需要加上或减去的库存数
 		ActualityNum int64  `json:"actuality_num"` //实际扣减库存数
@@ -46,6 +47,7 @@ func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) (err error) {
 
 func (r *StockOperateResultItem) SetStockOperateItem(data *StockOperateItem) {
 	r.SkuId = data.SkuId
+	r.SpuId = data.SpuId
 	r.Num = data.Num
 	r.ActualityNum = data.ActualityNum
 	r.NotForce = data.NotForce
