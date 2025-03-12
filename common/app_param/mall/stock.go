@@ -8,6 +8,7 @@ import (
 
 type (
 	StockOperateItem struct {
+		SpuId        string `json:"spu_id"`
 		SkuId        string `json:"sku_id_op"`
 		Num          int64  `json:"num"`          //需要加上或减去的库存数
 		ActualityNum int64  `json:"-"`            //实际扣减库存数
