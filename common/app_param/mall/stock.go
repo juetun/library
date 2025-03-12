@@ -32,6 +32,7 @@ type (
 	StockOperateResultItem struct {
 		SpuId        string `json:"spu_id"`
 		SkuId        string `json:"sku_id"`
+		SrcPk        string `json:"src_pk"`        //源SKU的PK值
 		Num          int64  `json:"num"`           //需要加上或减去的库存数
 		ActualityNum int64  `json:"actuality_num"` //实际扣减库存数
 		NotForce     bool   `json:"not_force"`     //非强制扣减或加上库存 （false-强制减库存, true-非强制减，扣到0即止 定金预售功能使用）
