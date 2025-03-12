@@ -9,6 +9,7 @@ import (
 const (
 	SkuDataTypeSku   = "sku_data"  //SKU信息
 	SkuDataTypeStock = "sku_stock" //库存
+	SkuDataTypeGift  = "sku_gift"  //SKU赠品
 	SkuUploadSkuImg  = "sku_img"   // SKU图片
 )
 

@@ -176,9 +176,17 @@ type (
 		Checked         bool                `json:"checked"`           //是否选中
 		ActType         uint8               `json:"act_type"`          //
 		SelectType      uint8               `json:"select_type"`       //订单来源
+		Gifts           []*SkuGiftsItem     `json:"gifts"`             //赠品信息
 		SortCreateTime  base.TimeNormal     `json:"-"`
 		SpecialTags     []*OrderDataItemTag `json:"special_tags"`
 		SortWeight      int64               `json:"-"`
+	}
+	SkuGiftsItem struct {
+		SkuId string `json:"sku_id"`
+		Price string `json:"price"` //赠品原价
+		Src   string `json:"src"`   //赠品图片链接
+		Tip   string `json:"tip"`   //赠品说明
+		Stock int64  `json:"stock"` //赠品SKU库存
 	}
 	OrderSkuDelivery struct {
 		PostageMark string `json:"postage_mark"` //备注
