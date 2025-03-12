@@ -55,7 +55,7 @@ func (r *StockOperateResultItem) SetStockOperateItem(data *StockOperateItem) {
 }
 
 func (r ResultStockOperateItems) Error() (err error) {
-	var msg = make([]string, len(r))
+	var msg = make([]string, 0, len(r))
 	for _, item := range r {
 		if !item.HaveError {
 			continue
