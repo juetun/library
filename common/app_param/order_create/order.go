@@ -3,6 +3,7 @@ package order_create
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param"
 	"github.com/shopspring/decimal"
 	"strconv"
 )
@@ -152,42 +153,36 @@ type (
 	}
 
 	OrderSkuItem struct {
-		CardId          string              `json:"card_id"` //购物车唯一数据ID
-		SkuName         string              `json:"sku_name"`
-		SpuId           string              `json:"spu_id"`
-		SkuId           string              `json:"sku_id"`        //购物车数据ID
-		SkuPic          string              `json:"sku_pic"`       // 图片
-		SkuStatus       int8                `json:"sku_status"`    // 商品状态
-		StatusName      string              `json:"status_name"`   // 商品状态名称 (已下架)
-		SkuSetPrice     string              `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
-		Price           string              `json:"price"`         //单价
-		PriceLabel      string              `json:"price_label"`
-		Num             int64               `json:"num"`        //商品数量
-		PriceCate       uint8               `json:"price_cate"` //定金类型当前商品类型为定金预售时1-首付款 2-尾款
-		PriceCateStr    string              `json:"price_cate_str"`
-		PriceCateName   string              `json:"price_cate_name"`
-		TotalPrice      string              `json:"total_price"`
-		SaleTypeName    string              `json:"sale_type_name"`
-		SaleType        uint8               `json:"sale_type"`
-		SkuPropertyName string              `json:"sku_property_name"` //SKU属性名
-		HaveVideo       bool                `json:"have_video"`        //是否有视频
-		Mark            string              `json:"mark"`              //商品说明（如 比着加入有无车时降价多少）
-		MarkSystem      string              `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
-		Checked         bool                `json:"checked"`           //是否选中
-		ActType         uint8               `json:"act_type"`          //
-		SelectType      uint8               `json:"select_type"`       //订单来源
-		Gifts           []*SkuGiftsItem     `json:"gifts"`             //赠品信息
-		SortCreateTime  base.TimeNormal     `json:"-"`
-		SpecialTags     []*OrderDataItemTag `json:"special_tags"`
-		SortWeight      int64               `json:"-"`
+		CardId          string                    `json:"card_id"` //购物车唯一数据ID
+		SkuName         string                    `json:"sku_name"`
+		SpuId           string                    `json:"spu_id"`
+		SkuId           string                    `json:"sku_id"`        //购物车数据ID
+		SkuPic          string                    `json:"sku_pic"`       // 图片
+		SkuStatus       int8                      `json:"sku_status"`    // 商品状态
+		StatusName      string                    `json:"status_name"`   // 商品状态名称 (已下架)
+		SkuSetPrice     string                    `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
+		Price           string                    `json:"price"`         //单价
+		PriceLabel      string                    `json:"price_label"`
+		Num             int64                     `json:"num"`        //商品数量
+		PriceCate       uint8                     `json:"price_cate"` //定金类型当前商品类型为定金预售时1-首付款 2-尾款
+		PriceCateStr    string                    `json:"price_cate_str"`
+		PriceCateName   string                    `json:"price_cate_name"`
+		TotalPrice      string                    `json:"total_price"`
+		SaleTypeName    string                    `json:"sale_type_name"`
+		SaleType        uint8                     `json:"sale_type"`
+		SkuPropertyName string                    `json:"sku_property_name"` //SKU属性名
+		HaveVideo       bool                      `json:"have_video"`        //是否有视频
+		Mark            string                    `json:"mark"`              //商品说明（如 比着加入有无车时降价多少）
+		MarkSystem      string                    `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
+		Checked         bool                      `json:"checked"`           //是否选中
+		ActType         uint8                     `json:"act_type"`          //
+		SelectType      uint8                     `json:"select_type"`       //订单来源
+		Gifts           []*app_param.SkuGiftsItem `json:"gifts"`             //赠品信息
+		SortCreateTime  base.TimeNormal           `json:"-"`
+		SpecialTags     []*OrderDataItemTag       `json:"special_tags"`
+		SortWeight      int64                     `json:"-"`
 	}
-	SkuGiftsItem struct {
-		SkuId string `json:"sku_id"`
-		Price string `json:"price"` //赠品原价
-		Src   string `json:"src"`   //赠品图片链接
-		Tip   string `json:"tip"`   //赠品说明
-		Stock int64  `json:"stock"` //赠品SKU库存
-	}
+
 	OrderSkuDelivery struct {
 		PostageMark string `json:"postage_mark"` //备注
 		Cost        string `json:"cost"`         //费用
