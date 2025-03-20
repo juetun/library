@@ -79,11 +79,11 @@ type (
 		FinalOverTime   base.TimeNormal `json:"final_over_time" form:"final_over_time"`
 	}
 	SkuGiftsItem struct {
-		SkuId string `json:"sku_id"`
-		Price string `json:"price"` //赠品原价
-		Src   string `json:"src"`   //赠品图片链接
-		Tip   string `json:"tip"`   //赠品说明
-		Stock int64  `json:"stock"` //赠品SKU库存
+		SkuId string `json:"sku_id,omitempty"`
+		Price string `json:"price,omitempty"` //赠品原价
+		Src   string `json:"src,omitempty"`   //赠品图片链接
+		Tip   string `json:"tip,omitempty"`   //赠品说明
+		Stock int64  `json:"stock,omitempty"` //赠品SKU库存
 	}
 )
 
