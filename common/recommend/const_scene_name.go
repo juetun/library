@@ -155,6 +155,7 @@ type (
 		Weight      int64            `json:"weight"`        //权重
 	}
 	ArgWriteRecommendDataList struct {
+		SceneKey   string                         `json:"scene_key"` //广告场景KEY
 		CurrentUid int64                          `json:"current_uid"`
 		Ctx        *base.Context                  `json:"-"` //上下文信息
 		List       []*ArgWriteRecommendDataSingle `json:"list"`
