@@ -551,6 +551,9 @@ func (r *OrderPreview) AmountDecr(decr string) (err error) {
 	var (
 		decimalDec decimal.Decimal
 	)
+	if decr == "" {
+		decr = "0"
+	}
 	if decimalDec, err = decimal.NewFromString(decr); err != nil {
 		return
 	}
