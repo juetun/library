@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+const (
+	StockActTypeAdd  = "add"  //添加库存
+	StockActTypeDecr = "decr" //减少库存
+)
+
 type (
 	StockOperateItem struct {
 		SpuId        string `json:"spu_id"`
