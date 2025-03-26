@@ -185,7 +185,7 @@ func (r *ArgGetSpuDataWithSpuId) GetJsonByte() (res []byte, err error) {
 }
 
 //增加或扣除库存
-func AddOrDecrStock(arg *ArgAddOrDecrStock, ctx *base.Context) (res *ResultAddOrDecrStock, err error) {
+func AddOrDecrStock(arg *ArgAddOrDecrStock, ctx *base.Context, headerString string) (res *ResultAddOrDecrStock, err error) {
 	res = &ResultAddOrDecrStock{ResultList: make([]StockOperateResultItem, 0, len(arg.SkuStockItems))}
 	var value = url.Values{}
 	ro := rpc.RequestOptions{
@@ -197,6 +197,7 @@ func AddOrDecrStock(arg *ArgAddOrDecrStock, ctx *base.Context) (res *ResultAddOr
 		Context:     ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
+	ro.Header.Set(app_obj.HttpHeaderInfo, headerString)
 	if ro.BodyJson, err = json.Marshal(arg); err != nil {
 		return
 	}
@@ -205,11 +206,11 @@ func AddOrDecrStock(arg *ArgAddOrDecrStock, ctx *base.Context) (res *ResultAddOr
 		Data *ResultAddOrDecrStock `json:"data"`
 		Msg  string                `json:"message"`
 	}{}
-	err = rpc.NewHttpRpc(&ro).
+
+	if err = rpc.NewHttpRpc(&ro).
 		Send().
 		GetBody().
-		Bind(&data).Error
-	if err != nil {
+		Bind(&data).Error; err != nil {
 		return
 	}
 	res = data.Data
