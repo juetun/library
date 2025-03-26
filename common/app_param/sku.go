@@ -2,13 +2,8 @@ package app_param
 
 import (
 	"fmt"
-	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
-	"github.com/juetun/base-wrapper/lib/plugins/rpc"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 const (
