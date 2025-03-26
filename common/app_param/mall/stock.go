@@ -1,6 +1,7 @@
 package mall
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"strings"
@@ -24,6 +25,7 @@ type (
 		HasUpCache   bool   `json:"has_up_cache"` //true-更新了缓存的数据
 	}
 	ArgAddOrDecrStock struct {
+		SkuInfoString string `json:"sku_info_string"`
 		SkuStockItems []*StockOperateItem
 	}
 
@@ -49,6 +51,14 @@ type (
 
 func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) (err error) {
 
+	if r.SkuInfoString == "" {
+		err = fmt.Errorf("请选择你要操作的SKU信息")
+		return
+	}
+
+	if err = json.Unmarshal([]byte(r.SkuInfoString), &r.SkuStockItems); err != nil {
+		return
+	}
 	return
 }
 
