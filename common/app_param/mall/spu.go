@@ -184,6 +184,38 @@ func (r *ArgGetSpuDataWithSpuId) GetJsonByte() (res []byte, err error) {
 	return
 }
 
+//增加或扣除库存
+func AddOrDecrStock(arg *ArgAddOrDecrStock, ctx *base.Context) (res *ResultAddOrDecrStock, err error) {
+	res = &ResultAddOrDecrStock{ResultList: make([]StockOperateResultItem, 0, len(arg.SkuStockItems))}
+	var value = url.Values{}
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameMall,
+		URI:         "/product/add_or_decr_stock",
+		Header:      http.Header{},
+		Value:       value,
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = json.Marshal(arg); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                   `json:"code"`
+		Data *ResultAddOrDecrStock `json:"data"`
+		Msg  string                `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
+	return
+}
+
 func GetSpusDetailDataTypeBySpuId(ctx *base.Context, spuIds *ArgGetSpuDataWithSpuId) (res map[string]*SpuData, err error) {
 	arg := url.Values{}
 	params := rpc.RequestOptions{
