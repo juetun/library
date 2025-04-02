@@ -5,7 +5,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
-	"github.com/juetun/library/common/app_param"
 	"net/http"
 	"net/url"
 )
@@ -41,7 +40,7 @@ func PublicUserMessage(arg *ArgAddUserMessage, ctx *base.Context) (resData *Resu
 	}
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
-		AppName:     app_param.AppNameNotice,
+		AppName:     AppNameNotice,
 		URI:         "/announce/add_user_message",
 		Header:      http.Header{},
 		Value:       value,
