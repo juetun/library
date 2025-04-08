@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/utils"
 	"github.com/juetun/library/common/app_param"
-	"github.com/juetun/library/common/app_param/chat_const"
 	"strconv"
 	"strings"
 	"time"
@@ -140,7 +139,7 @@ func (r *SendMsgChat) ParseSendType() (res string, err error) {
 
 func NewSendMsgChatText(text string) (res *SendMsgChat) {
 	res = &SendMsgChat{
-		ChatType:       chat_const.ChatMsgChatTypeSingle,
+		ChatType:       ChatMsgChatTypeSingle,
 		ToId:           "",
 		Content:        text,
 		IsCustomer:     false,
@@ -226,8 +225,6 @@ func SendMsgTimeNormal(timeStamp base.TimeNormal) (res SendMsgHandler) {
 	}
 }
 
-
-
 func (r *SendMsgChat) ToJson() (res string, err error) {
 	var bt []byte
 	if bt, err = json.Marshal(r); err != nil {
@@ -239,7 +236,7 @@ func (r *SendMsgChat) ToJson() (res string, err error) {
 
 func (r *SendMsgChat) Default() (err error) {
 	if r.ChatType == 0 {
-		r.ChatType = chat_const.ChatMsgChatTypeSingle
+		r.ChatType = ChatMsgChatTypeSingle
 	}
 	if r.SendType == 0 {
 		r.SendType = ChatMsgSendTypeEachOther
@@ -298,7 +295,7 @@ func (r *SendMsgChat) parseStringToUint8(value string) (res uint8) {
 }
 
 func (r *SendMsgChat) GetIsCustomer() (isCustomer bool) {
-	isCustomer = (&chat_const.ArgGetChatTokenOther{
+	isCustomer = (&ArgGetChatTokenOther{
 		FromId:   r.FromId,
 		FromType: r.FromType,
 		ToId:     r.ToId,
