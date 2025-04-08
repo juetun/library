@@ -70,8 +70,22 @@ const (
 	ClientUpdateMsg                           //更新消息
 	ClientRemoveMsg                           //删除消息
 )
+const (
+	CustomerManagerDataTypeShop     uint8 = iota + 1 //店铺实体
+	CustomerManagerDataTypePlatform                  //系统客服
+)
 
 var (
+	SliceShopEntryType = base.ModelItemOptions{
+		{
+			Label: "店铺实体",
+			Value: CustomerManagerDataTypeShop,
+		},
+		{
+			Label: "系统客服",
+			Value: CustomerManagerDataTypePlatform,
+		},
+	}
 	SliceClientReplayType = base.ModelItemOptions{
 		{
 			Value: ClientReplayTypeLoadMore,
