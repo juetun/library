@@ -1,4 +1,4 @@
-package chat
+package chat_const
 
 import (
 	"encoding/json"
@@ -18,7 +18,79 @@ const (
 	ConstChatTokenNeedAttendEachOther              //彼此关注
 )
 
+const (
+	WebsocketDataTypeBase   uint8 = iota + 1 //基础数据类型，数据连接
+	WebsocketDataTypeChat                    //聊天类型
+	WebsocketDataTypeCommon                  //通用类型
+)
+
+const (
+	//消息烈性
+	ChatMsgTypeText  = (iota + 11) * 10000 // 聊天数据类型 110000-文本
+	ChatMsgTypeImg                         // 聊天数据类型 110001-图片
+	ChatMsgTypeCard                        // 聊天数据卡片 110003-数据卡片 (如商品数据)
+	ChatMsgTypeVideo                       // 聊天数据类型 视频
+	ChatMsgTypeMusic                       //聊天数据类型 音频
+)
+const (
+	ChatMsgChatTypeSingle uint8 = iota + 1 // 单聊
+	ChatMsgChatTypeRoom                    // 群聊
+)
+const (
+	CurrentUserRoleConsole  = "console"  //官方客服
+	CurrentUserRoleCustomer = "customer" //客服
+	CurrentUserRoleUser     = "user"     //用户
+)
+
 var (
+	SliceCurrentUserRole = base.ModelItemOptions{
+		{
+			Label: "客服",
+			Value: CurrentUserRoleCustomer,
+		},
+		{
+			Label: "官方客服",
+			Value: CurrentUserRoleConsole,
+		},
+		{
+			Label: "用户",
+			Value: CurrentUserRoleUser,
+		},
+	}
+
+	SliceUserChatType = base.ModelItemOptions{
+		{
+			Value: ChatMsgChatTypeSingle,
+			Label: "单聊",
+		},
+		{
+			Value: ChatMsgChatTypeRoom,
+			Label: "群聊",
+		},
+	}
+	SliceChatMsgType = base.ModelItemOptions{
+		{
+			Label: "文本",
+			Value: ChatMsgTypeText,
+		},
+		{
+			Label: "图片",
+			Value: ChatMsgTypeImg,
+		},
+		{
+			Label: "数据卡片",
+			Value: ChatMsgTypeCard,
+		},
+		{
+			Label: "视频",
+			Value: ChatMsgTypeVideo,
+		},
+		{
+			Label: "音频",
+			Value: ChatMsgTypeMusic,
+		},
+	}
+
 	SliceChatTokenTo = base.ModelItemOptions{
 		{Label: "用户", Value: ConstChatTokenToUser},
 		{Label: "店铺", Value: ConstChatTokenToShop},
