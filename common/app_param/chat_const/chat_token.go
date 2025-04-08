@@ -42,7 +42,106 @@ const (
 	CurrentUserRoleUser     = "user"     //用户
 )
 
+const (
+	ChatMsgSendTypeEachOther uint8 = iota + 1 // 全双工 彼此发送
+	ChatMsgSendTypeFrom                       // 发送方可见
+	ChatMsgSendTypeTo                         // 接收方可见
+)
+
+const (
+	ShowLocLeft  uint8 = iota + 1 //左侧显示
+	ShowLocRight                  //右侧显示
+)
+
+const (
+	WebsocketSuccessMessage   = iota + 50001
+	WebsocketSuccess          //建立连接成功
+	WebsocketSuccessParameter //建立连接成功,发送参数参数不合法
+	WebsocketEnd              //断开连接
+	WebsocketOnlineReply      //在线回复
+	WebsocketOfflineReply     //离线回复
+	WebsocketLimit            //连接数超过限制
+	WebsocketChatList         //聊天信息列表
+	WebsocketChatDelete       //删除聊天信息
+)
+
+const (
+	ClientReplayTypeLoadMore uint8 = iota + 1 //通知客户端刷新聊天内容
+	ClientUpdateMsg                           //更新消息
+	ClientRemoveMsg                           //删除消息
+)
+
 var (
+	SliceClientReplayType = base.ModelItemOptions{
+		{
+			Value: ClientReplayTypeLoadMore,
+			Label: "加载列表中更多的数据",
+		},
+		{
+			Value: ClientUpdateMsg,
+			Label: "更新消息",
+		},
+		{
+			Value: ClientRemoveMsg,
+			Label: "移除消息",
+		},
+	}
+	SliceWebsocketStatus = base.ModelItemOptions{
+		{
+			Value: WebsocketSuccessMessage,
+			Label: "response ok",
+		},
+		{
+			Value: WebsocketSuccess,
+			Label: "connected ok",
+		},
+		{
+			Value: WebsocketSuccessParameter,
+			Label: "parameter is Invalid",
+		},
+		{
+			Value: WebsocketEnd,
+			Label: "connect close",
+		},
+		{
+			Value: WebsocketOnlineReply,
+			Label: "connect close",
+		},
+		{
+			Value: WebsocketOfflineReply,
+			Label: "connect close",
+		},
+		{
+			Value: WebsocketLimit,
+			Label: "connect expand limit", //连接数超过限制
+		},
+	}
+
+	SliceShowLoc = base.ModelItemOptions{
+		{
+			Label: "",
+			Value: ShowLocLeft,
+		},
+		{
+			Label: "",
+			Value: ShowLocRight,
+		},
+	}
+	SliceSendMsgDataType = base.ModelItemOptions{
+		{
+			Value: WebsocketDataTypeChat,
+			Label: "聊天",
+		},
+		{
+			Value: WebsocketDataTypeBase,
+			Label: "连接信息",
+		},
+		{
+			Value: WebsocketDataTypeCommon,
+			Label: "通用信息",
+		},
+	}
+
 	SliceCurrentUserRole = base.ModelItemOptions{
 		{
 			Label: "客服",
@@ -101,6 +200,20 @@ var (
 		{Label: "不关注", Value: ConstChatTokenNeedAttendNo},
 		{Label: "关注用户", Value: ConstChatTokenNeedAttendUser},
 		{Label: "彼此关注", Value: ConstChatTokenNeedAttendEachOther},
+	}
+	SliceChatMsgSendType = base.ModelItemOptions{
+		{
+			Label: "全双工",
+			Value: ChatMsgSendTypeEachOther,
+		},
+		{
+			Label: "发送方可见",
+			Value: ChatMsgSendTypeFrom,
+		},
+		{
+			Label: "接收方可见",
+			Value: ChatMsgSendTypeTo,
+		},
 	}
 )
 
