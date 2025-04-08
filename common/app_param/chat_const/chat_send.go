@@ -4,9 +4,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/base-wrapper/lib/utils"
 	"github.com/juetun/library/common/app_param"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -63,6 +67,9 @@ type (
 		SendMsgChatParam
 		TimeNow base.TimeNormal `json:"-"`
 		MsgInfo *SendMsgChat    `json:"msg_info,omitempty"`
+	}
+	ResultSendChatMessage struct {
+		Result bool `json:"result"`
 	}
 	SendMsgHandler func(sendMsg *SendMsg)
 )
@@ -301,5 +308,38 @@ func (r *SendMsgChat) GetIsCustomer() (isCustomer bool) {
 		ToId:     r.ToId,
 		ToType:   r.ToType,
 	}).GetIsCustomer()
+	return
+}
+
+//批量发送聊天记录
+func SendChatMessageBatch(ctx *base.Context, arg *ArgChatSend) (res *ResultSendChatMessage, err error) {
+	res = &ResultSendChatMessage{}
+	var value = url.Values{}
+
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameChat,
+		URI:         "/chat/send_msgs",
+		Header:      http.Header{},
+		Value:       value,
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = json.Marshal(arg); err != nil {
+		return
+	}
+	var data = struct {
+		Code int                    `json:"code"`
+		Data *ResultSendChatMessage `json:"data"`
+		Msg  string                 `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
 	return
 }
