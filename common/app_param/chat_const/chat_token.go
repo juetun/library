@@ -8,6 +8,9 @@ import (
 )
 
 const (
+	ChatConsoleUserHIdDefault = -999 //官方客服默认用户ID
+)
+const (
 	ConstChatTokenToUser uint8 = iota + 1 //用户聊天
 	ConstChatTokenToShop                  //用户-店铺
 	ConstChatTokenToRoom                  //用户-房间
