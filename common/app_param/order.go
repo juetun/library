@@ -74,6 +74,8 @@ type (
 		OrderSrcLoc     string          `json:"order_src_loc" form:"order_src_loc"`         //订单来源展示坑位
 		Gifts           []*SkuGiftsItem `json:"gifts"`                                      //赠品信息
 		Link            interface{}     `json:"link"`                                       //商品链接
+		UpdatePrice     bool            `json:"update_price" form:"update_price"`
+		FreeFreight     bool            `json:"free_freight" form:"free_freight"`
 		SaleOnlineTime  base.TimeNormal `json:"sale_online_time" form:"sale_online_time"`
 		SaleOverTime    base.TimeNormal `json:"sale_over_time" form:"sale_over_time"`
 		FinalStartTime  base.TimeNormal `json:"final_start_time" form:"final_start_time"`
