@@ -69,6 +69,7 @@ type (
 		SkuPropertyName string          `json:"sku_property_name,omitempty" form:"sku_property_name"`
 		ProvideChannel  int64           `json:"provide_channel,omitempty" form:"provide_channel"`
 		ProvideSaleCode string          `json:"provide_sale_code,omitempty" form:"provide_sale_code"`
+		JoinActivityId  string          `json:"join_act_id" form:"join_act_id"`             //加入活动的ID
 		OrderSrcChannel string          `json:"order_src_channel" form:"order_src_channel"` //订单来源渠道
 		OrderSrcLoc     string          `json:"order_src_loc" form:"order_src_loc"`         //订单来源展示坑位
 		Gifts           []*SkuGiftsItem `json:"gifts"`                                      //赠品信息
