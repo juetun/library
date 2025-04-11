@@ -47,6 +47,10 @@ type (
 		Coupons            UseCouponDataList                 `json:"coupons"`                  //优惠券信息
 		ActType            string                            `json:"act_type" form:"act_type"` //请求操作类型  update_address:更新收货地址
 		SelectType         uint8                             `json:"select_type" form:"select_type"`
+		JoinActId          string                            `json:"join_act_id" form:"join_act_id"` //参加活动的ID
+		ProvinceId         string                            `json:"province_id" form:"province_id"`
+		CityId             string                            `json:"city_id" form:"city_id"`
+		AreaId             string                            `json:"area_id" form:"area_id"`
 		TimeNow            base.TimeNormal                   `json:"time_now" form:"time_now"`
 	}
 
