@@ -166,6 +166,14 @@ func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time) (label 
 	return
 }
 
+//判断是否过期
+func (r *PlatActivity) Expire(timeNow base.TimeNormal) (res bool) {
+	if r.StartTime.After(timeNow.Time) && r.OverTime.After(timeNow.Time) {
+		res = true
+	}
+	return
+}
+
 func (r *PlatActivity) InitOtherAttr(price string, otherAttrValues ...*OtherAttrValue) (err error) {
 	var otherAttrValue *OtherAttrValue
 	if len(otherAttrValues) > 0 {
