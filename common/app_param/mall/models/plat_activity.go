@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	ActivityBeforeTime = time.Hour * 30
+	ActivityBeforeTime         = time.Hour * 30
+	PlatActivityExpireTimeDiff = 5 * time.Minute //活动停止付款的时间
 )
 
 const (
@@ -168,7 +169,7 @@ func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time) (label 
 
 //判断是否过期
 func (r *PlatActivity) Expire(timeNow base.TimeNormal) (res bool) {
-	if r.StartTime.After(timeNow.Time) && r.OverTime.After(timeNow.Time) {
+	if r.StartTime.After(timeNow.Time) && r.OverTime.Add(PlatActivityExpireTimeDiff).Before(timeNow.Time) {
 		res = true
 	}
 	return
