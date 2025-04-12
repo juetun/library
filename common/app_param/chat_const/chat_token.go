@@ -22,9 +22,9 @@ const (
 )
 
 const (
-	WebsocketDataTypeBase   uint8 = iota + 1 //基础数据类型，数据连接
-	WebsocketDataTypeChat                    //聊天类型
-	WebsocketDataTypeCommon                  //通用类型
+	WebsocketDataTypeBase    uint8 = iota + 1 //基础数据类型，数据连接
+	WebsocketDataTypeChat                     //聊天类型
+	WebsocketDataTypeCommon                   //通用类型
 )
 
 const (
@@ -157,6 +157,7 @@ var (
 			Value: WebsocketDataTypeCommon,
 			Label: "通用信息",
 		},
+
 	}
 
 	SliceCurrentUserRole = base.ModelItemOptions{

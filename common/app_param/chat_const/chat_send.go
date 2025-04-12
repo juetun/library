@@ -66,7 +66,8 @@ type (
 		SendMsgCommon
 		SendMsgChatParam
 		TimeNow base.TimeNormal `json:"-"`
-		MsgInfo *SendMsgChat    `json:"msg_info,omitempty"`
+		Content string          `json:"content,omitempty"`  //普通内容json字符串
+		MsgInfo *SendMsgChat    `json:"msg_info,omitempty"` //聊天内容信息（只限聊天场景使用）
 	}
 	ResultSendChatMessage struct {
 		Result bool `json:"result"`
