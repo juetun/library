@@ -64,11 +64,25 @@ const (
 	SpuHaveGiftYes uint8 = iota + 1
 	SpuHaveGiftNo
 )
+const (
+	SpuSupportCommentYes uint8 = iota + 1
+	SpuSupportCommentNo
+)
 
 //定金预售最多可延迟支付时间的范围
 const DownPayDelayPayLimit = 5 * time.Minute
 
 var (
+	SliceSpuSupportComment = base.ModelItemOptions{
+		{
+			Value: SpuSupportCommentYes,
+			Label: "支持",
+		},
+		{
+			Value: SpuSupportCommentNo,
+			Label: "不支持",
+		},
+	}
 	SliceSpuHaveGift = base.ModelItemOptions{
 		{
 			Value: SpuHaveGiftYes,
@@ -291,6 +305,7 @@ type (
 		JoinActivityId  string                         `gorm:"column:join_activity_id;not null;type: varchar(80);default:'';comment:加入活动的活动ID"   json:"join_activity_id,omitempty"`
 		HaveGift        uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:结算方式 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
 		FlagTester      uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
+		SupportComment  uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否评论 1-支持 2-不支持"  json:"support_comment,omitempty"`
 		CreatedAt       base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		UpdatedAt       base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		DeletedAt       *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
