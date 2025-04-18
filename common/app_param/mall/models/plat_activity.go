@@ -169,7 +169,8 @@ func AddPlatActivityTitleTags(activity *PlatActivity, timeNow time.Time) (label 
 
 //判断是否过期
 func (r *PlatActivity) Expire(timeNow base.TimeNormal) (res bool) {
-	if r.StartTime.After(timeNow.Time) && r.OverTime.Add(PlatActivityExpireTimeDiff).Before(timeNow.Time) {
+	if r.StartTime.After(timeNow.Time) ||
+		r.OverTime.Add(PlatActivityExpireTimeDiff).Before(timeNow.Time) {
 		res = true
 	}
 	return
