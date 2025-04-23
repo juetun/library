@@ -1,6 +1,7 @@
 package cache_key_mall
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/common/redis_pkg"
 	"time"
 )
@@ -21,3 +22,12 @@ var (
 		},
 	}
 )
+
+func GetCacheParamConfig(key string) (res *redis_pkg.CacheProperty, err error) {
+	var ok bool
+	if res, ok = MallCacheParamConfig[key]; ok {
+		return
+	}
+	err = fmt.Errorf("您当前未配置缓存信息(%v)", key)
+	return
+}
