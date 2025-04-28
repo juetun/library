@@ -11,6 +11,7 @@ const (
 	FullTextSpu                = "spu"       //商品
 	FullTextFishSport          = "fish_spot" //钓点
 	FullTextSns                = "sns"       //动态
+	FullTextRing               = "ring"      //圈子
 	FullTextShop               = "shop"      //店铺
 	FullTextUser               = "user"      //用户
 )
