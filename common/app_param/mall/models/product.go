@@ -345,7 +345,7 @@ type (
 		Checked   bool   `json:"checked"`   //标签的选中状态
 		Type      string `json:"type"`      //	标签的样式类型，可选值为 border、dot或不填	String	-
 		Color     string `json:"color"`     //标签颜色，预设颜色值为default、primary、success、warning、error、blue、green、red、yellow、pink、magenta、volcano、orange、gold、lime、cyan、geekblue、purple，你也可以自定义颜色值。	String	default
-		name      string `json:"name"`      //	当前标签的名称，使用 v-for，并支持关闭时，会比较有用	String | Number	-
+		Name      string `json:"name"`      //	当前标签的名称，使用 v-for，并支持关闭时，会比较有用	String | Number	-
 		Size      string `json:"size"`      // large、medium、default
 	}
 	TitleTags []*PageTag
