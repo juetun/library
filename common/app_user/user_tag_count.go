@@ -37,6 +37,7 @@ const (
 
 	//---------------------从缓存获取Tag----------------------
 	ShopTagUnReadChatCount       = "shop_chat_msg"         //未读聊天信息
+	ShopTagUnReadNoticeCount     = "shop_notice_msg"       //未读站内信息
 	ShopTagOrderWaitingSend      = "shop_send_goods"       //待发货订单数
 	ShopTagOrderWaitingSure      = "shop_refund_sure"      //退款确认
 	ShopTagOrderWaitingComplaint = "shop_refund_complaint" //订单申诉
