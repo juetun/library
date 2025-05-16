@@ -123,24 +123,25 @@ type (
 		BanPeriod         base.TimeNormal  `json:"ban_period"`
 	}
 	RequestUser struct {
-		UUserHid           int64           `json:"u_user_hid" form:"u_user_hid"`                         //用户
-		UUserMobileIndex   string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`       //手机数据存储位置
-		UUserEmailIndex    string          `json:"u_user_email_index" form:"u_user_email_index"`         //email存储位置
-		UPortrait          string          `json:"u_portrait" form:"u_portrait"`                         //头像
-		UNickName          string          `json:"u_nick_name" form:"u_nick_name"`                       //昵称
-		UUserName          string          `json:"u_user_name" form:"u_user_name"`                       //账号
-		UGender            uint8           `json:"u_gender" form:"u_gender"`                             //性别
-		UStatus            int8            `json:"u_status" form:"u_status"`                             //状态
-		UAuthStatus        int8            `json:"u_auth_status" form:"u_auth_status"`                   //认证审核状态
-		UAuthType          uint8           `json:"u_auth_type" form:"u_auth_type"`                       //认证类型
-		UScore             int             `json:"u_score" form:"u_score"`                               //积分
-		URememberToken     string          `json:"u_remember_token" form:"u_remember_token"`             //是否记住密码
-		UMsgReadTimeCursor base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"` //消息未读时刻节点
-		UShopId            int64           `json:"u_shop_id" form:"u_shop_id"`                           //店铺ID
-		UHaveDashboard     uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`             //是否有客服后台权限
-		UIsMocking         bool            `json:"uis_mocking" form:"uis_mocking"`                       //当前是否在模拟状态
-		UExists            bool            `json:"u_exists" form:"u_exists"`                             //用户是否存在
-		UDialog            string          `json:"u_dialog" form:"u_dialog"`                             //用户信息提示 如 - 用户不存在  ；用户没权限
+		UUserHid               int64           `json:"u_user_hid" form:"u_user_hid"`                           //用户
+		UUserMobileIndex       string          `json:"u_user_mobile_index" form:"u_user_mobile_index"`         //手机数据存储位置
+		UUserEmailIndex        string          `json:"u_user_email_index" form:"u_user_email_index"`           //email存储位置
+		UPortrait              string          `json:"u_portrait" form:"u_portrait"`                           //头像
+		UNickName              string          `json:"u_nick_name" form:"u_nick_name"`                         //昵称
+		UUserName              string          `json:"u_user_name" form:"u_user_name"`                         //账号
+		UGender                uint8           `json:"u_gender" form:"u_gender"`                               //性别
+		UStatus                int8            `json:"u_status" form:"u_status"`                               //状态
+		UAuthStatus            int8            `json:"u_auth_status" form:"u_auth_status"`                     //认证审核状态
+		UAuthType              uint8           `json:"u_auth_type" form:"u_auth_type"`                         //认证类型
+		UScore                 int             `json:"u_score" form:"u_score"`                                 //积分
+		URememberToken         string          `json:"u_remember_token" form:"u_remember_token"`               //是否记住密码
+		UMsgReadTimeCursor     base.TimeNormal `json:"u_msg_read_time_cursor" form:"u_msg_read_time_cursor"`   //消息未读时刻节点
+		UShopMsgReadTimeCursor base.TimeNormal `json:"us_msg_read_time_cursor" form:"us_msg_read_time_cursor"` //店铺消息未读时刻节点
+		UShopId                int64           `json:"u_shop_id" form:"u_shop_id"`                             //店铺ID
+		UHaveDashboard         uint8           `json:"u_have_dashboard" form:"u_have_dashboard"`               //是否有客服后台权限
+		UIsMocking             bool            `json:"uis_mocking" form:"uis_mocking"`                         //当前是否在模拟状态
+		UExists                bool            `json:"u_exists" form:"u_exists"`                               //用户是否存在
+		UDialog                string          `json:"u_dialog" form:"u_dialog"`                               //用户信息提示 如 - 用户不存在  ；用户没权限
 	}
 
 	User struct {
