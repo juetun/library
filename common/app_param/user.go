@@ -230,6 +230,13 @@ type (
 		MobileVerifiedAt *base.TimeNormal `json:"mobile_verified_at" gorm:"column:mobile_verified_at;not null;uniqueIndex:idx_mobile,priority:4;default:'2000-01-01 00:00:00'"`
 		IsDel            int              `json:"is_del" gorm:"column:is_del;type:tinyint(2);uniqueIndex:inx_userhid,priority:2;uniqueIndex:idx_mobile,priority:3;not null;idx_mobile,priority:1;default:0;comment:是否删除0-未删除 大于0-已删除"`
 	}
+
+	AdminUserInfo struct {
+		UserName string `json:"user_name"`
+		IsSupper uint8  `json:"is_supper"`
+		UserHid  int64  `json:"user_hid"`
+	}
+	AdminUserInfoMap map[int64]*AdminUserInfo
 )
 
 //根据token 获取当前登录用户信息
@@ -449,6 +456,40 @@ func GetResultUserByUid(userId string, ctx *base.Context, dataTypes ...string) (
 		Code int         `json:"code"`
 		Data *ResultUser `json:"data"`
 		Msg  string      `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
+	return
+}
+
+//根据用户ID获取客服后台用户信息
+func GetAdminUserByUIds(ctx *base.Context, userId ...string) (res AdminUserInfoMap, err error) {
+	res = make(map[int64]*AdminUserInfo, len(userId))
+	if len(userId) == 0 {
+		return
+	}
+	var value = url.Values{}
+
+	value.Set("user_hid", strings.Join(userId, ","))
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     AppNameAdmin,
+		URI:         "/user/get_admin_user_by_ids",
+		Header:      http.Header{},
+		Value:       value,
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	var data = struct {
+		Code int              `json:"code"`
+		Data AdminUserInfoMap `json:"data"`
+		Msg  string           `json:"message"`
 	}{}
 	err = rpc.NewHttpRpc(&ro).
 		Send().
