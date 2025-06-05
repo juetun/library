@@ -467,37 +467,3 @@ func GetResultUserByUid(userId string, ctx *base.Context, dataTypes ...string) (
 	res = data.Data
 	return
 }
-
-//根据用户ID获取客服后台用户信息
-func GetAdminUserByUIds(ctx *base.Context, userId ...string) (res AdminUserInfoMap, err error) {
-	res = make(map[int64]*AdminUserInfo, len(userId))
-	if len(userId) == 0 {
-		return
-	}
-	var value = url.Values{}
-
-	value.Set("user_hid", strings.Join(userId, ","))
-	ro := rpc.RequestOptions{
-		Method:      http.MethodPost,
-		AppName:     AppNameAdmin,
-		URI:         "/user/get_admin_user_by_ids",
-		Header:      http.Header{},
-		Value:       value,
-		Context:     ctx,
-		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
-	}
-	var data = struct {
-		Code int              `json:"code"`
-		Data AdminUserInfoMap `json:"data"`
-		Msg  string           `json:"message"`
-	}{}
-	err = rpc.NewHttpRpc(&ro).
-		Send().
-		GetBody().
-		Bind(&data).Error
-	if err != nil {
-		return
-	}
-	res = data.Data
-	return
-}
