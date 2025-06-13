@@ -73,9 +73,17 @@ type (
 	}
 )
 
+func (r *ArgUpdateByUIds) Default(ctx *base.Context) (err error) {
+	return
+}
+
 //根据用户ID获取用户信息
 func UpdateUserByUserHIds(ctx *base.Context, args *ArgUpdateByUIds) (res *ResultUpdateByUIds, err error) {
 	res = &ResultUpdateByUIds{}
+	if len(args.UserInfos) == 0 {
+		res.Result = true
+		return
+	}
 	var value = url.Values{}
 
 	ro := rpc.RequestOptions{
