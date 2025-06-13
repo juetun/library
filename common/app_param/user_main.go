@@ -15,16 +15,16 @@ const (
 	UserMainStatusFailure = const_apply.ApplyStatusFailure  // 用户审核失败
 	UserMainStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 
-	UserMainGenderMale   = 0 // 男性
-	UserMainGenderFeMale = 1 // 女性
-
 	UserMainPortraitStatusInit    = const_apply.ApplyStatusInit     // 头像初始化
 	UserMainPortraitStatusOk      = const_apply.ApplyStatusOk       // 审核通过
 	UserMainPortraitStatusInvalid = const_apply.ApplyStatusInvalid  // 已失效
 	UserMainPortraitStatusFailure = const_apply.ApplyStatusFailure  // 审核失败
 	UserMainPortraitStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 )
-
+const (
+	UserMainGenderMale   uint8 = iota + 1 // 男性
+	UserMainGenderFeMale                  // 女性
+)
 const (
 	UserMainAuthTypeGeneral uint8 = iota //个人用户
 	UserMainAuthTypeCompany              //企业用户
@@ -69,7 +69,7 @@ type (
 		PortraitStatus   int8             `gorm:"column:portrait_status;not null;type:varchar(10);default:0;comment:用户审核状态从右向左每位依次昵称-头像;" json:"portrait_status"`
 		NickName         string           `gorm:"column:nick_name;not null;type:varchar(30);default:'';comment:昵称" json:"nick_name"`
 		UserName         string           `gorm:"column:user_name;not null;size:50;default:'';comment:用户名" json:"user_name" `
-		Gender           uint8            `gorm:"column:gender;not null;type:tinyint(1);default:0;comment:性别 0-男 1-女" json:"gender"`
+		Gender           uint8            `gorm:"column:gender;not null;type:tinyint(1);default:1;comment:性别 1-男 2-女" json:"gender"`
 		Status           int8             `gorm:"column:status;not null;type:tinyint(1);default:0;comment:状态 0-可用 1-不可用" json:"status"`
 		Score            int              `gorm:"column:score;not null;type:int(10);default:0;comment:用户积分" json:"score"`
 		Balance          float64          `gorm:"column:balance;not null;type:decimal(10,2);default:0;comment:用户账户余额" json:"balance"`
