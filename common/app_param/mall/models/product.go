@@ -315,6 +315,9 @@ type (
 		HaveGift        uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:结算方式 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
 		FlagTester      uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
 		SupportComment  uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否评论 1-支持 2-不支持"  json:"support_comment,omitempty"`
+		ApplyUserHid    int64                          `gorm:"column:apply_user_hid;default:0;type:bigint(20);not null;comment:审核人用户ID" json:"apply_user_hid,omitempty"`
+		ApplyAt         base.TimeNormal                `gorm:"column:apply_at;not null;default:'2000-01-01 00:00:00';comment:审核时间" json:"apply_at,omitempty"`
+		ApplyMark       string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
 		CreatedAt       base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		UpdatedAt       base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
 		DeletedAt       *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
