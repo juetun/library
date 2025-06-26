@@ -23,14 +23,16 @@ const (
 const DefaultImageShow = "//dev-file.iviewui.com/userinfoPDvn9gKWYihR24SpgC319vXY8qniCqj4/avatar"
 const SpuImageDivide = "#$#"
 const (
-	ProductStatusTmp          int8 = iota - 1 //草稿中(ID初始化中)
-	ProductStatusAll                          //全部数据
-	ProductStatusOnline                       // 在售
-	ProductStatusManuscript                   // 草稿中
-	ProductStatusInit                         // 仓库中
-	ProductStatusOffLine                      // 已下架
-	ProductStatusOnlineAtTime                 // 定时上架
-	ProductStatusDeprecated                   // 删除
+	ProductStatusTmp           int8 = iota - 1 //草稿中(ID初始化中)
+	ProductStatusAll                           //全部数据
+	ProductStatusOnline                        // 在售
+	ProductStatusManuscript                    // 草稿中
+	ProductStatusInit                          // 仓库中
+	ProductStatusOffLine                       // 已下架
+	ProductStatusOnlineAtTime                  // 定时上架
+	ProductStatusDeprecated                    // 删除
+	ProductStatusWaitingOnline                 // 待上架
+	ProductStatusWaitingDeal                   // 待处理
 
 )
 const (
@@ -134,7 +136,14 @@ var (
 			Value: ProductStatusInit,
 			Label: "仓库中",
 		},
-
+		{
+			Value: ProductStatusWaitingOnline,
+			Label: "待上架",
+		},
+		{
+			Value: ProductStatusWaitingDeal,
+			Label: "待处理",
+		},
 		{
 			Value: ProductStatusOffLine,
 			Label: "已下架",
