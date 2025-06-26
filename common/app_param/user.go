@@ -202,7 +202,7 @@ type (
 		RegisterChannel   string           `gorm:"column:register_channel;not null;type:varchar(50) COLLATE utf8mb4_general_ci;comment:账号注册渠道" json:"register_channel"`
 		MockAdminToken    string           `gorm:"column:mock_admin_token;not null;type:varchar(1000) COLLATE utf8mb4_general_ci;comment:mock用户token" json:"mock_admin_token,omitempty"`
 		MockAdminUid      int64            `gorm:"column:mock_admin_uid;not null;type:bigint(20) COLLATE utf8mb4_bin;comment:mock用户ID" json:"mock_admin_uid,omitempty"`
-		InviteCode        int64            `gorm:"column:invite_code;not null;default:0;type:int(10);comment:邀请码" json:"invite_code"`
+		InviteCode        string           `gorm:"column:invite_code;not null;default:'';type:varchar(30);comment:邀请码" json:"invite_code,omitempty"`
 		AttendNum         int64            `gorm:"column:attend_num;not null;default:0;type:bigint(20);comment:关注数 实时性不是高" json:"attend_num"`   // 关注数
 		LoveNum           int64            `gorm:"column:love_num;not null;default:0;type:bigint(20);comment:点赞数 实时性不是高" json:"love_num"`       // 点赞数
 		CommentNum        int64            `gorm:"column:comment_num;not null;default:0;type:bigint(20);comment:评论数 实时性不是高" json:"comment_num"` // 评论数

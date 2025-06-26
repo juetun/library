@@ -58,8 +58,8 @@ type (
 		XTimeStamp      int64  `json:"x_time_stamp,omitempty"`      // 消息发送的时间（单位：毫秒）
 		ErrMsg          string `json:"err_msg,omitempty"`           // 如果错误，错误提示
 		XSign           string `json:"x_sign,omitempty"`            // 签名
-		DataType        uint8  `json:"data_type"`                   // 数据类型
-		NeedApply       bool   `json:"need_apply"`                  // 是否需要调用反垃圾审核
+		DataType        uint8  `json:"data_type,omitempty"`         // 数据类型
+		NeedApply       bool   `json:"need_apply,omitempty"`        // 是否需要调用反垃圾审核
 		SecWebsocketKey string `json:"sec_websocket_key,omitempty"` // 连接的唯一KEY
 	}
 	SendMsg struct {
