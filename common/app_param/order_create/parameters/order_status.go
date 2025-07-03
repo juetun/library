@@ -15,7 +15,8 @@ const (
 	OrderStatusPayingFinish uint8 = 30 // 付款完成(待发货)
 
 	OrderStatusGoodWaiting          uint8 = 35 // 待发货
-	OrderStatusPendingShipment      uint8 = 38 // 下单待发货
+	OrderStatusPendingShipment      uint8 = 38 // 下单未付款
+	OrderStatusPendedShipment       uint8 = 39 // 下单已付款
 	OrderStatusGoodSending          uint8 = 40 // 已发货
 	OrderStatusGoodSendFinished     uint8 = 50 // 已收货
 	OrderStatusGoodSendAutoFinished uint8 = 51 // 自动收货
@@ -79,6 +80,10 @@ var (
 		{
 			Value: OrderStatusPendingShipment,
 			Label: "下单未付款", //适用1688商品下单，未立即结款
+		},
+		{
+			Value: OrderStatusPendedShipment,
+			Label: "下单已付款", //适用1688商品下单，已结款
 		},
 		{
 			Value: OrderStatusGoodSending,
