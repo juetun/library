@@ -15,6 +15,7 @@ const (
 	OrderStatusPayingFinish uint8 = 30 // 付款完成(待发货)
 
 	OrderStatusGoodWaiting          uint8 = 35 // 待发货
+	OrderStatusVirtualSend          uint8 = 37 // 虚拟发货
 	OrderStatusPendingShipment      uint8 = 38 // 下单未付款
 	OrderStatusPendedShipment       uint8 = 39 // 下单已付款
 	OrderStatusGoodSending          uint8 = 40 // 已发货
@@ -76,6 +77,10 @@ var (
 		{
 			Value: OrderStatusGoodWaiting,
 			Label: "待发货",
+		},
+		{
+			Value: OrderStatusVirtualSend,
+			Label: "虚拟发货", //适用1688商品下单，虚拟发货
 		},
 		{
 			Value: OrderStatusPendingShipment,
