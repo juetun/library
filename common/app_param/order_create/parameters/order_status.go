@@ -160,7 +160,7 @@ var (
 		},
 		{
 			Value: OrderReconciliationNotDeal,
-			Label: "未对账",
+			Label: "待对账",
 		},
 		{
 			Value: OrderReconciliationHasDeal,
