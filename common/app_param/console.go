@@ -1,6 +1,7 @@
 package app_param
 
 import (
+	"encoding/json"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
@@ -28,7 +29,7 @@ func (r *ArgParamsUserHaveConsoleImport) Default(c *base.Context) (err error) {
 
 //判断用户是否有接口权限
 func GetUserHaveConsoleImportPermit(arg *ArgParamsUserHaveConsoleImport) (res *ResultConsoleHaveImportPermit, err error) {
-	res = &ResultConsoleHaveImportPermit{NotHavePermit: false, ErrorMsg: "接口异常"}
+	res = &ResultConsoleHaveImportPermit{NotHavePermit: true, ErrorMsg: "接口异常"}
 	var value = url.Values{}
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
@@ -38,6 +39,9 @@ func GetUserHaveConsoleImportPermit(arg *ArgParamsUserHaveConsoleImport) (res *R
 		Value:       value,
 		Context:     arg.Ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	if ro.BodyJson, err = json.Marshal(arg); err != nil {
+		return
 	}
 	var data = struct {
 		Code int                            `json:"code"`
