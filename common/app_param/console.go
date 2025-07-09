@@ -17,14 +17,16 @@ type (
 		Ctx       *base.Context `json:"-" form:"-"`
 	}
 	ResultConsoleHaveImportPermit struct {
-		Result   bool   `json:"result"`
-		ErrorMsg string `json:"error_msg"`
+		StatusCode    int    `json:"status_code"`     //异常的状态码
+		NotHavePermit bool   `json:"not_have_permit"` //true-没有权限 false-有权限
+		IsSuper       bool   `json:"is_super"`        //是否为超级管理员
+		ErrorMsg      string `json:"error_msg"`       //错误提示内容
 	}
 )
 
 //判断用户是否有接口权限
 func GetUserHaveConsoleImportPermit(arg *ArgParamsUserHaveConsoleImport) (res *ResultConsoleHaveImportPermit, err error) {
-	res = &ResultConsoleHaveImportPermit{Result: false, ErrorMsg: "接口异常"}
+	res = &ResultConsoleHaveImportPermit{NotHavePermit: false, ErrorMsg: "接口异常"}
 	var value = url.Values{}
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
@@ -47,6 +49,9 @@ func GetUserHaveConsoleImportPermit(arg *ArgParamsUserHaveConsoleImport) (res *R
 	if err != nil {
 		return
 	}
-	res = data.Data
+	if data.Data != nil {
+		res = data.Data
+	}
+
 	return
 }
