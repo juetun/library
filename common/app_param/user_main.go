@@ -22,6 +22,9 @@ const (
 	UserMainPortraitStatusWaiting = const_apply.ApplyStatusAuditing // 待审核
 )
 const (
+	GinContentUser = "GinUser" //用户信息
+)
+const (
 	UserMainGenderMale   uint8 = iota + 1 // 男性
 	UserMainGenderFeMale                  // 女性
 )
