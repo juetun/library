@@ -11,8 +11,6 @@ import (
 type (
 	ArgParamsUserHaveConsoleImport struct {
 		User      *RequestUser  `json:"user" form:"user"`             //用户
-		PageName  string        `json:"page_name" form:"page_name"`   //页面名称
-		System    string        `json:"system" form:"system"`         //所属系统
 		ImportKey string        `json:"import_key" form:"import_key"` //接口KEY
 		Ctx       *base.Context `json:"-" form:"-"`
 	}
@@ -23,6 +21,10 @@ type (
 		ErrorMsg      string `json:"error_msg"`       //错误提示内容
 	}
 )
+
+func (r *ArgParamsUserHaveConsoleImport) Default(c *base.Context) (err error) {
+	return
+}
 
 //判断用户是否有接口权限
 func GetUserHaveConsoleImportPermit(arg *ArgParamsUserHaveConsoleImport) (res *ResultConsoleHaveImportPermit, err error) {
