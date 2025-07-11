@@ -13,7 +13,7 @@ import (
 )
 
 //客服后台接口权限验证
-func (arg *app_start.PluginsOperate) AdminImportAuth(err error) {
+func AdminImportAuth(arg *app_start.PluginsOperate) (err error) {
 	app_start.AdminNetHandlerFunc = append(app_start.AdminNetHandlerFunc, func(c *gin.Context) {
 		switch c.Request.Method {
 		case http.MethodHead, http.MethodOptions, http.MethodConnect, http.MethodTrace, http.MethodPatch, "":
