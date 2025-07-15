@@ -2,7 +2,6 @@ package app_user
 
 import (
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
@@ -50,7 +49,7 @@ type (
 	}
 )
 
-func (r *ArgNoticeTemplate) Default(c *gin.Context) (err error) {
+func (r *ArgNoticeTemplate) Default(c *base.Context) (err error) {
 	r.Keys = strings.TrimSpace(r.Keys)
 	r.KeyList = make([]string, 0)
 	if r.Keys != "" {
