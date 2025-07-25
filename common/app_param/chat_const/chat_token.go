@@ -22,9 +22,9 @@ const (
 )
 
 const (
-	WebsocketDataTypeBase    uint8 = iota + 1 //基础数据类型，数据连接
-	WebsocketDataTypeChat                     //聊天类型
-	WebsocketDataTypeCommon                   //通用类型
+	WebsocketDataTypeBase   uint8 = iota + 1 //基础数据类型，数据连接
+	WebsocketDataTypeChat                    //聊天类型
+	WebsocketDataTypeCommon                  //通用类型
 )
 
 const (
@@ -40,9 +40,10 @@ const (
 	ChatMsgChatTypeRoom                    // 群聊
 )
 const (
-	CurrentUserRoleConsole  = "console"  //官方客服
-	CurrentUserRoleCustomer = "customer" //客服
-	CurrentUserRoleUser     = "user"     //用户
+	CurrentUserRoleConsole      = "console"      //官方客服
+	CurrentUserRoleCustomerHelp = "console_help" //官方客服托管
+	CurrentUserRoleCustomer     = "customer"     //客服
+	CurrentUserRoleUser         = "user"         //用户
 )
 
 const (
@@ -157,7 +158,6 @@ var (
 			Value: WebsocketDataTypeCommon,
 			Label: "通用信息",
 		},
-
 	}
 
 	SliceCurrentUserRole = base.ModelItemOptions{
@@ -168,6 +168,10 @@ var (
 		{
 			Label: "官方客服",
 			Value: CurrentUserRoleConsole,
+		},
+		{
+			Label: "托管到官方客服",
+			Value: CurrentUserRoleCustomerHelp,
 		},
 		{
 			Label: "用户",
