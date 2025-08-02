@@ -33,7 +33,7 @@ const (
 	ChatMsgTypeImg                         // 聊天数据类型 110001-图片
 	ChatMsgTypeCard                        // 聊天数据卡片 110003-数据卡片 (如商品数据)
 	ChatMsgTypeVideo                       // 聊天数据类型 视频
-	ChatMsgTypeMusic                       //聊天数据类型 音频
+	ChatMsgTypeMusic                       // 聊天数据类型 音频
 )
 const (
 	ChatMsgChatTypeSingle uint8 = iota + 1 // 单聊
