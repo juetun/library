@@ -274,58 +274,66 @@ var (
 
 type (
 	Product struct {
-		ProductID       string                         `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SPUID" json:"product_id"`
-		Title           string                         `gorm:"column:title;type:varchar(200);not null;default:'';comment:标题" json:"title"`
-		UserHid         int64                          `gorm:"column:user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:发布人用户ID" json:"user_hid"`
-		Thumbnail       string                         `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"-"`
-		ThumbnailURL    string                         `gorm:"-" json:"thumbnail_url"`
-		Image           string                         `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"-"`
-		ImageURL        []*upload_operate.ProductImage `gorm:"-" json:"-"`
-		BrandId         int64                          `gorm:"column:brand_id;type:bigint(20);not null;default:0;comment:品牌ID" json:"brand_id"`
-		Video           string                         `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video"`
-		VideoURL        string                         `gorm:"-" json:"video_url" `
-		ShopId          int64                          `gorm:"column:shop_id;index:idx_shop_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
-		Status          int8                           `gorm:"column:status;index:idx_shop_id,priority:2;index:idx_time,priority:2;default:0;type:tinyint(2);not null;comment:状态" json:"status"`
-		SubTitle        string                         `gorm:"column:sub_title;type:varchar(800);not null;default:'';comment:副标题" json:"sub_title"`
-		MinPrice        string                         `gorm:"column:min_price;index:idx_price,priority:1;default:0;type:decimal(10,2);not null;comment:最低价" json:"min_price"`
-		MaxPrice        string                         `gorm:"column:max_price;index:idx_price,priority:2;default:0;type:decimal(10,2);not null;comment:最高价" json:"max_price"`
-		MinPriceCost    string                         `gorm:"column:min_price_cost;default:0;type:decimal(10,2);not null;comment:最低市场价" json:"min_price_cost"`
-		MaxPriceCost    string                         `gorm:"column:max_price_cost;default:0;type:decimal(10,2);not null;comment:最高市场价" json:"max_price_cost"`
-		MinDownPayment  string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment"`
-		MaxDownPayment  string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment"`
-		TagIds          string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids"`
-		TagIdsArray     []int64                        `json:"tag_ids" gorm:"-"`
-		ServiceIds      string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids"`
-		Keywords        string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords"`
-		SaleNum         int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num"`
-		FreightType     uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type"`
-		FreightTemplate int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template"`
-		TotalStock      int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock"`
-		CategoryId      int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目" json:"category_id"`
-		SaleType        uint8                          `gorm:"column:sale_type;not null;type: tinyint(2);index:idx_time,priority:3;index:idx_price,priority:3;default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
-		PullOnTime      *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time,omitempty"`
-		PullOffTime     *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time,omitempty"`
-		SaleOnlineTime  base.TimeNormal                `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:开售时间(可购买时间)" json:"sale_online_time"`
-		SaleOverTime    *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
-		FinalStartTime  base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time"`
-		FinalOverTime   base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time"`
-		DeliveryTime    *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
-		SaleCountShow   uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show"`
-		RelateType      uint8                          `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type"`
-		RelateItemId    string                         `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id"`
-		RelateBuyCount  int64                          `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count"`
-		RelateBuyAMount string                         `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount"`
-		SettleType      uint8                          `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type"` // 结算方式 1：现结 2：月结
-		JoinActivityId  string                         `gorm:"column:join_activity_id;not null;type: varchar(80);default:'';comment:加入活动的活动ID"   json:"join_activity_id,omitempty"`
-		HaveGift        uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:结算方式 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
-		FlagTester      uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester"`
-		SupportComment  uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否评论 1-支持 2-不支持"  json:"support_comment,omitempty"`
-		ApplyUserHid    int64                          `gorm:"column:apply_user_hid;default:0;type:bigint(20);not null;comment:审核人用户ID" json:"apply_user_hid,omitempty"`
-		ApplyAt         base.TimeNormal                `gorm:"column:apply_at;not null;default:'2000-01-01 00:00:00';comment:审核时间" json:"apply_at,omitempty"`
-		ApplyMark       string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
-		CreatedAt       base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		UpdatedAt       base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"-"`
-		DeletedAt       *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
+		ProductID              string                         `gorm:"column:id;primary_key;type:bigint(20);not null;default:0;comment:商品SPUID" json:"product_id,omitempty"`
+		Title                  string                         `gorm:"column:title;type:varchar(200);not null;default:'';comment:标题" json:"title,omitempty"`
+		UserHid                int64                          `gorm:"column:user_hid;default:0;index:idx_userHid,priority:1;type:bigint(20);not null;comment:发布人用户ID" json:"user_hid,omitempty"`
+		Thumbnail              string                         `gorm:"column:thumbnail;type:varchar(255);not null;default:'';comment:封面图ID" json:"thumbnail,omitempty"`
+		ThumbnailURL           string                         `gorm:"-" json:"thumbnail_url"`
+		Image                  string                         `gorm:"column:image;type:varchar(800);not null;default:'';comment:图片json数组" json:"image,omitempty"`
+		ImageURL               []*upload_operate.ProductImage `gorm:"-" json:"-"`
+		BrandId                int64                          `gorm:"column:brand_id;type:bigint(20);not null;default:0;comment:品牌ID" json:"brand_id,omitempty"`
+		Video                  string                         `gorm:"column:video;type:varchar(255);not null;default:'';comment:视频" json:"video,omitempty"`
+		VideoURL               string                         `gorm:"-" json:"-" `
+		ShopId                 int64                          `gorm:"column:shop_id;index:idx_shop_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id,omitempty"`
+		Status                 int8                           `gorm:"column:status;index:idx_shop_id,priority:2;index:idx_time,priority:2;default:0;type:tinyint(2);not null;comment:状态" json:"status,omitempty"`
+		SubTitle               string                         `gorm:"column:sub_title;type:varchar(800);not null;default:'';comment:副标题" json:"sub_title,omitempty"`
+		MinPrice               string                         `gorm:"column:min_price;index:idx_price,priority:1;default:0;type:decimal(10,2);not null;comment:最低价" json:"min_price,omitempty"`
+		MaxPrice               string                         `gorm:"column:max_price;index:idx_price,priority:2;default:0;type:decimal(10,2);not null;comment:最高价" json:"max_price,omitempty"`
+		MinPriceCost           string                         `gorm:"column:min_price_cost;default:0;type:decimal(10,2);not null;comment:最低市场价" json:"min_price_cost,omitempty"`
+		MaxPriceCost           string                         `gorm:"column:max_price_cost;default:0;type:decimal(10,2);not null;comment:最高市场价" json:"max_price_cost,omitempty"`
+		MinDownPayment         string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment,omitempty"`
+		MaxDownPayment         string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment,omitempty"`
+		TagIds                 string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids,omitempty"`
+		TagIdsArray            []int64                        `json:"-" gorm:"-"`
+		TagAttr                string                         `gorm:"column:tag_attr;type:varchar(600);not null;default:'';comment:属性标签数据" json:"tag_attr,omitempty"`
+		ServiceIds             string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids,omitempty"`
+		Keywords               string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords,omitempty"`
+		SaleNum                int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num,omitempty"`
+		FreightType            uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type,omitempty"`
+		FreightTemplate        int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template,omitempty"`
+		TotalStock             int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock,omitempty,omitempty"`
+		CategoryId             int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目（二级类目）" json:"category_id,omitempty"`
+		FinalCategoryId        int64                          `gorm:"column:final_category_id;type:bigint(20);not null;default:0;comment:所属类目(最终类目)" json:"final_category_id,omitempty"`
+		SaleType               uint8                          `gorm:"column:sale_type;not null;type: tinyint(2);index:idx_time,priority:3;index:idx_price,priority:3;default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type,omitempty"`
+		PullOnTime             *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time,omitempty"`
+		PullOffTime            *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time,omitempty"`
+		PullOffReason          string                         `gorm:"column:pull_off_reason;not null;type: varchar(80);default:'';comment:下架原因"   json:"pull_off_reason,omitempty"`
+		IntentionalStime       *base.TimeNormal               `gorm:"column:intentional_stime;not null;default:'2000-01-01 00:00:00';comment:意向金开售时间" json:"intentional_stime,omitempty"`
+		IntentionalOtime       *base.TimeNormal               `gorm:"column:intentional_otime;default:'2000-01-01 00:00:00';comment:意向金截止时间" json:"intentional_otime,omitempty"`
+		SaleOnlineTime         base.TimeNormal                `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:开售时间(可购买时间)" json:"sale_online_time,omitempty"`
+		SaleOverTime           *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
+		FinalStartTime         base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time,omitempty"`
+		FinalOverTime          base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time,omitempty"`
+		DeliveryTime           *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
+		ShowInList             uint8                          `gorm:"column:show_in_list;type:tinyint(2);default:1;not null;comment:是否在推荐列表展示 1-展示(默认) 2-不展示" json:"show_in_list,omitempty"`
+		SaleCountShow          uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show,omitempty"`
+		RelateType             uint8                          `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type,omitempty"`
+		RelateItemId           string                         `gorm:"column:relate_item_id;not null;type: varchar(80);default:'';comment:关联数据ID"   json:"relate_item_id,omitempty"`
+		RelateBuyCount         int64                          `gorm:"column:relate_buy_count;not null;type: bigint(15);default:0;comment:关联购买人数"  json:"relate_buy_count,omitempty"`
+		RelateBuyAMount        string                         `gorm:"column:relate_buy_amount;not null;type: decimal(15,2);default:0;comment:关联购买金额"  json:"relate_buy_amount,omitempty"`
+		SettleType             uint8                          `gorm:"column:settle_type;not null;type: tinyint(2);default:1;comment:结算方式 1-现结 2-月结" json:"settle_type,omitempty"` // 结算方式 1：现结 2：月结
+		JoinActivityId         string                         `gorm:"column:join_activity_id;not null;type: varchar(80);default:'';comment:加入活动的活动ID"   json:"join_activity_id,omitempty"`
+		HaveGift               uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:是否有赠品 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
+		FlagTester             uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester,omitempty"`
+		SupportComment         uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否支持平路n 1-支持 2-不支持"  json:"support_comment,omitempty"`
+		ApplyUserHid           int64                          `gorm:"column:apply_user_hid;default:0;type:bigint(20);not null;comment:审核人用户ID" json:"apply_user_hid,omitempty"`
+		ApplyAt                base.TimeNormal                `gorm:"column:apply_at;not null;default:'2000-01-01 00:00:00';comment:审核时间" json:"apply_at,omitempty"`
+		ApplyMark              string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
+		RecommendWeight        int64                          `gorm:"column:rec_weight;not null;type:bigint(20);default:10000;comment:商品推荐权重因子" json:"rec_weight" `
+		CurrentRecommendWeight float64                        `gorm:"column:current_rec_weight;not null;type:decimal(22,2);default:0;comment:商品推荐权重" json:"current_rec_weight" `
+		CreatedAt              base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at,omitempty"`
+		UpdatedAt              base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at,omitempty"`
+		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
 
 	ProductTag struct {
