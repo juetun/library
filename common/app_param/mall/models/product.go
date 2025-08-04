@@ -40,10 +40,11 @@ const (
 )
 
 const (
-	SaleTypeGeneral  uint8 = iota + 1 // 普通商品
-	SaleTypePreSale                   // SaleTypePreSale 全款预售
-	SaleTypeDown                      // 定金预售
-	SaleTypeActivity                  // 活动信息
+	SaleTypeGeneral     uint8 = iota + 1 // 普通商品
+	SaleTypePreSale                      // SaleTypePreSale 全款预售
+	SaleTypeDown                         // 定金预售
+	SaleTypeActivity                     // 活动信息
+	SaleTypeIntentional                  // 意向金预售
 )
 
 const (
@@ -171,6 +172,10 @@ var (
 		{
 			Value: SaleTypeDown,
 			Label: "定金预售",
+		},
+		{
+			Value: SaleTypeIntentional,
+			Label: "意向金预售",
 		},
 		{
 			Value: SaleTypeActivity,

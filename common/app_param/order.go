@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	OrderPageCategoryFirst  = "first"  //第一次付款或定金付款
-	OrderPageCategorySecond = "second" //定金预售付尾款
+	OrderPageCategoryIntentionalDeposit = "deposit" //意向金
+	OrderPageCategoryFirst              = "first"   //第一次付款或定金付款
+	OrderPageCategorySecond             = "second"  //定金预售付尾款
 )
 
 const (
@@ -26,6 +27,10 @@ var (
 		{
 			Label: "普通商品付款或定金付款",
 			Value: OrderShopDetailPriceCateFirst,
+		},
+		{
+			Label: "意向金",
+			Value: OrderPageCategoryIntentionalDeposit,
 		},
 		{
 			Label: "定金预售尾款",
