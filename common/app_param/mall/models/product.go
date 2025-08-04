@@ -308,8 +308,8 @@ type (
 		PullOnTime             *base.TimeNormal               `gorm:"column:pull_on_time;index:idx_time,priority:1;index:idx_shop_id,priority:3;comment:定时上架时间" json:"pull_on_time,omitempty"`
 		PullOffTime            *base.TimeNormal               `gorm:"column:pull_off_time;index:idx_time,priority:2;comment:定时下架时间" json:"pull_off_time,omitempty"`
 		PullOffReason          string                         `gorm:"column:pull_off_reason;not null;type: varchar(80);default:'';comment:下架原因"   json:"pull_off_reason,omitempty"`
-		IntentionalStime       *base.TimeNormal               `gorm:"column:intentional_stime;not null;default:'2000-01-01 00:00:00';comment:意向金开售时间" json:"intentional_stime,omitempty"`
-		IntentionalOtime       *base.TimeNormal               `gorm:"column:intentional_otime;default:'2000-01-01 00:00:00';comment:意向金截止时间" json:"intentional_otime,omitempty"`
+		IntentionalStime       base.TimeNormal                `gorm:"column:intentional_stime;not null;default:'2000-01-01 00:00:00';comment:意向金开售时间" json:"intentional_stime,omitempty"`
+		IntentionalOtime       base.TimeNormal                `gorm:"column:intentional_otime;default:'2000-01-01 00:00:00';comment:意向金截止时间" json:"intentional_otime,omitempty"`
 		SaleOnlineTime         base.TimeNormal                `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:开售时间(可购买时间)" json:"sale_online_time,omitempty"`
 		SaleOverTime           *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
 		FinalStartTime         base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time,omitempty"`
