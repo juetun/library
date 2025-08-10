@@ -18,12 +18,13 @@ import (
 
 type (
 	SendMsgChat struct {
-		MsgId           string `json:"msg_id,omitempty" form:"msg_id"`                       // 消息ID
-		ChatType        uint8  `json:"chat_type,omitempty" form:"chat_type"`                 // 聊天类型 单聊 、群聊
-		FromId          string `json:"from_id,omitempty" form:"from_id"`                     // 发送消息方
-		FromType        uint8  `json:"from_type,omitempty" form:"from_type"`                 //
-		ToId            string `json:"to_id,omitempty" form:"to_id"`                         // 发送给的目标用户或群
-		ToType          uint8  `json:"to_type,omitempty" form:"to_type"`                     //
+		MsgId           string `json:"msg_id,omitempty" form:"msg_id"`       // 消息ID
+		ChatType        uint8  `json:"chat_type,omitempty" form:"chat_type"` // 聊天类型 单聊 、群聊
+		FromId          string `json:"from_id,omitempty" form:"from_id"`     // 发送消息方
+		FromType        uint8  `json:"from_type,omitempty" form:"from_type"` //
+		ToId            string `json:"to_id,omitempty" form:"to_id"`         // 发送给的目标用户或群
+		ToType          uint8  `json:"to_type,omitempty" form:"to_type"`     //
+		ToPathType      string `json:"to_path_type",form:"to_path_type"`
 		ManagerUserHid  string `json:"manager_user_hid,omitempty" form:"manager_user_hid"`   // 管理员ID
 		Content         string `json:"content,omitempty" form:"content"`                     // 消息内容
 		IsCustomer      bool   `json:"is_customer,omitempty" form:"is_customer"`             // 是否是客服聊天
