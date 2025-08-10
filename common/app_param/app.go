@@ -32,8 +32,39 @@ const (
 	TerminalIos       = "ios"
 	TerminalHarmonyOS = "harmonyOS"
 )
+const (
+	SystemBackend  = "backend"        //汽车系统后台
+	SystemSystem   = "system"         //客服后台
+	SystemUser     = "user"           //用户后台
+	SystemShop     = "shop_dashboard" //店铺后台
+	SystemPlatform = "platform"       //汽车系统后台
+
+	DefaultSystem = SystemSystem // 默认系统
+)
 
 var (
+	SystemDescMap = map[string]SystemDescription{
+		SystemPlatform: {
+			Key:   SystemPlatform,
+			Label: "汽车",
+		},
+		SystemBackend: {
+			Key:   SystemBackend,
+			Label: "后台",
+		},
+		SystemSystem: { //客服后台
+			Key:   SystemSystem,
+			Label: "系统管理",
+		},
+		SystemUser: {
+			Key:   SystemUser,
+			Label: "用户后台",
+		},
+		SystemShop: {
+			Key:   SystemShop,
+			Label: "店铺后台",
+		},
+	}
 	SliceTerminal = base.ModelItemOptions{
 		{Label: "网站", Value: TerminalWeb},
 		{Label: "小程序", Value: TerminalMina},
@@ -120,6 +151,12 @@ var (
 		},
 	}
 )
+
+type SystemDescription struct {
+	Key   string `json:"key"`
+	Label string `json:"label"`
+	Desc  string `json:"desc"`
+}
 
 //添加动态类型 map格式
 func AppendTrendsTypesAsMap(mapTrendTypes map[string]string) {
