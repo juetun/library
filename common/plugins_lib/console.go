@@ -15,6 +15,10 @@ import (
 //客服后台接口权限验证
 func AdminImportAuth(arg *app_start.PluginsOperate) (err error) {
 	app_start.AdminNetHandlerFunc = append(app_start.AdminNetHandlerFunc, func(c *gin.Context) {
+		if c.Request != nil && c.Request.Header.Get("Connection") == "Upgrade" {
+			c.Next()
+			return
+		}
 		switch c.Request.Method {
 		case http.MethodHead, http.MethodOptions, http.MethodConnect, http.MethodTrace, http.MethodPatch, "":
 			c.Next()
