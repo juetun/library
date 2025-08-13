@@ -50,8 +50,8 @@ type (
 	}
 	SendMsgChatParam struct {
 		ConnectToken  string `json:"connect_token,omitempty"` // 聊天的token信息
-		ToUserNotRead int64  `json:"not_read,omitempty"`      // 消息接收方未读消息数
-		MsgType       int    `json:"msg_type,omitempty"`      // 消息类型（）
+		ToUserNotRead int64  `json:"not_read"`                // 消息接收方未读消息数
+		MsgType       int    `json:"msg_type"`                // 消息类型（）
 		TimeStamp     int64  `json:"-"`                       // 消息发送的时间（单位：纳秒）
 	}
 	SendMsgCommon struct {
