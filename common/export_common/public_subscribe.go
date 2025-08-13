@@ -28,16 +28,31 @@ func GetRedisMqTopicTmp(topicNames ...string) (res string) {
 	return
 }
 
-type DaoExportCommon struct {
-	base.ServiceDao
-	Ctx context.Context
-}
+type (
+	DaoExportCommonInterface interface {
+		PublishAndSubscribe(content string) (err error)
+	}
+	DaoExportCommon struct {
+		base.ServiceDao
+		Ctx context.Context
+	}
+)
 
 func (r *DaoExportCommon) Init(ctx ...*base.Context) {
 	r.SetContext(ctx...)
 	if r.Ctx == nil {
 		r.Ctx = context.TODO()
 	}
+	return
+}
+
+func (r *DaoExportCommon) PublishAndSubscribe(content string) (err error) {
+	topics := GetRedisMqTopicTmp()
+	var client *redis.Client
+	if client = r.GetExportCacheClient(); client == nil {
+		return
+	}
+	err = client.Publish(r.Ctx, topics, content).Err()
 	return
 }
 
