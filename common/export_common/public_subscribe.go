@@ -28,20 +28,21 @@ func GetRedisMqTopicTmp(topicNames ...string) (res string) {
 	return
 }
 
-type DaoChatCommon struct {
+type DaoExportCommon struct {
 	base.ServiceDao
-	ctx context.Context
+	Ctx context.Context
 }
 
-func (r *DaoChatCommon) Init(ctx ...*base.Context) {
+func (r *DaoExportCommon) Init(ctx ...*base.Context) {
 	r.SetContext(ctx...)
-	if r.ctx == nil {
-		r.ctx = context.TODO()
+	if r.Ctx == nil {
+		r.Ctx = context.TODO()
 	}
 	return
 }
 
-func (r *DaoChatCommon) GetExportCacheClient() (cacheClient *redis.Client) {
+//各个后台的Websocket链接 缓存队列的连接客户端
+func (r *DaoExportCommon) GetExportCacheClient() (cacheClient *redis.Client) {
 	cacheClient, _ = app_obj.GetRedisClient(RedisExportNameSpace)
 	return
 }
