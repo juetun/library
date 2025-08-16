@@ -16,6 +16,21 @@ const (
 	RedisExportNameSpace = "export"
 )
 
+type (
+	//徽标信息返回的参数
+	BadgeInfoReply struct {
+		Num  int64  `json:"num"`
+		Type string `json:"type"`
+		App  string `json:"app"`
+	}
+)
+
+//徽标信息返回的参数
+func NewBadgeInfoReply(badgeType string) (chatInfo *BadgeInfoReply) {
+	chatInfo = &BadgeInfoReply{Num: 0, App: app_obj.App.AppName, Type: badgeType}
+	return
+}
+
 //获取聊天系统监听的队列参数,分布式系统使用
 func GetRedisMqTopicTmp(topicNames ...string) (res string) {
 	var topicName string
