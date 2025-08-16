@@ -9,6 +9,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/base-wrapper/lib/utils"
 	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/app_param/mall/models"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -22,6 +23,7 @@ type (
 		ChatType        uint8  `json:"chat_type,omitempty" form:"chat_type"`                 // 聊天类型 单聊 、群聊
 		FromId          string `json:"from_id,omitempty" form:"from_id"`                     // 发送消息方
 		FromType        uint8  `json:"from_type,omitempty" form:"from_type"`                 //
+		ChatManagerHelp uint8  `json:"chat_manager_help,omitempty" form:"chat_manager_help"` // 在线客服是否托管给平台客服 1-托管 2-不托管 (model.ShopChatManagerHelpYes)
 		ToId            string `json:"to_id,omitempty" form:"to_id"`                         // 发送给的目标用户或群
 		ToType          uint8  `json:"to_type,omitempty" form:"to_type"`                     //
 		ToPathType      string `json:"to_path_type",form:"to_path_type"`                     // 发送数据的接收系统（多个用逗号','分隔）例:app_param.SystemSystem
@@ -250,6 +252,9 @@ func (r *SendMsgChat) Default() (err error) {
 	}
 	if r.SendType == 0 {
 		r.SendType = ChatMsgSendTypeEachOther
+	}
+	if r.ChatManagerHelp == 0 {
+		r.ChatManagerHelp = models.ShopChatManagerHelpNo
 	}
 	return
 }
