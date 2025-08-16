@@ -2,6 +2,7 @@ package export_common
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
@@ -28,6 +29,12 @@ type (
 //徽标信息返回的参数
 func NewBadgeInfoReply(badgeType string) (chatInfo *BadgeInfoReply) {
 	chatInfo = &BadgeInfoReply{Num: 0, App: app_obj.App.AppName, Type: badgeType}
+	return
+}
+
+func (r *BadgeInfoReply) ToJson() (res string) {
+	bt, _ := json.Marshal(r)
+	res = string(bt)
 	return
 }
 

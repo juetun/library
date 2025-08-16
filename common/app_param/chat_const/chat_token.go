@@ -35,6 +35,11 @@ const (
 	ChatMsgTypeVideo                       // 聊天数据类型 视频
 	ChatMsgTypeMusic                       // 聊天数据类型 音频
 )
+
+const (
+	BadgeTypeReply = (iota + 21) * 10000 //响应信息类型
+)
+
 const (
 	ChatMsgChatTypeSingle uint8 = iota + 1 // 单聊
 	ChatMsgChatTypeRoom                    // 群聊
@@ -209,6 +214,10 @@ var (
 		{
 			Label: "音频",
 			Value: ChatMsgTypeMusic,
+		},
+		{
+			Label: "徽标数值",
+			Value: BadgeTypeReply,
 		},
 	}
 
