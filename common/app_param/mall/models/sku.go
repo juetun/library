@@ -152,21 +152,24 @@ type (
 	}
 
 	SkuPropertyRelate struct {
-		ID                int64            `gorm:"column:id;primary_key" json:"id"`
-		ShopId            int64            `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
-		ProductId         string           `gorm:"column:product_id;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
-		CategoryId        int64            `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
-		ParentId          int64            `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
-		Pk                string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
-		SkuName           string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
-		SkuId             string           `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
-		Price             string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
-		IsNotAttrName     uint8            `gorm:"column:is_not_attr_name;type:tinyint(2);not null;default:2;comment:不是属性名 1-真-属性名 2-假-为属性"  json:"is_not_attr_name"`
-		PropertyId        int64            `gorm:"column:property_id;default:0;not null;comment:属性ID" json:"property_id"`
-		SpuStatus         int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
-		SaleType          uint8            `gorm:"column:sale_type;not null;type: tinyint(2);default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
-		DownPayment       string           `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
-		FinalPayment      string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
+		ID                 int64  `gorm:"column:id;primary_key" json:"id"`
+		ShopId             int64  `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
+		ProductId          string `gorm:"column:product_id;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
+		CategoryId         int64  `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
+		ParentId           int64  `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
+		Pk                 string `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
+		SkuName            string `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
+		SkuId              string `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
+		Price              string `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		IsNotAttrName      uint8  `gorm:"column:is_not_attr_name;type:tinyint(2);not null;default:2;comment:不是属性名 1-真-属性名 2-假-为属性"  json:"is_not_attr_name"`
+		PropertyId         int64  `gorm:"column:property_id;default:0;not null;comment:属性ID" json:"property_id"`
+		SpuStatus          int8   `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
+		SaleType           uint8  `gorm:"column:sale_type;not null;type: tinyint(2);default:1;comment:销售类型1-普通商品 2-全款预售 3-定金预售"  json:"sale_type"`
+		IntentionalDeposit string `gorm:"column:intentional_deposit;default:0;type:decimal(10,2);not null;comment:意向金" json:"intentional_deposit"`
+		IntentDepositVal   string `gorm:"column:intent_deposit_val;default:0;type:decimal(10,2);not null;comment:意向金抵扣" json:"intent_deposit_val"`
+		DownPayment        string `gorm:"column:down_payment;default:0;type:decimal(10,2);not null;comment:定金" json:"down_payment"`
+		DownPaymentVal     string `gorm:"column:down_payment_val;default:0;type:decimal(10,2);not null;comment:定金抵扣" json:"down_payment_val"`
+		//FinalPayment       string           `gorm:"column:final_payment;default:0;type:decimal(10,2);not null;comment:尾款金额(商品为定金预售数据有效)" json:"final_payment"`
 		FreightTemplate   int64            `gorm:"column:freight_template;type:varchar(80);default:0;not null;comment:运费模板ID" json:"freight_template"`
 		SaleOnlineTime    base.TimeNormal  `gorm:"column:sale_online_time;not null;default:CURRENT_TIMESTAMP;comment:预售开始时间" json:"sale_online_time"`
 		SaleOverTime      *base.TimeNormal `gorm:"column:sale_over_time;comment:预售结束时间" json:"sale_over_time"`
@@ -179,12 +182,26 @@ type (
 		IsLeaf            uint8            `gorm:"column:is_leaf;default:2;type:tinyint(2);not null;comment:是否为叶子节点 1-是 2-否" json:"is_leaf"`
 		SkuStatus         int8             `gorm:"column:sku_status;default:1;type:tinyint(2);not null;comment:状态 1-可用 2-下架 3-删除" json:"sku_status"`
 		HaveGift          uint8            `gorm:"column:have_gift;default:2;type:tinyint(2);not null;comment:是有有赠品 1-有 2-无" json:"have_gift"`
+		OpenSaleNumStatic uint8            `gorm:"column:open_sale_num_static;default:2;type:tinyint(2);not null;comment:是有有赠品 1-参与 2-不参与" json:"open_sale_num_static"`
 		CreatedAt         base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt         base.TimeNormal  `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at"`
 		DeletedAt         *base.TimeNormal `gorm:"column:deleted_at;" json:"-"`
 	}
 	SkuPropertyRelatesCache []SkuPropertyRelate
 )
+
+func (r *SkuPropertyRelate) GetFinalPayment() (finalPayment string) {
+	var price, intentDepositVal, downPay decimal.Decimal
+	price, _ = decimal.NewFromString(r.Price)
+	if r.IntentDepositVal != "" && r.IntentDepositVal != "0.00" {
+		intentDepositVal, _ = decimal.NewFromString(r.IntentDepositVal)
+	}
+	if r.DownPaymentVal != "" && r.DownPaymentVal != "0.00" {
+		downPay, _ = decimal.NewFromString(r.DownPaymentVal)
+	}
+	finalPayment = price.Sub(intentDepositVal).Sub(downPay).String()
+	return
+}
 
 //前端编辑SKU时的选项
 func GetSliceSkuStatusEditOption(skuStatus int8) (res []*SliceSkuStatusEditOption) {
@@ -212,6 +229,7 @@ func (r *Sku) GetWeightDecimal() (weight decimal.Decimal, err error) {
 	}
 	return
 }
+
 func (r *Sku) Default() {
 
 	if r.Price == "" {
@@ -339,11 +357,11 @@ func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res i
 	vals.Set("id", r.ProductId)
 	vals.Set("sku_id", r.SkuId)
 	res, err = recommend.GetPageLink(&recommend.LinkArgument{
-			HeaderInfo: headerInfo,
-			UrlValue:   vals,
-			DataType:   recommend.AdDataDataTypeSpu,
-			PageName:   recommend.PageNameSpu,
-		})
+		HeaderInfo: headerInfo,
+		UrlValue:   vals,
+		DataType:   recommend.AdDataDataTypeSpu,
+		PageName:   recommend.PageNameSpu,
+	})
 	return
 }
 
