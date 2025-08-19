@@ -39,6 +39,10 @@ var (
 	}
 	SliceOrderPageCategory = base.ModelItemOptions{
 		{
+			Label: "意向金",
+			Value: OrderPageCategoryIntentionalDeposit,
+		},
+		{
 			Label: "普通商品付款或定金付款",
 			Value: OrderPageCategoryFirst,
 		},
