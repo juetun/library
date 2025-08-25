@@ -38,17 +38,17 @@ type (
 		Amount             string                            `json:"amount,omitempty" form:"amount"`         // 总金额
 		Status             uint8                             `json:"status,omitempty" form:"status"`         // 订单状态
 		AddressId          int64                             `json:"address_id,omitempty" form:"address_id"` // 收货地址
-		Express            string                            `json:"express,omitempty" form:"express"`       // 默认快递信息
-		PayType            uint8                         `json:"pay_type,omitempty" form:"pay_type"`     // 支付类型
-		Type               string                        `json:"type,omitempty" form:"Type"`             //数据操作路径
-		ReceiptUserInfo    *ReceiptUserInfo              `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
-		PriceFreightResult *freight.PriceFreightResult   `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
-		SkuItems           []*order.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`   //商品详情
-		GetDataTypeCommon  base.GetDataTypeCommon        `json:"dt_common" form:"dt_common"`
-		Coupons            UseCouponDataList             `json:"coupons"`                  //优惠券信息
-		ActType            string                        `json:"act_type" form:"act_type"` //请求操作类型  update_address:更新收货地址
-		SelectType         uint8                         `json:"select_type" form:"select_type"`
-		JoinActId          string                        `json:"join_act_id" form:"join_act_id"` //参加活动的ID
+		Express            string                              `json:"express,omitempty" form:"express"`       // 默认快递信息
+		PayType            uint8                               `json:"pay_type,omitempty" form:"pay_type"`     // 支付类型
+		Type               string                              `json:"type,omitempty" form:"Type"`             //数据操作路径
+		ReceiptUserInfo    *ReceiptUserInfo                    `json:"receipt_user_info,omitempty" form:"receipt_user_info"`
+		PriceFreightResult *freight.PriceFreightResult         `json:"freight_result" form:"freight_result"` //订单的邮费计算结果 api-mall服务侧计算
+		SkuItems           []*model_order.ArgOrderFromCartItem `json:"sku_item,omitempty" form:"sku_item"`   //商品详情
+		GetDataTypeCommon  base.GetDataTypeCommon              `json:"dt_common" form:"dt_common"`
+		Coupons            UseCouponDataList                   `json:"coupons"`                  //优惠券信息
+		ActType            string                              `json:"act_type" form:"act_type"` //请求操作类型  update_address:更新收货地址
+		SelectType         uint8                               `json:"select_type" form:"select_type"`
+		JoinActId          string                              `json:"join_act_id" form:"join_act_id"` //参加活动的ID
 		ProvinceId         string                            `json:"province_id" form:"province_id"`
 		CityId             string                            `json:"city_id" form:"city_id"`
 		AreaId             string                            `json:"area_id" form:"area_id"`
@@ -178,7 +178,7 @@ func (r *ArgCreateOrderFromCart) validateSku() (err error) {
 		err = fmt.Errorf("未选择要付款的商品")
 		return
 	}
-	var skuItems = make([]*order.ArgOrderFromCartItem, 0, len(r.SkuItems))
+	var skuItems = make([]*model_order.ArgOrderFromCartItem, 0, len(r.SkuItems))
 	for _, item := range r.SkuItems {
 
 		item.Default()

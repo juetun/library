@@ -93,7 +93,7 @@ type (
 		SaleTypeName   string             `json:"sale_type_name"`
 	}
 	PreviewSkuItem struct {
-		order.ArgOrderFromCartItem
+		model_order.ArgOrderFromCartItem
 		//Title          string          `json:"title"`
 		SkuName         string            `json:"sku_name"`
 		SkuPropertyName string            `json:"sku_property_name"`

@@ -1,4 +1,4 @@
-package order
+package model_order
 
 import (
 	"fmt"
