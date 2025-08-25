@@ -7,7 +7,7 @@ import (
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall/freight"
-	"github.com/juetun/library/common/app_param/mall/order"
+	"github.com/juetun/library/common/app_param/mall/model_order"
 )
 
 //付款确认动作是否更新收货地址

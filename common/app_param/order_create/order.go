@@ -3,7 +3,6 @@ package order_create
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/mall/order"
 	"github.com/shopspring/decimal"
 	"strconv"
 )
