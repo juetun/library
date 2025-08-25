@@ -470,6 +470,11 @@ func GetPageTagsTester(FlagTester uint8) (dt *PageTag) {
 
 func GetPageTagsWithSaleType(saleType uint8) (dt *PageTag) {
 	switch saleType {
+	case SaleTypeIntentional: //意向金
+		mapSaleType, _ := SliceSaleType.GetMapAsKeyUint8()
+		dt = NewPageTag()
+		dt.Color = "info"
+		dt.Label = mapSaleType[saleType]
 	case SaleTypePreSale:
 		mapSaleType, _ := SliceSaleType.GetMapAsKeyUint8()
 		dt = NewPageTag()
