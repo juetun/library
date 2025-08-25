@@ -3,6 +3,7 @@ package app_param
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/shopspring/decimal"
 )
@@ -13,28 +14,24 @@ const (
 	OrderPageCategorySecond             = "second"  //定金预售付尾款
 )
 
-const (
-	OrderShopDetailPriceCateFirst  uint8 = iota + 1 //第一次付款或定金付款
-	OrderShopDetailPriceCateSecond                  //定金预售付尾款
-)
-
 var (
 	MapOrderCategoryActType = map[string]uint8{
-		OrderPageCategoryFirst:  OrderShopDetailPriceCateFirst,
-		OrderPageCategorySecond: OrderShopDetailPriceCateSecond,
+		OrderPageCategoryIntentionalDeposit: mall.OrderActTypeDeposit,
+		OrderPageCategoryFirst:              mall.OrderActTypeFirst,
+		OrderPageCategorySecond:             mall.OrderActTypeFinal,
 	}
 	SliceOrderShopDetailPriceCate = base.ModelItemOptions{
 		{
-			Label: "普通商品付款或定金付款",
-			Value: OrderShopDetailPriceCateFirst,
+			Label: "定金",
+			Value: mall.OrderActTypeFirst,
 		},
 		{
 			Label: "意向金",
-			Value: OrderPageCategoryIntentionalDeposit,
+			Value: mall.OrderActTypeDeposit,
 		},
 		{
-			Label: "定金预售尾款",
-			Value: OrderShopDetailPriceCateSecond,
+			Label: "尾款",
+			Value: mall.OrderActTypeFinal,
 		},
 	}
 	SliceOrderPageCategory = base.ModelItemOptions{
