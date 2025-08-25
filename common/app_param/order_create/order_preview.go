@@ -9,6 +9,7 @@ import (
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/app_param/mall/freight"
 	"github.com/juetun/library/common/app_param/mall/models"
+	"github.com/juetun/library/common/app_param/mall/order"
 	"github.com/shopspring/decimal"
 	"strconv"
 	"time"
@@ -92,7 +93,7 @@ type (
 		SaleTypeName   string             `json:"sale_type_name"`
 	}
 	PreviewSkuItem struct {
-		app_param.ArgOrderFromCartItem
+		order.ArgOrderFromCartItem
 		//Title          string          `json:"title"`
 		SkuName         string            `json:"sku_name"`
 		SkuPropertyName string            `json:"sku_property_name"`
