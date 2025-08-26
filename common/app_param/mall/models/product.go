@@ -175,7 +175,7 @@ var (
 		},
 		{
 			Value: SaleTypeIntentional,
-			Label: "意向金预售",
+			Label: "意向金",
 		},
 		{
 			Value: SaleTypeActivity,
