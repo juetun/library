@@ -212,7 +212,6 @@ type (
 	ArgGetUserBuyOrderUponItem struct {
 		ShopId         int64  `json:"shop_id" form:"shop_id"`
 		SpuId          string `json:"spu_id" form:"spu_id"`
-		SkuId          string `json:"sku_id" form:"sku_id"`
 		CurrentActType uint8  `json:"curr_act_type" form:"curr_act_type"` //mall.OrderActTypeFirst
 	}
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
@@ -220,7 +219,7 @@ type (
 		ArgGetUserBuyOrderUponItem
 		CurrentOrderId string `json:"curr_order_id" form:"curr_order_id"` //当前订单
 		OrderId        string `json:"order_id" form:"order_id"`           //上笔订单
-		Num            int    `json:"num" form:"num"`
+		Num            int64  `json:"num" form:"num"`
 	}
 )
 
@@ -232,7 +231,7 @@ func (r *ArgGetUserBuyOrderUpon) Default(c *base.Context) (err error) {
 }
 
 func (r *ArgGetUserBuyOrderUponItem) GetPk() (res string) {
-	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, r.SkuId, strconv.FormatUint(uint64(r.CurrentActType), 10)}
+	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, strconv.FormatUint(uint64(r.CurrentActType), 10)}
 	res = strings.Join(sliceValue, DivideStringGetUserBuyOrderUponKey)
 	return
 }
