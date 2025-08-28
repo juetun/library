@@ -231,7 +231,7 @@ func (r *ArgGetUserBuyOrderUpon) Default(c *base.Context) (err error) {
 	return
 }
 
-func (r *ResultGetUserBuyOrderUponItem) GetPk() (res string) {
+func (r *ArgGetUserBuyOrderUponItem) GetPk() (res string) {
 	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, r.SkuId, strconv.FormatUint(uint64(r.CurrentActType), 10), r.OrderId}
 	res = strings.Join(sliceValue, DivideStringGetUserBuyOrderUponKey)
 	return
