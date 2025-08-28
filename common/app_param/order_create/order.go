@@ -232,7 +232,7 @@ func (r *ArgGetUserBuyOrderUpon) Default(c *base.Context) (err error) {
 }
 
 func (r *ArgGetUserBuyOrderUponItem) GetPk() (res string) {
-	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, r.SkuId, strconv.FormatUint(uint64(r.CurrentActType), 10), r.OrderId}
+	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, r.SkuId, strconv.FormatUint(uint64(r.CurrentActType), 10)}
 	res = strings.Join(sliceValue, DivideStringGetUserBuyOrderUponKey)
 	return
 }
