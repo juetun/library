@@ -1,11 +1,18 @@
 package order_create
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/plugins/rpc"
+	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall/model_order"
 	"github.com/shopspring/decimal"
+	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -153,31 +160,31 @@ type (
 	}
 
 	OrderSkuItem struct {
-		CardId          string                    `json:"card_id"` //购物车唯一数据ID
-		SkuName         string                    `json:"sku_name"`
-		SpuId           string                    `json:"spu_id"`
-		SkuId           string                    `json:"sku_id"`        //购物车数据ID
-		SkuPic          string                    `json:"sku_pic"`       // 图片
-		SkuStatus       int8                      `json:"sku_status"`    // 商品状态
-		StatusName      string                    `json:"status_name"`   // 商品状态名称 (已下架)
-		SkuSetPrice     string                    `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
-		Price           string                    `json:"price"`         //单价
-		PriceLabel      string                    `json:"price_label"`
-		Num             int64                     `json:"num"`        //商品数量
-		PriceCate       uint8                     `json:"price_cate"` //定金类型当前商品类型为定金预售时1-首付款 2-尾款
-		PriceCateStr    string                    `json:"price_cate_str"`
-		PriceCateName   string                    `json:"price_cate_name"`
-		TotalPrice      string                    `json:"total_price"`
-		SaleTypeName    string                    `json:"sale_type_name"`
-		SaleType        uint8                     `json:"sale_type"`
-		SkuPropertyName string                    `json:"sku_property_name"` //SKU属性名
-		HaveVideo       bool                        `json:"have_video"`      //是否有视频
-		Mark            string                      `json:"mark"`            //商品说明（如 比着加入有无车时降价多少）
-		MarkSystem      string                      `json:"mark_system"`     //数据不合法 系统说明(系统使用，记录更详细不合法原因)
-		Checked         bool                        `json:"checked"`         //是否选中
-		ActType         uint8                       `json:"act_type"`        //
-		SelectType      uint8                       `json:"select_type"`     //订单来源
-		Gifts           []*model_order.SkuGiftsItem `json:"gifts"`           //赠品信息
+		CardId          string                      `json:"card_id"` //购物车唯一数据ID
+		SkuName         string                      `json:"sku_name"`
+		SpuId           string                      `json:"spu_id"`
+		SkuId           string                      `json:"sku_id"`        //购物车数据ID
+		SkuPic          string                      `json:"sku_pic"`       // 图片
+		SkuStatus       int8                        `json:"sku_status"`    // 商品状态
+		StatusName      string                      `json:"status_name"`   // 商品状态名称 (已下架)
+		SkuSetPrice     string                      `json:"sku_set_price"` //sku商品单价价(如果是定金预售，则为定金+尾款金额  )
+		Price           string                      `json:"price"`         //单价
+		PriceLabel      string                      `json:"price_label"`
+		Num             int64                       `json:"num"`        //商品数量
+		PriceCate       uint8                       `json:"price_cate"` //定金类型当前商品类型为定金预售时1-首付款 2-尾款
+		PriceCateStr    string                      `json:"price_cate_str"`
+		PriceCateName   string                      `json:"price_cate_name"`
+		TotalPrice      string                      `json:"total_price"`
+		SaleTypeName    string                      `json:"sale_type_name"`
+		SaleType        uint8                       `json:"sale_type"`
+		SkuPropertyName string                      `json:"sku_property_name"` //SKU属性名
+		HaveVideo       bool                        `json:"have_video"`        //是否有视频
+		Mark            string                      `json:"mark"`              //商品说明（如 比着加入有无车时降价多少）
+		MarkSystem      string                      `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
+		Checked         bool                        `json:"checked"`           //是否选中
+		ActType         uint8                       `json:"act_type"`          //
+		SelectType      uint8                       `json:"select_type"`       //订单来源
+		Gifts           []*model_order.SkuGiftsItem `json:"gifts"`             //赠品信息
 		SortCreateTime  base.TimeNormal             `json:"-"`
 		SpecialTags     []*OrderDataItemTag         `json:"special_tags"`
 		SortWeight      int64                       `json:"-"`
@@ -197,14 +204,76 @@ type (
 		Round     bool   `json:"round"`               //是否为圆角样式	Boolean	false
 		Mark      bool   `json:"mark"`                //是否为标记样式
 	}
+
+	ArgGetUserBuyOrderUpon struct {
+		UserHid  int64                         `json:"user_hid" form:"user_hid"`
+		Products []*ArgGetUserBuyOrderUponItem `json:"products" form:"products"`
+	}
+	ArgGetUserBuyOrderUponItem struct {
+		ShopId         int64  `json:"shop_id" form:"shop_id"`
+		SpuId          string `json:"spu_id" form:"spu_id"`
+		SkuId          string `json:"sku_id" form:"sku_id"`
+		CurrentActType uint8  `json:"curr_act_type" form:"curr_act_type"` //mall.OrderActTypeFirst
+	}
+	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
+	ResultGetUserBuyOrderUponItem struct {
+		ArgGetUserBuyOrderUponItem
+		CurrentOrderId string `json:"curr_order_id" form:"curr_order_id"` //当前订单
+		OrderId        string `json:"order_id" form:"order_id"`           //上笔订单
+		Num            int    `json:"num" form:"num"`
+	}
 )
+
+const DivideStringGetUserBuyOrderUponKey = "_"
+
+func (r *ArgGetUserBuyOrderUpon) Default(c *base.Context) (err error) {
+
+	return
+}
+
+func (r *ResultGetUserBuyOrderUponItem) GetPk() (res string) {
+	sliceValue := []string{strconv.FormatInt(r.ShopId, 10), r.SpuId, r.SkuId, strconv.FormatUint(uint64(r.CurrentActType), 10), r.OrderId}
+	res = strings.Join(sliceValue, DivideStringGetUserBuyOrderUponKey)
+	return
+}
 
 func (r *ArgGetUserCouponByShopId) Default(ctx *base.Context) (err error) {
 	if r.UserHid == 0 {
 		err = fmt.Errorf("请选择查看优惠券的用户")
 		return
 	}
+	return
+}
 
+//获取用户之前购买的订单（当前）
+func GetUserBuyOrderUpon(arg *ArgGetUserBuyOrderUpon, ctx *base.Context) (res map[string]ResultGetUserBuyOrderUponItem, err error) {
+	res = make(map[string]ResultGetUserBuyOrderUponItem, len(arg.Products)*5)
+	if arg == nil || len(arg.Products) == 0 || arg.UserHid == 0 {
+		return
+	}
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameMallOrder,
+		URI:         "/order/get_user_upon_and_next",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	ro.BodyJson, _ = json.Marshal(arg)
+	var data = struct {
+		Code int                                      `json:"code"`
+		Data map[string]ResultGetUserBuyOrderUponItem `json:"data"`
+		Msg  string                                   `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
 	return
 }
 
