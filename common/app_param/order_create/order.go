@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
+	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/app_param/mall/model_order"
@@ -206,8 +207,11 @@ type (
 	}
 
 	ArgGetUserBuyOrderUpon struct {
-		UserHid  int64                         `json:"user_hid" form:"user_hid"`
-		Products []*ArgGetUserBuyOrderUponItem `json:"products" form:"products"`
+		UserHid    int64                         `json:"user_hid" form:"user_hid"`
+		Products   []*ArgGetUserBuyOrderUponItem `json:"products" form:"products"`
+		HeaderInfo common.HeaderInfo             `json:"header_info" form:"header_info"`
+		TimeNow    base.TimeNormal               `json:"time_now" form:"time_now"`
+		GetCommon  base.GetDataTypeCommon        `json:"get_common" form:"get_common"`
 	}
 	ArgGetUserBuyOrderUponItem struct {
 		ShopId         int64  `json:"shop_id" form:"shop_id"`
