@@ -92,10 +92,18 @@ type (
 		OrderDetailAttr *OrderDetailAttr `json:"order_detail_attr" form:"order_detail_attr"`
 	}
 	OrderDetailAttr struct {
-		DownPayment        string `json:"dp,omitempty"`   //定金
-		DownPaymentVal     string `json:"dpv,omitempty"`  //定金抵扣
-		IntentionalDeposit string `json:"ind,omitempty"`  //意向金
-		IntentDepositVal   string `json:"indv,omitempty"` //意向金抵扣
+		IntentionalDeposit         string `json:"ind,omitempty"`  //意向金
+		IntentDepositVal           string `json:"indv,omitempty"` //意向金抵扣
+		IntentionalDepositOrder    string `json:"ido,omitempty"`  //意向金订单
+		IntentionalDepositSubOrder string `json:"idso,omitempty"` //意向金子订单
+
+		FinalOrderId    string `json:"foi,omitempty"`  //尾款订单
+		FinalSubOrderId string `json:"fsoi,omitempty"` //尾款子订单
+
+		FirstOrderId    string `json:"fioi,omitempty"`  //定金订单
+		FirstSubOrderId string `json:"fisoi,omitempty"` //定金子单
+		DownPayment     string `json:"dp,omitempty"`    //定金
+		DownPaymentVal  string `json:"dpv,omitempty"`   //定金抵扣
 	}
 	SkuGiftsItem struct {
 		SkuId string `json:"sku_id,omitempty"`
