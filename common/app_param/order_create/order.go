@@ -212,6 +212,7 @@ type (
 	ArgGetUserBuyOrderUponItem struct {
 		ShopId         int64  `json:"shop_id" form:"shop_id"`
 		SpuId          string `json:"spu_id" form:"spu_id"`
+		SaleType       uint8  `json:"sale_type" form:"sale_type"`
 		CurrentActType uint8  `json:"curr_act_type" form:"curr_act_type"` //mall.OrderActTypeFirst
 	}
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
