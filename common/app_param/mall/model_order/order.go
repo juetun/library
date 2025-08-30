@@ -6,12 +6,25 @@ import (
 	"github.com/juetun/library/common/app_param/mall"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/shopspring/decimal"
+	"time"
 )
 
 const (
 	OrderPageCategoryIntentionalDeposit = "deposit" //意向金
 	OrderPageCategoryFirst              = "first"   //第一次付款或定金付款
 	OrderPageCategorySecond             = "second"  //定金预售付尾款
+)
+
+//订单超时参数
+const (
+	NotPageExpire     = 3600 * time.Second  //超过1个小时销售未支付的订单标记超时
+	SendGoodExpire    = 10 * 24 * time.Hour //发货单超时时间(10天)
+	OrderFinishExpire = 15 * 24 * time.Hour //订单完成状态标记超时时间(订单标记完成时间)
+)
+
+//结算单账期
+const (
+	BillingPeriod = 3 * 24 * time.Hour //结算账期
 )
 
 var (
