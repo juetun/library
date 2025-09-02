@@ -75,18 +75,35 @@ const (
 	SpuSupportCommentYes uint8 = iota + 1
 	SpuSupportCommentNo
 )
+const (
+	DeliveryTimeTypeTime uint8 = iota + 1 //固定时间
+	DeliveryTimeTypeDay                   //固定天数 （付款时间开始延迟天数发货）
+)
+const (
+	DeliveryTimeTypeDayDefault int64 = 7 //默认延迟天发货
+)
 
 //定金预售最多可延迟支付时间的范围
 const DownPayDelayPayLimit = 5 * time.Minute
 
 var (
+	SliceDeliveryTimeType = base.ModelItemOptions{
+		{
+			Value: DeliveryTimeTypeTime, //固定时间
+			Label: "固定时间",
+		},
+		{
+			Value: DeliveryTimeTypeDay, //固定天数
+			Label: "固定天数",
+		},
+	}
 	SliceProductHasOnlineYes = base.ModelItemOptions{
 		{
 			Value: ProductHasOnlineYes, //上过架
 			Label: "是",
 		},
 		{
-			Value: ProductHasOnlineNo,  //未曾上过架
+			Value: ProductHasOnlineNo, //未曾上过架
 			Label: "否",
 		},
 	}
@@ -334,6 +351,8 @@ type (
 		SaleOverTime           *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
 		FinalStartTime         base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time,omitempty"`
 		FinalOverTime          base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time,omitempty"`
+		DeliveryTimeType       uint8                          `gorm:"column:delivery_time_type;type:tinyint(2);default:2;not null;comment:发货时间类型 1-固定时间 2-固定天数" json:"delivery_time_type,omitempty"`
+		DelayDays              int64                          `gorm:"column:delay_days;not null;type: bigint(15);default:7;comment:付款时间后延迟发货天数"  json:"delay_days,omitempty"`
 		DeliveryTime           *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
 		ShowInList             uint8                          `gorm:"column:show_in_list;type:tinyint(2);default:1;not null;comment:是否在推荐列表展示 1-展示(默认) 2-不展示" json:"show_in_list,omitempty"`
 		SaleCountShow          uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show,omitempty"`
