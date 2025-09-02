@@ -36,6 +36,10 @@ const (
 
 )
 const (
+	ProductHasOnlineYes uint8 = iota + 1 //商品曾上过架
+	ProductHasOnlineNo                   //商品未曾上过架
+)
+const (
 	RelateTypeMall uint8 = 1 // 商品关联类型 其他电商商品
 )
 
@@ -76,6 +80,16 @@ const (
 const DownPayDelayPayLimit = 5 * time.Minute
 
 var (
+	SliceProductHasOnlineYes = base.ModelItemOptions{
+		{
+			Value: ProductHasOnlineYes, //上过架
+			Label: "是",
+		},
+		{
+			Value: ProductHasOnlineNo,  //未曾上过架
+			Label: "否",
+		},
+	}
 	SliceSpuSupportComment = base.ModelItemOptions{
 		{
 			Value: SpuSupportCommentYes,
@@ -293,6 +307,12 @@ type (
 		MaxPriceCost           string                         `gorm:"column:max_price_cost;default:0;type:decimal(10,2);not null;comment:最高市场价" json:"max_price_cost,omitempty"`
 		MinDownPayment         string                         `gorm:"column:min_down_payment;default:0;type:decimal(10,2);not null;comment:定金最低价" json:"min_down_payment,omitempty"`
 		MaxDownPayment         string                         `gorm:"column:max_down_payment;default:0;type:decimal(10,2);not null;comment:定金最高价" json:"max_down_payment,omitempty"`
+		MinDownPaymentDecr     string                         `gorm:"column:min_down_payment_decr;default:0;type:decimal(10,2);not null;comment:定金最低抵扣" json:"min_down_payment_decr,omitempty"`
+		MaxDownPaymentDecr     string                         `gorm:"column:max_down_payment_decr;default:0;type:decimal(10,2);not null;comment:定金最高价抵扣" json:"max_down_payment_decr,omitempty"`
+		IntentionalMin         string                         `gorm:"column:intentional_min;default:0;type:decimal(10,2);not null;comment:意向金最低额" json:"intentional_min,omitempty"`
+		IntentionalMax         string                         `gorm:"column:intentional_max;default:0;type:decimal(10,2);not null;comment:意向金最高额" json:"intentional_max,omitempty"`
+		IntentionalDecrMin     string                         `gorm:"column:intentional_decr_min;default:0;type:decimal(10,2);not null;comment:意向金最低抵扣" json:"intentional_decr_min,omitempty"`
+		IntentionalDecrMax     string                         `gorm:"column:intentional_decr_max;default:0;type:decimal(10,2);not null;comment:意向金最高抵扣" json:"intentional_decr_max,omitempty"`
 		TagIds                 string                         `gorm:"column:tag_ids;type:varchar(300);not null;default:'';comment:标签数据" json:"tag_ids,omitempty"`
 		TagIdsArray            []int64                        `json:"-" gorm:"-"`
 		TagAttr                string                         `gorm:"column:tag_attr;type:varchar(600);not null;default:'';comment:属性标签数据" json:"tag_attr,omitempty"`
@@ -331,6 +351,7 @@ type (
 		ApplyMark              string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
 		RecommendWeight        int64                          `gorm:"column:rec_weight;not null;type:bigint(20);default:10000;comment:商品推荐权重因子" json:"rec_weight" `
 		CurrentRecommendWeight float64                        `gorm:"column:current_rec_weight;not null;type:decimal(22,2);default:0;comment:商品推荐权重" json:"current_rec_weight" `
+		HasOnline              uint8                          `gorm:"column:has_online;not null;type: tinyint(2);default:2;comment:是否上架过 1-上架过 2-未上架"  json:"has_online,omitempty"`
 		CreatedAt              base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at,omitempty"`
 		UpdatedAt              base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at,omitempty"`
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
