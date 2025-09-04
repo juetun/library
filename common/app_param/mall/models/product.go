@@ -86,7 +86,22 @@ const (
 //定金预售最多可延迟支付时间的范围
 const DownPayDelayPayLimit = 5 * time.Minute
 
+const (
+	ProductFreightNeedYes uint8 = iota + 1
+	ProductFreightNeedNo
+)
+
 var (
+	SliceProductFreightNeed = base.ModelItemOptions{
+		{
+			Value: ProductFreightNeedYes, //需要实物
+			Label: "是",
+		},
+		{
+			Value: ProductFreightNeedNo, //不需要实物
+			Label: "否",
+		},
+	}
 	SliceDeliveryTimeType = base.ModelItemOptions{
 		{
 			Value: DeliveryTimeTypeTime, //固定时间
@@ -336,8 +351,12 @@ type (
 		ServiceIds             string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids,omitempty"`
 		Keywords               string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords,omitempty"`
 		SaleNum                int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num,omitempty"`
+		FreightNeed            uint8                          `gorm:"column:freight_need;type:tinyint(2);default:1;not null;comment:是否需要发实物" json:"freight_need,omitempty"`
 		FreightType            uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type,omitempty"`
 		FreightTemplate        int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template,omitempty"`
+		DeliveryTimeType       uint8                          `gorm:"column:delivery_time_type;type:tinyint(2);default:2;not null;comment:发货时间类型 1-固定时间 2-固定天数" json:"delivery_time_type,omitempty"`
+		DelayDays              int64                          `gorm:"column:delay_days;not null;type: bigint(15);default:7;comment:付款时间后延迟发货天数"  json:"delay_days,omitempty"`
+		DeliveryTime           *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
 		TotalStock             int64                          `gorm:"column:total_stock;type:bigint(20);not null;default:0;comment:总库存数" json:"total_stock,omitempty,omitempty"`
 		CategoryId             int64                          `gorm:"column:category_id;type:bigint(20);not null;default:0;comment:所属类目（二级类目）" json:"category_id,omitempty"`
 		FinalCategoryId        int64                          `gorm:"column:final_category_id;type:bigint(20);not null;default:0;comment:所属类目(最终类目)" json:"final_category_id,omitempty"`
@@ -351,9 +370,6 @@ type (
 		SaleOverTime           *base.TimeNormal               `gorm:"column:sale_over_time;comment:可购买截止时间" json:"sale_over_time,omitempty"`
 		FinalStartTime         base.TimeNormal                `gorm:"column:final_start_time;not null;default:CURRENT_TIMESTAMP;comment:尾款开始时间" json:"final_start_time,omitempty"`
 		FinalOverTime          base.TimeNormal                `gorm:"column:final_over_time;not null;default:CURRENT_TIMESTAMP;comment:尾款结束时间" json:"final_over_time,omitempty"`
-		DeliveryTimeType       uint8                          `gorm:"column:delivery_time_type;type:tinyint(2);default:2;not null;comment:发货时间类型 1-固定时间 2-固定天数" json:"delivery_time_type,omitempty"`
-		DelayDays              int64                          `gorm:"column:delay_days;not null;type: bigint(15);default:7;comment:付款时间后延迟发货天数"  json:"delay_days,omitempty"`
-		DeliveryTime           *base.TimeNormal               `gorm:"column:delivery_time;comment:预售预计发货时间" json:"delivery_time,omitempty"` // 预计发货时间
 		ShowInList             uint8                          `gorm:"column:show_in_list;type:tinyint(2);default:1;not null;comment:是否在推荐列表展示 1-展示(默认) 2-不展示" json:"show_in_list,omitempty"`
 		SaleCountShow          uint8                          `gorm:"column:sale_count_show;type:bigint(20);not null;default:0;comment:销量超过数时展示销量" json:"sale_count_show,omitempty"`
 		RelateType             uint8                          `gorm:"column:relate_type;not null;type: tinyint(1);default:0;comment:关联类型 0-无关联 1-电商"  json:"relate_type,omitempty"`
@@ -505,6 +521,20 @@ func GetPageTagsTester(FlagTester uint8) (dt *PageTag) {
 		dt.Label = "是否测试异常"
 		dt.Color = "error"
 	}
+	return
+}
+
+func GetProductFreightNeed(ProductFreightNeed uint8) (res string) {
+	var ok bool
+	MapRelateType, _ := SliceProductFreightNeed.GetMapAsKeyUint8()
+	if res, ok = MapRelateType[ProductFreightNeed]; ok {
+		return
+	}
+	return
+}
+
+func (r *Product) ParseProductFreightNeed() (res string) {
+	res = GetProductFreightNeed(r.FreightNeed)
 	return
 }
 
