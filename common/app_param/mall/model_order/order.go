@@ -106,6 +106,7 @@ type (
 		RelateOrderStatus string                `json:"relate_order_status" form:"relate_order_status"`
 		OrderDetailAttr   *OrderDetailAttr      `json:"order_detail_attr" form:"order_detail_attr"`
 		ServiceItems      base.ModelItemOptions `json:"service_items" form:"service_items"`
+		FreightNeed       uint8                 `json:"freight_need" form:"freight_need"`
 	}
 	OrderDetailAttr struct {
 		IntentionalDeposit         string `json:"ind,omitempty"`  //意向金

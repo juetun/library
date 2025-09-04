@@ -54,6 +54,7 @@ type (
 		List               PreviewShopItems                   `json:"list"`                  // SKU
 		ActType            uint8                              `json:"act_type"`              //1-首款（默认） 2-尾款（定金预售）
 		DisabledPay        bool                               `json:"disabled_pay"`          //是否能够支付 true-不能支付 false-能支付
+		FreightNeed        uint8                              `json:"freight_need"`
 	}
 	PreviewShopItems []*PreviewShopItem
 	PreviewShopItem  struct {
