@@ -51,6 +51,8 @@ const (
 	AdDataDataTypeFactory                  = "25" //厂家LOGO
 	AdDataDataTypePlatActivity             = "26" //平台活动缩略图
 	AdDataStatusDataScene                  = "27" //广告场景
+	AdDataStatusOrderDetail                = "28" //订单详情
+	AdDataStatusOrderSubDetail             = "29" //子订单详情
 
 	AdDataDataTypeAppLogo    = "198" //手机APP logo
 	AdDataDataTypeAppInstall = "199" //手机APP安装包
