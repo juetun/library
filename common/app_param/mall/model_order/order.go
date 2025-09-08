@@ -26,6 +26,9 @@ const (
 const (
 	BillingPeriod = 3 * 24 * time.Hour //结算账期
 )
+const (
+	OrderDepositMaxOrderNumber = 10 //意向金预售单用户同时支持最多订单数
+)
 
 var (
 	MapOrderCategoryActType = map[string]uint8{
