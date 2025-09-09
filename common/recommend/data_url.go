@@ -2,11 +2,16 @@ package recommend
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"github.com/juetun/base-wrapper/lib/app/app_obj"
+	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
+	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/plugins_lib"
 	"html/template"
+	"net/http"
 	"net/url"
 	"strings"
 )
@@ -119,7 +124,65 @@ type (
 		Web string `json:"web"`
 	}
 	GetPagePathHandler func(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string)
+
+	ArgGetLinks     []ArgGetLinksItem
+	ArgGetLinksItem struct {
+		Pk             string                 `json:"pk" form:"pk"`
+		Terminal       string                 `json:"terminal,omitempty" form:"terminal"`
+		UrlValue       *url.Values            `json:"url_value,omitempty" form:"url_value"`
+		UrlLinkVal     map[string]interface{} `json:"url_link_val,omitempty"` //url链接中的参数
+		DataType       string                 `json:"data_type,omitempty" form:"data_type"`
+		PageName       string                 `json:"page_name,omitempty" form:"page_name"`
+		NeedHeaderInfo bool                   `json:"need_header_info,omitempty"` //拼接参数时，带上header_info数据
+		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
+	}
+
+	LinkArgument struct {
+		HeaderInfo     *common.HeaderInfo     `json:"header_info,omitempty"`
+		UrlValue       *url.Values            `json:"url_value,omitempty"`
+		UrlLinkVal     map[string]interface{} `json:"url_link_val,omitempty"` //url链接中的参数
+		DataType       string                 `json:"data_type,omitempty"`
+		PageName       string                 `json:"page_name,omitempty"`
+		NeedHeaderInfo bool                   `json:"need_header_info,omitempty"` //拼接参数时，带上header_info数据
+		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
+	}
+	ResultGetLinks map[string]*LinkArgument
 )
+
+func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
+
+	return
+}
+
+//获取链接地址
+func GetLinks(args ArgGetLinks, ctx *base.Context) (res ResultGetLinks, err error) {
+	res = make(map[string]*LinkArgument, len(args))
+
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     app_param.AppNameMallOrder,
+		URI:         "/order/get_user_upon_and_next",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	ro.BodyJson, _ = json.Marshal(args)
+	var data = struct {
+		Code int            `json:"code"`
+		Data ResultGetLinks `json:"data"`
+		Msg  string         `json:"message"`
+	}{}
+	err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error
+	if err != nil {
+		return
+	}
+	res = data.Data
+	return
+}
 
 func getPageSpuPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
 	var pageName = PageNameSpu
@@ -481,79 +544,69 @@ func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
 	return
 }
 
-type LinkArgument struct {
-	HeaderInfo     *common.HeaderInfo
-	UrlValue       *url.Values
-	UrlLinkVal     map[string]interface{} //url链接中的参数
-	DataType       string
-	PageName       string
-	NeedHeaderInfo bool `json:"need_header_info"` //拼接参数时，带上header_info数据
-	LinkTypIsURL   bool `json:"link_typ_is_url"`  //返回的链接地址是字符串//
-}
-
 //获取页面链接
 //headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
-func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
-
-	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
-	switch argument.HeaderInfo.HTerminal {
-	case app_param.TerminalMina, app_param.TerminalH5, app_param.TerminalAndroid, app_param.TerminalIos:
-		//如果返回的为url连接地址
-		if argument.LinkTypIsURL {
-			res, err = getDefault(argument)
-			return
-		}
-		var getLinkMap = map[string]GetPageLinkHandler{
-			app_param.TerminalMina:    getPageLinkMina, //小程序
-			app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
-			app_param.TerminalAndroid: getPageLinkApp,  //安卓
-			app_param.TerminalIos:     getPageLinkApp,  //IOS
-		}
-		if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
-			res, err = handler(argument)
-			return
-		}
-	case app_param.TerminalWeb: //网站链接
-		res, err = getPageLinkWeb(argument)
-	default:
-		//如果返回的为url连接地址
-		if argument.LinkTypIsURL {
-			res, err = getDefault(argument)
-			return
-		}
-		res, err = getDefault(argument)
-	}
-	return
-}
-
-func GetUserHref(info *common.HeaderInfo, urlV url.Values) (link interface{}, err error) {
-
-	var (
-		linkArgument *LinkArgument
-	)
-
-	switch info.HTerminal {
-	case app_param.TerminalWeb:
-		uid := urlV.Get("uid")
-		linkArgument = &LinkArgument{
-			HeaderInfo: info,
-			UrlValue:   &urlV,
-			DataType:   AdDataDataTypeUser,
-			PageName:   PageNameUsr,
-		}
-		urlV.Del("uid")
-		if linkArgument.UrlLinkVal == nil {
-			linkArgument.UrlLinkVal = make(map[string]interface{}, 5)
-		}
-		linkArgument.UrlLinkVal["user_id"] = uid
-	default:
-		linkArgument = &LinkArgument{
-			HeaderInfo: info,
-			UrlValue:   &urlV,
-			DataType:   AdDataDataTypeUser,
-			PageName:   PageNameUsr,
-		}
-	}
-	link, err = GetPageLink(linkArgument)
-	return
-}
+//func GetPageLink(argument *LinkArgument) (res interface{}, err error) {
+//
+//	type GetPageLinkHandler = func(argument *LinkArgument) (res DataItemLinkMina, err error)
+//	switch argument.HeaderInfo.HTerminal {
+//	case app_param.TerminalMina, app_param.TerminalH5, app_param.TerminalAndroid, app_param.TerminalIos:
+//		//如果返回的为url连接地址
+//		if argument.LinkTypIsURL {
+//			res, err = getDefault(argument)
+//			return
+//		}
+//		var getLinkMap = map[string]GetPageLinkHandler{
+//			app_param.TerminalMina:    getPageLinkMina, //小程序
+//			app_param.TerminalH5:      getPageH5Mina,   //H5页面操作使用
+//			app_param.TerminalAndroid: getPageLinkApp,  //安卓
+//			app_param.TerminalIos:     getPageLinkApp,  //IOS
+//		}
+//		if handler, ok := getLinkMap[argument.HeaderInfo.HTerminal]; ok {
+//			res, err = handler(argument)
+//			return
+//		}
+//	case app_param.TerminalWeb: //网站链接
+//		res, err = getPageLinkWeb(argument)
+//	default:
+//		//如果返回的为url连接地址
+//		if argument.LinkTypIsURL {
+//			res, err = getDefault(argument)
+//			return
+//		}
+//		res, err = getDefault(argument)
+//	}
+//	return
+//}
+//
+//func GetUserHref(info *common.HeaderInfo, urlV url.Values) (link interface{}, err error) {
+//
+//	var (
+//		linkArgument *LinkArgument
+//	)
+//
+//	switch info.HTerminal {
+//	case app_param.TerminalWeb:
+//		uid := urlV.Get("uid")
+//		linkArgument = &LinkArgument{
+//			HeaderInfo: info,
+//			UrlValue:   &urlV,
+//			DataType:   AdDataDataTypeUser,
+//			PageName:   PageNameUsr,
+//		}
+//		urlV.Del("uid")
+//		if linkArgument.UrlLinkVal == nil {
+//			linkArgument.UrlLinkVal = make(map[string]interface{}, 5)
+//		}
+//		linkArgument.UrlLinkVal["user_id"] = uid
+//	default:
+//		linkArgument = &LinkArgument{
+//			HeaderInfo: info,
+//			UrlValue:   &urlV,
+//			DataType:   AdDataDataTypeUser,
+//			PageName:   PageNameUsr,
+//		}
+//	}
+//	link, err = GetPageLink(linkArgument)
+//	return
+//}
