@@ -1,19 +1,14 @@
 package recommend
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
-	"github.com/juetun/library/common/plugins_lib"
-	"html/template"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 const (
@@ -137,15 +132,6 @@ type (
 		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
 	}
 
-	LinkArgument struct {
-		HeaderInfo     *common.HeaderInfo     `json:"header_info,omitempty"`
-		UrlValue       *url.Values            `json:"url_value,omitempty"`
-		UrlLinkVal     map[string]interface{} `json:"url_link_val,omitempty"` //url链接中的参数
-		DataType       string                 `json:"data_type,omitempty"`
-		PageName       string                 `json:"page_name,omitempty"`
-		NeedHeaderInfo bool                   `json:"need_header_info,omitempty"` //拼接参数时，带上header_info数据
-		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
-	}
 	ResultGetLinks map[string]interface{}
 )
 
@@ -181,365 +167,366 @@ func GetLinks(args ArgGetLinks, ctx *base.Context) (res ResultGetLinks, err erro
 	return
 }
 
-func getPageSpuPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
-	var pageName = PageNameSpu
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
+//
+//func getPageSpuPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
+//	var pageName = PageNameSpu
+//	if len(pageNames) > 0 {
+//		pageName = pageNames[0]
+//	}
+//
+//	if tmp, ok := MapPageMallName[pageName]; ok {
+//		res = getLinkValue(terminal, urlLinkVal, tmp)
+//		return
+//	}
+//	return
+//}
 
-	if tmp, ok := MapPageMallName[pageName]; ok {
-		res = getLinkValue(terminal, urlLinkVal, tmp)
-		return
-	}
-	return
-}
+//func getLinkValue(terminal string, urlLinkVal map[string]interface{}, pageUrl PageUrl) (res string) {
+//	switch terminal {
+//	case app_param.TerminalWeb:
+//		res = pageUrl.Web
+//	case app_param.TerminalMina:
+//		res = pageUrl.H5
+//	default:
+//		res = pageUrl.H5
+//	}
+//	if res != "" && urlLinkVal != nil {
+//		tmpl, _ := template.New("test").Parse(res)
+//		var result bytes.Buffer
+//		_ = tmpl.Execute(&result, urlLinkVal)
+//		res = result.String()
+//	}
+//	return
+//}
 
-func getLinkValue(terminal string, urlLinkVal map[string]interface{}, pageUrl PageUrl) (res string) {
-	switch terminal {
-	case app_param.TerminalWeb:
-		res = pageUrl.Web
-	case app_param.TerminalMina:
-		res = pageUrl.H5
-	default:
-		res = pageUrl.H5
-	}
-	if res != "" && urlLinkVal != nil {
-		tmpl, _ := template.New("test").Parse(res)
-		var result bytes.Buffer
-		_ = tmpl.Execute(&result, urlLinkVal)
-		res = result.String()
-	}
-	return
-}
+//func getPageUserShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
+//	var pageName = UserShopInfo
+//	if len(pageNames) > 0 {
+//		pageName = pageNames[0]
+//	}
+//
+//	if tmp, ok := MapPageUserShop[pageName]; ok {
+//		res = getLinkValue(terminal, urlLinkVal, tmp)
+//		return
+//	}
+//	return
+//}
+//func getPageShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
+//	var pageName = UserShopHome
+//	if len(pageNames) > 0 {
+//		pageName = pageNames[0]
+//	}
+//
+//	if tmp, ok := MapPageUserShop[pageName]; ok {
+//		res = getLinkValue(terminal, urlLinkVal, tmp)
+//		return
+//	}
+//	return
+//}
 
-func getPageUserShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
-	var pageName = UserShopInfo
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
-
-	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = getLinkValue(terminal, urlLinkVal, tmp)
-		return
-	}
-	return
-}
-func getPageShopPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
-	var pageName = UserShopHome
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
-
-	if tmp, ok := MapPageUserShop[pageName]; ok {
-		res = getLinkValue(terminal, urlLinkVal, tmp)
-		return
-	}
-	return
-}
-
-func getPageSNSPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
-	var pageName = PageNameSns
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
-
-	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = getLinkValue(terminal, urlLinkVal, tmp)
-		return
-	}
-	return
-}
-
-func getPageFishingSpotsPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
-	var pageName = PageNameFishingSport
-	if len(pageNames) > 0 {
-		pageName = pageNames[0]
-	}
-
-	if tmp, ok := MapPageSNsName[pageName]; ok {
-		res = getLinkValue(terminal, urlLinkVal, tmp)
-		return
-	}
-	return
-}
+//func getPageSNSPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
+//	var pageName = PageNameSns
+//	if len(pageNames) > 0 {
+//		pageName = pageNames[0]
+//	}
+//
+//	if tmp, ok := MapPageSNsName[pageName]; ok {
+//		res = getLinkValue(terminal, urlLinkVal, tmp)
+//		return
+//	}
+//	return
+//}
+//
+//func getPageFishingSpotsPathByPageName(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string) {
+//	var pageName = PageNameFishingSport
+//	if len(pageNames) > 0 {
+//		pageName = pageNames[0]
+//	}
+//
+//	if tmp, ok := MapPageSNsName[pageName]; ok {
+//		res = getLinkValue(terminal, urlLinkVal, tmp)
+//		return
+//	}
+//	return
+//}
 
 //argument.UrlValue, argument.DataType, argument.PageName...
-func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) (res string, err error) {
-	var (
-		stringValue  string
-		urlValue1    = url.Values{}
-		paramsDivide = "?"
-		dtp          string
-	)
-
-	if tmp, ok := MapDataTypeBiz[argument.DataType]; ok {
-		argument.DataType = tmp
-	}
-	if getPagePathHandler != nil {
-		suffix := getPagePathHandler(argument.HeaderInfo.HTerminal, argument.UrlLinkVal, argument.PageName)
-		if terminalInfo, ok := plugins_lib.WebMap[argument.HeaderInfo.HTerminal]; ok {
-			if tmp, ok := terminalInfo[argument.DataType]; ok {
-				stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
-			} else {
-				stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
-				dtp = "1"
-			}
-		} else {
-			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
-			dtp = "2"
-		}
-	}
-	dataSlice := strings.Split(stringValue, paramsDivide)
-	l := len(dataSlice)
-	if l > 1 {
-		if urlValue1, err = url.ParseQuery(dataSlice[l-1]); err != nil {
-			return
-		}
-		preUrl := dataSlice[0 : l-1]
-		stringValue = strings.Join(preUrl, paramsDivide)
-		if urlValue1 != nil {
-			for key, value := range urlValue1 {
-				argument.UrlValue.Set(key, strings.Join(value, ""))
-			}
-		}
-
-	}
-	if dtp != "" {
-		argument.UrlValue.Set("ldtp", dtp)
-	}
-	if len(*argument.UrlValue) != 0 {
-		res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
-	} else {
-		res = stringValue
-	}
-	return
-}
-
-func getPageLinkDefault(argument *LinkArgument) (res string, err error) {
-
-	var (
-		mapGetPagePath = map[string]GetPagePathHandler{
-			AdDataDataTypeSpu:               getPageSpuPathByPageName,
-			AdDataDataTypeSku:               getPageSpuPathByPageName,
-			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
-			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
-			AdDataDataTypeUser:              getPageSpuPathByPageName,
-			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
-			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
-			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
-			AdDataDataTypeOther:             getPageSpuPathByPageName,
-		}
-
-		ok      bool
-		handler GetPagePathHandler
-	)
-	if argument.DataType != AdDataDataTypeOther {
-		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
-			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
-			return
-		}
-	}
-	if res, err = getPageLink(handler, argument); err != nil {
-		return
-	}
-	return
-}
-
-//小程序参数生成
-func getPageLinkMina(argument *LinkArgument) (res DataItemLinkMina, err error) {
-	var (
-		pageName string
-		ok       bool
-	)
-
-	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
-		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
-		return
-	}
-
-	if argument.PageName != "" {
-		pageName = argument.PageName
-	}
-	res.PageName = pageName
-	res.Query = make(map[string]interface{}, 10)
-	if argument.NeedHeaderInfo {
-		if argument.HeaderInfo.HApp != "" {
-			res.Query["h_app"] = argument.HeaderInfo.HApp
-		}
-		if argument.HeaderInfo.HTerminal != "" {
-			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
-		}
-		if argument.HeaderInfo.HChannel != "" {
-			res.Query["h_channel"] = argument.HeaderInfo.HChannel
-		}
-		if argument.HeaderInfo.HVersion != "" {
-			res.Query["h_version"] = argument.HeaderInfo.HVersion
-		}
-	}
-	if argument.UrlValue != nil {
-		for key := range * argument.UrlValue {
-			res.Query[key] = argument.UrlValue.Get(key)
-		}
-	}
-
-	return
-}
-
-func getPageH5Mina(argument *LinkArgument) (res DataItemLinkMina, err error) {
-	var (
-		pageName string
-		ok       bool
-	)
-
-	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
-		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
-		return
-	}
-
-	if argument.PageName != "" {
-		pageName = argument.PageName
-	}
-	res.PageName = pageName
-	res.Query = make(map[string]interface{}, 10)
-	if argument.NeedHeaderInfo {
-		if argument.HeaderInfo.HApp != "" {
-			res.Query["h_app"] = argument.HeaderInfo.HApp
-		}
-		if argument.HeaderInfo.HTerminal != "" {
-			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
-		}
-		if argument.HeaderInfo.HChannel != "" {
-			res.Query["h_channel"] = argument.HeaderInfo.HChannel
-		}
-		if argument.HeaderInfo.HVersion != "" {
-			res.Query["h_version"] = argument.HeaderInfo.HVersion
-		}
-	}
-	if argument.UrlValue != nil {
-		for key := range * argument.UrlValue {
-			res.Query[key] = argument.UrlValue.Get(key)
-		}
-	}
-
-	return
-}
-
-//网站链接
-func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
-	if argument.NeedHeaderInfo {
-		if argument.UrlValue == nil {
-			argument.UrlValue = &url.Values{}
-		}
-		if argument.HeaderInfo.HApp != "" {
-			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
-		}
-		if argument.HeaderInfo.HTerminal != "" {
-			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
-		}
-		if argument.HeaderInfo.HChannel != "" {
-			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
-		}
-		if argument.HeaderInfo.HVersion != "" {
-			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
-		}
-	}
-
-	res, err = getPageWebLinkDefault(argument)
-	return
-}
-
-//网站链接
-func getPageWebLinkDefault(argument *LinkArgument) (res string, err error) {
-	var (
-		mapGetPagePath = map[string]GetPagePathHandler{
-			AdDataDataTypeSpu:               getPageSpuPathByPageName,
-			AdDataDataTypeSku:               getPageSpuPathByPageName,
-			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
-			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
-			AdDataDataTypeUser:              getPageSpuPathByPageName,
-			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
-			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
-			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
-			AdDataDataTypeRing:              getPageSNSPathByPageName,
-			AdDataDataTypeOther:             getPageSpuPathByPageName,
-		}
-
-		ok      bool
-		handler GetPagePathHandler
-	)
-	if argument.DataType != AdDataDataTypeOther {
-		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
-			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
-			return
-		}
-	}
-	if res, err = getPageLink(handler, argument); err != nil {
-		return
-	}
-	return
-}
-
-func getDefault(argument *LinkArgument) (res interface{}, err error) {
-	if argument.NeedHeaderInfo {
-		if argument.UrlValue == nil {
-			argument.UrlValue = &url.Values{}
-		}
-		if argument.HeaderInfo.HApp != "" {
-			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
-		}
-		if argument.HeaderInfo.HTerminal != "" {
-			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
-		}
-		if argument.HeaderInfo.HChannel != "" {
-			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
-		}
-		if argument.HeaderInfo.HVersion != "" {
-			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
-		}
-	}
-
-	res, err = getPageLinkDefault(argument)
-	return
-}
-
-//小程序参数生成
-func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
-	var (
-		pageName string
-		ok       bool
-	)
-
-	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
-		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
-		return
-	}
-
-	if len(argument.PageName) > 0 {
-		pageName = argument.PageName
-	}
-	res.PageName = pageName
-	res.Query = make(map[string]interface{}, 10)
-	if argument.NeedHeaderInfo {
-		if argument.HeaderInfo.HApp != "" {
-			res.Query["h_app"] = argument.HeaderInfo.HApp
-		}
-		if argument.HeaderInfo.HTerminal != "" {
-			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
-		}
-		if argument.HeaderInfo.HChannel != "" {
-			res.Query["h_channel"] = argument.HeaderInfo.HChannel
-		}
-		if argument.HeaderInfo.HVersion != "" {
-			res.Query["h_version"] = argument.HeaderInfo.HVersion
-		}
-	}
-	if argument.UrlValue != nil {
-		for key := range *argument.UrlValue {
-			res.Query[key] = argument.UrlValue.Get(key)
-		}
-	}
-	return
-}
+//func getPageLink(getPagePathHandler GetPagePathHandler, argument *LinkArgument) (res string, err error) {
+//	var (
+//		stringValue  string
+//		urlValue1    = url.Values{}
+//		paramsDivide = "?"
+//		dtp          string
+//	)
+//
+//	if tmp, ok := MapDataTypeBiz[argument.DataType]; ok {
+//		argument.DataType = tmp
+//	}
+//	if getPagePathHandler != nil {
+//		suffix := getPagePathHandler(argument.HeaderInfo.HTerminal, argument.UrlLinkVal, argument.PageName)
+//		if terminalInfo, ok := plugins_lib.WebMap[argument.HeaderInfo.HTerminal]; ok {
+//			if tmp, ok := terminalInfo[argument.DataType]; ok {
+//				stringValue = fmt.Sprintf("//%s%s", tmp, suffix)
+//			} else {
+//				stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
+//				dtp = "1"
+//			}
+//		} else {
+//			stringValue = fmt.Sprintf("//localhost:3000%s", suffix)
+//			dtp = "2"
+//		}
+//	}
+//	dataSlice := strings.Split(stringValue, paramsDivide)
+//	l := len(dataSlice)
+//	if l > 1 {
+//		if urlValue1, err = url.ParseQuery(dataSlice[l-1]); err != nil {
+//			return
+//		}
+//		preUrl := dataSlice[0 : l-1]
+//		stringValue = strings.Join(preUrl, paramsDivide)
+//		if urlValue1 != nil {
+//			for key, value := range urlValue1 {
+//				argument.UrlValue.Set(key, strings.Join(value, ""))
+//			}
+//		}
+//
+//	}
+//	if dtp != "" {
+//		argument.UrlValue.Set("ldtp", dtp)
+//	}
+//	if len(*argument.UrlValue) != 0 {
+//		res = fmt.Sprintf("%s%s%s", stringValue, paramsDivide, argument.UrlValue.Encode())
+//	} else {
+//		res = stringValue
+//	}
+//	return
+//}
+//
+//func getPageLinkDefault(argument *LinkArgument) (res string, err error) {
+//
+//	var (
+//		mapGetPagePath = map[string]GetPagePathHandler{
+//			AdDataDataTypeSpu:               getPageSpuPathByPageName,
+//			AdDataDataTypeSku:               getPageSpuPathByPageName,
+//			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
+//			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
+//			AdDataDataTypeUser:              getPageSpuPathByPageName,
+//			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+//			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
+//			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
+//			AdDataDataTypeOther:             getPageSpuPathByPageName,
+//		}
+//
+//		ok      bool
+//		handler GetPagePathHandler
+//	)
+//	if argument.DataType != AdDataDataTypeOther {
+//		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
+//			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
+//			return
+//		}
+//	}
+//	if res, err = getPageLink(handler, argument); err != nil {
+//		return
+//	}
+//	return
+//}
+//
+////小程序参数生成
+//func getPageLinkMina(argument *LinkArgument) (res DataItemLinkMina, err error) {
+//	var (
+//		pageName string
+//		ok       bool
+//	)
+//
+//	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+//		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
+//		return
+//	}
+//
+//	if argument.PageName != "" {
+//		pageName = argument.PageName
+//	}
+//	res.PageName = pageName
+//	res.Query = make(map[string]interface{}, 10)
+//	if argument.NeedHeaderInfo {
+//		if argument.HeaderInfo.HApp != "" {
+//			res.Query["h_app"] = argument.HeaderInfo.HApp
+//		}
+//		if argument.HeaderInfo.HTerminal != "" {
+//			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+//		}
+//		if argument.HeaderInfo.HChannel != "" {
+//			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+//		}
+//		if argument.HeaderInfo.HVersion != "" {
+//			res.Query["h_version"] = argument.HeaderInfo.HVersion
+//		}
+//	}
+//	if argument.UrlValue != nil {
+//		for key := range * argument.UrlValue {
+//			res.Query[key] = argument.UrlValue.Get(key)
+//		}
+//	}
+//
+//	return
+//}
+//
+//func getPageH5Mina(argument *LinkArgument) (res DataItemLinkMina, err error) {
+//	var (
+//		pageName string
+//		ok       bool
+//	)
+//
+//	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+//		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
+//		return
+//	}
+//
+//	if argument.PageName != "" {
+//		pageName = argument.PageName
+//	}
+//	res.PageName = pageName
+//	res.Query = make(map[string]interface{}, 10)
+//	if argument.NeedHeaderInfo {
+//		if argument.HeaderInfo.HApp != "" {
+//			res.Query["h_app"] = argument.HeaderInfo.HApp
+//		}
+//		if argument.HeaderInfo.HTerminal != "" {
+//			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+//		}
+//		if argument.HeaderInfo.HChannel != "" {
+//			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+//		}
+//		if argument.HeaderInfo.HVersion != "" {
+//			res.Query["h_version"] = argument.HeaderInfo.HVersion
+//		}
+//	}
+//	if argument.UrlValue != nil {
+//		for key := range * argument.UrlValue {
+//			res.Query[key] = argument.UrlValue.Get(key)
+//		}
+//	}
+//
+//	return
+//}
+//
+////网站链接
+//func getPageLinkWeb(argument *LinkArgument) (res interface{}, err error) {
+//	if argument.NeedHeaderInfo {
+//		if argument.UrlValue == nil {
+//			argument.UrlValue = &url.Values{}
+//		}
+//		if argument.HeaderInfo.HApp != "" {
+//			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
+//		}
+//		if argument.HeaderInfo.HTerminal != "" {
+//			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
+//		}
+//		if argument.HeaderInfo.HChannel != "" {
+//			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
+//		}
+//		if argument.HeaderInfo.HVersion != "" {
+//			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
+//		}
+//	}
+//
+//	res, err = getPageWebLinkDefault(argument)
+//	return
+//}
+//
+////网站链接
+//func getPageWebLinkDefault(argument *LinkArgument) (res string, err error) {
+//	var (
+//		mapGetPagePath = map[string]GetPagePathHandler{
+//			AdDataDataTypeSpu:               getPageSpuPathByPageName,
+//			AdDataDataTypeSku:               getPageSpuPathByPageName,
+//			AdDataDataTypeUserShop:          getPageUserShopPathByPageName,
+//			AdDataDataTypeUserShopHome:      getPageShopPathByPageName,
+//			AdDataDataTypeUser:              getPageSpuPathByPageName,
+//			AdDataDataTypeSocialIntercourse: getPageSNSPathByPageName,
+//			AdDataDataTypeSpuCategory:       getPageSNSPathByPageName,
+//			AdDataDataTypeFishingSport:      getPageFishingSpotsPathByPageName,
+//			AdDataDataTypeRing:              getPageSNSPathByPageName,
+//			AdDataDataTypeOther:             getPageSpuPathByPageName,
+//		}
+//
+//		ok      bool
+//		handler GetPagePathHandler
+//	)
+//	if argument.DataType != AdDataDataTypeOther {
+//		if handler, ok = mapGetPagePath[argument.DataType]; !ok {
+//			err = fmt.Errorf("对不起,系统当前暂不支持生成您的数据类型(%s)", argument.DataType)
+//			return
+//		}
+//	}
+//	if res, err = getPageLink(handler, argument); err != nil {
+//		return
+//	}
+//	return
+//}
+//
+//func getDefault(argument *LinkArgument) (res interface{}, err error) {
+//	if argument.NeedHeaderInfo {
+//		if argument.UrlValue == nil {
+//			argument.UrlValue = &url.Values{}
+//		}
+//		if argument.HeaderInfo.HApp != "" {
+//			argument.UrlValue.Set("h_app", argument.HeaderInfo.HApp)
+//		}
+//		if argument.HeaderInfo.HTerminal != "" {
+//			argument.UrlValue.Set("h_terminal", argument.HeaderInfo.HTerminal)
+//		}
+//		if argument.HeaderInfo.HChannel != "" {
+//			argument.UrlValue.Set("h_channel", argument.HeaderInfo.HChannel)
+//		}
+//		if argument.HeaderInfo.HVersion != "" {
+//			argument.UrlValue.Set("h_version", argument.HeaderInfo.HVersion)
+//		}
+//	}
+//
+//	res, err = getPageLinkDefault(argument)
+//	return
+//}
+//
+////小程序参数生成
+//func getPageLinkApp(argument *LinkArgument) (res DataItemLinkMina, err error) {
+//	var (
+//		pageName string
+//		ok       bool
+//	)
+//
+//	if pageName, ok = MapDataTypeBiz[argument.DataType]; !ok {
+//		err = fmt.Errorf("系统暂不支持您选中的数据类型(%v)链接生成", argument.DataType)
+//		return
+//	}
+//
+//	if len(argument.PageName) > 0 {
+//		pageName = argument.PageName
+//	}
+//	res.PageName = pageName
+//	res.Query = make(map[string]interface{}, 10)
+//	if argument.NeedHeaderInfo {
+//		if argument.HeaderInfo.HApp != "" {
+//			res.Query["h_app"] = argument.HeaderInfo.HApp
+//		}
+//		if argument.HeaderInfo.HTerminal != "" {
+//			res.Query["h_terminal"] = argument.HeaderInfo.HTerminal
+//		}
+//		if argument.HeaderInfo.HChannel != "" {
+//			res.Query["h_channel"] = argument.HeaderInfo.HChannel
+//		}
+//		if argument.HeaderInfo.HVersion != "" {
+//			res.Query["h_version"] = argument.HeaderInfo.HVersion
+//		}
+//	}
+//	if argument.UrlValue != nil {
+//		for key := range *argument.UrlValue {
+//			res.Query[key] = argument.UrlValue.Get(key)
+//		}
+//	}
+//	return
+//}
 
 //获取页面链接
 //headerInfo *common.HeaderInfo, urlValue *url.Values, dataType string, pageNames ...string
