@@ -352,16 +352,27 @@ func (r *Sku) SetIdWithString(id string) (err error) {
 	return
 }
 
-func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
-	var vals = &url.Values{}
-	vals.Set("id", r.ProductId)
-	vals.Set("sku_id", r.SkuId)
-	res, err = recommend.GetPageLink(&recommend.LinkArgument{
-		HeaderInfo: headerInfo,
-		UrlValue:   vals,
-		DataType:   recommend.AdDataDataTypeSpu,
-		PageName:   recommend.PageNameSpu,
-	})
+func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
+
+	var (
+		vaLs    = &url.Values{}
+		itemSpu = recommend.ArgGetLinksItem{
+			Terminal: headerInfo.HTerminal,
+			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductId),
+			PageName: recommend.PageNameSpu,
+			DataType: recommend.AdDataDataTypeSpu,
+		}
+		args       = make([]recommend.ArgGetLinksItem, 0, 1)
+		resMapLink recommend.ResultGetLinks
+	)
+	vaLs.Set("id", r.ProductId)
+	vaLs.Set("sku_id", r.SkuId)
+	itemSpu.UrlValue = vaLs
+	args = append(args, itemSpu)
+	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
+		return
+	}
+	res, _ = resMapLink[itemSpu.Pk]
 	return
 }
 

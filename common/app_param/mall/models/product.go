@@ -484,15 +484,25 @@ func (r *Product) DefaultBeforeAdd() {
 	}
 }
 
-func (r *Product) GetHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
+func (r *Product) GetHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
 	var urlValue = url.Values{}
 	urlValue.Set("id", r.ProductID)
-	res, err = recommend.GetPageLink(
-		&recommend.LinkArgument{
-			HeaderInfo: headerInfo,
-			UrlValue:   &urlValue,
-			DataType:   recommend.AdDataDataTypeSpu,
-		})
+	var (
+		args       = recommend.ArgGetLinks{}
+		resMapLink recommend.ResultGetLinks
+		itemSpu    = recommend.ArgGetLinksItem{
+			Terminal: headerInfo.HTerminal,
+			UrlValue: &urlValue,
+			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
+			PageName: recommend.PageNameSpu,
+			DataType: recommend.AdDataDataTypeSpu,
+		}
+	)
+	args = append(args, itemSpu)
+	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
+		return
+	}
+	res, _ = resMapLink[itemSpu.Pk]
 	return
 }
 
@@ -692,15 +702,25 @@ func (r *Product) getCurrentTime(currentTimes ...time.Time) (current time.Time) 
 	return
 }
 
-func (r *Product) GetProductHref(headerInfo *common.HeaderInfo) (res interface{}, err error) {
-	var vals = &url.Values{}
-	vals.Set("id", r.ProductID)
-	res, err = recommend.GetPageLink(&recommend.LinkArgument{
-		HeaderInfo: headerInfo,
-		UrlValue:   vals,
-		DataType:   recommend.AdDataDataTypeSpu,
-		PageName:   recommend.PageNameSpu,
-	})
+func (r *Product) GetProductHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
+	var (
+		vaLs    = &url.Values{}
+		itemSpu = recommend.ArgGetLinksItem{
+			Terminal: headerInfo.HTerminal,
+			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
+			PageName: recommend.PageNameSpu,
+			DataType: recommend.AdDataDataTypeSpu,
+		}
+		args       = make([]recommend.ArgGetLinksItem, 0, 1)
+		resMapLink recommend.ResultGetLinks
+	)
+	vaLs.Set("id", r.ProductID)
+	itemSpu.UrlValue = vaLs
+	args = append(args, itemSpu)
+	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
+		return
+	}
+	res, _ = resMapLink[itemSpu.Pk]
 	return
 }
 

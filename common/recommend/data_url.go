@@ -146,7 +146,7 @@ type (
 		NeedHeaderInfo bool                   `json:"need_header_info,omitempty"` //拼接参数时，带上header_info数据
 		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
 	}
-	ResultGetLinks map[string]*LinkArgument
+	ResultGetLinks map[string]interface{}
 )
 
 func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
@@ -156,28 +156,25 @@ func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
 
 //获取链接地址
 func GetLinks(args ArgGetLinks, ctx *base.Context) (res ResultGetLinks, err error) {
-	res = make(map[string]*LinkArgument, len(args))
-
-	ro := rpc.RequestOptions{
-		Method:      http.MethodPost,
-		AppName:     app_param.AppNameMallOrder,
-		URI:         "/order/get_user_upon_and_next",
-		Header:      http.Header{},
-		Value:       url.Values{},
-		Context:     ctx,
-		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
-	}
+	res = make(map[string]interface{}, len(args))
+	var (
+		ro = rpc.RequestOptions{
+			Method:      http.MethodPost,
+			AppName:     app_param.AppNameAdmin,
+			URI:         "/order/get_user_upon_and_next",
+			Header:      http.Header{},
+			Value:       url.Values{},
+			Context:     ctx,
+			PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+		}
+		data = struct {
+			Code int            `json:"code"`
+			Data ResultGetLinks `json:"data"`
+			Msg  string         `json:"message"`
+		}{}
+	)
 	ro.BodyJson, _ = json.Marshal(args)
-	var data = struct {
-		Code int            `json:"code"`
-		Data ResultGetLinks `json:"data"`
-		Msg  string         `json:"message"`
-	}{}
-	err = rpc.NewHttpRpc(&ro).
-		Send().
-		GetBody().
-		Bind(&data).Error
-	if err != nil {
+	if err = rpc.NewHttpRpc(&ro).Send().GetBody().Bind(&data).Error; err != nil {
 		return
 	}
 	res = data.Data
