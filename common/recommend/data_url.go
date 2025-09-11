@@ -128,7 +128,7 @@ type (
 	ArgGetLinks     []ArgGetLinksItem
 	ArgGetLinksItem struct {
 		Pk             string                 `json:"pk" form:"pk"`
-		Terminal       string                 `json:"terminal,omitempty" form:"terminal"`
+		HeaderInfo     *common.HeaderInfo     `json:"header_info,omitempty"`
 		UrlValue       *url.Values            `json:"url_value,omitempty" form:"url_value"`
 		UrlLinkVal     map[string]interface{} `json:"url_link_val,omitempty"` //url链接中的参数
 		DataType       string                 `json:"data_type,omitempty" form:"data_type"`

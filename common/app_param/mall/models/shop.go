@@ -262,7 +262,7 @@ func GetShopHref(headerInfo *common.HeaderInfo, urlValue *url.Values, ctx *base.
 		args       = recommend.ArgGetLinks{}
 		resMapLink recommend.ResultGetLinks
 		itemSpu    = recommend.ArgGetLinksItem{
-			Terminal: headerInfo.HTerminal,
+			HeaderInfo: headerInfo,
 			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameShop, shopId),
 			PageName: recommend.PageNameShop,
 			//DataType: recommend.AdDataDataTypeShop,

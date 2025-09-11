@@ -357,10 +357,10 @@ func (r *SkuPropertyRelate) GetProductHref(headerInfo *common.HeaderInfo, ctx *b
 	var (
 		vaLs    = &url.Values{}
 		itemSpu = recommend.ArgGetLinksItem{
-			Terminal: headerInfo.HTerminal,
-			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductId),
-			PageName: recommend.PageNameSpu,
-			DataType: recommend.AdDataDataTypeSpu,
+			HeaderInfo: headerInfo,
+			Pk:         fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductId),
+			PageName:   recommend.PageNameSpu,
+			DataType:   recommend.AdDataDataTypeSpu,
 		}
 		args       = make([]recommend.ArgGetLinksItem, 0, 1)
 		resMapLink recommend.ResultGetLinks

@@ -491,7 +491,7 @@ func (r *Product) GetHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res
 		args       = recommend.ArgGetLinks{}
 		resMapLink recommend.ResultGetLinks
 		itemSpu    = recommend.ArgGetLinksItem{
-			Terminal: headerInfo.HTerminal,
+			HeaderInfo: headerInfo,
 			UrlValue: &urlValue,
 			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
 			PageName: recommend.PageNameSpu,
@@ -706,7 +706,7 @@ func (r *Product) GetProductHref(headerInfo *common.HeaderInfo, ctx *base.Contex
 	var (
 		vaLs    = &url.Values{}
 		itemSpu = recommend.ArgGetLinksItem{
-			Terminal: headerInfo.HTerminal,
+			HeaderInfo: headerInfo,
 			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
 			PageName: recommend.PageNameSpu,
 			DataType: recommend.AdDataDataTypeSpu,
