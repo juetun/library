@@ -15,6 +15,11 @@ import (
 //客服后台接口权限验证
 func AdminImportAuth(arg *app_start.PluginsOperate) (err error) {
 	app_start.AdminNetHandlerFunc = append(app_start.AdminNetHandlerFunc, func(c *gin.Context) {
+		//如果是内网访问接口,则无须验证
+		if strings.HasPrefix(c.Request.URL.Path, fmt.Sprintf("/%v/%v", app_obj.App.AppName, app_obj.App.AppRouterPrefix.Intranet)) {
+			c.Next()
+			return
+		}
 		if c.Request != nil && c.Request.Header.Get("Connection") == "Upgrade" {
 			c.Next()
 			return
