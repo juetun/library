@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
-	"github.com/juetun/library/common/app_param"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/juetun/library/common/plugins_lib"
-	"github.com/juetun/library/common/recommend"
 	"net/url"
 	"strings"
 )
@@ -250,42 +248,6 @@ func (r *Shop) GetHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res in
 	var vals = &url.Values{}
 	vals.Set("shop_id", fmt.Sprintf("%d", r.ShopID))
 	res, err = GetShopHref(headerInfo, vals, ctx)
-	return
-}
-
-func GetShopHref(headerInfo *common.HeaderInfo, urlValue *url.Values, ctx *base.Context) (res interface{}, err error) {
-	if urlValue == nil {
-		urlValue = &url.Values{}
-	}
-	var (
-		shopId     = urlValue.Get("shop_id")
-		args       = recommend.ArgGetLinks{}
-		resMapLink recommend.ResultGetLinks
-		itemSpu    = recommend.ArgGetLinksItem{
-			HeaderInfo: headerInfo,
-			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameShop, shopId),
-			PageName: recommend.PageNameShop,
-			//DataType: recommend.AdDataDataTypeShop,
-		}
-	)
-
-	switch headerInfo.HTerminal {
-	case app_param.TerminalWeb:
-		urlValue.Del("shop_id")
-		if itemSpu.UrlLinkVal == nil {
-			itemSpu.UrlLinkVal = make(map[string]interface{}, 5)
-		}
-		itemSpu.UrlLinkVal["shop_id"] = shopId
-	default:
-		urlValue.Set("shop_id", shopId)
-	}
-
-	itemSpu.UrlValue = urlValue
-	args = append(args, itemSpu)
-	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
-		return
-	}
-	res, _ = resMapLink[itemSpu.Pk]
 	return
 }
 

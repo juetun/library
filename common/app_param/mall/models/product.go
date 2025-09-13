@@ -484,28 +484,6 @@ func (r *Product) DefaultBeforeAdd() {
 	}
 }
 
-func (r *Product) GetHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
-	var urlValue = url.Values{}
-	urlValue.Set("id", r.ProductID)
-	var (
-		args       = recommend.ArgGetLinks{}
-		resMapLink recommend.ResultGetLinks
-		itemSpu    = recommend.ArgGetLinksItem{
-			HeaderInfo: headerInfo,
-			UrlValue: &urlValue,
-			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
-			PageName: recommend.PageNameSpu,
-			DataType: recommend.AdDataDataTypeSpu,
-		}
-	)
-	args = append(args, itemSpu)
-	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
-		return
-	}
-	res, _ = resMapLink[itemSpu.Pk]
-	return
-}
-
 func (r *Product) GetPageTags() (res []*PageTag) {
 	res = make([]*PageTag, 0, 3)
 	saleTypeTag := GetPageTagsWithSaleType(r.SaleType)
@@ -702,27 +680,6 @@ func (r *Product) getCurrentTime(currentTimes ...time.Time) (current time.Time) 
 	return
 }
 
-func (r *Product) GetProductHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
-	var (
-		vaLs    = &url.Values{}
-		itemSpu = recommend.ArgGetLinksItem{
-			HeaderInfo: headerInfo,
-			Pk:       fmt.Sprintf("%v_%v", recommend.PageNameSpu, r.ProductID),
-			PageName: recommend.PageNameSpu,
-			DataType: recommend.AdDataDataTypeSpu,
-		}
-		args       = make([]recommend.ArgGetLinksItem, 0, 1)
-		resMapLink recommend.ResultGetLinks
-	)
-	vaLs.Set("id", r.ProductID)
-	itemSpu.UrlValue = vaLs
-	args = append(args, itemSpu)
-	if resMapLink, err = recommend.GetLinks(args, ctx); err != nil {
-		return
-	}
-	res, _ = resMapLink[itemSpu.Pk]
-	return
-}
 
 //判断商品当前时间是否满足能够购买
 func (r *Product) JudgeCanBuyWithTime(currentTimes ...time.Time) (ok bool, msg string) {
