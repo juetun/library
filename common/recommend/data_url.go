@@ -147,7 +147,7 @@ func GetLinks(args ArgGetLinks, ctx *base.Context) (res ResultGetLinks, err erro
 		ro = rpc.RequestOptions{
 			Method:      http.MethodPost,
 			AppName:     app_param.AppNameAdmin,
-			URI:         "/order/get_user_upon_and_next",
+			URI:         "/get_links",
 			Header:      http.Header{},
 			Value:       url.Values{},
 			Context:     ctx,
