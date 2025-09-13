@@ -24,7 +24,7 @@ const (
 )
 
 const (
-	TerminalWeb       = "web" //web站
+	TerminalWeb       = "website" //web站
 	TerminalMina      = "mina"
 	TerminalH5        = "h5"
 	TerminalAndroid   = "android"
