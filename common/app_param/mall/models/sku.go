@@ -3,10 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/juetun/base-wrapper/lib/common"
-	"github.com/juetun/library/common/recommend"
 	"github.com/shopspring/decimal"
-	"net/url"
 	"time"
 
 	"github.com/juetun/base-wrapper/lib/base"
@@ -351,7 +348,6 @@ func (r *Sku) SetIdWithString(id string) (err error) {
 	//r.ID, err = strconv.ParseInt(id, 10, 64)
 	return
 }
-
 
 func (r *SkuPropertyRelate) ParseSaleType() (res string) {
 	return ParseSaleType(r.SaleType)

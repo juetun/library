@@ -3,11 +3,8 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param/upload_operate"
 	"github.com/juetun/library/common/const_apply"
-	"github.com/juetun/library/common/recommend"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -679,7 +676,6 @@ func (r *Product) getCurrentTime(currentTimes ...time.Time) (current time.Time) 
 	}
 	return
 }
-
 
 //判断商品当前时间是否满足能够购买
 func (r *Product) JudgeCanBuyWithTime(currentTimes ...time.Time) (ok bool, msg string) {

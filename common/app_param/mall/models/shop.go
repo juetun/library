@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/juetun/library/common/plugins_lib"
-	"net/url"
 	"strings"
 )
 
@@ -241,13 +240,6 @@ func (r *Shop) Default() {
 	if r.ChatManagerHelp == 0 {
 		r.ChatManagerHelp = ShopChatManagerHelpNo
 	}
-	return
-}
-
-func (r *Shop) GetHref(headerInfo *common.HeaderInfo, ctx *base.Context) (res interface{}, err error) {
-	var vals = &url.Values{}
-	vals.Set("shop_id", fmt.Sprintf("%d", r.ShopID))
-	res, err = GetShopHref(headerInfo, vals, ctx)
 	return
 }
 
