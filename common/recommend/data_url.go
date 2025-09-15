@@ -120,7 +120,10 @@ type (
 	}
 	GetPagePathHandler func(terminal string, urlLinkVal map[string]interface{}, pageNames ...string) (res string)
 
-	ArgGetLinks     []ArgGetLinksItem
+	ArgGetLinks struct {
+		List  []*ArgGetLinksItem `json:"list"`
+		MapPk map[string]bool    `json:"-"` //用于PK 去重之用
+	}
 	ArgGetLinksItem struct {
 		Pk             string                 `json:"pk" form:"pk"`
 		HeaderInfo     *common.HeaderInfo     `json:"header_info,omitempty"`
@@ -140,9 +143,17 @@ func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
 	return
 }
 
+func (r *ArgGetLinks) AppendLinksItem(item *ArgGetLinksItem) (err error) {
+	if _, ok := r.MapPk[item.Pk]; ok {
+		return
+	}
+	r.List = append(r.List, item)
+	return
+}
+
 //获取链接地址
 func GetLinks(args ArgGetLinks, ctx *base.Context) (res ResultGetLinks, err error) {
-	res = make(map[string]interface{}, len(args))
+	res = make(map[string]interface{}, len(args.List))
 	var (
 		ro = rpc.RequestOptions{
 			Method:      http.MethodPost,
