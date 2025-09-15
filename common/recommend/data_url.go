@@ -147,6 +147,7 @@ func (r *ArgGetLinks) AppendLinksItem(item *ArgGetLinksItem) (err error) {
 	if _, ok := r.MapPk[item.Pk]; ok {
 		return
 	}
+	r.MapPk[item.Pk] = true
 	r.List = append(r.List, item)
 	return
 }
