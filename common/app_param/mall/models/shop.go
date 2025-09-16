@@ -54,6 +54,7 @@ const (
 	ShopCanUpdateColumnBgImage       = "bg_image" //修改背景图
 )
 
+
 const (
 	ShopSliceVerifyStatusValue   = const_apply.ApplyStatusInit     // 初始化
 	ShopSliceVerifyStatusOk      = const_apply.ApplyStatusOk       // 审核成功

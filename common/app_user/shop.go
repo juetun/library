@@ -11,6 +11,16 @@ import (
 	"net/url"
 	"strings"
 )
+const (
+	DataTypeShopExt        = "shop_ext"      //店铺信息
+	DataTypeShopImgIcon    = "shop_img_icon" //店铺logo
+	DataTypeShopImgbgImage = "shop_bg_img"   //店铺背景图
+	DataTypeShopNotice     = "shop_notice"   //店铺公告
+
+	DataTypeShopTmp           = "shop_tmp"
+	DataTypeShopTmpIcon       = "shop_tmp_icon"   //店铺logo
+	DataTypeShopTmpImgbgImage = "shop_tmp_bg_img" //店铺背景图
+)
 
 type (
 	ArgUserReviewSubmit struct {
@@ -25,6 +35,7 @@ type (
 )
 
 //根据店铺ID获取店铺信息
+//dataTypes 取值  app_user.DataTypeShopExt  app_user.DataTypeShopImgIcon
 func GetShopDataByUIds(ctx *base.Context, shopIds []int64, dataTypes ...string) (res map[int64]*mall.ShopData, err error) {
 	res = map[int64]*mall.ShopData{}
 	if len(shopIds) == 0 {
