@@ -206,6 +206,13 @@ func (r *DataItem) ParseUniqueKey() (DataType, DataId string) {
 	return ParseUniqueKey(r.Pk)
 }
 
+func (r *DataItem) GetPageName() (pageName string) {
+	if tmp, ok := MapDataTypeBiz[r.DataType]; ok {
+		pageName = tmp
+	}
+	return
+}
+
 //参数默认值
 func (r *DataItem) Default() {
 	if r.ShowType == "" {
