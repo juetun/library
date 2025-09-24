@@ -138,6 +138,18 @@ type (
 	ResultGetLinks map[string]interface{}
 )
 
+//初始化一个获取链接的参数
+func NewArgGetLinksItem(headerInfo *common.HeaderInfo, pageName, pk string) (res *ArgGetLinksItem) {
+	res = &ArgGetLinksItem{
+		Pk:         pk,
+		HeaderInfo: headerInfo,
+		UrlValue:   &url.Values{},
+		UrlLinkVal: make(map[string]interface{}, 3),
+		PageName:   pageName,
+	}
+	return
+}
+
 func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
 
 	return
