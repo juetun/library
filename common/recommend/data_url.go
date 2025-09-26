@@ -132,6 +132,7 @@ type (
 		DataType       string                 `json:"data_type,omitempty" form:"data_type"`
 		PageName       string                 `json:"page_name,omitempty" form:"page_name"`
 		NeedHeaderInfo bool                   `json:"need_header_info,omitempty"` //拼接参数时，带上header_info数据
+		OpenTarget     string                 `json:"open_target,omitempty"`      //打开界面的方式
 		LinkTypIsURL   bool                   `json:"link_typ_is_url,omitempty"`  //返回的链接地址是字符串//
 	}
 
