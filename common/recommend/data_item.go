@@ -113,6 +113,12 @@ type (
 		PageName string                 `json:"page_name"`
 		Query    map[string]interface{} `json:"query,omitempty"`
 	}
+	DataItemLinkApp struct {
+		PageName     string                 `json:"page_name"`
+		Query        map[string]interface{} `json:"query,omitempty"`
+		OpenTarget   string                 `json:"open_target,omitempty"` //
+		LinkTypIsUrl bool                   `json:"link_typ_is_url,omitempty"`
+	}
 	DataItemTag struct {
 		Type      string `json:"type"`                //标签类型，可选值为primary success danger warning	默认	default
 		Label     string `json:"label"`               //类型名称
