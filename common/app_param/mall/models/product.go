@@ -86,6 +86,7 @@ const DownPayDelayPayLimit = 5 * time.Minute
 const (
 	ProductFreightNeedYes uint8 = iota + 1
 	ProductFreightNeedNo
+	ProductFreightVirtual
 )
 
 var (
@@ -93,6 +94,10 @@ var (
 		{
 			Value: ProductFreightNeedYes, //需要实物
 			Label: "是",
+		},
+		{
+			Value: ProductFreightVirtual, //虚拟发货
+			Label: "虚拟发货",
 		},
 		{
 			Value: ProductFreightNeedNo, //不需要实物
