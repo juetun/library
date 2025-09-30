@@ -87,6 +87,7 @@ type (
 		Pk                string                `json:"pk" form:"pk"`                                     // 数据唯一性标记参数
 		SpuFlagTester     uint8                 `json:"spu_flag_tester,omitempty" form:"spu_flag_tester"` //spu是否为测试数据
 		SkuFlagTester     uint8                 `json:"sku_flag_tester,omitempty" form:"sku_flag_tester"` //sku是否为测试数据
+		HaveComment       uint8                 `json:"have_comment,omitempty" form:"have_comment"`       //是否有评论
 		FreightAmount     string                `json:"freight_amount,omitempty" form:"freight_amount"`   // 邮费
 		ShopSaleCode      string                `json:"shop_sale_code,omitempty" form:"shop_sale_code"`
 		SkuPropertyName   string                `json:"sku_property_name,omitempty" form:"sku_property_name"`
