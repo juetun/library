@@ -20,12 +20,31 @@ const (
 	OrderFromTypeCart   = "cart"   //购物车
 	OrderFromTypeDirect = "detail" //直接购买
 )
-
+const (
+	OrderShopDetailHaveCommentYes uint8 = iota + 1
+	OrderShopDetailHaveCommentNo
+	OrderShopDetailHaveCommentDisabled
+)
 const (
 	OrderSelectTypeCart uint8 = iota + 1
 	OrderSelectTypeDirect
 )
-
+var (
+	SliceOrderShopDetailHaveComment = base.ModelItemOptions{
+		{
+			Label: "已评论",
+			Value: OrderShopDetailHaveCommentYes,
+		},
+		{
+			Label: "未评论",
+			Value: OrderShopDetailHaveCommentNo,
+		},
+		{
+			Label: "无需评论",
+			Value: OrderShopDetailHaveCommentDisabled,
+		},
+	}
+)
 func ParseOrderSelectTypeNumberToString(selectType uint8) (fromType string, err error) {
 	if tmp, ok := OrderFromTypeMap[selectType]; ok {
 		fromType = tmp
