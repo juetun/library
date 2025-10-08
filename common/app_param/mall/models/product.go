@@ -353,7 +353,7 @@ type (
 		ServiceIds             string                         `gorm:"column:service_ids;type:varchar(300);not null;default:'';comment:支持服务列表" json:"service_ids,omitempty"`
 		Keywords               string                         `gorm:"column:keywords;type:varchar(300);not null;default:'';comment:关键词" json:"keywords,omitempty"`
 		SaleNum                int                            `gorm:"column:sale_num;type:bigint(20);not null;default:0;comment:销量(数据可能不及时)" json:"sale_num,omitempty"`
-		FreightNeed            uint8                          `gorm:"column:freight_need;type:tinyint(2);default:1;not null;comment:是否需要发实物" json:"freight_need,omitempty"`
+		FreightNeed            uint8                          `gorm:"column:freight_need;type:tinyint(2);default:1;not null;comment:是否需要发实物1-需要 2-不需要" json:"freight_need,omitempty"`
 		FreightType            uint8                          `gorm:"column:freight_type;type:tinyint(2);default:1;not null;comment:快递方式 1-快递 2-EMS" json:"freight_type,omitempty"`
 		FreightTemplate        int64                          `gorm:"column:freight_template;type:bigint(20);default:0;not null;comment:运费模板ID" json:"freight_template,omitempty"`
 		DeliveryTimeType       uint8                          `gorm:"column:delivery_time_type;type:tinyint(2);default:2;not null;comment:发货时间类型 1-固定时间 2-固定天数" json:"delivery_time_type,omitempty"`
@@ -876,15 +876,57 @@ func (r *Product) GetDefaultThumbnail() (res string) {
 	return
 }
 
+//获取尾款结束时间
+func (r *Product) GetFinalOverTime(payingFlags ...bool) (res base.TimeNormal) {
+	var (
+		payingFlag bool
+	)
+	if len(payingFlags) > 0 {
+		payingFlag = payingFlags[0]
+	}
+	if payingFlag {
+		res = r.FinalOverTime.Add(DownPayDelayPayLimit)
+		return
+	}
+	res = r.FinalOverTime
+	return
+}
+
+//定金结束时间
+func (r *Product) GetFirstOverTime(payingFlags ...bool) (res base.TimeNormal) {
+	var (
+		payingFlag bool
+	)
+	if len(payingFlags) > 0 {
+		payingFlag = payingFlags[0]
+	}
+	if payingFlag {
+		res = r.SaleOverTime.Add(DownPayDelayPayLimit)
+		return
+	}
+	res = *r.SaleOverTime
+	return
+}
+
+//意向金结束时间
+func (r *Product) GetIntentionalOTime(payingFlags ...bool) (res base.TimeNormal) {
+
+	var (
+		payingFlag bool
+	)
+	if len(payingFlags) > 0 {
+		payingFlag = payingFlags[0]
+	}
+	if payingFlag {
+		res = r.IntentionalOtime.Add(DownPayDelayPayLimit)
+		return
+	}
+	res = r.IntentionalOtime
+	return
+}
+
 func (r *Product) FlagCanUpdateStatus(wiLLUpdateStatus int8) (err error) {
 
-	//ProductStatusTmp          int8 = iota - 1 //草稿中(ID初始化中)
-	//ProductStatusAll                          //全部数据
-	//ProductStatusManuscript                   // 草稿中
-	//ProductStatusInit                         // 仓库中
-	//ProductStatusOnline                       // 在售
-	//ProductStatusOffLine                      // 已下架
-	//ProductStatusOnlineAtTime                 // 定时上架
 	var StatusCanUpdateMap = map[int8]map[int8]bool{
 		ProductStatusTmp: {ProductStatusManuscript: true,}, //草稿中(ID初始化中)
 		ProductStatusManuscript: {
@@ -931,7 +973,7 @@ func (r *Product) DownPayCanPayFinal(timeNow base.TimeNormal, isDelays ...bool) 
 	//如果支持延迟验证
 	if isDelay {
 		//如果定金预售的开始时间在当前时间之前 且定金预售的结束时间(定金预售)在当前时间之后，则可用支付
-		if r.FinalStartTime.Before(timeNow.Time) && r.FinalOverTime.Add(DownPayDelayPayLimit).After(timeNow.Time) {
+		if r.FinalStartTime.Before(timeNow.Time) && timeNow.Time.Before(r.GetFinalOverTime(isDelay).Time) {
 			res = true
 		}
 	} else {

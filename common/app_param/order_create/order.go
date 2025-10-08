@@ -29,6 +29,7 @@ const (
 	OrderSelectTypeCart uint8 = iota + 1
 	OrderSelectTypeDirect
 )
+
 var (
 	SliceOrderShopDetailHaveComment = base.ModelItemOptions{
 		{
@@ -45,6 +46,7 @@ var (
 		},
 	}
 )
+
 func ParseOrderSelectTypeNumberToString(selectType uint8) (fromType string, err error) {
 	if tmp, ok := OrderFromTypeMap[selectType]; ok {
 		fromType = tmp
