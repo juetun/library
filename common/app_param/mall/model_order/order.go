@@ -74,6 +74,7 @@ type (
 		SpuId             string                `json:"spu_id,omitempty" form:"spu_id"`                   // 商品ID
 		SkuId             string                `json:"sku_id,omitempty" form:"sku_id"`                   // sku地址
 		SkuName           string                `json:"sku_name,omitempty" form:"sku_name"`               // SKU名称
+		SpuName           string                `json:"spu_name,omitempty" form:"spu_name"`               // SPU名称
 		CartId            string                `json:"cart_id" form:"cart_id"`                           // 购物车（或定金预售）数据ID
 		SkuImg            string                `json:"sku_img,omitempty" form:"sku_img"`                 // 商品图片
 		Num               int64                 `json:"num,omitempty" form:"num"`                         // 商品数量
