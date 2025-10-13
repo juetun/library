@@ -89,11 +89,16 @@ const (
 	ProductFreightVirtual
 )
 
+const (
+	SupportFreightYes uint8 = iota + 1 //支持
+	SupportFreightNo
+)
+
 var (
 	SliceProductFreightNeed = base.ModelItemOptions{
 		{
 			Value: ProductFreightNeedYes, //需要实物
-			Label: "是",
+			Label: "需发货",
 		},
 		{
 			Value: ProductFreightVirtual, //虚拟发货
@@ -101,7 +106,7 @@ var (
 		},
 		{
 			Value: ProductFreightNeedNo, //不需要实物
-			Label: "否",
+			Label: "勿需发货",
 		},
 	}
 	SliceDeliveryTimeType = base.ModelItemOptions{
@@ -389,11 +394,15 @@ type (
 		RecommendWeight        int64                          `gorm:"column:rec_weight;not null;type:bigint(20);default:10000;comment:商品推荐权重因子" json:"rec_weight" `
 		CurrentRecommendWeight float64                        `gorm:"column:current_rec_weight;not null;type:decimal(22,2);default:0;comment:商品推荐权重" json:"current_rec_weight" `
 		HasOnline              uint8                          `gorm:"column:has_online;not null;type: tinyint(2);default:2;comment:是否上架过 1-上架过 2-未上架"  json:"has_online,omitempty"`
+		DataOtherAttr          string                         `gorm:"column:data_other_attr;type:varchar(1000);not null;default:'';comment:其他属性" json:"data_other_attr,omitempty"`
 		CreatedAt              base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at,omitempty"`
 		UpdatedAt              base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at,omitempty"`
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
-
+	ProductDataOtherAttr struct {
+		IntentionalFreightNeed uint8 `json:"ifn"` //意向金是否需发货
+		DownFreightNeed        uint8 `json:"dfn"` //定金是否需发货
+	}
 	ProductTag struct {
 		ID             int64  `json:"id"`
 		Label          string `json:"label"`
@@ -434,6 +443,16 @@ type (
 	TitleTags []*PageTag
 )
 
+func (r *ProductDataOtherAttr) Default() {
+	if r.DownFreightNeed == 0 {
+		r.DownFreightNeed = ProductFreightNeedNo
+	}
+	if r.IntentionalFreightNeed == 0 {
+		r.IntentionalFreightNeed = ProductFreightNeedNo
+	}
+	return
+}
+
 func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
 	res = make(map[int8]SpuStatusTab, len(r))
 	for _, item := range r {
@@ -441,6 +460,31 @@ func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
 	}
 	return
 }
+
+func (r *Product) ParseProductDataOtherAttr() (res *ProductDataOtherAttr, err error) {
+	if r.DataOtherAttr == "" {
+		return
+	}
+	res = &ProductDataOtherAttr{}
+	if err = json.Unmarshal([]byte(r.DataOtherAttr), res); err != nil {
+		return
+	}
+	res.Default()
+	return
+}
+
+func (r *Product) SetProductDataOtherAttr(productDataOtherAttr *ProductDataOtherAttr) (err error) {
+	if productDataOtherAttr == nil {
+		return
+	}
+	var bt []byte
+	if bt, err = json.Marshal(productDataOtherAttr); err != nil {
+		return
+	}
+	r.DataOtherAttr = string(bt)
+	return
+}
+
 func (r *Product) DefaultBeforeAdd() {
 	if r.MinDownPayment == "" {
 		r.MinDownPayment = "0"
