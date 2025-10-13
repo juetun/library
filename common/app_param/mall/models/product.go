@@ -98,7 +98,7 @@ var (
 	SliceProductFreightNeed = base.ModelItemOptions{
 		{
 			Value: ProductFreightNeedYes, //需要实物
-			Label: "需发货",
+			Label: "需发实物",
 		},
 		{
 			Value: ProductFreightVirtual, //虚拟发货
@@ -400,8 +400,8 @@ type (
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
 	ProductDataOtherAttr struct {
-		IntentionalFreightNeed uint8 `json:"ifn"` //意向金是否需发货
-		DownFreightNeed        uint8 `json:"dfn"` //定金是否需发货
+		IntentionalFreightNeed uint8 `json:"ifn,omitempty"` //意向金是否需发货
+		DownFreightNeed        uint8 `json:"dfn,omitempty"` //定金是否需发货
 	}
 	ProductTag struct {
 		ID             int64  `json:"id"`
@@ -443,13 +443,21 @@ type (
 	TitleTags []*PageTag
 )
 
-func (r *ProductDataOtherAttr) Default() {
-	if r.DownFreightNeed == 0 {
-		r.DownFreightNeed = ProductFreightNeedNo
+func (r *ProductDataOtherAttr) Default(saleType uint8) {
+	switch saleType {
+	case SaleTypeIntentional: //意向金
+		if r.IntentionalFreightNeed == 0 {
+			r.IntentionalFreightNeed = ProductFreightNeedNo
+		}
+		if r.DownFreightNeed == 0 {
+			r.DownFreightNeed = ProductFreightNeedYes
+		}
+	case SaleTypeDown: //定金预售
+		if r.DownFreightNeed == 0 {
+			r.DownFreightNeed = ProductFreightNeedNo
+		}
 	}
-	if r.IntentionalFreightNeed == 0 {
-		r.IntentionalFreightNeed = ProductFreightNeedNo
-	}
+
 	return
 }
 
@@ -462,14 +470,16 @@ func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
 }
 
 func (r *Product) ParseProductDataOtherAttr() (res *ProductDataOtherAttr, err error) {
+	res = &ProductDataOtherAttr{}
+	defer func() {
+		res.Default(r.SaleType)
+	}()
 	if r.DataOtherAttr == "" {
 		return
 	}
-	res = &ProductDataOtherAttr{}
 	if err = json.Unmarshal([]byte(r.DataOtherAttr), res); err != nil {
 		return
 	}
-	res.Default()
 	return
 }
 
