@@ -16,6 +16,7 @@ const (
 
 	//商品前台界面
 	PageNameOrder        = "order"
+	PageNameOrderDetail  = "order_detail"
 	PageNameSpu          = "spu"
 	PageNameShop         = "shop"
 	PageNameUsr          = "user"
@@ -48,6 +49,10 @@ var (
 		AdDataDataTypeOther:             PageNameOther,        //其他信息
 	}
 	MapPageMallName = map[string]PageUrl{
+		PageNameOrderDetail: {
+			H5:  "/#/order/pages/detail/index",
+			Web: "/order_detail.html",
+		},
 		PageNameOrder: {
 			H5:  "/#/order/pages/detail/index",
 			Web: "/order_detail.html",
