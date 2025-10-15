@@ -7,7 +7,6 @@ import (
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param/comment"
 	"github.com/juetun/library/common/app_param/upload_operate"
-	"github.com/juetun/library/common/recommend"
 	"net/url"
 	"strconv"
 	"strings"
@@ -188,8 +187,8 @@ func (r *ArgDeleteDataList) GroupDataType() (res map[string][]*ArgDeleteData) {
 }
 
 //获取广告唯一Id字符串
-func (r *DataItem) GetLinkItem(headerInfo *common.HeaderInfo) (itemLink *recommend.ArgGetLinksItem) {
-	itemLink = recommend.NewArgGetLinksItem(headerInfo, r.GetPageName(), r.GetUniqueKey())
+func (r *DataItem) GetLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetLinksItem) {
+	itemLink = NewArgGetLinksItem(headerInfo, r.GetPageName(), r.GetUniqueKey())
 	itemLink.DataType = r.DataType
 	itemLink.UrlValue.Set("id", r.DataId)
 	itemLink.UrlLinkVal["id"] = r.DataId
@@ -197,8 +196,8 @@ func (r *DataItem) GetLinkItem(headerInfo *common.HeaderInfo) (itemLink *recomme
 }
 
 //获取广告唯一Id字符串
-func (r *DataItem) GetShopLinkItem(headerInfo *common.HeaderInfo) (itemLink *recommend.ArgGetLinksItem) {
-	itemLink = recommend.NewArgGetLinksItem(headerInfo, r.GetPageName(), r.GetUniqueKey())
+func (r *DataItem) GetShopLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetLinksItem) {
+	itemLink = NewArgGetLinksItem(headerInfo, r.GetPageName(), r.GetUniqueKey())
 	itemLink.UrlValue.Set("shop_id", strconv.FormatInt(r.ShopId, 10))
 	itemLink.UrlLinkVal["shop_id"] = r.ShopId
 	return
