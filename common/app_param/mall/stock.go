@@ -52,7 +52,6 @@ type (
 func (r *ArgAddOrDecrStock) Default(ctxt *base.Context) (err error) {
 
 	if r.SkuInfoString == "" {
-		err = fmt.Errorf("请选择你要操作的SKU信息")
 		return
 	}
 

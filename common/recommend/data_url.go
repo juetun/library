@@ -157,6 +157,9 @@ func (r *ArgGetLinks) Default(ctx *base.Context) (err error) {
 }
 
 func (r *ArgGetLinks) AppendLinksItem(item *ArgGetLinksItem) (err error) {
+	if item == nil {
+		return
+	}
 	if _, ok := r.MapPk[item.Pk]; ok {
 		return
 	}
