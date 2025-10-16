@@ -36,6 +36,12 @@ const (
 	ProductHasOnlineYes uint8 = iota + 1 //商品曾上过架
 	ProductHasOnlineNo                   //商品未曾上过架
 )
+
+const (
+	ProductPriceHasSetYes uint8 = iota + 1 //售价已定
+	ProductPriceHasSetNo                   //售价未定
+)
+
 const (
 	RelateTypeMall uint8 = 1 // 商品关联类型 其他电商商品
 )
@@ -95,6 +101,16 @@ const (
 )
 
 var (
+	SliceProductPriceHasSet = base.ModelItemOptions{
+		{
+			Value: ProductPriceHasSetYes, //售价已定
+			Label: "已定价",
+		},
+		{
+			Value: ProductPriceHasSetNo, //售价已定
+			Label: "未定价",
+		},
+	}
 	SliceProductFreightNeed = base.ModelItemOptions{
 		{
 			Value: ProductFreightNeedYes, //需要实物
@@ -400,8 +416,10 @@ type (
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
 	ProductDataOtherAttr struct {
-		IntentionalFreightNeed uint8 `json:"ifn,omitempty"` //意向金是否需发货
-		DownFreightNeed        uint8 `json:"dfn,omitempty"` //定金是否需发货
+		IntentionalFreightNeed uint8 `json:"ifn,omitempty"`  //意向金是否需发货
+		DownFreightNeed        uint8 `json:"dfn,omitempty"`  //定金是否需发货
+		PriceHasSet            uint8 `json:"phs,omitempty"`  //售价已定
+		PriceDownHasSet        uint8 `json:"pdhs,omitempty"` //定金已定
 	}
 	ProductTag struct {
 		ID             int64  `json:"id"`
@@ -452,9 +470,18 @@ func (r *ProductDataOtherAttr) Default(saleType uint8) {
 		if r.DownFreightNeed == 0 {
 			r.DownFreightNeed = ProductFreightNeedYes
 		}
+		if r.PriceHasSet == 0 {
+			r.PriceHasSet = ProductPriceHasSetYes
+		}
+		if r.PriceDownHasSet == 0 {
+			r.PriceDownHasSet = ProductPriceHasSetYes
+		}
 	case SaleTypeDown: //定金预售
 		if r.DownFreightNeed == 0 {
 			r.DownFreightNeed = ProductFreightNeedNo
+		}
+		if r.PriceDownHasSet == 0 {
+			r.PriceDownHasSet = ProductPriceHasSetYes
 		}
 	}
 
