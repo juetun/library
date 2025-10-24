@@ -43,28 +43,29 @@ const (
 )
 
 var (
-	SystemDescMap = map[string]SystemDescription{
-		SystemPlatform: {
-			Key:   SystemPlatform,
+	SliceSystemDesc = base.ModelItemOptions{
+		{
+			Value: SystemPlatform,
 			Label: "汽车",
 		},
-		SystemBackend: {
-			Key:   SystemBackend,
+		{
+			Value: SystemBackend,
 			Label: "后台",
 		},
-		SystemSystem: { //客服后台
-			Key:   SystemSystem,
+		{ //客服后台
+			Value: SystemSystem,
 			Label: "系统管理",
 		},
-		SystemUser: {
-			Key:   SystemUser,
+		{
+			Value: SystemUser,
 			Label: "用户后台",
 		},
-		SystemShop: {
-			Key:   SystemShop,
+		{
+			Value: SystemShop,
 			Label: "店铺后台",
 		},
 	}
+	
 	SliceTerminal = base.ModelItemOptions{
 		{Label: "网站", Value: TerminalWeb},
 		{Label: "小程序", Value: TerminalMina},
