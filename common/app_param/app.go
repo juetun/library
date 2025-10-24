@@ -65,7 +65,7 @@ var (
 			Label: "店铺后台",
 		},
 	}
-	
+
 	SliceTerminal = base.ModelItemOptions{
 		{Label: "网站", Value: TerminalWeb},
 		{Label: "小程序", Value: TerminalMina},

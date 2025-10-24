@@ -15,14 +15,16 @@ const (
 	PageNameHome = "home" //首页
 
 	//商品前台界面
-	PageNameOrder        = "order"
-	PageNameOrderDetail  = "order_detail"
-	PageNameSpu          = "spu"
-	PageNameShop         = "shop"
-	PageNameUsr          = "user"
-	PageNameSns          = "article"       //社交前台界面
-	PageNameFishingSport = "fishing_spots" //钓点信息
-	PageNameRing         = "ring_article"  //圈子信息
+	PageNameOrder            = "order"
+	PageNameOrderDetail      = "order_detail"
+	PageNameOrderComment     = "comment_edit" //订单评论详情
+	PageNameOrderCommentEdit = "comment_edit" //订单评论编辑
+	PageNameSpu              = "spu"
+	PageNameShop             = "shop"
+	PageNameUsr              = "user"
+	PageNameSns              = "article"       //社交前台界面
+	PageNameFishingSport     = "fishing_spots" //钓点信息
+	PageNameRing             = "ring_article"  //圈子信息
 
 	PageNameOther      = "other"      //无实际意义拼接数据使用
 	PageNamePayFinish  = "pay_finish" //支付结果界面
