@@ -38,12 +38,17 @@ const (
 	SystemUser     = "user"           //用户后台
 	SystemShop     = "shop_dashboard" //店铺后台
 	SystemPlatform = "platform"       //汽车系统后台
+	SystemWebSite  = "website"        //网站前台
 
 	DefaultSystem = SystemSystem // 默认系统
 )
 
 var (
 	SliceSystemDesc = base.ModelItemOptions{
+		{
+			Value: SystemWebSite,
+			Label: "网站前台",
+		},
 		{
 			Value: SystemPlatform,
 			Label: "汽车",
