@@ -47,7 +47,7 @@ func AddQueueMessage(arg *ArgAddQueueMessage, ctx *base.Context) (res *ResultAdd
 	}
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
-		AppName:     AppNameAdmin,
+		AppName:     AppNameNotice,
 		URI:         "/queue/add_message",
 		Header:      http.Header{},
 		Value:       url.Values{},
