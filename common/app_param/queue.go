@@ -33,14 +33,27 @@ type (
 	MessageConsumer interface {
 		Action(data ArgMessageConsume) (res *ResultMessageConsume)
 	}
+
+	//标记队列消费成功使用
+	ArgAddQueueFlagOk struct {
+		ConsumeId int64    `json:"consume_id" form:"consume_id"`
+		MessageId []string `json:"message_id" form:"message_id"`
+	}
+	ResultAddQueueFlagOk struct {
+		Result bool `json:"result"`
+	}
 )
+
+func (r *ArgAddQueueFlagOk) Default(ctx *base.Context) (err error) {
+	return
+}
 
 func (r *ArgAddQueueMessage) Default(ctx *base.Context) (err error) {
 	return
 }
 
 //添加消息到队列中
-func AddQueueMessage(arg *ArgAddQueueMessage, ctx *base.Context) (res *ResultAddQueueMessage, err error) {
+func QueueAddMessage(arg *ArgAddQueueMessage, ctx *base.Context) (res *ResultAddQueueMessage, err error) {
 	res = &ResultAddQueueMessage{}
 	if arg == nil || len(arg.Data) == 0 {
 		return
@@ -59,6 +72,41 @@ func AddQueueMessage(arg *ArgAddQueueMessage, ctx *base.Context) (res *ResultAdd
 		Code int                    `json:"code"`
 		Data *ResultAddQueueMessage `json:"data"`
 		Msg  string                 `json:"message"`
+	}{}
+
+	if err = rpc.NewHttpRpc(&ro).
+		Send().
+		GetBody().
+		Bind(&data).Error; err != nil {
+		return
+	}
+	if data.Data != nil {
+		res = data.Data
+	}
+
+	return
+}
+
+//标记队列消费成功
+func QueueFlagConsumeOk(arg *ArgAddQueueFlagOk, ctx *base.Context) (res *ResultAddQueueFlagOk, err error) {
+	res = &ResultAddQueueFlagOk{}
+	if arg == nil || arg.ConsumeId == 0 || len(arg.MessageId) == 0 {
+		return
+	}
+	ro := rpc.RequestOptions{
+		Method:      http.MethodPost,
+		AppName:     AppNameNotice,
+		URI:         "/queue/add_message",
+		Header:      http.Header{},
+		Value:       url.Values{},
+		Context:     ctx,
+		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
+	}
+	ro.BodyJson, _ = json.Marshal(arg)
+	var data = struct {
+		Code int                   `json:"code"`
+		Data *ResultAddQueueFlagOk `json:"data"`
+		Msg  string                `json:"message"`
 	}{}
 
 	if err = rpc.NewHttpRpc(&ro).
