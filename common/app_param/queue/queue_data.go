@@ -36,7 +36,7 @@ type (
 		Status    uint8            `gorm:"column:status;not null;type: tinyint(2);Index:topicInfo,priority:2;default:1;comment:使用状态 1-使用中 2-已停用"  json:"status,omitempty"`
 		Data      string           `gorm:"column:data;type:text;not null;comment:商品描述" json:"data"`
 		CreatedAt base.TimeNormal  `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at,omitempty"`
-		OnlineAt  base.TimeNormal  `gorm:"column:online_at;not null;default:CURRENT_TIMESTAMP" json:"online_at,omitempty"`
+		OnlineAt  int64            `gorm:"column:online_at;not null;type:bigint(20);default:0" json:"online_at,omitempty"`
 		DeletedAt *base.TimeNormal `gorm:"column:deleted_at" json:"-"`
 	}
 )
