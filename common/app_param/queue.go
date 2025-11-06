@@ -36,6 +36,7 @@ type (
 
 	//标记队列消费成功使用
 	ArgAddQueueFlagOk struct {
+		TopicId   int64    `json:"topic_id" form:"topic_id"`
 		ConsumeId int64    `json:"consume_id" form:"consume_id"`
 		MessageId []string `json:"message_id" form:"message_id"`
 	}
