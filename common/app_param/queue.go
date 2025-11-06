@@ -43,7 +43,28 @@ type (
 	ResultAddQueueFlagOk struct {
 		Result bool `json:"result"`
 	}
+	QueueDataInfo struct {
+		Data       string          `json:"data"`
+		MessageId  string          `json:"message_id"`
+		TopicId    int64           `json:"topic_id"`
+		ConsumeId  int64           `json:"consume_id"`
+		ConsumeKey string          `json:"consume_key"`
+		OnlineAt   int64           `json:"online_at"`
+		CreatedAt  base.TimeNormal `json:"created_at"`
+	}
 )
+
+func (r *QueueDataInfo) ToString() (res string) {
+	var (
+		bt []byte
+		e  error
+	)
+	if bt, e = json.Marshal(r); e != nil {
+		return
+	}
+	res = string(bt)
+	return
+}
 
 func (r *ArgAddQueueFlagOk) Default(ctx *base.Context) (err error) {
 	return
