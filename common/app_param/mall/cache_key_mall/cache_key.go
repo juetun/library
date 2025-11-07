@@ -17,7 +17,7 @@ var (
 			Expire: 24 * time.Hour,
 		},
 		"CacheKeySpuSaleTop": { //商品总销量排行
-			Key:    "m:spu_sale:%v",
+			Key:    "m:spu_sale",
 			Expire: 24 * time.Hour,
 		},
 	}
