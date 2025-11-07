@@ -9,16 +9,19 @@ import (
 var (
 	MallCacheParamConfig = map[string]*redis_pkg.CacheProperty{
 		"CacheKeySpuList": { //在线商品有序集合
-			Key:    "m:spu_set",
-			Expire: 24 * time.Hour,
+			Key:           "m:online:spu",
+			Expire:        24 * time.Hour,
+			CacheDataType: redis_pkg.CacheDataTypeHashSortSet, //有序集合
 		},
 		"CacheKeyShopSaleTop": { //店铺商品销量排行
-			Key:    "m:shop_sale:%v",
-			Expire: 24 * time.Hour,
+			Key:           "m:sale:shop_%v",
+			Expire:        24 * time.Hour,
+			CacheDataType: redis_pkg.CacheDataTypeHashSortSet, //有序集合
 		},
 		"CacheKeySpuSaleTop": { //商品总销量排行
-			Key:    "m:spu_sale",
-			Expire: 24 * time.Hour,
+			Key:           "m:sale:spu",
+			Expire:        24 * time.Hour,
+			CacheDataType: redis_pkg.CacheDataTypeHashSortSet, //有序集合
 		},
 	}
 )
