@@ -2,6 +2,7 @@ package queue
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 )
 
@@ -58,8 +59,39 @@ type (
 		OnlineAt  int64            `gorm:"column:online_at;not null;type:bigint(20);default:0" json:"online_at,omitempty"`
 		DeletedAt *base.TimeNormal `gorm:"column:deleted_at" json:"-"`
 	}
+	ConsumeQueueDataIndex struct {
+		TopicId   int64 `json:"t" gorm:"column:topic_id;Index:idx_user_hid,priority:2;not null;type:bigint(20);default:0;comment:主题ID"`
+		ConsumeId int64 `json:"c" gorm:"column:consume_id;Index:idx_user_hid,priority:1;not null;type:bigint(20);default:0;comment:主题ID"`
+	}
 )
 
+func (r *ConsumeQueueDataIndex) GetIndex() (res string) {
+	res = fmt.Sprintf("%v_%v", r.TopicId, r.ConsumeId)
+	return
+}
+
+func (r *ConsumeQueueDataIndex) MarshalBinary() (data []byte, err error) {
+	data, err = json.Marshal(r)
+	return
+}
+
+func (r *ConsumeQueueDataIndex) UnmarshalBinary(data []byte) (err error) {
+	if r == nil {
+		r = &ConsumeQueueDataIndex{}
+	}
+	err = json.Unmarshal(data, r)
+	return
+}
+
+func (r *ConsumeQueueDataIndex) ToString() (res string) {
+	if r == nil {
+		return
+	}
+	var bt []byte
+	bt, _ = json.Marshal(r)
+	res = string(bt)
+	return
+}
 func (r *MessageQueueData) ParseStatus() (res string) {
 	mapStatus, _ := SliceQueueDataStatus.GetMapAsKeyUint8()
 	if tmp, ok := mapStatus[r.Status]; ok {
