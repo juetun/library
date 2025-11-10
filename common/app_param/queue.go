@@ -118,7 +118,7 @@ func QueueFlagConsumeOk(arg *ArgAddQueueFlagOk, ctx *base.Context) (res *ResultA
 	ro := rpc.RequestOptions{
 		Method:      http.MethodPost,
 		AppName:     AppNameNotice,
-		URI:         "/queue/add_message",
+		URI:         "/queue/flag_ok",
 		Header:      http.Header{},
 		Value:       url.Values{},
 		Context:     ctx,
