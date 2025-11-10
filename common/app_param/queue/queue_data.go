@@ -59,32 +59,32 @@ type (
 		OnlineAt  int64            `gorm:"column:online_at;not null;type:bigint(20);default:0" json:"online_at,omitempty"`
 		DeletedAt *base.TimeNormal `gorm:"column:deleted_at" json:"-"`
 	}
-	ConsumeQueueDataIndex struct {
+	ConsumeQueueDataInfo struct {
 		Topic     string `json:"tc"`
 		TopicId   int64  `json:"tcid"`
 		ConsumeId int64  `json:"cid"`
 	}
 )
 
-func (r *ConsumeQueueDataIndex) GetIndex() (res string) {
+func (r *ConsumeQueueDataInfo) GetIndex() (res string) {
 	res = fmt.Sprintf("%v_%v", r.TopicId, r.ConsumeId)
 	return
 }
 
-func (r *ConsumeQueueDataIndex) MarshalBinary() (data []byte, err error) {
+func (r *ConsumeQueueDataInfo) MarshalBinary() (data []byte, err error) {
 	data, err = json.Marshal(r)
 	return
 }
 
-func (r *ConsumeQueueDataIndex) UnmarshalBinary(data []byte) (err error) {
+func (r *ConsumeQueueDataInfo) UnmarshalBinary(data []byte) (err error) {
 	if r == nil {
-		r = &ConsumeQueueDataIndex{}
+		r = &ConsumeQueueDataInfo{}
 	}
 	err = json.Unmarshal(data, r)
 	return
 }
 
-func (r *ConsumeQueueDataIndex) ToString() (res string) {
+func (r *ConsumeQueueDataInfo) ToString() (res string) {
 	if r == nil {
 		return
 	}
