@@ -19,7 +19,7 @@ type (
 		Data    []*MessageQueueDataParam `json:"data" form:"data"`
 	}
 	MessageQueueDataParam struct {
-		Consume   string           `json:"consume" form:"consume"`               //消息的主题
+		Topic     string           `json:"topic" form:"topic"`                   //消息的主题
 		MessageId string           `json:"message_id" form:"message_id"`         //消息ID
 		Data      string           `json:"data" form:"data"`                     //消息数据
 		IsDelay   bool             `json:"is_delay"form:"is_delay"`              //是否延迟发送
