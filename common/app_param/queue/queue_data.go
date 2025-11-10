@@ -60,9 +60,9 @@ type (
 		DeletedAt *base.TimeNormal `gorm:"column:deleted_at" json:"-"`
 	}
 	ConsumeQueueDataInfo struct {
-		Topic     string `json:"tc"`
 		TopicId   int64  `json:"tcid"`
 		ConsumeId int64  `json:"cid"`
+		Consume   string `json:"consume"`
 	}
 )
 
