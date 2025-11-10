@@ -60,8 +60,9 @@ type (
 		DeletedAt *base.TimeNormal `gorm:"column:deleted_at" json:"-"`
 	}
 	ConsumeQueueDataIndex struct {
-		TopicId   int64 `json:"t" gorm:"column:topic_id;Index:idx_user_hid,priority:2;not null;type:bigint(20);default:0;comment:主题ID"`
-		ConsumeId int64 `json:"c" gorm:"column:consume_id;Index:idx_user_hid,priority:1;not null;type:bigint(20);default:0;comment:主题ID"`
+		Topic     string `json:"tc"`
+		TopicId   int64  `json:"tcid"`
+		ConsumeId int64  `json:"cid"`
 	}
 )
 
