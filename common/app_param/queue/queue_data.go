@@ -62,7 +62,7 @@ type (
 	ConsumeQueueDataInfo struct {
 		TopicId   int64  `json:"tcid"`
 		ConsumeId int64  `json:"cid"`
-		Consume   string `json:"consume"`
+		Consume   string `json:"cs"`
 	}
 )
 
