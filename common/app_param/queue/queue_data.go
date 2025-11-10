@@ -63,6 +63,7 @@ type (
 		TopicId   int64  `json:"tcid"`
 		ConsumeId int64  `json:"cid"`
 		Consume   string `json:"cs"`
+		MCroSrv   string `json:"mcs"`
 	}
 )
 
