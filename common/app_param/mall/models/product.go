@@ -114,7 +114,7 @@ var (
 	SliceProductFreightNeed = base.ModelItemOptions{
 		{
 			Value: ProductFreightNeedYes, //需要实物
-			Label: "需发实物",
+			Label: "需发货",
 		},
 		{
 			Value: ProductFreightVirtual, //虚拟发货
