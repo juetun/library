@@ -7,13 +7,14 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/base/cache_act"
 	"github.com/juetun/base-wrapper/lib/common/redis_pkg"
+	"github.com/juetun/library/common/app_param/mall/cache_key_mall"
 	"github.com/juetun/library/common/app_param/mall_comment"
 	"time"
 )
 
 func GetSpuCacheKey(productId interface{}, expireTimeRands ...bool) (res string, timeExpire time.Duration, err error) {
 	var CacheKeyProductDescWithProductId *redis_pkg.CacheProperty
-	if CacheKeyProductDescWithProductId, err = mall_comment.GetCacheParamConfig("CacheSpuComment"); err != nil {
+	if CacheKeyProductDescWithProductId, err = cache_key_mall.GetCacheParamConfig("CacheSpuComment"); err != nil {
 		return
 	}
 
