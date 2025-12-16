@@ -21,13 +21,12 @@ const (
 
 // 店铺入驻状态
 const (
-	ShopStatusOk       = const_apply.ApplyStatusOk       //入驻状态审核通过
-	ShopStatusInvalid  = const_apply.ApplyStatusInvalid  //已失效
-	ShopStatusFailure  = const_apply.ApplyStatusFailure  //入驻状态审核失败
-	ShopStatusInit     = const_apply.ApplyStatusInit     //入驻状态初始化
-	ShopStatusAuditing = const_apply.ApplyStatusAuditing //审核中
-
-	ShopStatusDelete = 99 //已删除
+	ShopStatusOk            = const_apply.ApplyStatusOk       //入驻状态审核通过
+	ShopStatusInvalid       = const_apply.ApplyStatusInvalid  //已失效
+	ShopStatusFailure       = const_apply.ApplyStatusFailure  //入驻状态审核失败
+	ShopStatusInit          = const_apply.ApplyStatusInit     //入驻状态初始化
+	ShopStatusAuditing      = const_apply.ApplyStatusAuditing //审核中
+	ShopStatusDelete   int8 = 99                              //已删除
 )
 
 const (
@@ -53,7 +52,6 @@ const (
 	ShopCanUpdateColumnIcon          = "icon"     //修改logo
 	ShopCanUpdateColumnBgImage       = "bg_image" //修改背景图
 )
-
 
 const (
 	ShopSliceVerifyStatusValue   = const_apply.ApplyStatusInit     // 初始化
