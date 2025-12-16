@@ -23,6 +23,10 @@ var (
 			Expire:        24 * time.Hour,
 			CacheDataType: redis_pkg.CacheDataTypeHashSortSet, //有序集合
 		},
+		"CacheSpuComment": { //店铺变跟资质缓存的缓存Key
+			Key:    "m:spu:comment:%v",
+			Expire: 12 * time.Hour,
+		},
 	}
 )
 
