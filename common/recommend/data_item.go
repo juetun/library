@@ -197,7 +197,10 @@ func (r *DataItem) GetLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetL
 
 //获取广告唯一Id字符串
 func (r *DataItem) GetShopLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetLinksItem) {
-	itemLink = NewArgGetLinksItem(headerInfo, r.GetPageName(), r.GetUniqueKey())
+	if r.ShopId <= 0 {
+		return
+	}
+	itemLink = NewArgGetLinksItem(headerInfo, PageNameShop, GetUniqueKey(AdDataDataTypeUserShop, fmt.Sprintf("%v", r.ShopId)))
 	itemLink.UrlValue.Set("shop_id", strconv.FormatInt(r.ShopId, 10))
 	itemLink.UrlLinkVal["shop_id"] = r.ShopId
 	return
