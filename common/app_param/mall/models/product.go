@@ -52,6 +52,7 @@ const (
 	SaleTypeDown                         // 定金预售
 	SaleTypeActivity                     // 活动信息
 	SaleTypeIntentional                  // 意向金预售
+	SaleTypeIntent                       //意向金预售
 )
 
 const (
@@ -244,6 +245,10 @@ var (
 		},
 		{
 			Value: SaleTypeIntentional,
+			Label: "意向金(old)",
+		},
+		{
+			Value: SaleTypeIntent,
 			Label: "意向金",
 		},
 		{
