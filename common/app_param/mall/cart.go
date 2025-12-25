@@ -11,29 +11,10 @@ const (
 	CartPrSaleStatusPayExpire            //支付尾款超时
 )
 
-const (
-	OrderActTypeFirst   uint8 = iota + 1 //首款
-	OrderActTypeFinal                    //尾款
-	OrderActTypeDeposit                  //意向金
-)
+
 
 var (
-	SliceOrderActType = base.ModelItemOptions{
-		{
-			Label: "首付款",
-			Value: OrderActTypeFirst,
-		},
-		{
 
-			Label: "尾款",
-			Value: OrderActTypeFinal,
-		},
-		{
-
-			Label: "意向金",
-			Value: OrderActTypeDeposit,
-		},
-	}
 	//预售状态
 	SlicePrSaleCartStatus = base.ModelItemOptions{
 		{

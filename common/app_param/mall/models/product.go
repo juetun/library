@@ -32,6 +32,12 @@ const (
 	ProductStatusWaitingDeal                   // 待处理
 
 )
+
+const (
+	OrderActTypeFirst   uint8 = iota + 1 //首款
+	OrderActTypeFinal                    //尾款
+	OrderActTypeDeposit                  //意向金
+)
 const (
 	ProductHasOnlineYes uint8 = iota + 1 //商品曾上过架
 	ProductHasOnlineNo                   //商品未曾上过架
@@ -102,6 +108,22 @@ const (
 )
 
 var (
+	SliceOrderActType = base.ModelItemOptions{
+		{
+			Label: "首付款",
+			Value: OrderActTypeFirst,
+		},
+		{
+
+			Label: "尾款",
+			Value: OrderActTypeFinal,
+		},
+		{
+
+			Label: "意向金",
+			Value: OrderActTypeDeposit,
+		},
+	}
 	SliceProductPriceHasSet = base.ModelItemOptions{
 		{
 			Value: ProductPriceHasSetYes, //售价已定
@@ -409,6 +431,7 @@ type (
 		HaveGift               uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:是否有赠品 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
 		FlagTester             uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester,omitempty"`
 		SupportComment         uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否支持平路n 1-支持 2-不支持"  json:"support_comment,omitempty"`
+		StepProgress           uint8                          `gorm:"column:step_progress;not null;type: tinyint(2);default:1;comment:数据步骤1-"  json:"step_progress,omitempty"`
 		ApplyUserHid           int64                          `gorm:"column:apply_user_hid;default:0;type:bigint(20);not null;comment:审核人用户ID" json:"apply_user_hid,omitempty"`
 		ApplyAt                base.TimeNormal                `gorm:"column:apply_at;not null;default:'2000-01-01 00:00:00';comment:审核时间" json:"apply_at,omitempty"`
 		ApplyMark              string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
