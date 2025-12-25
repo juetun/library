@@ -3,7 +3,7 @@ package model_order
 import (
 	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/library/common/app_param/mall"
+	"github.com/juetun/library/common/app_param/mall/models"
 	"github.com/juetun/library/common/const_apply"
 	"github.com/shopspring/decimal"
 	"time"
@@ -32,22 +32,22 @@ const (
 
 var (
 	MapOrderCategoryActType = map[string]uint8{
-		OrderPageCategoryIntentionalDeposit: mall.OrderActTypeDeposit,
-		OrderPageCategoryFirst:              mall.OrderActTypeFirst,
-		OrderPageCategorySecond:             mall.OrderActTypeFinal,
+		OrderPageCategoryIntentionalDeposit: models.OrderActTypeDeposit,
+		OrderPageCategoryFirst:              models.OrderActTypeFirst,
+		OrderPageCategorySecond:             models.OrderActTypeFinal,
 	}
 	SliceOrderShopDetailPriceCate = base.ModelItemOptions{
 		{
 			Label: "定金",
-			Value: mall.OrderActTypeFirst,
+			Value: models.OrderActTypeFirst,
 		},
 		{
 			Label: "意向金",
-			Value: mall.OrderActTypeDeposit,
+			Value: models.OrderActTypeDeposit,
 		},
 		{
 			Label: "尾款",
-			Value: mall.OrderActTypeFinal,
+			Value: models.OrderActTypeFinal,
 		},
 	}
 	SliceOrderPageCategory = base.ModelItemOptions{
