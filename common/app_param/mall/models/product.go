@@ -110,6 +110,10 @@ const (
 var (
 	SliceOrderActType = base.ModelItemOptions{
 		{
+			Label: "意向金",
+			Value: OrderActTypeDeposit,
+		},
+		{
 			Label: "首付款",
 			Value: OrderActTypeFirst,
 		},
@@ -117,11 +121,6 @@ var (
 
 			Label: "尾款",
 			Value: OrderActTypeFinal,
-		},
-		{
-
-			Label: "意向金",
-			Value: OrderActTypeDeposit,
 		},
 	}
 	SliceProductPriceHasSet = base.ModelItemOptions{
@@ -431,7 +430,7 @@ type (
 		HaveGift               uint8                          `gorm:"column:have_gift;not null;type: tinyint(2);default:2;comment:是否有赠品 1-有赠品 2-无赠品" json:"have_gift,omitempty"` // 结算方式 1：现结 2：月结
 		FlagTester             uint8                          `gorm:"column:flag_tester;not null;type: tinyint(2);default:1;comment:是否为测试数据 1-不是 2-是"  json:"flag_tester,omitempty"`
 		SupportComment         uint8                          `gorm:"column:support_comment;not null;type: tinyint(2);default:1;comment:是否支持平路n 1-支持 2-不支持"  json:"support_comment,omitempty"`
-		StepProgress           uint8                          `gorm:"column:step_progress;not null;type: tinyint(2);default:1;comment:数据步骤1-"  json:"step_progress,omitempty"`
+		ActType                uint8                          `gorm:"column:act_type;not null;type: tinyint(2);default:1;comment:数据步骤1-"  json:"act_type,omitempty"`
 		ApplyUserHid           int64                          `gorm:"column:apply_user_hid;default:0;type:bigint(20);not null;comment:审核人用户ID" json:"apply_user_hid,omitempty"`
 		ApplyAt                base.TimeNormal                `gorm:"column:apply_at;not null;default:'2000-01-01 00:00:00';comment:审核时间" json:"apply_at,omitempty"`
 		ApplyMark              string                         `gorm:"column:apply_mark;type:varchar(500);not null;default:'';comment:审核备注" json:"apply_mark,omitempty"`
@@ -617,12 +616,26 @@ func GetPageTagsTester(FlagTester uint8) (dt *PageTag) {
 	return
 }
 
+func GetProductActType(actType uint8) (res string) {
+
+	var ok bool
+	MapActType, _ := SliceOrderActType.GetMapAsKeyUint8()
+	if res, ok = MapActType[actType]; ok {
+		return
+	}
+	return
+}
 func GetProductFreightNeed(ProductFreightNeed uint8) (res string) {
 	var ok bool
 	MapRelateType, _ := SliceProductFreightNeed.GetMapAsKeyUint8()
 	if res, ok = MapRelateType[ProductFreightNeed]; ok {
 		return
 	}
+	return
+}
+
+func (r *Product) ParseProductActType() (res string) {
+	res = GetProductActType(r.ActType)
 	return
 }
 
