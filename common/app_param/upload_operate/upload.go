@@ -20,10 +20,10 @@ type (
 		ctx context.Context
 	}
 	DaoUpload interface {
-		GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapUploadInfo, err error)
+		GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error)
 
 		//拷贝文件
-		CopyUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapCopyUploadInfo, err error)
+		CopyUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapCopyUploadInfo, err error)
 
 		//删除文件 更具 upload_data_type和upload_data_id
 		RemoveFile(arg *ArgUploadRemove) (resData *ResultUploadRemove, err error)
@@ -87,7 +87,7 @@ func (r *DaoUploadImpl) getUploadCacheKey(id interface{}, Type string, expireTim
 }
 
 //从
-func (r *DaoUploadImpl) CopyUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapCopyUploadInfo, err error) {
+func (r *DaoUploadImpl) CopyUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapCopyUploadInfo, err error) {
 	res = NewResultMapCopyUploadInfo(arg)
 	var value = url.Values{}
 	var bodyByte []byte
@@ -131,10 +131,10 @@ func (r *DaoUploadImpl) CopyUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.
 }
 
 //从
-func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) (res *ResultMapUploadInfo, err error) {
+func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error) {
 
 	res, err = NewCacheProductPicAndVideoAction(
-		CacheProductPicAndVideoActionArg(arg, argCommon),
+		CacheProductPicAndVideoActionArg(arg),
 		CacheHandlerGetUploadCacheKey(r.getUploadCacheKey),
 		CacheProductPicAndVideoActionGetByIdsFromDb(r.getDataByUserIdsFromUploadServer),
 	).LoadBaseOption(

@@ -13,7 +13,6 @@ type (
 	CacheProductPicAndVideoAction struct {
 		cache_act.CacheActionBase
 		arg                      *ArgUploadGetInfo
-		argCommon                *base.GetDataTypeCommon
 		GetByIdsFromDb           GetProductPicAndVideoByIdsFromDb
 		HandlerGetUploadCacheKey HandlerGetUploadCacheKey
 	}
@@ -22,10 +21,9 @@ type (
 	HandlerGetUploadCacheKey            func(id interface{}, Type string, expireTimeRands ...bool) (res string, timeExpire time.Duration)
 )
 
-func CacheProductPicAndVideoActionArg(arg *ArgUploadGetInfo, argCommon *base.GetDataTypeCommon) CacheProductPicAndVideoActionOption {
+func CacheProductPicAndVideoActionArg(arg *ArgUploadGetInfo) CacheProductPicAndVideoActionOption {
 	return func(cacheFreightAction *CacheProductPicAndVideoAction) {
 		cacheFreightAction.arg = arg
-		cacheFreightAction.argCommon = argCommon
 		return
 	}
 }
@@ -136,15 +134,15 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 }
 
 func (r *CacheProductPicAndVideoAction) Action() (res *ResultMapUploadInfo, err error) {
-	if err = r.argCommon.Default(); err != nil {
+	if err = r.arg.GetDataTypeCommon.Default(); err != nil {
 		return
 	}
-	switch r.argCommon.GetType {
+	switch r.arg.GetDataTypeCommon.GetType {
 	case base.GetDataTypeFromDb: // 从数据库获取数据
 		if res, err = r.GetByIdsFromDb(r.arg); err != nil {
 			return
 		}
-		switch r.argCommon.RefreshCache {
+		switch r.arg.GetDataTypeCommon.RefreshCache {
 		case base.RefreshCacheYes:
 			if err = r.saveCache(res); err != nil {
 				return
@@ -155,7 +153,7 @@ func (r *CacheProductPicAndVideoAction) Action() (res *ResultMapUploadInfo, err 
 	case base.GetDataTypeFromAll: // 优先从缓存获取，如果没有数据，则从数据库获取
 		res, err = r.getByIdsFromAll(r.arg)
 	default:
-		err = fmt.Errorf("当前不支持你选择的获取数据类型(%s)", r.argCommon.GetType)
+		err = fmt.Errorf("当前不支持你选择的获取数据类型(%s)", r.arg.GetDataTypeCommon.GetType)
 	}
 	return
 }
