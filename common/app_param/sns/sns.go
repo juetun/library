@@ -1,9 +1,15 @@
 package sns
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param"
+)
+
+const (
+	EditOptionTypeRing = "ring"
+	EditOptionTypeUser = "usr"
 )
 
 type (
@@ -13,6 +19,15 @@ type (
 		base.ArgGetByNumberIds
 	}
 	ResultRingMap  map[string]ResultRingItem
+	EditOptionItem struct {
+		ID    int64  `gorm:"column:id" json:"id"`
+		Title string `gorm:"column:title" json:"title,omitempty"`
+	}
+	LoadEditorItem struct {
+		Value  string `json:"value"`
+		Label  string `json:"label"`
+		Prefix string `json:"prefix"`
+	}
 	ResultRingItem struct {
 		ID             int64  `json:"id"`
 		Title          string `json:"title,omitempty"`
@@ -30,7 +45,23 @@ type (
 	}
 )
 
-func (r *ArgRingsId) Default(ctx *base.Context) (err error) {
+func (r *LoadEditorItem) ParseFromEditOptionItem(option *EditOptionItem, optionType string) {
+	r.Value = option.GetPk(optionType)
+	r.Label = option.Title
+	switch optionType {
+	case EditOptionTypeRing:
+		r.Prefix = "#"
+	case EditOptionTypeUser:
+		r.Prefix = "@"
+	}
+	return
+}
 
+func (r *EditOptionItem) GetPk(optionType string) (res string) {
+	res = fmt.Sprintf("%v|%v", optionType, r.ID)
+	return
+}
+
+func (r *ArgRingsId) Default(ctx *base.Context) (err error) {
 	return
 }
