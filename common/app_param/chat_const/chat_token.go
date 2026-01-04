@@ -29,11 +29,13 @@ const (
 
 const (
 	//消息烈性
-	ChatMsgTypeText  = (iota + 11) * 10000 // 聊天数据类型 110000-文本
-	ChatMsgTypeImg                         // 聊天数据类型 110001-图片
-	ChatMsgTypeCard                        // 聊天数据卡片 110003-数据卡片 (如商品数据)
-	ChatMsgTypeVideo                       // 聊天数据类型 视频
-	ChatMsgTypeMusic                       // 聊天数据类型 音频
+	ChatMsgTypeText     = (iota + 11) * 10000 // 聊天数据类型 110000-文本
+	ChatMsgTypeImg                            // 聊天数据类型 120000-图片
+	ChatMsgTypeCard                           // 聊天数据卡片 130000-数据卡片 (如商品数据)
+	ChatMsgTypeVideo                          // 聊天数据类型 视频
+	ChatMsgTypeMusic                          // 聊天数据类型 音频
+	ChatMsgTypeOrder                          // 订单信息
+	ChatMsgTypeSubOrder                       // 子订单信息
 )
 
 const (
@@ -218,6 +220,14 @@ var (
 		{
 			Label: "徽标数值",
 			Value: BadgeTypeReply,
+		},
+		{
+			Label: "订单",
+			Value: ChatMsgTypeOrder,
+		},
+		{
+			Label: "子订单",
+			Value: ChatMsgTypeSubOrder,
 		},
 	}
 
