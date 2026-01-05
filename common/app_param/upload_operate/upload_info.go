@@ -132,6 +132,9 @@ func (r *ArgUploadGetInfo) DeduplicateVideo() (res *ArgUploadGetInfo) {
 	)
 	r.mapVideo = make(map[string]bool, lCount)
 	for _, filePk = range r.VideoKeys {
+		if filePk == "" {
+			continue
+		}
 		if _, ok = r.mapVideo[filePk]; !ok {
 			r.mapVideo[filePk] = true
 			fileList = append(fileList, filePk)
@@ -152,6 +155,9 @@ func (r *ArgUploadGetInfo) DeduplicateMusic() (res *ArgUploadGetInfo) {
 	)
 	r.mapMusic = make(map[string]bool, lCount)
 	for _, filePk = range r.MusicKey {
+		if filePk == "" {
+			continue
+		}
 		if _, ok = r.mapMusic[filePk]; !ok {
 			r.mapMusic[filePk] = true
 			fileList = append(fileList, filePk)
@@ -172,6 +178,9 @@ func (r *ArgUploadGetInfo) DeduplicateFile() (res *ArgUploadGetInfo) {
 	)
 	r.mapFile = make(map[string]bool, lCount)
 	for _, filePk = range r.File {
+		if filePk == "" {
+			continue
+		}
 		if _, ok = r.mapFile[filePk]; !ok {
 			r.mapFile[filePk] = true
 			fileList = append(fileList, filePk)
@@ -188,6 +197,9 @@ func (r *ArgUploadGetInfo) AppendFile(filePk ...string) (res *ArgUploadGetInfo) 
 		ok bool
 	)
 	for _, pk = range filePk {
+		if pk == "" {
+			continue
+		}
 		if _, ok = r.mapFile[pk]; !ok {
 			r.mapFile[pk] = true
 			r.File = append(r.File, pk)
@@ -203,6 +215,9 @@ func (r *ArgUploadGetInfo) AppendMusic(filePk ...string) (res *ArgUploadGetInfo)
 		ok bool
 	)
 	for _, pk = range filePk {
+		if pk == "" {
+			continue
+		}
 		if _, ok = r.mapMusic[pk]; !ok {
 			r.mapMusic[pk] = true
 			r.MusicKey = append(r.MusicKey, pk)
@@ -218,6 +233,9 @@ func (r *ArgUploadGetInfo) AppendVideo(filePk ...string) (res *ArgUploadGetInfo)
 		ok bool
 	)
 	for _, pk = range filePk {
+		if pk == "" {
+			continue
+		}
 		if _, ok = r.mapVideo[pk]; !ok {
 			r.mapVideo[pk] = true
 			r.VideoKeys = append(r.VideoKeys, pk)
