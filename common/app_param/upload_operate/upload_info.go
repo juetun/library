@@ -35,8 +35,11 @@ type (
 		VideoKeys []string `json:"video_keys,omitempty"`
 		MusicKey  []string `json:"music_key,omitempty"`
 		//Material  []string `json:"material"`
-		File     []string `json:"file,omitempty"`
-		Download []string `json:"download"`
+		File     []string        `json:"file,omitempty"`
+		Download []string        `json:"download"`
+		mapVideo map[string]bool `json:"-"` //视频文件去重
+		mapMusic map[string]bool `json:"-"` //音频文件去重
+		mapFile  map[string]bool `json:"-"` //图片或其他普通文件去重
 		base.GetDataTypeCommon
 	}
 
@@ -104,12 +107,121 @@ func (r *ArgUploadGetInfo) Default(c *base.Context) (err error) {
 }
 
 func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
+	lCount := 50
 	res = &ArgUploadGetInfo{
-		//ImgKeys:   make([]string, 0, 50),
-		VideoKeys: make([]string, 0, 50),
-		MusicKey:  make([]string, 0, 50),
-		//Material:  make([]string, 0, 50),
-		File: make([]string, 0, 50),
+		//ImgKeys:   make([]string, 0, lCount),
+		VideoKeys: make([]string, 0, lCount),
+		MusicKey:  make([]string, 0, lCount),
+		//Material:  make([]string, 0, lCount),
+		File:     make([]string, 0, lCount),
+		mapVideo: make(map[string]bool, lCount),
+		mapMusic: make(map[string]bool, lCount),
+		mapFile:  make(map[string]bool, lCount),
+	}
+	return
+}
+
+//视频文件pk去重
+func (r *ArgUploadGetInfo) DeduplicateVideo() (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		lCount   = len(r.VideoKeys)
+		filePk   string
+		ok       bool
+		fileList = make([]string, 0, lCount)
+	)
+	r.mapVideo = make(map[string]bool, lCount)
+	for _, filePk = range r.VideoKeys {
+		if _, ok = r.mapVideo[filePk]; !ok {
+			r.mapVideo[filePk] = true
+			fileList = append(fileList, filePk)
+		}
+	}
+	r.VideoKeys = fileList
+	return
+}
+
+//音频文件去重
+func (r *ArgUploadGetInfo) DeduplicateMusic() (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		lCount   = len(r.MusicKey)
+		filePk   string
+		ok       bool
+		fileList = make([]string, 0, lCount)
+	)
+	r.mapMusic = make(map[string]bool, lCount)
+	for _, filePk = range r.MusicKey {
+		if _, ok = r.mapMusic[filePk]; !ok {
+			r.mapMusic[filePk] = true
+			fileList = append(fileList, filePk)
+		}
+	}
+	r.MusicKey = fileList
+	return
+}
+
+//普通文件去重
+func (r *ArgUploadGetInfo) DeduplicateFile() (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		lCount   = len(r.File)
+		filePk   string
+		ok       bool
+		fileList = make([]string, 0, lCount)
+	)
+	r.mapFile = make(map[string]bool, lCount)
+	for _, filePk = range r.File {
+		if _, ok = r.mapFile[filePk]; !ok {
+			r.mapFile[filePk] = true
+			fileList = append(fileList, filePk)
+		}
+	}
+	r.File = fileList
+	return
+}
+
+func (r *ArgUploadGetInfo) AppendFile(filePk ...string) (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		pk string
+		ok bool
+	)
+	for _, pk = range filePk {
+		if _, ok = r.mapFile[pk]; !ok {
+			r.mapFile[pk] = true
+			r.File = append(r.File, pk)
+		}
+	}
+	return
+}
+
+func (r *ArgUploadGetInfo) AppendMusic(filePk ...string) (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		pk string
+		ok bool
+	)
+	for _, pk = range filePk {
+		if _, ok = r.mapMusic[pk]; !ok {
+			r.mapMusic[pk] = true
+			r.MusicKey = append(r.MusicKey, pk)
+		}
+	}
+	return
+}
+
+func (r *ArgUploadGetInfo) AppendVideo(filePk ...string) (res *ArgUploadGetInfo) {
+	res = r
+	var (
+		pk string
+		ok bool
+	)
+	for _, pk = range filePk {
+		if _, ok = r.mapVideo[pk]; !ok {
+			r.mapVideo[pk] = true
+			r.VideoKeys = append(r.VideoKeys, pk)
+		}
 	}
 	return
 }
