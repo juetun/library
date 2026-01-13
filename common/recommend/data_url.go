@@ -25,6 +25,7 @@ const (
 	PageNameSns              = "article"       //社交前台界面
 	PageNameFishingSport     = "fishing_spots" //钓点信息
 	PageNameRing             = "ring_article"  //圈子信息
+	PageNameChatWindow       = "shop_customer" //聊天窗口
 
 	PageNameOther      = "other"      //无实际意义拼接数据使用
 	PageNamePayFinish  = "pay_finish" //支付结果界面
