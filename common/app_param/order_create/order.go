@@ -129,9 +129,8 @@ type (
 
 	ResultGetUserCouponByShopIdItem struct {
 		UseCouponDataItem
-		ShopId int64 `json:"shop_id"`
-
-		Desc string `json:"desc"` //优惠券信息描述
+		ShopId int64  `json:"shop_id"`
+		Desc   string `json:"desc"` //优惠券信息描述
 	}
 
 	ResultGetInfoByOrder map[string]ResultGetInfoByOrderItem

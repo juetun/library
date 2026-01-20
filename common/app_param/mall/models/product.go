@@ -438,6 +438,7 @@ type (
 		CurrentRecommendWeight float64                        `gorm:"column:current_rec_weight;not null;type:decimal(22,2);default:0;comment:商品推荐权重" json:"current_rec_weight" `
 		HasOnline              uint8                          `gorm:"column:has_online;not null;type: tinyint(2);default:2;comment:是否上架过 1-上架过 2-未上架"  json:"has_online,omitempty"`
 		DataOtherAttr          string                         `gorm:"column:data_other_attr;type:varchar(1000);not null;default:'';comment:其他属性" json:"data_other_attr,omitempty"`
+		InitSpuId              string                         `gorm:"column:init_spu_id;primary_key;type:bigint(20);not null;default:0;comment:商品源ID 定金预售商品使用" json:"init_spu_id,omitempty"`
 		CreatedAt              base.TimeNormal                `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP" json:"created_at,omitempty"`
 		UpdatedAt              base.TimeNormal                `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP" json:"updated_at,omitempty"`
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
