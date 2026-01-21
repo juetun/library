@@ -196,6 +196,11 @@ func (r *DataItem) GetLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetL
 	return
 }
 
+func (r *DataItem) GetDataValue(key string) (res *DataItemDetail) {
+	res, _ = r.DataValue[key]
+	return
+}
+
 //获取广告唯一Id字符串
 func (r *DataItem) GetShopLinkItem(headerInfo *common.HeaderInfo) (itemLink *ArgGetLinksItem) {
 	if r.ShopId <= 0 {
