@@ -124,7 +124,7 @@ var (
 			Value: OrderActTypeDeposit,
 		},
 		{
-			Label: "首付款",
+			Label: "定金",
 			Value: OrderActTypeFirst,
 		},
 		{
@@ -498,6 +498,16 @@ type (
 	}
 	TitleTags []*PageTag
 )
+
+//转换订单操作类型
+func ParseOrderActType(actType uint8) (res string) {
+	MapOrderPayType, _ := SliceOrderActType.GetMapAsKeyUint8()
+	if _, ok := MapOrderPayType[actType]; ok {
+		res = MapOrderPayType[actType]
+		return
+	}
+	return fmt.Sprintf("未知订单操作类型(%d)", actType)
+}
 
 func (r *ProductDataOtherAttr) Default(saleType uint8) {
 	switch saleType {
