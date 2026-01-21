@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/juetun/library/common/app_param/upload_operate"
 	"github.com/juetun/library/common/const_apply"
+	"github.com/juetun/library/common/recommend"
 	"strconv"
 	"strings"
 	"time"
@@ -539,6 +540,51 @@ func (r SpuStatusTabs) GetMap() (res map[int8]SpuStatusTab) {
 	return
 }
 
+func (r *Product) GetPreTags() (res []*recommend.DataItemTag) {
+	res = make([]*recommend.DataItemTag, 0, 2)
+	var dataItemTag *recommend.DataItemTag
+	switch r.SaleType {
+	case SaleTypeGeneral: //普通电商
+	case SaleTypePreSale:
+		dataItemTag = &recommend.DataItemTag{Plain: true, TextColor: "#999999", Color: "#999999"}
+		dataItemTag.Label = "预售"
+		dataItemTag.Color = "#FA2400"
+		dataItemTag.TextColor = "#FA2400"
+		dataItemTag.Default()
+		res = append(res, dataItemTag)
+	case SaleTypeDown:
+		dataItemTag = &recommend.DataItemTag{Plain: true, TextColor: "#999999", Color: "#999999"}
+		dataItemTag.Label = "定金预售"
+		dataItemTag.Color = "#ff9900"
+		dataItemTag.TextColor = "#ff9900"
+		dataItemTag.Default()
+		res = append(res, dataItemTag)
+
+	case SaleTypeIntentional: //分期付
+		dataItemTag = &recommend.DataItemTag{Plain: true, TextColor: "#999999", Color: "#999999"}
+		dataItemTag.Label = "三期付"
+		dataItemTag.Color = "orange"
+		dataItemTag.TextColor = "#ff9900"
+		dataItemTag.Default()
+		res = append(res, dataItemTag)
+	case SaleTypeIntent:
+		dataItemTag = &recommend.DataItemTag{Plain: true, TextColor: "#999999", Color: "#999999"}
+		dataItemTag.Color = "#2db7f5"
+		label := "意向金"
+		switch r.ActType {
+		case OrderActTypeFirst: //首款
+			label = fmt.Sprintf("%v%v", label, ParseOrderActType(r.ActType))
+		case OrderActTypeFinal: //尾款
+			label = fmt.Sprintf("%v%v", label, ParseOrderActType(r.ActType))
+		}
+		dataItemTag.Name = label
+		dataItemTag.Label = label
+	default:
+		return
+	}
+
+	return
+}
 func (r *Product) ParseProductDataOtherAttr() (res *ProductDataOtherAttr, err error) {
 	res = &ProductDataOtherAttr{}
 	defer func() {
