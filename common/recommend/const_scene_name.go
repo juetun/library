@@ -106,6 +106,14 @@ var (
 			Value: AdDataDataTypeSpu,
 		},
 		{
+			Label: "店铺",
+			Value: AdDataDataTypeUserShopHome,
+		},
+		{
+			Label: "用户",
+			Value: AdDataDataTypeUser,
+		},
+		{
 			Label: "平台活动",
 			Value: AdDataDataTypePlatActivity,
 		},
