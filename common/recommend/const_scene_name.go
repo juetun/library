@@ -83,6 +83,18 @@ var (
 			Label: "钓点信息",
 			Value: AdDataDataTypeFishingSport,
 		},
+		{
+			Label: "圈子",
+			Value: AdDataDataTypeRing,
+		},
+		{
+			Label: "用户信息",
+			Value: AdDataDataTypeUser,
+		},
+		{
+			Label: "店铺信息",
+			Value: AdDataDataTypeUserShopHome,
+		},
 	}
 	SliceAdDataType = base.ModelItemOptions{ //
 		{
