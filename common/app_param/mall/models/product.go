@@ -579,6 +579,8 @@ func (r *Product) GetPreTags() (res []*recommend.DataItemTag) {
 		}
 		dataItemTag.Name = label
 		dataItemTag.Label = label
+		dataItemTag.Default()
+		res = append(res, dataItemTag)
 	default:
 		return
 	}
