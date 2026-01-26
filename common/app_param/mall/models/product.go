@@ -523,6 +523,12 @@ func (r *ProductDataOtherAttr) Default(saleType, actType uint8) {
 	if r.DownDelayDays == 0 {
 		r.DownDelayDays = DeliveryTimeTypeDayDefault
 	}
+	if r.IntentionalDeliveryTimeType == 0 {
+		r.IntentionalDeliveryTimeType = DeliveryTimeTypeDay
+	}
+	if r.DownDeliveryTimeType == 0 {
+		r.DownDeliveryTimeType = DeliveryTimeTypeDay
+	}
 	switch saleType {
 	case SaleTypeDown: //定金预售
 		if r.DownFreightNeed == 0 {
