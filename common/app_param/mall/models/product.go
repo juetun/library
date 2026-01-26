@@ -456,9 +456,15 @@ type (
 		DeletedAt              *base.TimeNormal               `gorm:"column:deleted_at;" json:"-"`
 	}
 	ProductDataOtherAttr struct {
-		IntentionalFreightNeed uint8 `json:"ifn,omitempty"` //意向金是否需发货
-		DownFreightNeed        uint8 `json:"dfn,omitempty"` //定金是否需发货
-		PriceHasSet            uint8 `json:"phs,omitempty"` //售价已定
+		IntentionalFreightNeed      uint8            `json:"ifn,omitempty"`  //意向金是否需发货
+		IntentionalDeliveryTimeType uint8            `json:"idtt,omitempty"` //意向金是否需发货
+		IntentionalDelayDays        int64            `json:"idd,omitempty"`  //意向金延迟发货天数
+		IntentionalDeliveryTime     *base.TimeNormal `json:"idt,omitempty"`  //意向金发货时间
+		DownFreightNeed             uint8            `json:"dfn,omitempty"`  //定金是否需发货
+		DownDeliveryTimeType        uint8            `json:"dtt,omitempty"`  //定金是否需发货
+		DownDelayDays               int64            `json:"ddd,omitempty"`
+		DownDeliveryTime            *base.TimeNormal `json:"ddt,omitempty"`
+		PriceHasSet                 uint8            `json:"phs,omitempty"` //售价已定
 	}
 	ProductTag struct {
 		ID             int64  `json:"id"`
@@ -511,7 +517,12 @@ func ParseOrderActType(actType uint8) (res string) {
 }
 
 func (r *ProductDataOtherAttr) Default(saleType, actType uint8) {
-
+	if r.IntentionalDelayDays == 0 {
+		r.IntentionalDelayDays = DeliveryTimeTypeDayDefault
+	}
+	if r.DownDelayDays == 0 {
+		r.DownDelayDays = DeliveryTimeTypeDayDefault
+	}
 	switch saleType {
 	case SaleTypeDown: //定金预售
 		if r.DownFreightNeed == 0 {
@@ -611,7 +622,7 @@ func (r *Product) GetPreTags() (res []*recommend.DataItemTag) {
 func (r *Product) ParseProductDataOtherAttr() (res *ProductDataOtherAttr, err error) {
 	res = &ProductDataOtherAttr{}
 	defer func() {
-		res.Default(r.SaleType)
+		res.Default(r.SaleType, r.ActType)
 	}()
 	if r.DataOtherAttr == "" {
 		return
