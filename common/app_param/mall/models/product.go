@@ -510,9 +510,9 @@ func ParseOrderActType(actType uint8) (res string) {
 	return fmt.Sprintf("未知订单操作类型(%d)", actType)
 }
 
-func (r *ProductDataOtherAttr) Default(saleType uint8) {
-	switch saleType {
+func (r *ProductDataOtherAttr) Default(saleType, actType uint8) {
 
+	switch saleType {
 	case SaleTypeDown: //定金预售
 		if r.DownFreightNeed == 0 {
 			r.DownFreightNeed = ProductFreightNeedNo
@@ -521,12 +521,13 @@ func (r *ProductDataOtherAttr) Default(saleType uint8) {
 		if r.IntentionalFreightNeed == 0 {
 			r.IntentionalFreightNeed = ProductFreightNeedNo
 		}
+		if r.IntentionalFreightNeed == 0 {
+			r.IntentionalFreightNeed = ProductFreightNeedNo
+		}
 		if r.DownFreightNeed == 0 {
 			r.DownFreightNeed = ProductFreightNeedYes
 		}
-		if r.PriceHasSet == 0 {
-			r.PriceHasSet = ProductPriceHasSetYes
-		}
+
 	case SaleTypeIntent: //意向金
 		if r.IntentionalFreightNeed == 0 {
 			r.IntentionalFreightNeed = ProductFreightNeedNo
@@ -535,10 +536,19 @@ func (r *ProductDataOtherAttr) Default(saleType uint8) {
 			r.DownFreightNeed = ProductFreightNeedYes
 		}
 		if r.PriceHasSet == 0 {
-			r.PriceHasSet = ProductPriceHasSetYes
+			switch actType {
+			case OrderActTypeDeposit: //意向金
+				r.PriceHasSet = ProductPriceHasSetNo
+			case OrderActTypeFirst: //定金
+				r.PriceHasSet = ProductPriceHasSetYes
+			case OrderActTypeFinal: //尾款
+				r.PriceHasSet = ProductPriceHasSetYes
+			}
 		}
 	}
-
+	if r.PriceHasSet == 0 {
+		r.PriceHasSet = ProductPriceHasSetYes
+	}
 	return
 }
 
