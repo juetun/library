@@ -512,7 +512,12 @@ func ParseOrderActType(actType uint8) (res string) {
 
 func (r *ProductDataOtherAttr) Default(saleType uint8) {
 	switch saleType {
-	case SaleTypeIntentional: //意向金
+
+	case SaleTypeDown: //定金预售
+		if r.DownFreightNeed == 0 {
+			r.DownFreightNeed = ProductFreightNeedNo
+		}
+	case SaleTypeIntentional: //三期付款
 		if r.IntentionalFreightNeed == 0 {
 			r.IntentionalFreightNeed = ProductFreightNeedNo
 		}
@@ -522,10 +527,15 @@ func (r *ProductDataOtherAttr) Default(saleType uint8) {
 		if r.PriceHasSet == 0 {
 			r.PriceHasSet = ProductPriceHasSetYes
 		}
-
-	case SaleTypeDown: //定金预售
+	case SaleTypeIntent: //意向金
+		if r.IntentionalFreightNeed == 0 {
+			r.IntentionalFreightNeed = ProductFreightNeedNo
+		}
 		if r.DownFreightNeed == 0 {
-			r.DownFreightNeed = ProductFreightNeedNo
+			r.DownFreightNeed = ProductFreightNeedYes
+		}
+		if r.PriceHasSet == 0 {
+			r.PriceHasSet = ProductPriceHasSetYes
 		}
 	}
 
@@ -569,7 +579,8 @@ func (r *Product) GetPreTags() (res []*recommend.DataItemTag) {
 		res = append(res, dataItemTag)
 	case SaleTypeIntent:
 		dataItemTag = &recommend.DataItemTag{Plain: true, TextColor: "#999999", Color: "#999999"}
-		dataItemTag.Color = "#2db7f5"
+		dataItemTag.Color = "#ff9900"
+		dataItemTag.TextColor = "#ff9900"
 		label := "意向金"
 		switch r.ActType {
 		case OrderActTypeFirst: //首款
