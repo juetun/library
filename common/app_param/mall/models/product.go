@@ -293,9 +293,9 @@ var (
 	ProductTagList = []ProductTag{
 		{ID: 1, Label: "正品保证", DefaultChecked: true},
 		{ID: 2, Label: "三年质保"},
-		{ID: 3, Label: "七天无理由退换"},
+		{ID: 3, Label: "七天无理由"},
 		{ID: 4, Label: "极速退款"},
-		{ID: 5, Label: "免举证退换货"},
+		{ID: 5, Label: "免举证退换"},
 		{ID: 6, Label: "赠保价险"},
 		{ID: 7, Label: "延保服务"},
 		{ID: 8, Label: "赠运费险"},
