@@ -21,6 +21,7 @@ const (
 	DataItemShowTypeCardDouble = "card_double" //双列
 	DataItemShowTypeUser       = "card_user"   //用户信息
 	DataItemShowTypeRing       = "ring"        //圈子
+	DataItemShowTypeRingTop    = "ring_top"    //圈子详情头部
 )
 
 //是否在推荐列表中展示
