@@ -245,6 +245,7 @@ type (
 		CurrentOrderStatus uint8  `json:"current_order_status" form:"current_order_status"`
 		CurrentOrderId     string `json:"curr_order_id" form:"curr_order_id"` //当前订单
 		OrderId            string `json:"order_id" form:"order_id"`           //上笔订单
+		Mark               string `json:"mark" form:"mark"`                   //信息备注
 		Num                int64  `json:"num" form:"num"`
 	}
 )
