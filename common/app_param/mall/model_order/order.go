@@ -110,6 +110,8 @@ type (
 		FinalOverTime     base.TimeNormal       `json:"final_over_time" form:"final_over_time"`
 		RelateOrderStatus string                `json:"relate_order_status" form:"relate_order_status"`
 		OrderDetailAttr   *OrderDetailAttr      `json:"order_detail_attr" form:"order_detail_attr"`
+		InitSpuId         string                `json:"init_spu_id" form:"init_spu_id"`
+		ParentsSpuId      string                `json:"parents_spu_id" form:"parents_spu_id"`
 		ServiceItems      base.ModelItemOptions `json:"service_items" form:"service_items"`
 		FreightNeed       uint8                 `json:"freight_need" form:"freight_need"`
 	}
