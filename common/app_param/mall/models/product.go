@@ -17,9 +17,12 @@ import (
 const (
 	TablePrefix = "mall_" // 表明前缀
 )
+const (
+	ParentsSpuIdDivideString = "#"
+	DefaultImageShow         = "//dev-file.iviewui.com/userinfoPDvn9gKWYihR24SpgC319vXY8qniCqj4/avatar"
+	SpuImageDivide           = "#$#"
+)
 
-const DefaultImageShow = "//dev-file.iviewui.com/userinfoPDvn9gKWYihR24SpgC319vXY8qniCqj4/avatar"
-const SpuImageDivide = "#$#"
 const (
 	ProductStatusTmp           int8 = iota - 1 //草稿中(ID初始化中)
 	ProductStatusAll                           //全部数据
@@ -998,6 +1001,19 @@ func (r *Product) SetVideo(video *upload_operate.UploadVideo) {
 		return
 	}
 	r.Video = video.ToString()
+	return
+}
+
+func SplitExtSpuSpuId(parentsSpuId string) (listSpu []string) {
+	if parentsSpuId == "" {
+		return
+	}
+	listSpu = strings.Split(parentsSpuId, ParentsSpuIdDivideString)
+	return
+}
+
+func (r *Product) SplitExtSpuId() (listSpu []string) {
+	listSpu = SplitExtSpuSpuId(r.ParentsSpuId)
 	return
 }
 
