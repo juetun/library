@@ -243,9 +243,11 @@ type (
 	ResultGetUserBuyOrderUponItem struct {
 		ArgGetUserBuyOrderUponItem
 		CurrentOrderStatus uint8  `json:"current_order_status" form:"current_order_status"`
-		CurrentOrderId     string `json:"curr_order_id" form:"curr_order_id"` //当前订单
-		OrderId            string `json:"order_id" form:"order_id"`           //上笔订单
-		Mark               string `json:"mark" form:"mark"`                   //信息备注
+		CurrentOrderId     string `json:"curr_order_id" form:"curr_order_id"`     //当前订单
+		OrderId            string `json:"order_id" form:"order_id"`               //上笔订单
+		IntentOrderId      string `json:"intent_order_id" form:"intent_order_id"` //意向金订单
+		DownOrderId        string `json:"down_order_id" form:"down_order_id"`     //定金订单
+		Mark               string `json:"mark" form:"mark"`                       //信息备注
 		Num                int64  `json:"num" form:"num"`
 	}
 )
