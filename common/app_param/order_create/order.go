@@ -236,6 +236,7 @@ type (
 	ArgGetUserBuyOrderUponItem struct {
 		ShopId         int64  `json:"shop_id,omitempty" form:"shop_id"`
 		SpuId          string `json:"spu_id,omitempty" form:"spu_id"`
+		SkuId          string `json:"sku_id,omitempty" form:"sku_id"`
 		SaleType       uint8  `json:"sale_type,omitempty" form:"sale_type"`
 		CurrentActType uint8  `json:"curr_act_type,omitempty" form:"curr_act_type"` //mall.OrderActTypeFirst
 		InitOrderId    string `json:"init_order_id,omitempty" form:"init_order_id"`
