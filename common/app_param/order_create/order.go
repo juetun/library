@@ -234,21 +234,23 @@ type (
 		GetCommon  base.GetDataTypeCommon        `json:"get_common" form:"get_common"`
 	}
 	ArgGetUserBuyOrderUponItem struct {
-		ShopId         int64  `json:"shop_id" form:"shop_id"`
-		SpuId          string `json:"spu_id" form:"spu_id"`
-		SaleType       uint8  `json:"sale_type" form:"sale_type"`
-		CurrentActType uint8  `json:"curr_act_type" form:"curr_act_type"` //mall.OrderActTypeFirst
+		ShopId         int64  `json:"shop_id,omitempty" form:"shop_id"`
+		SpuId          string `json:"spu_id,omitempty" form:"spu_id"`
+		SaleType       uint8  `json:"sale_type,omitempty" form:"sale_type"`
+		CurrentActType uint8  `json:"curr_act_type,omitempty" form:"curr_act_type"` //mall.OrderActTypeFirst
+		InitOrderId    string `json:"init_order_id,omitempty" form:"init_order_id"`
+		ParentsSpuId   string `json:"parents_spu_id,omitempty" form:"parents_spu_id"`
 	}
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
 	ResultGetUserBuyOrderUponItem struct {
 		ArgGetUserBuyOrderUponItem
-		CurrentOrderStatus uint8  `json:"current_order_status" form:"current_order_status"`
-		CurrentOrderId     string `json:"curr_order_id" form:"curr_order_id"`     //当前订单
-		OrderId            string `json:"order_id" form:"order_id"`               //上笔订单
-		IntentOrderId      string `json:"intent_order_id" form:"intent_order_id"` //意向金订单
-		DownOrderId        string `json:"down_order_id" form:"down_order_id"`     //定金订单
-		Mark               string `json:"mark" form:"mark"`                       //信息备注
-		Num                int64  `json:"num" form:"num"`
+		CurrentOrderStatus uint8  `json:"current_order_status,omitempty" form:"current_order_status"`
+		CurrentOrderId     string `json:"curr_order_id,omitempty" form:"curr_order_id"`     //当前订单
+		OrderId            string `json:"order_id,omitempty" form:"order_id"`               //上笔订单
+		IntentOrderId      string `json:"intent_order_id,omitempty" form:"intent_order_id"` //意向金订单
+		DownOrderId        string `json:"down_order_id,omitempty" form:"down_order_id"`     //定金订单
+		Mark               string `json:"mark,omitempty" form:"mark"`                       //信息备注
+		Num                int64  `json:"num,omitempty" form:"num"`                         //商品数量
 	}
 )
 
