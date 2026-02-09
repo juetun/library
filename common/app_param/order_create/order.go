@@ -245,13 +245,19 @@ type (
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
 	ResultGetUserBuyOrderUponItem struct {
 		ArgGetUserBuyOrderUponItem
-		CurrentOrderStatus uint8  `json:"current_order_status,omitempty" form:"current_order_status"`
-		CurrentOrderId     string `json:"curr_order_id,omitempty" form:"curr_order_id"`     //当前订单
-		OrderId            string `json:"order_id,omitempty" form:"order_id"`               //上笔订单
-		IntentOrderId      string `json:"intent_order_id,omitempty" form:"intent_order_id"` //意向金订单
-		DownOrderId        string `json:"down_order_id,omitempty" form:"down_order_id"`     //定金订单
-		Mark               string `json:"mark,omitempty" form:"mark"`                       //信息备注
-		Num                int64  `json:"num,omitempty" form:"num"`                         //商品数量
+		CurrentOrderStatus uint8              `json:"current_order_status,omitempty" form:"current_order_status"`
+		CurrentOrderId     string             `json:"curr_order_id,omitempty" form:"curr_order_id"` //当前订单
+		OrderId            string             `json:"order_id,omitempty" form:"order_id"`           //上笔订单
+		OrderUponOptions   []*OrderUponOption `json:"oup" form:"oup"`                               //上级订单信息
+		Mark               string             `json:"mark,omitempty" form:"mark"`                   //信息备注
+		Num                int64              `json:"num,omitempty" form:"num"`                     //商品数量
+	}
+	OrderUponOption struct {
+		OrderId   string `json:"order_id"`   //订单号
+		Category  string `json:"category"`   //类型
+		SrcPrice  string `json:"src_price"`  //源价
+		DecrPrice string `json:"decr_price"` //扣减价
+		Num       int64  `json:"num"`        //购买数量
 	}
 )
 
