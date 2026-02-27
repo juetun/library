@@ -240,6 +240,7 @@ type (
 		SaleType       uint8  `json:"sale_type,omitempty" form:"sale_type"`
 		CurrentActType uint8  `json:"curr_act_type,omitempty" form:"curr_act_type"` //mall.OrderActTypeFirst
 		InitOrderId    string `json:"init_order_id,omitempty" form:"init_order_id"`
+		UserHid        int64  `json:"user_hid,omitempty" form:"user_hid"`
 		ParentsSpuId   string `json:"parents_spu_id,omitempty" form:"parents_spu_id"`
 	}
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
