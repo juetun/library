@@ -149,15 +149,15 @@ type (
 	}
 
 	SkuPropertyRelate struct {
-		ID                 int64            `gorm:"column:id;primary_key" json:"id"`
-		ShopId             int64            `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
-		ProductId          string           `gorm:"column:product_id;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
-		CategoryId         int64            `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
-		ParentId           int64            `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
-		Pk                 string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
-		SkuName            string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
-		SkuId              string           `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
-		Price              string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
+		ID         int64  `gorm:"column:id;primary_key" json:"id"`
+		ShopId     int64  `gorm:"column:shop_id;default:0;type:varchar(60);not null;comment:店铺ID" json:"shop_id"`
+		ProductId  string `gorm:"column:product_id;uniqueIndex:uniquePK,priority:1;default:'';type:varchar(40);not null;comment:商品ID" json:"product_id"`
+		CategoryId int64  `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
+		ParentId   int64  `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
+		Pk         string `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
+		SkuName    string `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
+		SkuId      string `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
+		//Price              string           `gorm:"column:price;default:0;type:decimal(10,2);not null;comment:售价" json:"price"`
 		IsNotAttrName      uint8            `gorm:"column:is_not_attr_name;type:tinyint(2);not null;default:2;comment:不是属性名 1-真-属性名 2-假-为属性"  json:"is_not_attr_name"`
 		PropertyId         int64            `gorm:"column:property_id;default:0;not null;comment:属性ID" json:"property_id"`
 		SpuStatus          int8             `gorm:"column:spu_status;default:0;type:tinyint(2);not null;comment:商品状态(具体与商品表对齐)" json:"spu_status"`
@@ -190,9 +190,9 @@ type (
 	SkuPropertyRelatesCache []SkuPropertyRelate
 )
 
-func (r *SkuPropertyRelate) GetFinalPayment() (finalPayment string) {
+func (r *SkuPropertyRelate) GetFinalPayment(skuPrice string) (finalPayment string) {
 	var price, intentDepositVal, downPay decimal.Decimal
-	price, _ = decimal.NewFromString(r.Price)
+	price, _ = decimal.NewFromString(skuPrice)
 	if r.IntentDepositVal != "" && r.IntentDepositVal != "0.00" {
 		intentDepositVal, _ = decimal.NewFromString(r.IntentDepositVal)
 	}
