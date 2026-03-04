@@ -31,8 +31,9 @@ type (
 	}
 	SkuPropertyList []*SkuProperty
 	SkuProperty     struct {
-		models.SkuPropertyRelate
-		models.SkuProperty
+		SkuPropertyRelate models.SkuPropertyRelate `json:"sku_property_relate"`
+		SkuProperty       models.SkuProperty       `json:"sku_property"`
+		SrcSku            *models.Sku              `json:"src_sku"` //源商品信息
 	}
 	Property struct {
 		SkuId string `json:"sku_id"`

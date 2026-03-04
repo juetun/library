@@ -9,6 +9,7 @@ const (
 	SpuDataTypeProductDesc     = "spu_product_desc"  // 商品描述
 	SpuActivity                = "spu_plat_activity" //商品加入平台活动信息
 	SpuDataTypeSKus            = "spu_sku"           // SKU信息
+	SpuDataTypeSrcSKus         = "spu_src_sku"       // SKU的源SKU信息(定金预售商品的源商品信息)
 	SpuDataTypeSKusGift        = "spu_gifts"         // 赠品信息
 	SpuDataTypeSKusStock       = "spu_sku_stock"     // sku库存
 	SpuDataTypeSKusRelate      = "spu_sku_relate"    // sku关联属性
