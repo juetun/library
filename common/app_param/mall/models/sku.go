@@ -155,6 +155,7 @@ type (
 		CategoryId         int64            `gorm:"column:category_id;not null;type:bigint(20);default:0;comment:类目ID" json:"category_id"` // comment:用户类目类型;
 		ParentId           int64            `gorm:"column:parent_id;not null;default:0;comment:skuID" json:"parent_id"`
 		Pk                 string           `gorm:"column:pk;uniqueIndex:uniquePK,priority:2;default:'';type:varchar(80);not null;comment:商品唯一Key" json:"pk"`
+		DiscountPrice      string           `gorm:"column:discount_price;default:0;type:decimal(10,2);not null;comment:本商品优惠金额" json:"discount_price,omitempty"`
 		SkuName            string           `gorm:"column:sku_name;default:'';type:varchar(120);not null;comment:商品名称" json:"sku_name"`
 		SkuId              string           `gorm:"column:sku_id;default:'';type:varchar(40);not null;comment:skuID" json:"sku_id"`
 		IsNotAttrName      uint8            `gorm:"column:is_not_attr_name;type:tinyint(2);not null;default:2;comment:不是属性名 1-真-属性名 2-假-为属性"  json:"is_not_attr_name"`
