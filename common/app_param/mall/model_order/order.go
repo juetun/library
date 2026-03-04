@@ -117,18 +117,22 @@ type (
 		FreightNeed       uint8                 `json:"freight_need" form:"freight_need"`
 	}
 	OrderDetailAttr struct {
-		IntentionalDeposit         string `json:"ind,omitempty"`  //意向金
-		IntentDepositVal           string `json:"indv,omitempty"` //意向金抵扣
-		IntentionalDepositOrder    string `json:"ido,omitempty"`  //意向金订单
-		IntentionalDepositSubOrder string `json:"idso,omitempty"` //意向金子订单
-
-		FinalOrderId    string `json:"foi,omitempty"`  //尾款订单
-		FinalSubOrderId string `json:"fsoi,omitempty"` //尾款子订单
-
-		FirstOrderId    string `json:"fioi,omitempty"`  //定金订单
-		FirstSubOrderId string `json:"fisoi,omitempty"` //定金子单
-		DownPayment     string `json:"dp,omitempty"`    //定金
-		DownPaymentVal  string `json:"dpv,omitempty"`   //定金抵扣
+		IntentionalDeposit         string `json:"ind,omitempty"`   //意向金
+		IntentDepositVal           string `json:"indv,omitempty"`  //意向金抵扣
+		IntentionalDepositOrder    string `json:"ido,omitempty"`   //意向金订单
+		IntentionalDepositSubOrder string `json:"idso,omitempty"`  //意向金子订单
+		IntentionalSpuId           string `json:"ispu,omitempty"`  //意向金商品spu_id
+		IntentionalSkuId           string `json:"isku,omitempty"`  //意向金商品sku_id
+		FinalOrderId               string `json:"foi,omitempty"`   //尾款订单
+		FinalSubOrderId            string `json:"fsoi,omitempty"`  //尾款子订单
+		FinalSpuId                 string `json:"fspu,omitempty"`  //尾款商品spu_id
+		FinalSkuId                 string `json:"fsku,omitempty"`  //尾款商品sku_id
+		FirstOrderId               string `json:"fioi,omitempty"`  //定金订单
+		FirstSubOrderId            string `json:"fisoi,omitempty"` //定金子单
+		DownPayment                string `json:"dp,omitempty"`    //定金
+		DownPaymentVal             string `json:"dpv,omitempty"`   //定金抵扣
+		DownSpuId                  string `json:"dspu,omitempty"`  //定金商品spu_id
+		DownSkuId                  string `json:"dsku,omitempty"`  //定金商品sku_id
 	}
 	SkuGiftsItem struct {
 		SkuId string `json:"sku_id,omitempty"`
