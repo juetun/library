@@ -54,7 +54,6 @@ type (
 		AreaId             string                              `json:"area_id" form:"area_id"`
 		PayExpirationTime  base.TimeNormal                     `json:"pay_expiration_time" form:"pay_expiration_time"`
 		TimeNow            base.TimeNormal                     `json:"time_now" form:"time_now"`
-		IsDirectBuy        bool                                `json:"direct_buy" form:"direct_buy"` //是否直接购买 true-直接购买 false-非直接购买
 	}
 
 	ArgGetInfoByOrderId struct {
