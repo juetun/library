@@ -254,13 +254,14 @@ type (
 		Num                int64              `json:"num,omitempty" form:"num"`                     //商品数量
 	}
 	OrderUponOption struct {
-		OrderId   string `json:"order_id"`   //订单号
-		SkuId     string `json:"sku_id"`     //商品ID
-		SpuId     string `json:"spu_id"`     //商品ID
-		Category  string `json:"category"`   //类型
-		SrcPrice  string `json:"src_price"`  //源价
-		DecrPrice string `json:"decr_price"` //扣减价
-		Num       int64  `json:"num"`        //购买数量
+		OrderId    string `json:"order_id"`     //订单号
+		SubOrderId string `json:"sub_order_id"` //子订单
+		SkuId      string `json:"sku_id"`       //商品ID
+		SpuId      string `json:"spu_id"`       //商品ID
+		Category   string `json:"category"`     //类型
+		SrcPrice   string `json:"src_price"`    //源价
+		DecrPrice  string `json:"decr_price"`   //扣减价
+		Num        int64  `json:"num"`          //购买数量
 	}
 )
 
