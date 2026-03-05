@@ -34,8 +34,6 @@ type (
 		ID          int64            `gorm:"column:id;primary_key" json:"-"`
 		MasterSkuId string           `gorm:"column:master_sku_id;not null;index:idx_shop_id,priority:2;type:bigint(20);default:0;comment:主SKU" json:"master_sku_id"`
 		GiftSkuId   string           `gorm:"column:gift_sku_id;not null;type:bigint(20);default:0;comment:主SKU" json:"gift_sku_id"`
-		EffectSTime base.TimeNormal  `gorm:"column:effect_s_time;not null;default:CURRENT_TIMESTAMP;comment:有效期开始时间" json:"effect_s_time"`
-		EffectOTime base.TimeNormal  `gorm:"column:effect_o_time;not null;default:CURRENT_TIMESTAMP;comment:有效期结束时间" json:"effect_o_time"`
 		ShopId      int64            `gorm:"column:shop_id;index:idx_shop_id,priority:1;default:0;type:bigint(20);not null;comment:店铺ID" json:"shop_id"`
 		Status      uint8            `gorm:"column:status;not null;type:tinyint(1);index:idx_shop_id,priority:3;default:3;comment:赠品状态 1-有效 2-失效 3-初始化" json:"status" `
 		Mark        string           `gorm:"column:mark;not null;type:varchar(255);not null;default:'';comment:备注" json:"mark"`
