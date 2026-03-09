@@ -10,6 +10,10 @@ import (
 )
 
 const (
+	OrderSupportRefundYes uint8 = iota + 1
+	OrderSupportRefundNo
+)
+const (
 	OrderPageCategoryIntentionalDeposit = "deposit" //意向金
 	OrderPageCategoryFirst              = "first"   //第一次付款或定金付款
 	OrderPageCategorySecond             = "second"  //定金预售付尾款
@@ -31,6 +35,16 @@ const (
 )
 
 var (
+	SliceOrderOrderSupportRefund = base.ModelItemOptions{
+		{
+			Label: "支持",
+			Value: OrderSupportRefundYes, //支持退款
+		},
+		{
+			Label: "不支持",
+			Value: OrderSupportRefundNo, //不支持退款
+		},
+	}
 	MapOrderCategoryActType = map[string]uint8{
 		OrderPageCategoryIntentionalDeposit: models.OrderActTypeDeposit,
 		OrderPageCategoryFirst:              models.OrderActTypeFirst,
