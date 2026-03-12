@@ -234,14 +234,15 @@ type (
 		GetCommon  base.GetDataTypeCommon        `json:"get_common" form:"get_common"`
 	}
 	ArgGetUserBuyOrderUponItem struct {
-		ShopId         int64  `json:"shop_id,omitempty" form:"shop_id"`
-		SpuId          string `json:"spu_id,omitempty" form:"spu_id"`
-		SkuId          string `json:"sku_id,omitempty" form:"sku_id"`
-		SaleType       uint8  `json:"sale_type,omitempty" form:"sale_type"`
-		CurrentActType uint8  `json:"curr_act_type,omitempty" form:"curr_act_type"` //mall.OrderActTypeFirst
-		InitOrderId    string `json:"init_order_id,omitempty" form:"init_order_id"`
-		UserHid        int64  `json:"user_hid,omitempty" form:"user_hid"`
-		ParentsSpuId   string `json:"parents_spu_id,omitempty" form:"parents_spu_id"`
+		ShopId         int64  `json:"shop_id,omitempty" form:"shop_id"`               //商品所属店铺
+		SpuId          string `json:"spu_id,omitempty" form:"spu_id"`                 //商品SPU_ID
+		SkuId          string `json:"sku_id,omitempty" form:"sku_id"`                 //商品SKU_ID
+		FreightNeed    uint8  `json:"freight_need" form:"freight_need"`               //是否需要发货
+		SaleType       uint8  `json:"sale_type,omitempty" form:"sale_type"`           //商品销售类型
+		CurrentActType uint8  `json:"curr_act_type,omitempty" form:"curr_act_type"`   //mall.OrderActTypeFirst
+		InitOrderId    string `json:"init_order_id,omitempty" form:"init_order_id"`   //初始订单信息
+		UserHid        int64  `json:"user_hid,omitempty" form:"user_hid"`             //下单用户
+		ParentsSpuId   string `json:"parents_spu_id,omitempty" form:"parents_spu_id"` //源商品ID
 	}
 	ResultGetUserBuyOrderUpon     map[string]ResultGetUserBuyOrderUponItem
 	ResultGetUserBuyOrderUponItem struct {
