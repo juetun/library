@@ -53,6 +53,7 @@ type (
 		CityId             string                              `json:"city_id" form:"city_id"`                         //订单用户所在市
 		AreaId             string                              `json:"area_id" form:"area_id"`                         //订单用户所在区县
 		PayExpirationTime  base.TimeNormal                     `json:"pay_expiration_time" form:"pay_expiration_time"` //支付超时时间
+		FreightNeed        uint8                               `json:"freight_need"`                                   //是否需要发货
 		TimeNow            base.TimeNormal                     `json:"time_now" form:"time_now"`
 	}
 
