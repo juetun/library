@@ -3,7 +3,7 @@ package mall
 import "github.com/juetun/library/common/app_param/mall/models"
 
 const (
-	BondValue = "1000.00" //店铺保证金金额
+	ShopBondValue = "1000.00" //店铺保证金金额
 )
 const (
 	ShopExt        = "shop_ext"      //店铺信息
