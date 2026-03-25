@@ -200,8 +200,8 @@ github.com/json-iterator/go v1.1.6/go.mod h1:+SdeFBvtyEkXs7REEP0seUULqWtbJapLOCV
 github.com/json-iterator/go v1.1.10/go.mod h1:KdQUCv79m/52Kvf8AW2vK1V8akMuk1QjK/uOdHXbAo4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
-github.com/juetun/base-wrapper v0.0.437 h1:E6ph0r7Wt6GA5AQZYZDeextMgPtGFWhQFufl2m88Nj8=
-github.com/juetun/base-wrapper v0.0.437/go.mod h1:C1SIpoXv4Ex56JpMt8LaeSMu1wXFex630ycVDZnOpSA=
+github.com/juetun/base-wrapper v0.0.438 h1:9Wly6VKl7931E7JU//mhO4BKK0Q/ow/xlZ9yEdSMVnM=
+github.com/juetun/base-wrapper v0.0.438/go.mod h1:C1SIpoXv4Ex56JpMt8LaeSMu1wXFex630ycVDZnOpSA=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kisielk/errcheck v1.5.0/go.mod h1:pFxgyoBC7bSaBwPgfKdkLd5X25qrDl4LWUI2bnpBCr8=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
