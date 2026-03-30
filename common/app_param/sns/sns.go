@@ -5,11 +5,12 @@ import (
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/common"
 	"github.com/juetun/library/common/app_param"
+	"github.com/juetun/library/common/recommend"
 )
 
 const (
-	EditOptionTypeRing = "ring"
-	EditOptionTypeUser = "usr"
+	EditOptionTypeRing = recommend.AdDataDataTypeRing
+	EditOptionTypeUser = recommend.AdDataDataTypeUser
 )
 
 type (
