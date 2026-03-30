@@ -27,6 +27,7 @@ type (
 		Value  string `json:"value"`
 		Label  string `json:"label"`
 		Prefix string `json:"prefix"`
+		Type   string `json:"type"`
 	}
 	ResultRingItem struct {
 		ID             int64  `json:"id"`
@@ -48,6 +49,7 @@ type (
 func (r *LoadEditorItem) ParseFromEditOptionItem(option *EditOptionItem, optionType string) {
 	r.Value = option.GetPk(optionType)
 	r.Label = option.Title
+	r.Type = optionType
 	switch optionType {
 	case EditOptionTypeRing:
 		r.Prefix = "#"
