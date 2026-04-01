@@ -19,6 +19,7 @@ var (
 
 //验证用户ID是否为超级管理员
 func IsSuperAdminUID(userHIDS ...int64) (res map[int64]bool) {
+	res = make(map[int64]bool, len(userHIDS))
 	var (
 		uid      int64
 		flag, ok bool
@@ -26,6 +27,8 @@ func IsSuperAdminUID(userHIDS ...int64) (res map[int64]bool) {
 	for _, uid = range userHIDS {
 		if flag, ok = SuperAdminUserHid[uid]; ok {
 			res[uid] = flag
+		} else {
+			res[uid] = false
 		}
 	}
 	return
