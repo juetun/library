@@ -12,6 +12,25 @@ import (
 	"strings"
 )
 
+var (
+	//系统指定超级管理员用户ID配置
+	SuperAdminUserHid = map[int64]bool{1: true}
+)
+
+//验证用户ID是否为超级管理员
+func IsSuperAdminUID(userHIDS ...int64) (res map[int64]bool) {
+	var (
+		uid      int64
+		flag, ok bool
+	)
+	for _, uid = range userHIDS {
+		if flag, ok = SuperAdminUserHid[uid]; ok {
+			res[uid] = flag
+		}
+	}
+	return
+}
+
 //根据用户ID获取用户信息
 func GetUserByUIds(ctx *base.Context, userId []int64, dataTypes ...string) (res map[int64]*app_param.User, err error) {
 	var (
