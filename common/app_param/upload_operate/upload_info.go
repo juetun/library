@@ -31,42 +31,83 @@ type (
 	}
 
 	ArgUploadGetInfo struct {
-		//ImgKeys   []string `json:"img_keys"`
-		VideoKeys []string `json:"video_keys,omitempty"`
-		MusicKey  []string `json:"music_key,omitempty"`
-		//Material  []string `json:"material"`
-		File     []string        `json:"file,omitempty"`
-		Download []string        `json:"download"`
-		mapVideo map[string]bool `json:"-"` //视频文件去重
-		mapMusic map[string]bool `json:"-"` //音频文件去重
-		mapFile  map[string]bool `json:"-"` //图片或其他普通文件去重
+		VideoKeys []string        `json:"video_keys,omitempty"`
+		MusicKey  []string        `json:"music_key,omitempty"`
+		File      []string        `json:"file,omitempty"`
+		Download  []string        `json:"download"`
+		mapVideo  map[string]bool `json:"-"` //视频文件去重
+		mapMusic  map[string]bool `json:"-"` //音频文件去重
+		mapFile   map[string]bool `json:"-"` //图片或其他普通文件去重
 		base.GetDataTypeCommon
 	}
 
 	//删除上传文件接口
 	ArgUploadRemove struct {
-		//ImgKeys   []string `json:"img_keys"`
 		ExceptVideoKeys []string `json:"except_video_keys"` //忽略视频文件
 		ExceptMusicKey  []string `json:"except_music_key"`  //忽略音频文件
-		//Material  []string `json:"material"`
-		ExceptFile     []string `json:"except_file"`      //忽略文件
-		FileType       []string `json:"file_type"`        //文件类型
-		UploadDataType string   `json:"upload_data_type"` //数据类型
-		UploadDataId   string   `json:"upload_data_id"`   //数据ID
-		Channel        string   `json:"channel"`          //渠道号
+		ExceptFile      []string `json:"except_file"`       //忽略文件
+		FileType        []string `json:"file_type"`         //文件类型
+		UploadDataType  string   `json:"upload_data_type"`  //数据类型
+		UploadDataId    string   `json:"upload_data_id"`    //数据ID
+		Channel         string   `json:"channel"`           //渠道号
 	}
 	ResultUploadRemove struct {
 		Result bool `json:"result"`
 	}
+	ArgUploadGetInfoOption func(argUploadGetInfo *ArgUploadGetInfo)
 )
+
+func ArgUploadGetInfoGetDataTypeCommon(common base.GetDataTypeCommon) ArgUploadGetInfoOption {
+	return func(argUploadGetInfo *ArgUploadGetInfo) {
+		argUploadGetInfo.GetDataTypeCommon = common
+	}
+}
+
+func ArgUploadGetInfoVideoKeys(videoKeys []string) ArgUploadGetInfoOption {
+	return func(argUploadGetInfo *ArgUploadGetInfo) {
+		argUploadGetInfo.VideoKeys = videoKeys
+	}
+}
+
+func ArgUploadGetInfoMusicKey(musicKey []string) ArgUploadGetInfoOption {
+	return func(argUploadGetInfo *ArgUploadGetInfo) {
+		argUploadGetInfo.MusicKey = musicKey
+	}
+}
+
+func ArgUploadGetInfoFile(file []string) ArgUploadGetInfoOption {
+	return func(argUploadGetInfo *ArgUploadGetInfo) {
+		argUploadGetInfo.File = file
+	}
+}
+
+func ArgUploadGetInfoDownload(download []string) ArgUploadGetInfoOption {
+	return func(argUploadGetInfo *ArgUploadGetInfo) {
+		argUploadGetInfo.Download = download
+	}
+}
+
+func NewArgUploadGetInfo(options ...ArgUploadGetInfoOption) (res *ArgUploadGetInfo) {
+	lCount := 50
+	res = &ArgUploadGetInfo{
+		VideoKeys: make([]string, 0, lCount),
+		MusicKey:  make([]string, 0, lCount),
+		File:      make([]string, 0, lCount),
+		mapVideo:  make(map[string]bool, lCount),
+		mapMusic:  make(map[string]bool, lCount),
+		mapFile:   make(map[string]bool, lCount),
+	}
+	for _, optionHandler := range options {
+		optionHandler(res)
+	}
+	return
+}
 
 func NewArgUploadRemove() (res *ArgUploadRemove) {
 	res = &ArgUploadRemove{
-		//ImgKeys:   make([]string, 0, 50),
 		ExceptVideoKeys: make([]string, 0, 50),
 		ExceptMusicKey:  make([]string, 0, 50),
-		//Material:  make([]string, 0, 50),
-		ExceptFile: make([]string, 0, 50),
+		ExceptFile:      make([]string, 0, 50),
 	}
 	return
 }
@@ -103,21 +144,6 @@ func (r *UploadInfo) MarshalBinary() (data []byte, err error) {
 
 func (r *ArgUploadGetInfo) Default(c *base.Context) (err error) {
 
-	return
-}
-
-func NewArgUploadGetInfo() (res *ArgUploadGetInfo) {
-	lCount := 50
-	res = &ArgUploadGetInfo{
-		//ImgKeys:   make([]string, 0, lCount),
-		VideoKeys: make([]string, 0, lCount),
-		MusicKey:  make([]string, 0, lCount),
-		//Material:  make([]string, 0, lCount),
-		File:     make([]string, 0, lCount),
-		mapVideo: make(map[string]bool, lCount),
-		mapMusic: make(map[string]bool, lCount),
-		mapFile:  make(map[string]bool, lCount),
-	}
 	return
 }
 

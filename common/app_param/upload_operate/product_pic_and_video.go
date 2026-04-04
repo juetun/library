@@ -84,18 +84,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 			}
 		}
 	}
-	//if len(res.Img) > 0 {
-	//
-	//	for id, value := range res.Img {
-	//		key, duration = r.HandlerGetUploadCacheKey(id, FileTypePicture)
-	//		if err = r.SetToCacheNew(key, duration, value); err != nil {
-	//			return
-	//		}
-	//	}
-	//}
-
 	if len(res.Video) > 0 {
-
 		for id, value := range res.Video {
 			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeVideo)
 			if err = r.SetToCacheNew(key, duration, value); err != nil {
@@ -103,7 +92,6 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 			}
 		}
 	}
-
 	if len(res.Download) > 0 {
 
 		for id, value := range res.Video {
@@ -113,15 +101,7 @@ func (r *CacheProductPicAndVideoAction) saveCache(res *ResultMapUploadInfo) (err
 			}
 		}
 	}
-	//if len(res.Material) > 0 {
-	//
-	//	for id, value := range res.Material {
-	//		key, duration = r.HandlerGetUploadCacheKey(id, FileTypeMaterial)
-	//		if err = r.SetToCacheNew(key, duration, value); err != nil {
-	//			return
-	//		}
-	//	}
-	//}
+
 	if len(res.File) > 0 {
 		for id, value := range res.File {
 			key, duration = r.HandlerGetUploadCacheKey(id, FileTypeFile)
