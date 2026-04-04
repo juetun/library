@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
 	"github.com/juetun/base-wrapper/lib/base/cache_act"
@@ -27,6 +28,9 @@ type (
 
 		//删除文件 更具 upload_data_type和upload_data_id
 		RemoveFile(arg *ArgUploadRemove) (resData *ResultUploadRemove, err error)
+
+		//清除二级缓存
+		RemoveServerSecondCache() (err error)
 	}
 )
 
@@ -130,17 +134,35 @@ func (r *DaoUploadImpl) CopyUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapC
 	return
 }
 
+func (r *DaoUploadImpl) getCacheClient() (client *redis.Client) {
+	client = r.Context.CacheClient
+	return
+}
+
 //从
 func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error) {
 
 	res, err = NewCacheProductPicAndVideoAction(
 		CacheProductPicAndVideoActionArg(arg),
+		CacheClient(r.getCacheClient()),
 		CacheHandlerGetUploadCacheKey(r.getUploadCacheKey),
 		CacheProductPicAndVideoActionGetByIdsFromDb(r.getDataByUserIdsFromUploadServer),
 	).LoadBaseOption(
 		cache_act.CacheActionBaseContext(r.Context),
 		cache_act.CacheActionBaseCtx(r.ctx), ).
 		Action()
+	return
+}
+
+//清除二级缓存
+func (r *DaoUploadImpl) RemoveServerSecondCache() (err error) {
+
+	var (
+		cacheKey = fmt.Sprintf("%v*", UploadSecondCacheKey)
+		client   = r.getCacheClient()
+	)
+
+	err = client.Del(r.ctx, cacheKey).Err()
 	return
 }
 

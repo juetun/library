@@ -14,6 +14,7 @@ type (
 		cache_act.CacheActionBase
 		arg                      *ArgUploadGetInfo
 		GetByIdsFromDb           GetProductPicAndVideoByIdsFromDb
+		cacheClient              *redis.Client
 		HandlerGetUploadCacheKey HandlerGetUploadCacheKey
 	}
 	GetProductPicAndVideoByIdsFromDb    func(arg *ArgUploadGetInfo) (resData *ResultMapUploadInfo, err error)
@@ -24,6 +25,13 @@ type (
 func CacheProductPicAndVideoActionArg(arg *ArgUploadGetInfo) CacheProductPicAndVideoActionOption {
 	return func(cacheFreightAction *CacheProductPicAndVideoAction) {
 		cacheFreightAction.arg = arg
+		return
+	}
+}
+
+func CacheClient(client *redis.Client) CacheProductPicAndVideoActionOption {
+	return func(cacheFreightAction *CacheProductPicAndVideoAction) {
+		cacheFreightAction.cacheClient = client
 		return
 	}
 }
@@ -50,6 +58,9 @@ func NewCacheProductPicAndVideoAction(options ...CacheProductPicAndVideoActionOp
 	if res.Ctx == nil {
 		res.Ctx = context.TODO()
 	}
+	if res.cacheClient == nil {
+		res.cacheClient = res.Context.CacheClient
+	}
 	return
 }
 
@@ -59,7 +70,7 @@ func (r *CacheProductPicAndVideoAction) LoadBaseOption(options ...cache_act.Cach
 }
 
 func (r *CacheProductPicAndVideoAction) SetToCacheNew(key string, duration time.Duration, data interface{}, expireTimeRand ...bool) (err error) {
-	if err = r.Context.CacheClient.Set(r.Ctx, key, data, duration).Err(); err != nil {
+	if err = r.cacheClient.Set(r.Ctx, key, data, duration).Err(); err != nil {
 		r.Context.Info(map[string]interface{}{
 			"data":           data,
 			"key":            key,
@@ -151,7 +162,7 @@ func (r *CacheProductPicAndVideoAction) getFromCache(id interface{}, Type string
 		}
 	}()
 	key, _ := r.HandlerGetUploadCacheKey(id, Type)
-	cmd := r.Context.CacheClient.Get(r.Ctx, key)
+	cmd := r.cacheClient.Get(r.Ctx, key)
 	if err = cmd.Err(); err != nil {
 		return
 	}

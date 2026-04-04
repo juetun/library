@@ -1,6 +1,7 @@
 package upload_operate
 
 import (
+	"fmt"
 	"github.com/juetun/base-wrapper/lib/common/redis_pkg"
 	"time"
 )
@@ -14,9 +15,11 @@ const (
 	FileTypeDownload = "download" // app安装包
 )
 
+const UploadSecondCacheKey = "m:upload:"
+
 var (
 	CacheUploadCache = redis_pkg.CacheProperty{ //店铺变跟资质缓存的缓存Key (此缓存为二级缓存)
-		Key:    "m:upload:%s:%s",
+		Key:    fmt.Sprintf("%v", UploadSecondCacheKey) + "%s:%s",
 		Expire: 60 * time.Second, //只缓存1分钟，此设置时间一定要谨慎(最好不调整)
 	}
 )
