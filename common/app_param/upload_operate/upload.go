@@ -7,7 +7,6 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/juetun/base-wrapper/lib/app/app_obj"
 	"github.com/juetun/base-wrapper/lib/base"
-	"github.com/juetun/base-wrapper/lib/base/cache_act"
 	"github.com/juetun/base-wrapper/lib/plugins/rpc"
 	"github.com/juetun/library/common/app_param"
 	"net/http"
@@ -142,15 +141,16 @@ func (r *DaoUploadImpl) getCacheClient() (client *redis.Client) {
 //从
 func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error) {
 
-	res, err = NewCacheProductPicAndVideoAction(
-		CacheProductPicAndVideoActionArg(arg),
-		CacheClient(r.getCacheClient()),
-		CacheHandlerGetUploadCacheKey(r.getUploadCacheKey),
-		CacheProductPicAndVideoActionGetByIdsFromDb(r.getDataByUserIdsFromUploadServer),
-	).LoadBaseOption(
-		cache_act.CacheActionBaseContext(r.Context),
-		cache_act.CacheActionBaseCtx(r.ctx), ).
-		Action()
+	return r.getDataByUserIdsFromUploadServer(arg)
+	//res, err = NewCacheProductPicAndVideoAction(
+	//	CacheProductPicAndVideoActionArg(arg),
+	//	CacheClient(r.getCacheClient()),
+	//	CacheHandlerGetUploadCacheKey(r.getUploadCacheKey),
+	//	CacheProductPicAndVideoActionGetByIdsFromDb(r.getDataByUserIdsFromUploadServer),
+	//).LoadBaseOption(
+	//	cache_act.CacheActionBaseContext(r.Context),
+	//	cache_act.CacheActionBaseCtx(r.ctx)).
+	//	Action()
 	return
 }
 
