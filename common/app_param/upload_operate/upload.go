@@ -21,7 +21,7 @@ type (
 		ctx context.Context
 	}
 	DaoUpload interface {
-		GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error)
+		GetUploadByKeys(arg *ArgUploadGetInfo, clients ...*redis.Client) (res *ResultMapUploadInfo, err error)
 
 		//拷贝文件
 		CopyUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapCopyUploadInfo, err error)
