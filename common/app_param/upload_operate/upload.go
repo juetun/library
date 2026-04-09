@@ -140,11 +140,16 @@ func (r *DaoUploadImpl) getCacheClient() (client *redis.Client) {
 }
 
 //从
-func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo) (res *ResultMapUploadInfo, err error) {
-
+func (r *DaoUploadImpl) GetUploadByKeys(arg *ArgUploadGetInfo, clients ...*redis.Client) (res *ResultMapUploadInfo, err error) {
+	var client *redis.Client
+	if len(clients) > 0 {
+		client = clients[0]
+	} else {
+		client = r.getCacheClient()
+	}
 	res, err = NewCacheProductPicAndVideoAction(
 		CacheProductPicAndVideoActionArg(arg),
-		CacheClient(r.getCacheClient()),
+		CacheClient(client),
 		CacheHandlerGetUploadCacheKey(r.getUploadCacheKey),
 		CacheProductPicAndVideoActionGetByIdsFromDb(r.getDataByUserIdsFromUploadServer),
 	).LoadBaseOption(
