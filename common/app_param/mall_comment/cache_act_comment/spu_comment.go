@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func GetSpuCacheKey(productId interface{}, expireTimeRands ...bool) (res string, timeExpire time.Duration, err error) {
+func GetSpuCacheKey(productId interface{}, expireTimeRands ...bool) (res string, timeExpire time.Duration, client *redis.Client, err error) {
 	var CacheKeyProductDescWithProductId *redis_pkg.CacheProperty
 	if CacheKeyProductDescWithProductId, err = cache_key_mall.GetCacheParamConfig("CacheSpuComment"); err != nil {
 		return
