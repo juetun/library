@@ -5,12 +5,11 @@ go 1.21
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/juetun/base-wrapper v0.0.447
+	github.com/juetun/base-wrapper v0.0.448
 	github.com/shopspring/decimal v1.3.1
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/gorm v1.25.1
 )
-
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
