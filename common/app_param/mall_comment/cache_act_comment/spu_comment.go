@@ -117,10 +117,11 @@ func (r *CacheSpuCommentAction) getFromCache(id interface{}) (data *mall_comment
 		}
 	}()
 	var key string
-	if key, _, err = r.GetCacheKey(id); err != nil {
+	var client *redis.Client
+	if key, _, client, err = r.GetCacheKey(id); err != nil {
 		return
 	}
-	cmd := r.Context.CacheClient.Get(r.Ctx, key)
+	cmd := r.GetCacheClient(client).Get(r.Ctx, key)
 	if err = cmd.Err(); err != nil {
 		return
 	}
