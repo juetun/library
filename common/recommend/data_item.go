@@ -35,6 +35,9 @@ const (
 	BadgeTypeNum               //数字
 	BadgeTypeDot               //点
 )
+const (
+	DataitemUniqueKeyDivideString = "-"
+)
 
 var (
 	SliceBadgeType = base.ModelItemOptions{
@@ -355,7 +358,7 @@ func (r *DataItemTag) Default() {
 
 //获取广告唯一Id字符串
 func GetUniqueKey(DataType string, DataId string) (res string) {
-	return fmt.Sprintf("%s-%s", DataType, DataId)
+	return DataType + DataitemUniqueKeyDivideString + DataId
 }
 
 //获取广告唯一Id字符串
@@ -363,7 +366,7 @@ func ParseUniqueKey(pk string) (DataType, DataId string) {
 	if pk == "" {
 		return
 	}
-	dataSlice := strings.Split(pk, "-")
+	dataSlice := strings.Split(pk, DataitemUniqueKeyDivideString)
 	l := len(dataSlice)
 	switch l {
 	case 0:
