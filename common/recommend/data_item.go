@@ -73,16 +73,16 @@ type (
 	}
 	ArgDeleteDataList []*ArgDeleteData
 	DataItem          struct {
-		Title         string                     `json:"title,omitempty"`         //标题
-		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`      //前缀标签
-		DataType      string                     `json:"data_type,omitempty"`     //数据类型
-		DataTypeStr   string                     `json:"data_type_str,omitempty"` //数据类型字符串 点赞 收藏使用的类型
-		DataId        string                     `json:"data_id,omitempty"`       //数据ID
-		Link          interface{}                `json:"link,omitempty"`          //链接地址 小程序对象DataItemLinkMina
-		HaveVideo     bool                       `json:"have_video,omitempty"`    //是否有视频
-		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"`    //视频信息
-		Attrs         base.ModelItemOptions      `json:"attrs,omitempty"`         //商品属性
-		ImgData       string                     `json:"-"`
+		Title         string                     `json:"title,omitempty"`           //标题
+		PreTags       []*DataItemTag             `json:"pre_tags,omitempty"`        //前缀标签
+		DataType      string                     `json:"data_type,omitempty"`       //数据类型
+		DataTypeStr   string                     `json:"data_type_str,omitempty"`   //数据类型字符串 点赞 收藏使用的类型
+		DataId        string                     `json:"data_id,omitempty"`         //数据ID
+		Link          interface{}                `json:"link,omitempty"`            //链接地址 小程序对象DataItemLinkMina
+		HaveVideo     bool                       `json:"have_video,omitempty"`      //是否有视频
+		VideoInfo     *upload_operate.VideoInfo  `json:"video_info,omitempty"`      //视频信息
+		Attrs         base.ModelItemOptions      `json:"attrs,omitempty"`           //商品属性
+		ImgData       string                     `json:"-"`                         //图片信息
 		Img           string                     `json:"img,omitempty"`             //头图
 		Imgs          []string                   `json:"imgs,omitempty"`            //多条图片
 		DataValue     map[string]*DataItemDetail `json:"data_value,omitempty"`      //详情
@@ -109,6 +109,7 @@ type (
 		BadgeType     string                     `json:"badge_type,omitempty"`      //徽标类型 num-数字 dot-点 空不填
 		BadgeString   string                     `json:"badge_string,omitempty"`    //徽标值    "100" "10"
 		PageName      string                     `json:"-"`                         //页面名称 内部使用参数不对前端展示
+		Weight        float64                    `json:"-"`                         //排序权重
 		PageConfigId  int64                      `json:"-"`
 		SortRequestId string                     `json:"-"` //排序的RequestId
 	}
