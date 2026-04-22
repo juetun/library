@@ -108,7 +108,7 @@ type (
 		Children      []DataItem                 `json:"children,omitempty"`        //子列表
 		ShowTime      string                     `json:"show_time,omitempty"`       //展示时间
 		OtherData     interface{}                `json:"other_data,omitempty"`      //其他数据
-		Pk            string                     `json:"pk"`                        //数据的唯一KEy
+		Pk            string                     `json:"pk,omitempty"`              //数据的唯一KEy
 		BadgeType     string                     `json:"badge_type,omitempty"`      //徽标类型 num-数字 dot-点 空不填
 		BadgeString   string                     `json:"badge_string,omitempty"`    //徽标值    "100" "10"
 		PageName      string                     `json:"-"`                         //页面名称 内部使用参数不对前端展示
