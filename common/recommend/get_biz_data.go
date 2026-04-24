@@ -119,11 +119,10 @@ func GetMapDataGetHandler(dataTypes ...string) (res map[string]DataStructArgumen
 	}
 }
 
-func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataItem, l int) (res map[string]*DataItem, err error) {
+func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataItem, l int, waitGroup *sync.WaitGroup) (res map[string]*DataItem, err error) {
 	res = make(map[string]*DataItem, l)
 
 	var (
-		dataMul           sync.WaitGroup
 		lock              sync.Mutex
 		ok                bool
 		handler           DataStructArguments
@@ -138,12 +137,12 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 		if len(argumentItem.DataIds) == 0 {
 			continue
 		}
-		dataMul.Add(1)
+		waitGroup.Add(1)
 
 		//并行获取商品数据详情
 		go func(bizCode string, argumentIt *ArgumentGetBizDataItem, handlerOp DataStructArguments) {
 
-			defer dataMul.Done()
+			defer waitGroup.Done()
 			var (
 				e       error
 				resData map[string]*DataItem
@@ -165,7 +164,6 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 			}
 		}(key, argumentItem, handler)
 	}
-	dataMul.Wait()
 	return
 }
 
