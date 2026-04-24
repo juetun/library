@@ -119,7 +119,7 @@ func GetMapDataGetHandler(dataTypes ...string) (res map[string]DataStructArgumen
 	}
 }
 
-func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataItem, l int, waitGroup *sync.WaitGroup) (res map[string]*DataItem, err error) {
+func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataItem, l int) (res map[string]*DataItem, err error) {
 	res = make(map[string]*DataItem, l)
 
 	var (
@@ -127,6 +127,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 		ok                bool
 		handler           DataStructArguments
 		MapDataGetHandler = GetMapDataGetHandler(r.DataTypes)
+		waitGroup         *sync.WaitGroup
 	)
 
 	for key, argumentItem := range groupMapDataId {
@@ -164,6 +165,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 			}
 		}(key, argumentItem, handler)
 	}
+	waitGroup.Wait()
 	return
 }
 
