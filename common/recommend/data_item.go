@@ -275,7 +275,7 @@ func (r *DataItem) Default() {
 
 	if r.Img == "" {
 		//如果有视频
-		if r.VideoInfo.Cover != "" {
+		if r.VideoInfo != nil && r.VideoInfo.Cover != "" {
 			r.Img = r.VideoInfo.Cover
 		} else if len(r.Imgs) > 0 {
 			r.Img = r.Imgs[0]
