@@ -127,7 +127,7 @@ func (r *GetBizData) SyncGetData(groupMapDataId map[string]*ArgumentGetBizDataIt
 		ok                bool
 		handler           DataStructArguments
 		MapDataGetHandler = GetMapDataGetHandler(r.DataTypes)
-		waitGroup         *sync.WaitGroup
+		waitGroup         sync.WaitGroup
 	)
 
 	for key, argumentItem := range groupMapDataId {
