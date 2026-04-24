@@ -272,6 +272,16 @@ func (r *DataItem) Default() {
 			r.BadgeString = "0"
 		}
 	}
+
+	if r.Img == "" {
+		//如果有视频
+		if r.VideoInfo.Cover != "" {
+			r.Img = r.VideoInfo.Cover
+		} else if len(r.Imgs) > 0 {
+			r.Img = r.Imgs[0]
+		}
+	}
+
 	return
 }
 
