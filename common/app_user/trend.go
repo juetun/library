@@ -70,6 +70,9 @@ type (
 		TimeNow           base.TimeNormal        `json:"-" form:"-"`
 		GetDataTypeCommon base.GetDataTypeCommon `json:"-" form:"-"`
 	}
+	ResultRecommendAttendUser struct {
+		Pager response.Pager `json:"pager"`
+	}
 )
 
 //根据场景Key获取数据
