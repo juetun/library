@@ -62,7 +62,7 @@ const (
 	SaleTypeDown                         // 定金预售
 	SaleTypeActivity                     // 活动信息
 	SaleTypeIntentional                  // 三期付款
-	SaleTypeIntent                       //意向金预售
+	SaleTypeIntent                       // 意向金预售
 )
 
 const (

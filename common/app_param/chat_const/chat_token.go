@@ -27,16 +27,15 @@ const (
 	WebsocketDataTypeCommon                  //通用类型
 )
 
+//消息类型
 const (
+	ChatMsgTypeText     = 110000 // 聊天数据类型 110000-文本
+	ChatMsgTypeImg      = 120000 // 聊天数据类型 120000-图片
+	ChatMsgTypeCard     = 130000 // 聊天数据卡片 130000-数据卡片 (如商品数据)
+	ChatMsgTypeVideo    = 140000 // 聊天数据卡片 110003-数据卡片 (如商品数据)
+	ChatMsgTypeMusic    = 150000 // 聊天数据卡片 110003-数据卡片 (如商品数据)
 	ChatMsgTypeOrder    = 161000 // 订单信息
 	ChatMsgTypeSubOrder = 162000 // 子订单信息
-	//消息烈性
-	ChatMsgTypeText  = (iota + 11) * 10000 // 聊天数据类型 110000-文本
-	ChatMsgTypeImg                         // 聊天数据类型 120000-图片
-	ChatMsgTypeCard                        // 聊天数据卡片 130000-数据卡片 (如商品数据)
-	ChatMsgTypeVideo                       // 聊天数据类型 视频
-	ChatMsgTypeMusic                       // 聊天数据类型 音频
-
 )
 
 const (
