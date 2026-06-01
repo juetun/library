@@ -17,6 +17,7 @@ const (
 	SceneNameTendencies           = "tendencies"             //广告用户首页动态
 	SceneNameAttendUserTendencies = "attend_user_tendencies" //关注用户首页动态
 	SceneNameHomeRecommend        = "home_recommend"         //广告首页数据推荐
+	SceneNameMallRecommend        = "mall_recommend"         //广告首页d电商数据推荐
 )
 
 const (
