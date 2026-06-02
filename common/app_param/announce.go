@@ -16,8 +16,9 @@ type (
 	}
 	ArgAddUserMessageItem struct {
 		NoticeTemplateKey string                 `json:"notice_template_key"` //通知模版KEY
-		DataType          string                 `json:"data_type"`
-		DataId            string                 `json:"data_id"`
+		DataType          string                 `json:"data_type" form:"data_type"`
+		Type              uint8                  `json:"type" form:"type"`
+		DataId            string                 `json:"data_id" form:"data_id"`
 		ToUserHid         int64                  `json:"to_user_hid" form:"to_user_hid"`
 		Content           map[string]interface{} `json:"content" form:"content"` //内容映射(配合模版使用）
 	}
