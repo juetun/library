@@ -45,7 +45,27 @@ const (
 	ActTypeReplyValue                     //回复
 )
 
+const (
+	AnnounceTypeSystem      uint8 = iota + 1 // 公告类型 0 系统公告
+	AnnounceTypeCommon                       // 普通公告
+	AnnounceTypeInteractive                  // 站内交互 如评论@某个用户
+)
+
 var (
+	SliceAnnounceType = base.ModelItemOptions{
+		{
+			Label: "系统公告",
+			Value: AnnounceTypeSystem,
+		},
+		{
+			Label: "普通公告",
+			Value: AnnounceTypeCommon,
+		},
+		{
+			Label: "互动消息",
+			Value: AnnounceTypeInteractive,
+		},
+	}
 	SliceAttendDataType = base.ModelItemOptions{
 		{
 			Value: AttendDataTypeUser,
