@@ -38,6 +38,10 @@ const (
 	NoticeTemplateSelectTypeNo  uint8 = iota //未启用
 	NoticeTemplateSelectTypeYes              //启用
 )
+const (
+	TagUserNoticeMsg      = "user_notice_msg"      //互动消息
+	TagUserInteractiveMsg = "user_interactive_msg" //系统通知
+)
 
 type (
 	NoticeTemplateItemOptions []NoticeTemplateItemOption
