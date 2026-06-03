@@ -174,7 +174,7 @@ type (
 		BtnShow  string `json:"btn_show"` //按钮显示
 	}
 	ArgSpuSaleNum struct {
-		timeNow  base.TimeNormal                   `json:"time_now"`
+		TimeNow  base.TimeNormal                   `json:"time_now"`
 		DataShop map[int64][]IncrSaleNumParameters `json:"data_shop"`
 		SpuData  []IncrSaleNumParameters           `json:"spu_data"`
 	}
