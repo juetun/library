@@ -173,7 +173,23 @@ type (
 		ShowType uint8  `json:"show_type"`
 		BtnShow  string `json:"btn_show"` //按钮显示
 	}
+	ArgSpuSaleNum struct {
+		timeNow  base.TimeNormal                   `json:"time_now"`
+		DataShop map[int64][]IncrSaleNumParameters `json:"data_shop"`
+		SpuData  []IncrSaleNumParameters           `json:"spu_data"`
+	}
+	IncrSaleNumParameters struct {
+		Increment float64 `json:"increment"`
+		Member    string  `json:"member"`
+	}
+	ResultUpdateSaleNum struct {
+		Result bool `json:"result"`
+	}
 )
+
+func (r *ArgSpuSaleNum) Default(c *base.Context) (err error) {
+	return
+}
 
 func (r *ArgGetSpuDataWithSpuId) Default(c *base.Context) (err error) {
 
