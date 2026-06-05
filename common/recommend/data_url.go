@@ -15,7 +15,7 @@ const (
 	PageNameHome = "home" //首页
 
 	//商品前台界面
-	PageNameOrder            = "order"
+	PageNameOrder            = "order_list"
 	PageNameOrderDetail      = "order_detail"
 	PageNameOrderComment     = "comment_edit" //订单评论详情
 	PageNameOrderCommentEdit = "comment_edit" //订单评论编辑
