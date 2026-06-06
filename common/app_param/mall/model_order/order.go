@@ -129,6 +129,7 @@ type (
 		ParentsSpuId      string                `json:"parents_spu_id" form:"parents_spu_id"`
 		ServiceItems      base.ModelItemOptions `json:"service_items" form:"service_items"`
 		FreightNeed       uint8                 `json:"freight_need" form:"freight_need"`
+		PriceHasSet       uint8                 `json:"price_has_set" form:"freight_need"`
 	}
 	OrderDetailAttr struct {
 		IntentionalDeposit         string `json:"ind,omitempty"`   //意向金
