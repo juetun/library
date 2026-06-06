@@ -129,7 +129,6 @@ type (
 		ParentsSpuId      string                `json:"parents_spu_id" form:"parents_spu_id"`
 		ServiceItems      base.ModelItemOptions `json:"service_items" form:"service_items"`
 		FreightNeed       uint8                 `json:"freight_need" form:"freight_need"`
-		PriceHasSet       uint8                 `json:"price_has_set" form:"freight_need"`
 	}
 	OrderDetailAttr struct {
 		IntentionalDeposit         string `json:"ind,omitempty"`   //意向金
@@ -148,6 +147,7 @@ type (
 		DownPaymentVal             string `json:"dpv,omitempty"`   //定金抵扣
 		DownSpuId                  string `json:"dspu,omitempty"`  //定金商品spu_id
 		DownSkuId                  string `json:"dsku,omitempty"`  //定金商品sku_id
+		PriceHasSet                uint8  `json:"phs,omitempty"`   //是否已经定价
 	}
 	SkuGiftsItem struct {
 		SkuId string `json:"sku_id,omitempty"`
@@ -158,6 +158,11 @@ type (
 	}
 )
 
+func (r *OrderDetailAttr) Default() {
+	if r.PriceHasSet == 0 {
+		r.PriceHasSet = models.ProductPriceHasSetYes
+	}
+}
 func (r *ArgOrderFromCartItem) GetPrice() (res decimal.Decimal, err error) {
 	if r.SkuPrice == "" {
 		r.SkuPrice = "0.00"
