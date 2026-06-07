@@ -1225,6 +1225,52 @@ func (r *Product) DownPayCanPayFinal(timeNow base.TimeNormal, isDelays ...bool) 
 	return
 }
 
+func (r *Product) GetFreightNeed() (res uint8) {
+	dataAttr, _ := r.ParseProductDataOtherAttr()
+	defer func() {
+		if res == 0 {
+			res = ProductFreightNeedYes
+		}
+	}()
+	res = r.FreightNeed
+	switch r.SaleType {
+	case SaleTypeDown: //定金预售
+		switch r.ActType {
+		case OrderActTypeFirst: //定金
+			res = dataAttr.DownFreightNeed
+			return
+		default:
+			res = r.FreightNeed
+			return
+		}
+	case SaleTypeIntentional: //三期付款
+		switch r.ActType {
+		case OrderActTypeDeposit: //意向金
+			res = dataAttr.IntentionalFreightNeed
+			return
+		case OrderActTypeFirst: //定金
+			res = dataAttr.DownFreightNeed
+			return
+		default:
+			res = r.FreightNeed
+			return
+		}
+	case SaleTypeIntent:
+		switch r.ActType {
+		case OrderActTypeDeposit: //意向金
+			res = dataAttr.IntentionalFreightNeed
+			return
+		case OrderActTypeFirst: //定金
+			res = dataAttr.DownFreightNeed
+			return
+		default:
+			res = r.FreightNeed
+			return
+		}
+	}
+	return
+}
+
 func NewPageTag() (res *PageTag) {
 	res = &PageTag{}
 	res.Default()
