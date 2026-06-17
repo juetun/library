@@ -204,6 +204,7 @@ type (
 		MarkSystem      string                      `json:"mark_system"`       //数据不合法 系统说明(系统使用，记录更详细不合法原因)
 		Checked         bool                        `json:"checked"`           //是否选中
 		ActType         uint8                       `json:"act_type"`          //
+		FreightNeed     uint8                       `json:"freight_need"`      //是否实物发货 1-需要发货 2-不需要发货 3-虚拟发货
 		SelectType      uint8                       `json:"select_type"`       //订单来源
 		Gifts           []*model_order.SkuGiftsItem `json:"gifts"`             //赠品信息
 		SortCreateTime  base.TimeNormal             `json:"-"`
