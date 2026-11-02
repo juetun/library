@@ -5,8 +5,9 @@ go 1.21
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/juetun/base-wrapper v0.0.449
+	github.com/juetun/base-wrapper v0.0.450
 	github.com/shopspring/decimal v1.3.1
+	golang.org/x/net v0.20.0
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/gorm v1.25.1
 )
@@ -89,7 +90,6 @@ require (
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.9.1 // indirect
