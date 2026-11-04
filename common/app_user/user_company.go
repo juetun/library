@@ -81,7 +81,10 @@ type (
 		SocialCredit string `json:"social_credit" form:"social_credit"`
 	}
 	ResultCompanyFetch struct {
-		Pager response.Pager `json:"pager"`
+		List       []*Company `json:"list"`
+		TotalCount int64      `json:"total_count,omitempty"`
+		IsNext     bool       `json:"is_next,omitempty"` // [bool] 是否有下一页，true=有下一页；false=无下页，可关闭列表
+		response.PagerParameter
 	}
 )
 
