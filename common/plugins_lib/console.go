@@ -83,7 +83,6 @@ func AdminImportAuth(arg *app_start.PluginsOperate) (err error) {
 			c.AbortWithStatusJSON(http.StatusOK, common.NewHttpResult().
 				SetCode(http.StatusForbidden).
 				SetMessage(fmt.Sprintf("%v-%v(err:响应异常,uid:%v)", c.Request.URL.Path, c.Request.Method, arg.User.UUserHid)))
-
 			return
 		}
 		if resPermit.IsSuper { //如果是超级管理员
