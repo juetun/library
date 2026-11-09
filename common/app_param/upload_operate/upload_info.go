@@ -306,7 +306,7 @@ func NewResultMapCopyUploadInfo(arg *ArgUploadGetInfo) (res *ResultMapCopyUpload
 }
 
 //获取上传信息
-func GetDataByUploadIdsFromUploadServer(arg *ArgUploadGetInfo) (resData *ResultMapUploadInfo, err error) {
+func GetDataByUploadIdsFromUploadServer(arg *ArgUploadGetInfo, ctx *base.Context) (resData *ResultMapUploadInfo, err error) {
 	resData = NewResultMapUploadInfo(arg)
 	var value = url.Values{}
 	var bodyByte []byte
@@ -326,7 +326,7 @@ func GetDataByUploadIdsFromUploadServer(arg *ArgUploadGetInfo) (resData *ResultM
 		Header:      http.Header{},
 		Value:       value,
 		BodyJson:    bodyByte,
-		Context:     r.Context,
+		Context:     ctx,
 		PathVersion: app_obj.App.AppRouterPrefix.Intranet,
 	}
 	var data = struct {
